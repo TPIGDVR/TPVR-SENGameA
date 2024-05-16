@@ -1074,13 +1074,12 @@ GameObject:
   - component: {fileID: 81412533}
   - component: {fileID: 81412532}
   - component: {fileID: 81412539}
-  - component: {fileID: 81412545}
-  - component: {fileID: 81412544}
   - component: {fileID: 81412538}
   - component: {fileID: 81412536}
   - component: {fileID: 81412537}
   - component: {fileID: 81412542}
   - component: {fileID: 81412541}
+  - component: {fileID: 81412543}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: Player
@@ -1322,64 +1321,118 @@ MonoBehaviour:
   m_LocomotionProvider: {fileID: 81412538}
   m_MinHeight: 1.29
   m_MaxHeight: Infinity
---- !u!114 &81412544
+--- !u!114 &81412543
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81412531}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2213c36610e3b1c4bbf886810ed9db12, type: 3}
+  m_Script: {fileID: 11500000, guid: b29f442005c434d44837c3136ded20a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_System: {fileID: 81412539}
-  m_TurnAmount: 45
-  m_DebounceTime: 0.5
-  m_EnableTurnLeftRight: 1
-  m_EnableTurnAround: 0
-  m_DelayTime: 0
-  m_LeftHandSnapTurnAction:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Left Hand Snap Turn
+  mapping:
+  - controls: 0
+    correspondingAction:
+      m_Name: Corresponding
       m_Type: 0
-      m_ExpectedControlType: Vector2
-      m_Id: b0bababb-eaf7-4d37-8294-2448396a8bd3
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: af9f4417-5af0-40cf-ac0f-ab19f81f0c61
+        m_Path: 
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Corresponding
+        m_Flags: 0
+      m_Flags: 0
+  - controls: 0
+    correspondingAction:
+      m_Name: Corresponding
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: -7374733323251553461, guid: c348712bda248c246b8c49b3db54643f,
-      type: 3}
-  m_RightHandSnapTurnAction:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Right Hand Snap Turn
+  - controls: 0
+    correspondingAction:
+      m_Name: Corresponding
       m_Type: 0
-      m_ExpectedControlType: Vector2
-      m_Id: bc9b89fc-04c9-437a-911f-ff37bacacc10
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: -8525429354371678379, guid: c348712bda248c246b8c49b3db54643f,
-      type: 3}
---- !u!114 &81412545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 81412531}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01f69dc1cb084aa42b2f2f8cd87bc770, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_System: {fileID: 81412539}
-  m_DelayTime: 0.1
+  - controls: 0
+    correspondingAction:
+      m_Name: Corresponding
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+  - controls: 0
+    correspondingAction:
+      m_Name: Corresponding
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+  - controls: 0
+    correspondingAction:
+      m_Name: Corresponding
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+  - controls: 0
+    correspondingAction:
+      m_Name: Corresponding
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+  - controls: 0
+    correspondingAction:
+      m_Name: Corresponding
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+  - controls: 0
+    correspondingAction:
+      m_Name: Corresponding
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+  actionMap: []
 --- !u!1 &82043623
 GameObject:
   m_ObjectHideFlags: 0
