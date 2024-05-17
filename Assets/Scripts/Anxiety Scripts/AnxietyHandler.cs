@@ -33,6 +33,7 @@ public class AnxietyHandler : MonoBehaviour
         CalculateAnxietyScaleBasedOffNoiseLevel();
         IncrementAnxietyLevel();
 
+        _anxietyLevel = Mathf.Clamp(_anxietyLevel,0, _maxAnxietyLevel);
         //trigger the event after calculating the anxiety level
         em.TriggerEvent<float>(Event.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
     }
