@@ -6,15 +6,15 @@ using System.Linq;
 public class NoiseProximityHandler : MonoBehaviour
 {
     NoiseSource[] _noiseSources;
-    [SerializeField]
-    float _maxDistanceFromSource;
+    //[SerializeField]
+    //float _maxDistanceFromSource;
 
     float _totalNoiseValue;
     float _maxSqrDist;
     private void Start()
     {
         _noiseSources = FindObjectsOfType<NoiseSource>();
-        _maxSqrDist = _maxDistanceFromSource * _maxDistanceFromSource;
+        //_maxSqrDist = _maxDistanceFromSource * _maxDistanceFromSource;
 
     }
 
