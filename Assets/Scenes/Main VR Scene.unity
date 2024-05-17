@@ -6472,6 +6472,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1251708948748040, guid: 5510dbd75f54c1547bcfa4dfea8c488d, type: 3}
+      propertyPath: m_TagString
+      value: Noise
+      objectReference: {fileID: 0}
     - target: {fileID: 4423371226264234, guid: 5510dbd75f54c1547bcfa4dfea8c488d, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -16777,6 +16781,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &1058697063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463856315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d95de0e1c14451a47ae8aa2fbddb69f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _noiseValue: 0
 --- !u!1001 &1067471778
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28044,15 +28061,19 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1551617764114010, guid: f80bed1528613b543904e6d58d40090f,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1058697055}
-    - targetCorrespondingSourceObject: {fileID: 1551617764114010, guid: f80bed1528613b543904e6d58d40090f,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1058697060}
     - targetCorrespondingSourceObject: {fileID: 1551617764114010, guid: f80bed1528613b543904e6d58d40090f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1058697059}
+    - targetCorrespondingSourceObject: {fileID: 1551617764114010, guid: f80bed1528613b543904e6d58d40090f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1058697055}
+    - targetCorrespondingSourceObject: {fileID: 1551617764114010, guid: f80bed1528613b543904e6d58d40090f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1058697063}
   m_SourcePrefab: {fileID: 100100000, guid: f80bed1528613b543904e6d58d40090f, type: 3}
 --- !u!1 &1865928628
 GameObject:
