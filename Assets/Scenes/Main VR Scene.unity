@@ -1074,13 +1074,12 @@ GameObject:
   - component: {fileID: 81412533}
   - component: {fileID: 81412532}
   - component: {fileID: 81412539}
-  - component: {fileID: 81412545}
-  - component: {fileID: 81412544}
   - component: {fileID: 81412538}
   - component: {fileID: 81412536}
   - component: {fileID: 81412537}
   - component: {fileID: 81412542}
   - component: {fileID: 81412541}
+  - component: {fileID: 81412543}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: Player
@@ -1322,64 +1321,230 @@ MonoBehaviour:
   m_LocomotionProvider: {fileID: 81412538}
   m_MinHeight: 1.29
   m_MaxHeight: Infinity
---- !u!114 &81412544
+--- !u!114 &81412543
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81412531}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2213c36610e3b1c4bbf886810ed9db12, type: 3}
+  m_Script: {fileID: 11500000, guid: b29f442005c434d44837c3136ded20a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_System: {fileID: 81412539}
-  m_TurnAmount: 45
-  m_DebounceTime: 0.5
-  m_EnableTurnLeftRight: 1
-  m_EnableTurnAround: 0
-  m_DelayTime: 0
-  m_LeftHandSnapTurnAction:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Left Hand Snap Turn
+  mapping:
+  - controls: 8
+    correspondingAction:
+      m_Name: Corresponding
       m_Type: 0
-      m_ExpectedControlType: Vector2
-      m_Id: b0bababb-eaf7-4d37-8294-2448396a8bd3
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: e852d088-a29f-4ba5-b495-75f4ef74c1f7
+        m_Path: <XRController>{RightHand}/trigger
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Corresponding
+        m_Flags: 0
       m_Flags: 0
-    m_Reference: {fileID: -7374733323251553461, guid: c348712bda248c246b8c49b3db54643f,
-      type: 3}
-  m_RightHandSnapTurnAction:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Right Hand Snap Turn
+  - controls: 9
+    correspondingAction:
+      m_Name: Corresponding
       m_Type: 0
-      m_ExpectedControlType: Vector2
-      m_Id: bc9b89fc-04c9-437a-911f-ff37bacacc10
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: e22afcf6-b815-4190-899a-485f1ab3e153
+        m_Path: <XRController>{RightHand}/grip
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Corresponding
+        m_Flags: 0
       m_Flags: 0
-    m_Reference: {fileID: -8525429354371678379, guid: c348712bda248c246b8c49b3db54643f,
-      type: 3}
---- !u!114 &81412545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 81412531}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01f69dc1cb084aa42b2f2f8cd87bc770, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_System: {fileID: 81412539}
-  m_DelayTime: 0.1
+  - controls: 1
+    correspondingAction:
+      m_Name: Corresponding
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: e79eedf8-ba39-4579-ac75-c3b71de4fc59
+        m_Path: <XRController>{LeftHand}/primaryButton
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Corresponding
+        m_Flags: 0
+      m_Flags: 0
+  - controls: 2
+    correspondingAction:
+      m_Name: Corresponding
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: d4f64b8a-bb30-420d-a997-d855a40313e7
+        m_Path: <XRController>{LeftHand}/secondaryButton
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Corresponding
+        m_Flags: 0
+      m_Flags: 0
+  - controls: 3
+    correspondingAction:
+      m_Name: Corresponding
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: aa09c45a-1eda-4cda-87bf-b66bb966a424
+        m_Path: <XRController>{LeftHand}/trigger
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Corresponding
+        m_Flags: 0
+      m_Flags: 0
+  - controls: 4
+    correspondingAction:
+      m_Name: Corresponding
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 6b3fb56c-cdcc-43d7-aead-3c9c041ab680
+        m_Path: <XRController>{LeftHand}/grip
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Corresponding
+        m_Flags: 0
+      m_Flags: 0
+  - controls: 6
+    correspondingAction:
+      m_Name: Corresponding
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: d4f64b8a-bb30-420d-a997-d855a40313e7
+        m_Path: <XRController>{RightHand}/primaryButton
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Corresponding
+        m_Flags: 0
+      m_Flags: 0
+  - controls: 7
+    correspondingAction:
+      m_Name: Corresponding
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 577e441f-72ba-49f1-99c7-099f2bafd0da
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 6a30415a-3c45-4b89-a65c-0987f25f7b3a
+        m_Path: <XRController>{RightHand}/secondaryButton
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Corresponding
+        m_Flags: 0
+      m_Flags: 0
+  actionMap:
+  - action: 3
+    OnPress:
+      m_PersistentCalls:
+        m_Calls: []
+    OnHold:
+      m_PersistentCalls:
+        m_Calls: []
+    OnRelease:
+      m_PersistentCalls:
+        m_Calls: []
+  - action: 8
+    OnPress:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1514796006}
+          m_TargetAssemblyTypeName: BreathCounter, Assembly-CSharp
+          m_MethodName: StartBreathCounter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    OnHold:
+      m_PersistentCalls:
+        m_Calls: []
+    OnRelease:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1514796006}
+          m_TargetAssemblyTypeName: BreathCounter, Assembly-CSharp
+          m_MethodName: StopBreathCounter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - action: 6
+    OnPress:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2060624797}
+          m_TargetAssemblyTypeName: UI.Pausemenu, Assembly-CSharp
+          m_MethodName: ToggleUI
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    OnHold:
+      m_PersistentCalls:
+        m_Calls: []
+    OnRelease:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &82043623
 GameObject:
   m_ObjectHideFlags: 0
@@ -4665,7 +4830,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 55
   m_InteractionLayers:
-    m_Bits: 2147483648
+    m_Bits: 1
   m_AttachTransform: {fileID: 145350790}
   m_KeepSelectedTargetValid: 1
   m_DisableVisualsWhenBlockedInGroup: 1
@@ -10430,7 +10595,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 55
   m_InteractionLayers:
-    m_Bits: 2147483648
+    m_Bits: 4294967295
   m_AttachTransform: {fileID: 1213136479}
   m_KeepSelectedTargetValid: 1
   m_DisableVisualsWhenBlockedInGroup: 1
@@ -11250,7 +11415,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 716035587}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93ddd6244a6b92f46b2a3fd677abbaf6, type: 3}
   m_Name: 
@@ -11368,7 +11533,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 716035587}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93ddd6244a6b92f46b2a3fd677abbaf6, type: 3}
   m_Name: 
@@ -21385,7 +21550,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1346629791}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93ddd6244a6b92f46b2a3fd677abbaf6, type: 3}
   m_Name: 
@@ -21444,7 +21609,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1346629791}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93ddd6244a6b92f46b2a3fd677abbaf6, type: 3}
   m_Name: 
