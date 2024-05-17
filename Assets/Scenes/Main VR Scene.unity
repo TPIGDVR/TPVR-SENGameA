@@ -1080,6 +1080,8 @@ GameObject:
   - component: {fileID: 81412542}
   - component: {fileID: 81412541}
   - component: {fileID: 81412543}
+  - component: {fileID: 81412544}
+  - component: {fileID: 81412545}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: Player
@@ -1266,7 +1268,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81412531}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c35af84a6df081244bcf6cf3518c8377, type: 3}
   m_Name: 
@@ -1545,6 +1547,37 @@ MonoBehaviour:
     OnRelease:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &81412544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81412531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30c3d2166192e97449301cfa0b490a7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _anxietyLevel: 0
+  _maxNoiseLevel: 10
+  _maxAnxietyLevel: 20
+  _anxietyIncreaseSpeed: 1
+  _minAnxietyIncreaseScale: 0
+  _maxAnxietyIncreaseScale: 3
+--- !u!114 &81412545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81412531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411337246f260b546811cbd3088adbbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxDistanceFromSource: 5
 --- !u!1 &82043623
 GameObject:
   m_ObjectHideFlags: 0
@@ -16100,7 +16133,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1020215161}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
   m_Name: 
@@ -16958,7 +16991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d95de0e1c14451a47ae8aa2fbddb69f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _noiseValue: 0
+  _noiseValue: 10
 --- !u!1001 &1067471778
 PrefabInstance:
   m_ObjectHideFlags: 0

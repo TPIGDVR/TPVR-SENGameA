@@ -5,7 +5,7 @@ using Unity.Mathematics;
 
 public class AnxietyHandler : MonoBehaviour
 {
-    float _anxietyLevel = 0;
+    public float _anxietyLevel = 0;
     NoiseProximityHandler _noiseProximityHandler;
 
     [SerializeField]
@@ -55,5 +55,4 @@ public class AnxietyHandler : MonoBehaviour
         _anxietyLevel *= decrease;
     }
 
-    public float AnxietyLevel { get { return _anxietyLevel; } }
 }
