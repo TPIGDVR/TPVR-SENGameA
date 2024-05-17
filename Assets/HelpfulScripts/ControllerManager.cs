@@ -73,7 +73,9 @@ namespace Assets.HelpfulScripts
             BButton,
             AButton,
             RightTrigger,
-            RightGrab
+            RightGrab,
+
+            //if u want to add additional controls. add from here onwards :)
         }
         [Serializable]
         public class Mapping
@@ -104,6 +106,21 @@ namespace Assets.HelpfulScripts
             {
                 OnRelease.Invoke();
             }
+        }
+
+        public void OnPress()
+        {
+            print("button click");
+        }
+
+        public void OnHold()
+        {
+            print("button on hold");
+        }
+
+        public void OnRelease()
+        {
+            print("button on release");
         }
     }
 }
