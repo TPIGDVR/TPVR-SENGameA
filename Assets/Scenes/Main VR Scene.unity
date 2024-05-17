@@ -26469,6 +26469,7 @@ GameObject:
   - component: {fileID: 1722927845}
   - component: {fileID: 1722927844}
   - component: {fileID: 1722927848}
+  - component: {fileID: 1722927849}
   m_Layer: 5
   m_Name: Anxiety
   m_TagString: Untagged
@@ -26578,6 +26579,25 @@ MonoBehaviour:
   rotationOffsetFromParent: {x: -30, y: 0, z: 0}
   ignoreRaycasting: 1
   offsetFromObject: 0.5
+--- !u!114 &1722927849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722927843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d982cb4c46b4bea4da1b39fe65d10e5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _anxietyBar: {fileID: 2080525603}
+  _anxietyLogo: {fileID: 1380506548}
+  _anxietySpriteLogos:
+  - {fileID: -949787994, guid: 0ed1e59d2107a4749aa56cac2fe88f97, type: 3}
+  - {fileID: -1935970925, guid: 0ed1e59d2107a4749aa56cac2fe88f97, type: 3}
+  - {fileID: 1937250068, guid: 0ed1e59d2107a4749aa56cac2fe88f97, type: 3}
+  - {fileID: -433893197, guid: 0ed1e59d2107a4749aa56cac2fe88f97, type: 3}
 --- !u!1 &1723188497
 GameObject:
   m_ObjectHideFlags: 0

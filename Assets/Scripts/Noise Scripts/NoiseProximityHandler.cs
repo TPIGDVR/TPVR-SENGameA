@@ -11,11 +11,11 @@ public class NoiseProximityHandler : MonoBehaviour
 
     float _totalNoiseValue;
     float _maxSqrDist;
+
     private void Start()
     {
         _noiseSources = FindObjectsOfType<NoiseSource>();
         _maxSqrDist = _maxDistanceFromSource * _maxDistanceFromSource;
-
     }
 
     private void Update()

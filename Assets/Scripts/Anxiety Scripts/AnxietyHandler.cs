@@ -12,7 +12,7 @@ public class AnxietyHandler : MonoBehaviour
     float _maxNoiseLevel;
 
     [SerializeField]
-    float _anxietyIncreaseSpeed;
+    float _maxAnxietyLevel,_anxietyIncreaseSpeed;
     [SerializeField]
     float _minAnxietyIncreaseScale = 0;
     [SerializeField]
@@ -20,16 +20,21 @@ public class AnxietyHandler : MonoBehaviour
     float _anxietyIncreaseScale = 0;
 
 
+    EventManager em = EventManager.Instance;
 
     private void Start()
     {
         _noiseProximityHandler = GetComponent<NoiseProximityHandler>();
+        em.AddListener<float>(Event.ANXIETY_BREATHE, Breath);
     }
 
     private void Update()
     {
         CalculateAnxietyScaleBasedOffNoiseLevel();
         IncrementAnxietyLevel();
+
+        //trigger the event after calculating the anxiety level
+        em.TriggerEvent<float>(Event.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
     }
 
     void CalculateAnxietyScaleBasedOffNoiseLevel()
@@ -42,6 +47,11 @@ public class AnxietyHandler : MonoBehaviour
     void IncrementAnxietyLevel()
     {
         _anxietyLevel += (Time.deltaTime * _anxietyIncreaseSpeed) * _anxietyIncreaseScale;
+    }
+
+    void Breath(float decrease)
+    {
+        _anxietyLevel *= decrease;
     }
 
     public float AnxietyLevel { get { return _anxietyLevel; } }

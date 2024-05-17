@@ -28,6 +28,8 @@ public class PostProcessing : MonoBehaviour
     [SerializeField] Color anxietyVignetteCol2;
     [SerializeField] float maxAnxietyVignetteIntensity;
 
+    EventManager em = EventManager.Instance;
+
     void Start()
     {
         postProcessingVolume.profile.TryGet(out _lensDistortion);
@@ -47,6 +49,8 @@ public class PostProcessing : MonoBehaviour
 
         //test
         _pp.distance.value = 0;
+
+        em.AddListener<float>(Event.ANXIETY_UPDATE, UpdatePostProcess);
     }
 
 

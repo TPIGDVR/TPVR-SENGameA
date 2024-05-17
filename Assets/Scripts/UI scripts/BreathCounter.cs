@@ -47,12 +47,15 @@ public class BreathCounter : UIBase
     private bool hasFinishedBreathing = false;
     private BreathingState currentState;
     private BreathingState prevState;
+    EventManager em = EventManager.Instance;
 
     void Start()
     {
         SetScrollbarSize(0f);
         //barMat.color = barColor;
         image = handle.GetComponent<Image>();
+
+        
     }
 
 
@@ -193,16 +196,20 @@ public class BreathCounter : UIBase
         {
             case BreathingState.litte:
                 proximityHapticFeedback.timeWithinMaxDistance *= anxietyReductionForlittle;
+                Breath(anxietyReductionForlittle);
                 //proximityHapticFeedback.lensDistortion.SetActive(false);
                 //proximityHapticFeedback.lensFlare.SetActive(false);
                 break;
             case BreathingState.Shallow:
                 proximityHapticFeedback.timeWithinMaxDistance *= anxietyReductionForShallow;
+                Breath(anxietyReductionForShallow);
                 //proximityHapticFeedback.lensDistortion.SetActive(false);
                 //proximityHapticFeedback.lensFlare.SetActive(false);
                 break;
             case BreathingState.Medium:
                 proximityHapticFeedback.timeWithinMaxDistance *= anxietyReductionForMedium;
+                Breath(anxietyReductionForMedium);
+
                 //proximityHapticFeedback.lensDistortion.SetActive(false);
                 //proximityHapticFeedback.lensFlare.SetActive(false);
                 break;
@@ -210,10 +217,17 @@ public class BreathCounter : UIBase
                 //proximityHapticFeedback.lensDistortion.SetActive(false);
                 //proximityHapticFeedback.lensFlare.SetActive(false);
                 proximityHapticFeedback.timeWithinMaxDistance *= anxietyReductionForDeep;
+                Breath(anxietyReductionForDeep);
+
                 break;
         }
         //reset the state
-        prevState = BreathingState.None; 
+        prevState = BreathingState.None;
+
+        void Breath(float decrease)
+        {
+            em.TriggerEvent<float>(Event.ANXIETY_BREATHE, decrease);
+        }
     }
 
     public void StopBreathCounter()
