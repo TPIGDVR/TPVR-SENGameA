@@ -1564,7 +1564,7 @@ MonoBehaviour:
   _maxAnxietyLevel: 20
   _anxietyIncreaseSpeed: 1
   _minAnxietyIncreaseScale: 0
-  _maxAnxietyIncreaseScale: 3
+  _maxAnxietyIncreaseScale: 2
 --- !u!114 &81412545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28211,6 +28211,10 @@ PrefabInstance:
     - target: {fileID: 1551617764114010, guid: f80bed1528613b543904e6d58d40090f, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1551617764114010, guid: f80bed1528613b543904e6d58d40090f, type: 3}
+      propertyPath: m_TagString
+      value: Noise
       objectReference: {fileID: 0}
     - target: {fileID: 4457371623452044, guid: f80bed1528613b543904e6d58d40090f, type: 3}
       propertyPath: m_RootOrder

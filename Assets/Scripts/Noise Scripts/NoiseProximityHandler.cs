@@ -28,15 +28,17 @@ public class NoiseProximityHandler : MonoBehaviour
         float totalNoiseLevel = 0;
         foreach (var source in _noiseSources)
         {
-            float sqrDistance = Vector3.SqrMagnitude(source.Position - transform.position);
+            float sqrDistance = Mathf.Abs(Vector3.SqrMagnitude(source.Position - Camera.main.transform.position));
 
             //skip if out of distance
+            //if (sqrDistance > _maxSqrDist) continue;
 
             //lerp to its noise value based off distance;
-            float noiseLevel = Mathf.Lerp(0,source.NoiseValue,sqrDistance / _maxSqrDist);
+            float noiseLevel = Mathf.Lerp(source.NoiseValue, 0,sqrDistance / _maxSqrDist);
             totalNoiseLevel += noiseLevel;
+            
         }
-
+        Debug.Log(totalNoiseLevel);
         return totalNoiseLevel;
     }
 
