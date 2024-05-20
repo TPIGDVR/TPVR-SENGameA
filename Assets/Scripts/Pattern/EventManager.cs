@@ -1,10 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
-
-
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class EventManager
 {
@@ -232,5 +229,7 @@ public class EventManager
 //list of possible events
 public enum Event
 {
+    ANXIETY_UPDATE,
+    ANXIETY_BREATHE
 }
 

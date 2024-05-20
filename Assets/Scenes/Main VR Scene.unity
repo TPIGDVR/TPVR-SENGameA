@@ -1080,6 +1080,8 @@ GameObject:
   - component: {fileID: 81412542}
   - component: {fileID: 81412541}
   - component: {fileID: 81412543}
+  - component: {fileID: 81412544}
+  - component: {fileID: 81412545}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: Player
@@ -1266,7 +1268,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81412531}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c35af84a6df081244bcf6cf3518c8377, type: 3}
   m_Name: 
@@ -1569,6 +1571,37 @@ MonoBehaviour:
     OnRelease:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &81412544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81412531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30c3d2166192e97449301cfa0b490a7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _anxietyLevel: 0
+  _maxNoiseLevel: 10
+  _maxAnxietyLevel: 20
+  _anxietyIncreaseSpeed: 1
+  _minAnxietyIncreaseScale: 0
+  _maxAnxietyIncreaseScale: 2
+--- !u!114 &81412545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81412531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411337246f260b546811cbd3088adbbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxDistanceFromSource: 5
 --- !u!1 &82043623
 GameObject:
   m_ObjectHideFlags: 0
@@ -6824,6 +6857,10 @@ PrefabInstance:
     - target: {fileID: 1251708948748040, guid: 5510dbd75f54c1547bcfa4dfea8c488d, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1251708948748040, guid: 5510dbd75f54c1547bcfa4dfea8c488d, type: 3}
+      propertyPath: m_TagString
+      value: Noise
       objectReference: {fileID: 0}
     - target: {fileID: 4423371226264234, guid: 5510dbd75f54c1547bcfa4dfea8c488d, type: 3}
       propertyPath: m_RootOrder
@@ -16404,7 +16441,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1020215161}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
   m_Name: 
@@ -17250,6 +17287,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &1058697063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463856315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d95de0e1c14451a47ae8aa2fbddb69f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _noiseValue: 10
 --- !u!1001 &1067471778
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27251,6 +27301,7 @@ GameObject:
   - component: {fileID: 1722927845}
   - component: {fileID: 1722927844}
   - component: {fileID: 1722927848}
+  - component: {fileID: 1722927849}
   m_Layer: 5
   m_Name: Anxiety
   m_TagString: Untagged
@@ -27360,6 +27411,25 @@ MonoBehaviour:
   rotationOffsetFromParent: {x: -30, y: 0, z: 0}
   ignoreRaycasting: 1
   offsetFromObject: 0.5
+--- !u!114 &1722927849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722927843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d982cb4c46b4bea4da1b39fe65d10e5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _anxietyBar: {fileID: 2080525603}
+  _anxietyLogo: {fileID: 1380506548}
+  _anxietySpriteLogos:
+  - {fileID: -949787994, guid: 0ed1e59d2107a4749aa56cac2fe88f97, type: 3}
+  - {fileID: -1935970925, guid: 0ed1e59d2107a4749aa56cac2fe88f97, type: 3}
+  - {fileID: 1937250068, guid: 0ed1e59d2107a4749aa56cac2fe88f97, type: 3}
+  - {fileID: -433893197, guid: 0ed1e59d2107a4749aa56cac2fe88f97, type: 3}
 --- !u!1 &1723188497
 GameObject:
   m_ObjectHideFlags: 0
@@ -29016,6 +29086,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1551617764114010, guid: f80bed1528613b543904e6d58d40090f, type: 3}
+      propertyPath: m_TagString
+      value: Noise
+      objectReference: {fileID: 0}
     - target: {fileID: 4457371623452044, guid: f80bed1528613b543904e6d58d40090f, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -29083,15 +29157,19 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1551617764114010, guid: f80bed1528613b543904e6d58d40090f,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1058697055}
-    - targetCorrespondingSourceObject: {fileID: 1551617764114010, guid: f80bed1528613b543904e6d58d40090f,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1058697060}
     - targetCorrespondingSourceObject: {fileID: 1551617764114010, guid: f80bed1528613b543904e6d58d40090f,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1058697059}
+    - targetCorrespondingSourceObject: {fileID: 1551617764114010, guid: f80bed1528613b543904e6d58d40090f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1058697055}
+    - targetCorrespondingSourceObject: {fileID: 1551617764114010, guid: f80bed1528613b543904e6d58d40090f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1058697063}
   m_SourcePrefab: {fileID: 100100000, guid: f80bed1528613b543904e6d58d40090f, type: 3}
 --- !u!1 &1865928628
 GameObject:

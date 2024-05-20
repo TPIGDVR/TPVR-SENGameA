@@ -5,14 +5,14 @@ using Unity.Mathematics;
 
 public class AnxietyHandler : MonoBehaviour
 {
-    float _anxietyLevel = 0;
+    public float _anxietyLevel = 0;
     NoiseProximityHandler _noiseProximityHandler;
 
     [SerializeField]
     float _maxNoiseLevel;
 
     [SerializeField]
-    float _anxietyIncreaseSpeed;
+    float _maxAnxietyLevel,_anxietyIncreaseSpeed;
     [SerializeField]
     float _minAnxietyIncreaseScale = 0;
     [SerializeField]
@@ -20,16 +20,22 @@ public class AnxietyHandler : MonoBehaviour
     float _anxietyIncreaseScale = 0;
 
 
+    EventManager em = EventManager.Instance;
 
     private void Start()
     {
         _noiseProximityHandler = GetComponent<NoiseProximityHandler>();
+        em.AddListener<float>(Event.ANXIETY_BREATHE, Breath);
     }
 
     private void Update()
     {
         CalculateAnxietyScaleBasedOffNoiseLevel();
         IncrementAnxietyLevel();
+
+        _anxietyLevel = Mathf.Clamp(_anxietyLevel,0, _maxAnxietyLevel);
+        //trigger the event after calculating the anxiety level
+        em.TriggerEvent<float>(Event.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
     }
 
     void CalculateAnxietyScaleBasedOffNoiseLevel()
@@ -44,5 +50,9 @@ public class AnxietyHandler : MonoBehaviour
         _anxietyLevel += (Time.deltaTime * _anxietyIncreaseSpeed) * _anxietyIncreaseScale;
     }
 
-    public float AnxietyLevel { get { return _anxietyLevel; } }
+    void Breath(float decrease)
+    {
+        _anxietyLevel *= decrease;
+    }
+
 }

@@ -28,6 +28,10 @@ public class PostProcessing : MonoBehaviour
     [SerializeField] Color anxietyVignetteCol2;
     [SerializeField] float maxAnxietyVignetteIntensity;
 
+    bool IsFainting = false;
+
+    EventManager em = EventManager.Instance;
+
     void Start()
     {
         postProcessingVolume.profile.TryGet(out _lensDistortion);
@@ -47,6 +51,8 @@ public class PostProcessing : MonoBehaviour
 
         //test
         _pp.distance.value = 0;
+
+        em.AddListener<float>(Event.ANXIETY_UPDATE, UpdatePostProcess);
     }
 
 
@@ -75,6 +81,12 @@ public class PostProcessing : MonoBehaviour
         _pp.distance.value = Mathf.PingPong(Time.time * 0.2f, 0.2f);
 
         UpdateVignette(progress);
+
+        if(progress >= 1.0f && !IsFainting)
+        {
+            IsFainting = true;
+            StartCoroutine(DeadAni());
+        }
     }
 
     private void UpdateVignette(float progress)
@@ -93,13 +105,14 @@ public class PostProcessing : MonoBehaviour
     {
         float t = 0;
         float tInterval = 0.01f;
-        while(t < 7)
+        float fadeTime = 3f;
+        while(t < fadeTime)
         {
             yield return new WaitForSeconds(tInterval);
             t += tInterval;
-            var c = Color.Lerp(anxietyVignetteCol2,Color.black, t/7);
+            var c = Color.Lerp(anxietyVignetteCol2,Color.black, t/fadeTime);
             _anxietyVignette.color.value = c;
-            _anxietyVignette.intensity.value = Mathf.Lerp(_anxietyVignette.intensity.value,2,t/7) ;
+            _anxietyVignette.intensity.value = Mathf.Lerp(_anxietyVignette.intensity.value,2,t/fadeTime) ;
         }
         SceneManager.LoadScene("Restart Scene");
 
