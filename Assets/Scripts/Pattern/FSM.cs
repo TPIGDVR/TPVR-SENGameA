@@ -14,7 +14,7 @@ namespace PGGE
 			/* The constructor of the FSMState class
              * will require the parent FSM.
              * So we create a constructor 
-             * with an instance of the FSM
+             * with an Instance of the FSM
              */
 			public int ID { get { return mId; } }
 			public FSMState()
@@ -69,7 +69,7 @@ namespace PGGE
 			//We will use a Dictionary container class to 
 			//store the key, value pair of the set of states.
 			//The key will be a unique ID for an
-			//application-specific FSMState instance.
+			//application-specific FSMState Instance.
 
 			protected Dictionary<int, FSMState> m_states = new Dictionary<int, FSMState>();
 

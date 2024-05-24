@@ -1074,14 +1074,15 @@ GameObject:
   - component: {fileID: 81412533}
   - component: {fileID: 81412532}
   - component: {fileID: 81412539}
-  - component: {fileID: 81412538}
-  - component: {fileID: 81412536}
   - component: {fileID: 81412537}
   - component: {fileID: 81412542}
-  - component: {fileID: 81412541}
-  - component: {fileID: 81412543}
   - component: {fileID: 81412544}
   - component: {fileID: 81412545}
+  - component: {fileID: 81412538}
+  - component: {fileID: 81412536}
+  - component: {fileID: 81412541}
+  - component: {fileID: 81412543}
+  - component: {fileID: 81412546}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: Player
@@ -1485,9 +1486,9 @@ MonoBehaviour:
     OnPress:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 672879474}
-          m_TargetAssemblyTypeName: HelpfulScript.ToggleRay, Assembly-CSharp
-          m_MethodName: ActivateRay
+        - m_Target: {fileID: 81412546}
+          m_TargetAssemblyTypeName: PlayerComponentManager, Assembly-CSharp
+          m_MethodName: ActivateLeftRayInteractor
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1503,9 +1504,9 @@ MonoBehaviour:
     OnRelease:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 672879474}
-          m_TargetAssemblyTypeName: HelpfulScript.ToggleRay, Assembly-CSharp
-          m_MethodName: DeactivateRay
+        - m_Target: {fileID: 81412546}
+          m_TargetAssemblyTypeName: PlayerComponentManager, Assembly-CSharp
+          m_MethodName: DeactivateLeftRayInteractor
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1602,6 +1603,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxDistanceFromSource: 5
+--- !u!114 &81412546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81412531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 783df5238251e5541974196fea6dde3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movement: {fileID: 81412538}
+  cameraMovement: {fileID: 81412536}
+  leftRayInteractor: {fileID: 672879471}
+  leftDirectInteraction: {fileID: 1387473099}
+  rightRayInteractor: {fileID: 214451762}
+  rightDirectInteraction: {fileID: 577660796}
 --- !u!1 &82043623
 GameObject:
   m_ObjectHideFlags: 0
@@ -4669,7 +4688,6 @@ GameObject:
   - component: {fileID: 214451762}
   - component: {fileID: 214451761}
   - component: {fileID: 214451760}
-  - component: {fileID: 214451759}
   m_Layer: 0
   m_Name: Right Ray Interactor
   m_TagString: Untagged
@@ -4692,21 +4710,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 716035588}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &214451759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 214451757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc16f6c16322a554ca3756c532cf3e65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartRayOnAwake: 1
-  forceToggle: 1
-  directInteractor: {fileID: 577660796}
 --- !u!114 &214451760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6155,6 +6158,7 @@ GameObject:
   - component: {fileID: 278042973}
   - component: {fileID: 278042972}
   - component: {fileID: 278042971}
+  - component: {fileID: 278042974}
   m_Layer: 5
   m_Name: Close button
   m_TagString: Untagged
@@ -6225,91 +6229,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 278042972}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 420810305}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 672879474}
-        m_TargetAssemblyTypeName: HelpfulScript.ToggleRay, Assembly-CSharp
-        m_MethodName: DeactivateRay
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 214451759}
-        m_TargetAssemblyTypeName: HelpfulScript.ToggleRay, Assembly-CSharp
-        m_MethodName: DeactivateRay
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 81412541}
-        m_TargetAssemblyTypeName: ProximityHapticFeedback, Assembly-CSharp
-        m_MethodName: Initialize
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 81412538}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 81412536}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 2060624788}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &278042972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6348,6 +6268,48 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 278042969}
   m_CullTransparentMesh: 1
+--- !u!114 &278042974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278042969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4663fc18f6e150d4183651018dcac207, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipToPlayWhenClick: 0
+  delayInSeconds: 0.1
+  actions:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2060624788}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 420810305}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  eventToCall: 2
 --- !u!1001 &290593297
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10776,7 +10738,6 @@ GameObject:
   - component: {fileID: 672879471}
   - component: {fileID: 672879473}
   - component: {fileID: 672879472}
-  - component: {fileID: 672879474}
   m_Layer: 0
   m_Name: Left Ray Interactor
   m_TagString: Untagged
@@ -10816,7 +10777,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 55
   m_InteractionLayers:
-    m_Bits: 4294967295
+    m_Bits: 1
   m_AttachTransform: {fileID: 1213136479}
   m_KeepSelectedTargetValid: 1
   m_DisableVisualsWhenBlockedInGroup: 1
@@ -11181,21 +11142,6 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 0
---- !u!114 &672879474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 672879469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc16f6c16322a554ca3756c532cf3e65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartRayOnAwake: 1
-  forceToggle: 1
-  directInteractor: {fileID: 1387473099}
 --- !u!1 &691623267 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3611871984266148645, guid: bb423185f2b06da48998581343e63274,
@@ -11357,9 +11303,6 @@ GameObject:
   m_Component:
   - component: {fileID: 716035588}
   - component: {fileID: 716035593}
-  - component: {fileID: 716035594}
-  - component: {fileID: 716035595}
-  - component: {fileID: 716035596}
   m_Layer: 0
   m_Name: Right Controller
   m_TagString: Hand
@@ -11629,171 +11572,6 @@ MonoBehaviour:
     m_Reference: {fileID: -6447266317303757838, guid: c348712bda248c246b8c49b3db54643f,
       type: 3}
   m_ButtonPressPoint: 0.5
---- !u!114 &716035594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 716035587}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93ddd6244a6b92f46b2a3fd677abbaf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  action:
-    m_Name: Action
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: ea2fe9bd-b95d-4d69-b4c4-23d75d13acaa
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 6eb81a36-1871-4755-b742-c02254a69856
-      m_Path: <XRController>{RightHand}/trigger
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action
-      m_Flags: 0
-    m_Flags: 0
-  OnPress:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1514796006}
-        m_TargetAssemblyTypeName: BreathCounter, Assembly-CSharp
-        m_MethodName: StartBreathCounter
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnRelease:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1514796006}
-        m_TargetAssemblyTypeName: BreathCounter, Assembly-CSharp
-        m_MethodName: StopBreathCounter
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &716035595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 716035587}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93ddd6244a6b92f46b2a3fd677abbaf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  action:
-    m_Name: Action
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 739979cb-af21-4664-adf6-07e5dd51e414
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 3b3a24e4-8f60-4cec-924d-576e8fc440af
-      m_Path: <XRController>{RightHand}/trigger
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action
-      m_Flags: 0
-    m_Flags: 0
-  OnPress:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 214451759}
-        m_TargetAssemblyTypeName: HelpfulScript.ToggleRay, Assembly-CSharp
-        m_MethodName: ActivateRay
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnRelease:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 214451759}
-        m_TargetAssemblyTypeName: HelpfulScript.ToggleRay, Assembly-CSharp
-        m_MethodName: DeactivateRay
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &716035596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 716035587}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93ddd6244a6b92f46b2a3fd677abbaf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  action:
-    m_Name: Action
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 742acb88-2de5-4c81-8f7d-cd8ef20aa010
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: dc0497a1-2695-4073-afbd-fee9903cf4ba
-      m_Path: <XRController>{RightHand}/secondaryButton
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action
-      m_Flags: 0
-    m_Flags: 0
-  OnPress:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2060624797}
-        m_TargetAssemblyTypeName: UI.Pausemenu, Assembly-CSharp
-        m_MethodName: ToggleUI
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnRelease:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!137 &730769970
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -12849,6 +12627,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - name: Enter sound
+    clipName: 0
     clip: {fileID: 8300000, guid: 16fba6d30ed741d4a9fdd6e79ee2f3ac, type: 3}
     volume: 1
     pitch: 1
@@ -12856,6 +12635,7 @@ MonoBehaviour:
     playOnAwake: 0
     source: {fileID: 0}
   - name: Click sound
+    clipName: 1
     clip: {fileID: 8300000, guid: c00193f69f150124cbf3f5671b986b63, type: 3}
     volume: 1
     pitch: 1
@@ -20133,6 +19913,7 @@ GameObject:
   - component: {fileID: 1222761865}
   - component: {fileID: 1222761864}
   - component: {fileID: 1222761863}
+  - component: {fileID: 1222761866}
   m_Layer: 5
   m_Name: Next
   m_TagString: Untagged
@@ -20203,19 +19984,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1222761864}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 420810307}
-        m_TargetAssemblyTypeName: TutorialBehaviour, Assembly-CSharp
-        m_MethodName: NextScreen
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1222761864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20254,6 +20023,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1222761861}
   m_CullTransparentMesh: 1
+--- !u!114 &1222761866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222761861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 819e84f9c68296a46b0dcf1575f4c173, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipToPlayWhenClick: 0
+  delayInSeconds: 0.1
+  actions:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 420810307}
+        m_TargetAssemblyTypeName: TutorialBehaviour, Assembly-CSharp
+        m_MethodName: NextScreen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1226876001
 GameObject:
   m_ObjectHideFlags: 0
@@ -21887,8 +21685,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1346629792}
   - component: {fileID: 1346629797}
-  - component: {fileID: 1346629798}
-  - component: {fileID: 1346629799}
   m_Layer: 0
   m_Name: Left Controller
   m_TagString: Hand
@@ -22158,124 +21954,6 @@ MonoBehaviour:
     m_Reference: {fileID: -1636515391019944688, guid: c348712bda248c246b8c49b3db54643f,
       type: 3}
   m_ButtonPressPoint: 0.5
---- !u!114 &1346629798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1346629791}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93ddd6244a6b92f46b2a3fd677abbaf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  action:
-    m_Name: Action
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 739979cb-af21-4664-adf6-07e5dd51e414
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 3b3a24e4-8f60-4cec-924d-576e8fc440af
-      m_Path: <XRController>{LeftHand}/trigger
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action
-      m_Flags: 0
-    m_Flags: 0
-  OnPress:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 672879474}
-        m_TargetAssemblyTypeName: HelpfulScript.ToggleRay, Assembly-CSharp
-        m_MethodName: ActivateRay
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnRelease:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 672879474}
-        m_TargetAssemblyTypeName: HelpfulScript.ToggleRay, Assembly-CSharp
-        m_MethodName: DeactivateRay
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1346629799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1346629791}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93ddd6244a6b92f46b2a3fd677abbaf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  action:
-    m_Name: Action
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: cc23bb65-605f-4aab-8c76-fb1cbd2ef1be
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 29294bf9-88a8-43c4-a78f-9828ef1153c0
-      m_Path: <XRController>{LeftHand}/primaryButton
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action
-      m_Flags: 0
-    m_Flags: 0
-  OnPress:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UI.UIBase, Assembly-CSharp
-        m_MethodName: ActivateUI
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnRelease:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UI.UIBase, Assembly-CSharp
-        m_MethodName: DeactivateUI
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &1361971110 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4431560494766847376, guid: bb423185f2b06da48998581343e63274,
@@ -24844,6 +24522,7 @@ GameObject:
   - component: {fileID: 1448988576}
   - component: {fileID: 1448988575}
   - component: {fileID: 1448988574}
+  - component: {fileID: 1448988577}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -24914,19 +24593,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1448988575}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 420810307}
-        m_TargetAssemblyTypeName: TutorialBehaviour, Assembly-CSharp
-        m_MethodName: PrevScreen
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1448988575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24965,6 +24632,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448988572}
   m_CullTransparentMesh: 1
+--- !u!114 &1448988577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448988572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 819e84f9c68296a46b0dcf1575f4c173, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipToPlayWhenClick: 0
+  delayInSeconds: 0.1
+  actions:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 420810307}
+        m_TargetAssemblyTypeName: TutorialBehaviour, Assembly-CSharp
+        m_MethodName: PrevScreen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1450211775 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d04019966cfad54294feb06624a4e3d,
@@ -24987,7 +24683,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1467329735
 Transform:
   m_ObjectHideFlags: 0
@@ -32658,7 +32354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2047062825
 Transform:
   m_ObjectHideFlags: 0
@@ -32921,8 +32617,8 @@ MonoBehaviour:
   restartButton: {fileID: 1974688497}
   quitButton: {fileID: 2061449910}
   toggleRays:
-  - {fileID: 672879474}
-  - {fileID: 214451759}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &2061449908
 GameObject:
   m_ObjectHideFlags: 0

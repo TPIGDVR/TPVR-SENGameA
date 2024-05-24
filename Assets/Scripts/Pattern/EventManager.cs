@@ -230,6 +230,8 @@ public class EventManager
 public enum Event
 {
     ANXIETY_UPDATE,
-    ANXIETY_BREATHE
+    ANXIETY_BREATHE,
+    START_GAME,
+    BEGIN_GAME,
 }
 

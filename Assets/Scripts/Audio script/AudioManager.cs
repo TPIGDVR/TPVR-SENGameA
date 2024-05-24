@@ -6,7 +6,8 @@ using UnityEngine;
 [System.Serializable]
 public class Sound
 {
-    public string name;
+    public string name; //legacy. U can now use enum to play the sound
+    public SFXClip clipName;
     public AudioClip clip;
     [Range(0, 1)]
     public float volume = 1;
@@ -24,16 +25,23 @@ public class Sound
     }
 }
 
+public enum SFXClip
+{
+    ENTER_SOUND,
+    CLICK_SOUND,
+
+}
+
 public class AudioManager : MonoBehaviour
 {
     public Sound[] sounds;
 
-    public static AudioManager instance;
+    public static AudioManager Instance;
     //AudioManager
 
     void Awake()
     {
-        instance = this;
+        Instance = this;
 
         foreach (Sound s in sounds)
         {
@@ -59,7 +67,17 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning("Sound: " + name + " not found");
             return;
         }
+        s.source.Play();
+    }
 
+    public void Play(SFXClip clip)
+    {
+        Sound s = Array.Find(sounds, sound => sound.clipName == clip);
+        if (s == null)
+        {
+            Debug.LogWarning("Sound: " + name + " not found");
+            return;
+        }
         s.source.Play();
     }
 
