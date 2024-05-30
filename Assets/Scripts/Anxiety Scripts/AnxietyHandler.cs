@@ -22,6 +22,8 @@ public class AnxietyHandler : MonoBehaviour
     EventManager em = EventManager.Instance;
     bool canStart = false;
 
+    [SerializeField] private bool test = false;
+
     private void Start()
     {
         _noiseProximityHandler = GetComponent<NoiseProximityHandler>();
@@ -42,6 +44,7 @@ public class AnxietyHandler : MonoBehaviour
 
     void StartGame()
     {
+        if (test) return;
         canStart = true;
     }
 
@@ -62,4 +65,16 @@ public class AnxietyHandler : MonoBehaviour
         _anxietyLevel *= decrease;
     }
 
+    [ContextMenu("stop anxiety")]
+    void StopAnxietyIncrease()
+    {
+        canStart = false;
+        _anxietyLevel = 0;
+    }
+
+    [ContextMenu("StartAnxiety")]
+    void StartAnxietyIncrease()
+    {
+        canStart = true;
+    }
 }
