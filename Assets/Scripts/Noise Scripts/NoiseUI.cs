@@ -11,7 +11,6 @@ public class NoiseUI : Singleton<NoiseUI>
     [SerializeField] private TextMeshProUGUI NameText;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private Slider slider;
-    [SerializeField] private Vector3 offset;
     private NoiseSource targetNoiseSource;
     private void Start()
     {
@@ -36,11 +35,11 @@ public class NoiseUI : Singleton<NoiseUI>
         gameObject.SetActive(false);
     }
 
-    public void SpawnText(NoiseSource source) 
+    public void SpawnText(NoiseSource source , PlacementStrategy strategy) 
     { 
         targetNoiseSource = source;
         NameText.text = targetNoiseSource.name;
-        transform.position = source.transform.position + offset;
+        transform.position = strategy.Setposition(source.Position);
         gameObject.SetActive(true);
     }
 

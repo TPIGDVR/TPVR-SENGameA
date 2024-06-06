@@ -10,6 +10,9 @@ public class NoiseSource : MonoBehaviour
     public float NoiseValue { get => _noiseValue; }
     public Vector3 Position { get => transform.position; }
     private Outline outline;
+    [SerializeField] 
+    private PlacementStrategy placementStrategy;
+
     private void Awake()
     {
         outline = GetComponent<Outline>();
@@ -18,7 +21,7 @@ public class NoiseSource : MonoBehaviour
     public void ShowOutline()
     {
         outline.enabled = true;
-        NoiseUI.Instance.SpawnText(this);
+        NoiseUI.Instance.SpawnText(this, placementStrategy);
     }
 
     public void HideOutline()

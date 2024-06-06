@@ -11,6 +11,11 @@ public class AudioProximityController : MonoBehaviour
     public float minDistance = 1.0f; // Minimum distance for the audio to be fully audible.
     public float volumeMultiplier = 1.0f; // Adjust this value to control volume scaling.
 
+    private void Start()
+    {
+        
+    }
+
     void Update()
     {
         // Calculate the distance between the player and the audio source.
