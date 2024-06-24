@@ -1562,7 +1562,7 @@ MonoBehaviour:
   _anxietyLevel: 0
   _maxNoiseLevel: 10
   _maxAnxietyLevel: 20
-  _anxietyIncreaseSpeed: 1
+  _anxietyIncreaseSpeed: 0.42
   _minAnxietyIncreaseScale: 0
   _maxAnxietyIncreaseScale: 2
 --- !u!114 &81412545
@@ -1577,7 +1577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 411337246f260b546811cbd3088adbbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxDistanceFromSource: 5
+  _maxDistanceFromSource: 4
 --- !u!1 &82043623
 GameObject:
   m_ObjectHideFlags: 0
