@@ -58,7 +58,6 @@ public class BreathCounter : UIBase
         
     }
 
-
     protected override void Update()
     {
         base.Update();
@@ -104,29 +103,7 @@ public class BreathCounter : UIBase
             SetScrollbarSize(progressBar.size - increaseRate);
         }
         DecideBreathingState();
-        //float BreathIncreaseRatePerBar = 0.02f;
-        //if (canBreath) 
-        //{
-        //    SetScrollbarSize(progressBar.size + BreathIncreaseRatePerBar);
-        //}
-        //else if (progressBar.size > 0.75 && !canBreath)
-        //{
-        //    SetScrollbarSize(progressBar.size - BreathIncreaseRatePerBar);
-        //    proximityHapticFeedback.lensDistortion.SetActive(false);
-        //    proximityHapticFeedback.lensFlare.SetActive(false);
-        //    proximityHapticFeedback.timeWithinMaxDistance *= anxietyReductionForDeep;
-        //}
-        //else if (progressBar.size > 0.5 && !canBreath)
-        //{
-        //    SetScrollbarSize(progressBar.size - BreathIncreaseRatePerBar);
-        //    proximityHapticFeedback.timeWithinMaxDistance *= anxietyReductionForMedium;
-        //    proximityHapticFeedback.lensDistortion.SetActive(false);
-        //    proximityHapticFeedback.lensFlare.SetActive(false);
-        //}
-        //else
-        //{
-        //    SetScrollbarSize(progressBar.size - BreathIncreaseRatePerBar);
-        //}
+        
     }
 
     private void DecideBreathingState()
@@ -152,22 +129,6 @@ public class BreathCounter : UIBase
     //probably have to change this
     public void ChangeBarColor()
     {
-        //if (progressBar.size >= 0.5f && progressBar.size < 0.75f)
-        //{
-        //    image.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
-        //}
-        //else if (progressBar.size >= 0f && progressBar.size < 0.25f)
-        //{
-        //    image.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
-        //}
-        //else if (progressBar.size >= 0.25f && progressBar.size < 0.5f)
-        //{
-        //    image.GetComponent<Image>().color = new Color32(255, 165, 0, 255);
-        //}
-        //else if (progressBar.size >= 0.75f)
-        //{
-        //    image.GetComponent<Image>().color = new Color32(0, 255, 255, 255);
-        //}
         switch (currentState)
         {
             case BreathingState.Deep:
@@ -197,28 +158,18 @@ public class BreathCounter : UIBase
             case BreathingState.litte:
                 proximityHapticFeedback.timeWithinMaxDistance *= anxietyReductionForlittle;
                 Breath(anxietyReductionForlittle);
-                //proximityHapticFeedback.lensDistortion.SetActive(false);
-                //proximityHapticFeedback.lensFlare.SetActive(false);
                 break;
             case BreathingState.Shallow:
                 proximityHapticFeedback.timeWithinMaxDistance *= anxietyReductionForShallow;
                 Breath(anxietyReductionForShallow);
-                //proximityHapticFeedback.lensDistortion.SetActive(false);
-                //proximityHapticFeedback.lensFlare.SetActive(false);
                 break;
             case BreathingState.Medium:
                 proximityHapticFeedback.timeWithinMaxDistance *= anxietyReductionForMedium;
                 Breath(anxietyReductionForMedium);
-
-                //proximityHapticFeedback.lensDistortion.SetActive(false);
-                //proximityHapticFeedback.lensFlare.SetActive(false);
                 break;
             case BreathingState.Deep:
-                //proximityHapticFeedback.lensDistortion.SetActive(false);
-                //proximityHapticFeedback.lensFlare.SetActive(false);
                 proximityHapticFeedback.timeWithinMaxDistance *= anxietyReductionForDeep;
                 Breath(anxietyReductionForDeep);
-
                 break;
         }
         //reset the state

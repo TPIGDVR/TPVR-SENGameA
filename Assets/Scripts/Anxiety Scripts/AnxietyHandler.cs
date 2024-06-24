@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class AnxietyHandler : MonoBehaviour
 {
     public float _anxietyLevel = 0;
@@ -34,6 +35,7 @@ public class AnxietyHandler : MonoBehaviour
         CalculateAnxietyScaleBasedOffNoiseLevel();
         IncrementAnxietyLevel();
 
+        //clamp the anxiety level.
         _anxietyLevel = Mathf.Clamp(_anxietyLevel,0, _maxAnxietyLevel);
         //trigger the event after calculating the anxiety level
         em.TriggerEvent<float>(Event.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
@@ -45,23 +47,41 @@ public class AnxietyHandler : MonoBehaviour
         canStart = true;
     }
 
+    /// <summary>
+    /// Calculate the anxiety that should be increase based on the noise
+    /// that is around the player.
+    /// </summary>
     void CalculateAnxietyScaleBasedOffNoiseLevel()
     {
+        //change the anxiety increase scale baded on the noise level
         _anxietyIncreaseScale = Mathf.Lerp(_minAnxietyIncreaseScale
             ,_maxAnxietyIncreaseScale
             ,_noiseProximityHandler.TotalNoiseValue / _maxNoiseLevel);
     }
 
+    /// <summary>
+    /// Increase the anxiety of the player as time goes on.
+    /// </summary>
     void IncrementAnxietyLevel()
     {
+        //current anxiety level = current anxiety speed * scale
         _anxietyLevel += (Time.deltaTime * _anxietyIncreaseSpeed) * _anxietyIncreaseScale;
     }
 
+    /// <summary>
+    /// Amount to decrease if they manage to breathe properly
+    /// </summary>
+    /// <param name="decrease">The percentage to decrease it by.</param>
     void Breath(float decrease)
     {
         _anxietyLevel *= decrease;
     }
 
+    #region Debugging purposes
+    /// <summary>
+    /// Stop the anxiety from increase.
+    /// For debugging purposes in the inspector
+    /// </summary>
     [ContextMenu("stop anxiety")]
     void StopAnxietyIncrease()
     {
@@ -69,9 +89,14 @@ public class AnxietyHandler : MonoBehaviour
         _anxietyLevel = 0;
     }
 
+    /// <summary>
+    /// Restart the anxiety to start increasing
+    /// For debugging purposes in the inspector
+    /// </summary>
     [ContextMenu("StartAnxiety")]
     void StartAnxietyIncrease()
     {
         canStart = true;
     }
+    #endregion
 }
