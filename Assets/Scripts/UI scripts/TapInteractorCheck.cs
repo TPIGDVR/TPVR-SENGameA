@@ -79,7 +79,7 @@ public class TapInteractorCheck : MonoBehaviour
 
             xRPokeInteractor.pokeHoverRadius += 0.02f;
             rightTap = true;
-            tapManager.tapTimer = 0f; // Reset the timer after a successful tap
+            tapManager.tapTimer = 0f; // Reset the phase after a successful tap
             Debug.Log("Right Tap Detected");
         }
     }
@@ -121,7 +121,7 @@ public class TapInteractorCheck : MonoBehaviour
 
             xRPokeInteractor.pokeHoverRadius += 0.02f;
             leftTap = true;
-            tapManager.tapTimer = 0f; // Reset the timer after a successful tap
+            tapManager.tapTimer = 0f; // Reset the phase after a successful tap
 
             Debug.Log("Left Tap Detected");
         }
