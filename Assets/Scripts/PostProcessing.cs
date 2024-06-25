@@ -30,7 +30,7 @@ public class PostProcessing : MonoBehaviour
 
     bool IsFainting = false;
 
-    EventManager em = EventManager.Instance;
+    EventManager em = EventSystem.em;
 
     void Start()
     {
@@ -52,7 +52,7 @@ public class PostProcessing : MonoBehaviour
         //test
         _pp.distance.value = 0;
 
-        em.AddListener<float>(Event.ANXIETY_UPDATE, UpdatePostProcess);
+        em.AddListener<float>((int)Event.ANXIETY_UPDATE, UpdatePostProcess);
     }
 
 

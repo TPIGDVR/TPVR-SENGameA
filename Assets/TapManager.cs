@@ -6,4 +6,5 @@ public class TapManager : MonoBehaviour
 {
     public int tapCounter;
     public float tapTimer;
+
 }

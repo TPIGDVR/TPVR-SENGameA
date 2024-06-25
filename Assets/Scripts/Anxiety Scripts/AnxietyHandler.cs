@@ -19,33 +19,23 @@ public class AnxietyHandler : MonoBehaviour
     float _maxAnxietyIncreaseScale = 3;
     float _anxietyIncreaseScale = 0;
 
-    EventManager em = EventManager.Instance;
-    bool canStart = false;
 
-    [SerializeField] private bool test = false;
+    EventManager em = EventSystem.em;
 
     private void Start()
     {
         _noiseProximityHandler = GetComponent<NoiseProximityHandler>();
-        em.AddListener<float>(Event.ANXIETY_BREATHE, Breath);
-        em.AddListener(Event.START_GAME, StartGame);
+        em.AddListener<float>((int)Event.ANXIETY_BREATHE, Breath);
     }
 
     private void Update()
     {
-        if (!canStart) return; //dont run until it can start
         CalculateAnxietyScaleBasedOffNoiseLevel();
         IncrementAnxietyLevel();
 
         _anxietyLevel = Mathf.Clamp(_anxietyLevel,0, _maxAnxietyLevel);
         //trigger the event after calculating the anxiety level
-        em.TriggerEvent<float>(Event.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
-    }
-
-    void StartGame()
-    {
-        if (test) return;
-        canStart = true;
+        em.TriggerEvent<float>((int)Event.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
     }
 
     void CalculateAnxietyScaleBasedOffNoiseLevel()
@@ -65,16 +55,4 @@ public class AnxietyHandler : MonoBehaviour
         _anxietyLevel *= decrease;
     }
 
-    [ContextMenu("stop anxiety")]
-    void StopAnxietyIncrease()
-    {
-        canStart = false;
-        _anxietyLevel = 0;
-    }
-
-    [ContextMenu("StartAnxiety")]
-    void StartAnxietyIncrease()
-    {
-        canStart = true;
-    }
 }

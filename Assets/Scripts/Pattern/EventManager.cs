@@ -5,21 +5,21 @@ using System.Collections.Generic;
 
 public class EventManager
 {
-    private static EventManager instance;
+    //private static EventManager instance;
 
-    public static EventManager Instance // making the eventmanager singleton
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new EventManager();
-            }
-            return instance;
-        }
-    }
+    //public static EventManager Instance // making the eventmanager singleton
+    //{
+    //    get
+    //    {
+    //        if (instance == null)
+    //        {
+    //            instance = new EventManager();
+    //        }
+    //        return instance;
+    //    }
+    //}
 
-    private Dictionary<Event, List<Delegate>> eventListeners;
+    private Dictionary<int, List<Delegate>> eventListeners;
 
     public EventManager() //constructor to initalize eventListeners dictionary
     {
@@ -33,32 +33,39 @@ public class EventManager
 
     //uses the Action delegate which does not return a value
     #region ADD/REMOVE/TRIGGER (NO PARAMETERS)
-    public void AddListener(Event eventName, Action listener)
+    public void AddListeners(int id, params Action[] listeners)
     {
         // If the event does not exist in the dictionary, add it.
-        if (!eventListeners.ContainsKey(eventName))
+        if (!eventListeners.ContainsKey(id))
         {
-            eventListeners[eventName] = new List<Delegate>();
+            eventListeners[id] = new List<Delegate>();
         }
 
         // Add the listener to the event's list of delegates.
-        eventListeners[eventName].Add(listener);
-    }
-
-    public void RemoveListener(Event eventName, Action listener)
-    {
-        // If the event exists, remove the listener from its list of delegates.
-        if (eventListeners.ContainsKey(eventName))
+        foreach (var listener in listeners)
         {
-            eventListeners[eventName].Remove(listener);
+            eventListeners[id].Add(listener);
         }
     }
-    public void TriggerEvent(Event eventName)
+
+    public void RemoveListener(int id, params Action[] listeners)
+    {
+
+        // If the event exists, remove the listener from its list of delegates.
+        foreach (var listener in listeners)
+        {
+            if (eventListeners.ContainsKey(id))
+            {
+                eventListeners[id].Remove(listener);
+            }
+        }
+    }
+    public void TriggerEvent(int id)
     {
         // If the event exists, invoke all listeners associated with it.
-        if (eventListeners.ContainsKey(eventName))
+        if (eventListeners.ContainsKey(id))
         {
-            var listeners = eventListeners[eventName].ToArray();
+            var listeners = eventListeners[id].ToArray();
             foreach (var listener in listeners)
             {
                 if (listener is Action action)
@@ -78,29 +85,35 @@ public class EventManager
     //similar to the above but allows passing of parameters
     #region ADD/REMOVE/TRIGGER (W/ PARAM)
     //takes in 1 parameter
-    public void AddListener<TParam>(Event eventName, Action<TParam> listener)
+    public void AddListener<TParam>(int id, params Action<TParam>[] listeners)
     {
-        if (!eventListeners.ContainsKey(eventName))
+        if (!eventListeners.ContainsKey(id))
         {
-            eventListeners[eventName] = new List<Delegate>();
+            eventListeners[id] = new List<Delegate>();
         }
 
-        eventListeners[eventName].Add(listener);
-    }
-
-    public void RemoveListener<TParam>(Event eventName, Action<TParam> listener)
-    {
-        if (eventListeners.ContainsKey(eventName))
+        foreach (var listener in listeners)
         {
-            eventListeners[eventName].Remove(listener);
+            eventListeners[id].Add(listener);
         }
     }
 
-    public void TriggerEvent<TParam>(Event eventName, TParam param)
+    public void RemoveListener<TParam>(int id, params Action<TParam>[] listeners)
     {
-        if (eventListeners.ContainsKey(eventName))
+        foreach (var listener in listeners)
         {
-            var listeners = eventListeners[eventName].ToArray();
+            if (eventListeners.ContainsKey(id))
+            {
+                eventListeners[id].Remove(listener);
+            }
+        }
+    }
+
+    public void TriggerEvent<TParam>(int id, TParam param)
+    {
+        if (eventListeners.ContainsKey(id))
+        {
+            var listeners = eventListeners[id].ToArray();
             foreach (var listener in listeners)
             {
                 if (listener is Action<TParam> action)
@@ -112,29 +125,35 @@ public class EventManager
     }
 
     //takes in 2 parameters
-    public void AddListener<TParam1, TParam2>(Event eventName, Action<TParam1, TParam2> listener)
+    public void AddListener<TParam1, TParam2>(int id, params Action<TParam1, TParam2>[] listeners)
     {
-        if (!eventListeners.ContainsKey(eventName))
+        if (!eventListeners.ContainsKey(id))
         {
-            eventListeners[eventName] = new List<Delegate>();
+            eventListeners[id] = new List<Delegate>();
         }
 
-        eventListeners[eventName].Add(listener);
-    }
-
-    public void RemoveListener<TParam1, TParam2>(Event eventName, Action<TParam1, TParam2> listener)
-    {
-        if (eventListeners.ContainsKey(eventName))
+        foreach (var listener in listeners)
         {
-            eventListeners[eventName].Remove(listener);
+            eventListeners[id].Add(listener);
         }
     }
 
-    public void TriggerEvent<TParam1, TParam2>(Event eventName, TParam1 param1, TParam2 param2)
+    public void RemoveListener<TParam1, TParam2>(int id, params Action<TParam1, TParam2>[] listeners)
     {
-        if (eventListeners.ContainsKey(eventName))
+        foreach (var listener in listeners)
         {
-            foreach (var listener in eventListeners[eventName])
+            if (eventListeners.ContainsKey(id))
+            {
+                eventListeners[id].Remove(listener);
+            }
+        }
+    }
+
+    public void TriggerEvent<TParam1, TParam2>(int id, TParam1 param1, TParam2 param2)
+    {
+        if (eventListeners.ContainsKey(id))
+        {
+            foreach (var listener in eventListeners[id])
             {
                 if (listener is Action<TParam1, TParam2> action)
                 {
@@ -147,29 +166,35 @@ public class EventManager
 
     //uses the Func delegate which returns a value
     #region ADD/REMOVE/TRIGGER (W/ RETURN)
-    public void AddListener<TResult>(Event eventName, Func<TResult> listener)
+    public void AddListener<TResult>(int id, params Func<TResult>[] listeners)
     {
-        if (!eventListeners.ContainsKey(eventName))
+        if (!eventListeners.ContainsKey(id))
         {
-            eventListeners[eventName] = new List<Delegate>();
+            eventListeners[id] = new List<Delegate>();
         }
 
-        eventListeners[eventName].Add(listener);
-    }
-
-    public void RemoveListener<TResult>(Event eventName, Func<TResult> listener)
-    {
-        if (eventListeners.ContainsKey(eventName))
+        foreach (var listener in listeners)
         {
-            eventListeners[eventName].Remove(listener);
+            eventListeners[id].Add(listener);
         }
     }
 
-    public TResult TriggerEvent<TResult>(Event eventName)
+    public void RemoveListener<TResult>(int id, params Func<TResult>[] listeners)
     {
-        if (eventListeners.ContainsKey(eventName))
+        foreach (var listener in listeners)
         {
-            var listeners = eventListeners[eventName].ToArray();
+            if (eventListeners.ContainsKey(id))
+            {
+                eventListeners[id].Remove(listener);
+            }
+        }
+    }
+
+    public TResult TriggerEvent<TResult>(int id)
+    {
+        if (eventListeners.ContainsKey(id))
+        {
+            var listeners = eventListeners[id].ToArray();
 
             foreach (var listener in listeners)
             {
@@ -187,29 +212,35 @@ public class EventManager
 
     //similar to the above but allows passing of parameters w/ return of a value
     #region ADD/REMOVE/TRIGGER (W/ RETURN + PARAM)
-    public void AddListener<TParam, TResult>(Event eventName, Func<TParam, TResult> listener)
+    public void AddListener<TParam, TResult>(int id, params Func<TParam, TResult>[] listeners)
     {
-        if (!eventListeners.ContainsKey(eventName))
+        if (!eventListeners.ContainsKey(id))
         {
-            eventListeners[eventName] = new List<Delegate>();
+            eventListeners[id] = new List<Delegate>();
         }
 
-        eventListeners[eventName].Add(listener);
-    }
-
-    public void RemoveListener<TParam, TResult>(Event eventName, Func<TParam, TResult> listener)
-    {
-        if (eventListeners.ContainsKey(eventName))
+        foreach (var listener in listeners)
         {
-            eventListeners[eventName].Remove(listener);
+            eventListeners[id].Add(listener);
         }
     }
 
-    public TResult TriggerEvent<TParam, TResult>(Event eventName, TParam param)
+    public void RemoveListener<TParam, TResult>(int id, params Func<TParam, TResult>[] listeners)
     {
-        if (eventListeners.ContainsKey(eventName))
+        foreach (var listener in listeners)
         {
-            var listeners = eventListeners[eventName].ToArray();
+            if (eventListeners.ContainsKey(id))
+            {
+                eventListeners[id].Remove(listener);
+            }
+        }
+    }
+
+    public TResult TriggerEvent<TParam, TResult>(int id, TParam param)
+    {
+        if (eventListeners.ContainsKey(id))
+        {
+            var listeners = eventListeners[id].ToArray();
 
             foreach (var listener in listeners)
             {
@@ -225,14 +256,3 @@ public class EventManager
     }
     #endregion
 }
-
-//list of possible events
-public enum Event
-{
-    ANXIETY_UPDATE,
-    ANXIETY_BREATHE,
-    START_GAME,
-    BEGIN_GAME,
-
-}
-
