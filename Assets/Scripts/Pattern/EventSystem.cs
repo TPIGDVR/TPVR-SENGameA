@@ -11,7 +11,8 @@ public static class EventSystem
 
 public enum PostProcessEvents
 {
-    SUNGLASSES_ON
+    SUNGLASSES_ON,
+    SUNGLASSES_OFF,
 }
 
 public enum Event
