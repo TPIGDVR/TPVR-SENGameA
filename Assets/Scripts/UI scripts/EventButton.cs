@@ -23,7 +23,8 @@ namespace Assets.Scripts.UI_scripts
 
         private void CallEvent()
         {
-            EventManager.Instance.TriggerEvent(eventToCall);
+            
+            //EventManager<>.Instance.TriggerEvent(eventToCall);
         }
     }
 }
