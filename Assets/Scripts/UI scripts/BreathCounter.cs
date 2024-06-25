@@ -47,7 +47,7 @@ public class BreathCounter : UIBase
     private bool hasFinishedBreathing = false;
     private BreathingState currentState;
     private BreathingState prevState;
-    EventManager em = EventManager.Instance;
+    EventManager<Event> em = EventSystem.em;
 
     void Start()
     {

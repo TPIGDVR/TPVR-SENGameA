@@ -13,7 +13,7 @@ public class AnxietyUIHandler : MonoBehaviour
     [SerializeField]
     Sprite[] _anxietySpriteLogos = new Sprite[4];
 
-    EventManager em = EventManager.Instance;
+    EventManager<Event> em = EventSystem.em;
 
     private void Start()
     {
