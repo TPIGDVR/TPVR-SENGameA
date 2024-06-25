@@ -20,12 +20,12 @@ public class AnxietyHandler : MonoBehaviour
     float _anxietyIncreaseScale = 0;
 
 
-    EventManager em = EventSystem.em;
+    EventManager<Event> em = EventSystem.em;
 
     private void Start()
     {
         _noiseProximityHandler = GetComponent<NoiseProximityHandler>();
-        em.AddListener<float>((int)Event.ANXIETY_BREATHE, Breath);
+        em.AddListener<float>(Event.ANXIETY_BREATHE, Breath);
     }
 
     private void Update()

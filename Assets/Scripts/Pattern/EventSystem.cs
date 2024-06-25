@@ -4,14 +4,14 @@ using UnityEngine;
 
 public static class EventSystem
 {
-    public static EventManager em = new();
-    public static EventManager postProcess = new();
+    public static EventManager<Event> em = new();
+    public static EventManager<PostProcessEvents> postProcess = new();
 
 }
 
 public enum PostProcessEvents
 {
-
+    SUNGLASSES_ON
 }
 
 public enum Event

@@ -3,7 +3,7 @@
 [ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
 [AddComponentMenu("Image Effects/Bloom")]
-public class Bloom : MonoBehaviour
+public class PoopBloom : MonoBehaviour
 {
 	[Range(0.0f, 1.5f)] public float threshold = 0.25f;
 

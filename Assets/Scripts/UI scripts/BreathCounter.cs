@@ -47,7 +47,7 @@ public class BreathCounter : UIBase
     private bool hasFinishedBreathing = false;
     private BreathingState currentState;
     private BreathingState prevState;
-    EventManager em = EventSystem.em;
+    EventManager<Event> em = EventSystem.em;
 
     void Start()
     {
@@ -226,7 +226,7 @@ public class BreathCounter : UIBase
 
         void Breath(float decrease)
         {
-            em.TriggerEvent<float>((int)Event.ANXIETY_BREATHE, decrease);
+            em.TriggerEvent<float>(Event.ANXIETY_BREATHE, decrease);
         }
     }
 
