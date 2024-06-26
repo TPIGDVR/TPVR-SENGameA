@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     void WearSunglasses()
     {
         isWearingSunglasses = true;
-        ppem.TriggerEvent<float>(PostProcessEvents.SUNGLASSES_ON, 0.9f);
+        ppem.TriggerEvent<float>(PostProcessEvents.SUNGLASSES_ON, 1f);
     }
 
     void TakeOffSunglasses()
