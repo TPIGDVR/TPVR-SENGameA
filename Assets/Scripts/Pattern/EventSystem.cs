@@ -19,5 +19,6 @@ public enum Event
 {
     ANXIETY_UPDATE,
     ANXIETY_BREATHE,
-    START_GAME
+    START_GAME,
+    REQUEST_LUMTEXTURE,
 }
