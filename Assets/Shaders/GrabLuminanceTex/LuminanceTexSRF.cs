@@ -151,6 +151,6 @@ internal class LuminanceTexSetting
     public RenderPassEvent InjectionPoint; //this is where the shader will be injected for post-processing
     public ScriptableRenderPassInput Requirements; //this is the buffer the pass requires
     public string ProfilerName = "GRAB LUMINANCE TEX";
-    [Range(1,64)]public int DownscaleSize;
+    [Range(1,1920)]public int DownscaleSize;
     //put your settings here
 }

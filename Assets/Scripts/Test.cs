@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 public class Test : MonoBehaviour
 {
     Texture2D lumTex2D;
+    EventManager<Event> em = EventSystem.em;
     void TestMethod()
     {
        // Material mat = new();
@@ -37,5 +38,6 @@ public class Test : MonoBehaviour
         totalBrightness /= lumArray.Length;
         rt.Release();
         Debug.Log(totalBrightness);
+        em.TriggerEvent<float>(Event.GLARE_UPDATE, totalBrightness);
     }
 }

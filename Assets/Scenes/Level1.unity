@@ -970,7 +970,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &322382901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1651,6 +1651,8 @@ GameObject:
   m_Component:
   - component: {fileID: 730363781}
   - component: {fileID: 730363780}
+  - component: {fileID: 730363783}
+  - component: {fileID: 730363782}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1686,6 +1688,37 @@ Transform:
   - {fileID: 977252072}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &730363782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730363779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411337246f260b546811cbd3088adbbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxDistanceFromSource: 0
+--- !u!114 &730363783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730363779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30c3d2166192e97449301cfa0b490a7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _anxietyLevel: 0
+  _maxNoiseLevel: 0
+  _maxAnxietyLevel: 200
+  _anxietyIncreaseSpeed: 1
+  _minAnxietyIncreaseScale: 0
+  _maxAnxietyIncreaseScale: 3
 --- !u!1001 &813393989
 PrefabInstance:
   m_ObjectHideFlags: 0

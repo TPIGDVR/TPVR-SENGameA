@@ -21,4 +21,5 @@ public enum Event
     ANXIETY_BREATHE,
     START_GAME,
     REQUEST_LUMTEXTURE,
+    GLARE_UPDATE
 }
