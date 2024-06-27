@@ -7,7 +7,7 @@ using UnityEngine.Rendering.Universal;
 
 public class GlobalPostProcessHandler : MonoBehaviour
 {
-    float defaultBloomIntensity = 20f;
+    float defaultBloomIntensity = 4f;
     float defaultBloomThreshold = 0.35f;
     float defaultBloomScatter = 0.35f;
     Volume globalVolume;
