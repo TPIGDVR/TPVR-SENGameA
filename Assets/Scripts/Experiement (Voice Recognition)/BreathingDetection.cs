@@ -6,17 +6,17 @@ using System.Collections.Generic;
 using TMPro;
 using PGGE.Patterns;
 using Unity.Mathematics;
+using static Unity.VisualScripting.Member;
 
 namespace Breathing
 {
     [RequireComponent(typeof(MicrophoneController))]
     public class BreathingDetection : MonoBehaviour
     {
-
         public TextMeshProUGUI stateText;
         public TextMeshProUGUI dataProjector;
 
-        private MicrophoneController micControl; //microphone controller for loudness and variance calculation
+        protected MicrophoneController micControl; //microphone controller for loudness and variance calculation
 
         private float prevLoudness = 0f; //loudness in previous frame
         private float variance = 0f; //variance of current frame
@@ -31,20 +31,29 @@ namespace Breathing
         public float exhaleLoudnessThresholdLow = 0.2f;  
 
         //inhaling
-        [Tooltip("determines how silent should the exhale be to change state to Inhale")]
-        public float inhaleLoudnessThresholdHigh = 0.1f; //determines how silent should the exhale be to change state to Inhale
-        [Tooltip("determines how")]
-        public float inhaleLoudnessThresholdLow = 0.05f; //determines how silent should the exhale be to change state to Inhale
+        [Tooltip("determines how silent should the volume be to change state to Inhale")]
+        public float inhaleLoudnessThresholdHigh = 0.1f; //determines how silent should the exhale be to change state to INHALE
+        [Tooltip("determines ")]
+        public float inhaleLoudnessThresholdLow = 0.05f; //determines how silent should the exhale be to change state to INHALE
+
+        [Header("Silent")]
+        public float silentVolumeThreshold = 0.05f;
+        public float silentPitchThresholdLow = 20f;
+        public float silentPitchThresholdHigh = 40f;
+        public float silentVarianceThreshold = 0.1f;
 
         [HideInInspector]
-        public float exhaleVarianceThreshold = 2; //determines how large should the variance be to change state to Exhale
+        public float exhaleVarianceThreshold = 2; //determines how large should the variance be to change state to EXHALE
         [HideInInspector]
-        public float inhaleVarianceThreshold = -3; //determines how silent should the variance be to change state to Inhale
+        public float inhaleVarianceThreshold = -3; //determines how silent should the variance be to change state to INHALE
 
+        [Header("Exahle pitch")]
+        public float exhalePitchFrequencyThresholdLow = 1000; //if sound pitch is between these values it could be an exhale
+        public float exhalePitchFrequencyThresholdHigh = 2000;
 
-        public float pitchFrequencyThresholdLow = 1000; //if sound pitch is between these values it could be an exhale
-        public float pitchFrequencyThresholdHigh = 2000;
-
+        [Header("Inhale pitch")]
+        public float inhalePitchFrequencyThresholdLow = 3000;
+        public float inhalePitchFrequencyThresholdHigh = 5000;
 
         //Loudness minimization variables
         private List<float> loudnessList = new List<float>();
@@ -52,40 +61,44 @@ namespace Breathing
         [HideInInspector]
         public float minimizedLoudness = 999f;
 
+
+        [Header("Other settings")]
         [SerializeField] private bool useMinimizedLoudness = true;
+        [SerializeField] float samplingSize = 1000;
+        public float testingTimer;
         //for deciding the states
-        FSM fsm;
+        protected FSM fsm;
 
         public float Variance { get => variance; set => variance = value; }
 
-        void Start()
+        private AudioSource calculatingSource;
+
+        protected virtual void Start()
         {
+            calculatingSource = gameObject.AddComponent<AudioSource>();
+            calculatingSource.playOnAwake = false;
+
             micControl = this.GetComponent<MicrophoneController>();
             if (micControl == null)
             {
                 Debug.LogError("Cannot find MicrophoneController attached to this object.");
             }
             fsm = new FSM();
-            fsm.Add(new InhalingState(fsm, (int)Breathing.Inhale, this,micControl));
-            fsm.Add(new ExhalingState(fsm, (int)Breathing.Exhale, this, micControl));
-            fsm.SetCurrentState((int)Breathing.Inhale);
+            SetUpFSM();
         }
 
-        void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             updateVariance();
-
             minimizeLoudness();
-
             fsm.FixedUpdate();
             ProjectText();
-
         }
 
         private void ProjectText()
         {
-            Debug.Log($"current loudness now {minimizedLoudness}");
-            Debug.Log($"current variance {variance}");
+            //Debug.Log($"current loudness now {minimizedLoudness}");
+            //Debug.Log($"current variance {variance}");
             if (stateText != null)
             {
                 stateText.text = "Current state: " + fsm.GetCurrentState().ToString();
@@ -96,14 +109,12 @@ namespace Breathing
                     $"Pitch: {(int)micControl.getPitch()} \n" +
                     $"min Loudness: {(half)minimizedLoudness} \n" +
                     $"Varance: {(half)variance}";
-                    
             }
         }
 
-
         #region old code
         /*
-         * This function checks if all the criteria to transition from Inhale state to Exhale state have been met and then transitions to Exhale state
+         * This function checks if all the criteria to transition from INHALE state to EXHALE state have been met and then transitions to EXHALE state
          * 
          * Criteria:
          * Microphone loudness and variance have to be higher than our thresholds.
@@ -115,29 +126,29 @@ namespace Breathing
         //void checkIfExhaling()
         //{
 
-        //    if (currentState == Breathing.Inhale)
+        //    if (currentState == Breathing.INHALE)
         //    {
         //        //if (minimizedLoudness > exhaleLoudnessThresholdLow
         //        //    && 
         //        //	//check if the pitch is within a certain threshold.
-        //        //	(micControl.getPitch() > pitchFrequencyThresholdLow &&
-        //        //	micControl.getPitch() < pitchFrequencyThresholdHigh)) 
+        //        //	(micControl.getPitch() > exhalePitchFrequencyThresholdLow &&
+        //        //	micControl.getPitch() < exhalePitchFrequencyThresholdHigh)) 
         //        //{
-        //        //	currentState = Breathing.Exhale; //Change state to exhaling
+        //        //	currentState = Breathing.EXHALE; //Change state to exhaling
         //        //	BreathingEvents.TriggerOnExhale (); //Trigger onExhale event
         //        //}
         //        print($"current loudness now {minimizedLoudness}");
         //        bool isLoudLow = minimizedLoudness > exhaleLoudnessThresholdLow;
-        //        bool isRightPitch = (micControl.getPitch() > pitchFrequencyThresholdLow && micControl.getPitch() < pitchFrequencyThresholdHigh);
-        //        print($"Exhale condition. Loud: {isLoudLow} pitch: {isRightPitch}");// current pitch {micControl.getPitch()}
+        //        bool isRightPitch = (micControl.getPitch() > exhalePitchFrequencyThresholdLow && micControl.getPitch() < exhalePitchFrequencyThresholdHigh);
+        //        print($"EXHALE condition. Loud: {isLoudLow} pitch: {isRightPitch}");// current pitch {micControl.getPitch()}
 
         //        if (minimizedLoudness > exhaleLoudnessThresholdLow
         //            &&
         //            //check if the pitch is within a certain threshold.
-        //            (micControl.getPitch() > pitchFrequencyThresholdLow &&
-        //            micControl.getPitch() < pitchFrequencyThresholdHigh))
+        //            (micControl.getPitch() > exhalePitchFrequencyThresholdLow &&
+        //            micControl.getPitch() < exhalePitchFrequencyThresholdHigh))
         //        {
-        //            currentState = Breathing.Exhale; //Change state to exhaling
+        //            currentState = Breathing.EXHALE; //Change state to exhaling
         //            //BreathingEvents.TriggerOnExhale(); //Trigger onExhale event
         //        }
         //    }
@@ -145,7 +156,7 @@ namespace Breathing
 
 
         /*
-         * This function checks if all the criteria to transition from Exhale state to Inhale state have been met and then transitions to Inhale state
+         * This function checks if all the criteria to transition from EXHALE state to INHALE state have been met and then transitions to INHALE state
          * 
          * Criteria:
          * Microphone loudness and variance have to be lower than our thresholds.
@@ -159,21 +170,28 @@ namespace Breathing
         //    bool isRightVolumeHigh = minimizedLoudness < inhaleLoudnessThresholdHigh;
         //    bool isRightVolumeLow = minimizedLoudness < inhaleLoudnessThresholdLow;
         //    bool isRightVarance = variance < inhaleVarianceThreshold;
-        //    print($"Inhale condition. LoudLow: {isRightVolumeLow} LoudHigh: {isRightVolumeHigh} Varance: {isRightVarance}");// current pitch {micControl.getPitch()}
+        //    print($"INHALE condition. LoudLow: {isRightVolumeLow} LoudHigh: {isRightVolumeHigh} Varance: {isRightVarance}");// current pitch {micControl.getPitch()}
 
-        //    if (currentState == Breathing.Exhale &&
+        //    if (currentState == Breathing.EXHALE &&
 
         //        ((minimizedLoudness < inhaleLoudnessThresholdHigh &&
         //        variance < inhaleVarianceThreshold) ||
         //        minimizedLoudness < inhaleLoudnessThresholdLow))
         //    {
 
-        //        currentState = Breathing.Inhale; //Change state to inhaling			
+        //        currentState = Breathing.INHALE; //Change state to inhaling			
         //        //BreathingEvents.TriggerOnInhale(); //Trigger onInhale event			
         //    }
         //}
         #endregion
 
+        protected virtual void SetUpFSM()
+        {
+            fsm.Add(new InhalingState(fsm, (int)Breathing.INHALE, this, micControl));
+            fsm.Add(new ExhalingState(fsm, (int)Breathing.EXHALE, this, micControl));
+            fsm.Add(new SilentState(fsm, (int)Breathing.SILENT, this, micControl)); 
+            fsm.SetCurrentState((int)Breathing.INHALE);
+        }
         /// <summary>
         /// Get the difference of loudness between different
         /// frame. Store in a variable called variance.
@@ -196,6 +214,45 @@ namespace Breathing
                 varianceUnderThresholdCounter = 0;
             }
 
+        }
+
+        public void CalculateCommonPitch(AudioClip clip)
+        {
+            //Create a container to hold 
+            var fftSpectrum = new float[samplingSize];
+            calculatingSource.clip = clip;
+
+            calculatingSource.GetSpectrumData(fftSpectrum, 0, FFTWindow.BlackmanHarris);
+            float maxV = 0;
+            int maxN = 0;
+
+            // Find the highest sample.
+            for (int i = 0; i < fftSpectrum.Length; i++)
+            {
+                if (fftSpectrum[i] > maxV)
+                {
+                    maxV = fftSpectrum[i];
+                    maxN = i; // maxN is the index of max
+                }
+            }
+
+            // Pass the index to a float variable
+            float freqN = maxN;
+
+            // Convert index to frequency
+            pitchValue = HighPassFilter(freqN * 24000 / samples, highPassCutoff);
+            updatePastPitches(pitchValue);
+
+            //update the max pitch
+            if (pitchValue > maxPitch)
+            {
+                maxPitch = pitchValue;
+                //Debug.Log ("MaxPitch: " + maxPitch);
+
+            }
+            /*	if (pitchValue > 750 && pitchValue < 3000) {
+                    Debug.Log ("Pitch could be exhale");
+                }*/
         }
 
         void minimizeLoudness()

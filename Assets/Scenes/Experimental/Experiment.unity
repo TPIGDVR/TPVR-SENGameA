@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 303435339}
   - component: {fileID: 303435338}
   - component: {fileID: 303435337}
+  - component: {fileID: 303435340}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -349,6 +350,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &303435340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303435336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1 &538538562
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,6 +497,7 @@ GameObject:
   - component: {fileID: 784452945}
   - component: {fileID: 784452944}
   - component: {fileID: 784452943}
+  - component: {fileID: 784452946}
   m_Layer: 0
   m_Name: voice
   m_TagString: Untagged
@@ -517,7 +563,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 784452938}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77c23894ee8607e42b2f45e91fadb234, type: 3}
   m_Name: 
@@ -526,14 +572,21 @@ MonoBehaviour:
   dataProjector: {fileID: 1620850914}
   exhaleLoudnessThresholdHigh: 0.5
   exhaleLoudnessThresholdLow: 0.2
-  inhaleLoudnessThresholdHigh: 0.1
+  inhaleLoudnessThresholdHigh: 1.9
   inhaleLoudnessThresholdLow: 0.05
+  silentVolumeThreshold: 0.09
+  silentPitchThresholdLow: 20
+  silentPitchThresholdHigh: 230
+  silentVarianceThreshold: 0.01
   exhaleVarianceThreshold: 2
   inhaleVarianceThreshold: -3
-  pitchFrequencyThresholdLow: 1000
-  pitchFrequencyThresholdHigh: 2000
+  exhalePitchFrequencyThresholdLow: 1000
+  exhalePitchFrequencyThresholdHigh: 2000
+  inhalePitchFrequencyThresholdLow: 3000
+  inhalePitchFrequencyThresholdHigh: 5000
   minimizedLoudness: 999
   useMinimizedLoudness: 1
+  testingTimer: 0
 --- !u!114 &784452944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,8 +603,9 @@ MonoBehaviour:
   mute: 1
   loudness: 0
   loudnessMultiplier: 100
-  highPassCutoff: 6000
+  highPassCutoff: 10000
   pitchRecordTime: 5
+  dataText: {fileID: 1620850914}
 --- !u!82 &784452945
 AudioSource:
   m_ObjectHideFlags: 0
@@ -648,6 +702,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &784452946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784452938}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1922de5fb33a9bc4cbc9378a15da7fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateText: {fileID: 199935898}
+  dataProjector: {fileID: 1620850914}
+  exhaleLoudnessThresholdHigh: 0.5
+  exhaleLoudnessThresholdLow: 0.2
+  inhaleLoudnessThresholdHigh: 0.1
+  inhaleLoudnessThresholdLow: 0.05
+  silentVolumeThreshold: 0.05
+  silentPitchThresholdLow: 20
+  silentPitchThresholdHigh: 40
+  silentVarianceThreshold: 0.1
+  exhaleVarianceThreshold: 2
+  inhaleVarianceThreshold: -3
+  exhalePitchFrequencyThresholdLow: 1000
+  exhalePitchFrequencyThresholdHigh: 2000
+  inhalePitchFrequencyThresholdLow: 3000
+  inhalePitchFrequencyThresholdHigh: 5000
+  minimizedLoudness: 999
+  useMinimizedLoudness: 1
+  testingTimer: 3
 --- !u!1 &1092855741
 GameObject:
   m_ObjectHideFlags: 0

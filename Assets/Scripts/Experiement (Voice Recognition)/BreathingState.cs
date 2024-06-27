@@ -6,7 +6,16 @@ using UnityEngine;
 namespace Breathing
 {
 
-    public enum Breathing { Inhale, Exhale, Others }; //Two possible breathing states 
+    public enum Breathing 
+    { 
+        TESTING_INHALE,
+        TESTING_EXHALE,
+        TESTING_SILENT,
+        INHALE, 
+        EXHALE, 
+        SILENT,
+        
+    }; 
 
     public class BreathingState : FSMState
     {
@@ -20,17 +29,77 @@ namespace Breathing
             this.detector = detector;
             microphoneController = controller;
         }
-    }
 
-    /*
-         * This function checks if all the criteria to transition from Exhale state to Inhale state have been met and then transitions to Inhale state
-         * 
-         * Criteria:
-         * Microphone loudness and variance have to be lower than our thresholds.
-         * OR 
-         * Microphone loudness has to be much lower than our inhale loudness threshold
-         * 
-         */
+
+        /* 
+        * This function checks if all the criteria to transition from INHALE state to EXHALE state have been met and then transitions to EXHALE state
+        * 
+        * Criteria:
+        * Microphone loudness and variance have to be higher than our thresholds.
+        * OR 
+        * Microphone loudness has to be very loud and variance has to be under threshold for the last X frames
+        * 
+        */
+        protected void CheckInhale()
+        {
+            bool isInhaleVolume = detector.minimizedLoudness < detector.inhaleLoudnessThresholdHigh;
+            //bool isTooQuiet = detector.minimizedLoudness < detector.inhaleLoudnessThresholdLow;
+            bool hasLargeVolumeDifference = true; /*detector.Variance < detector.inhaleVarianceThreshold;*/
+            bool withinInhalePitch = (microphoneController.getPitch() > detector.inhalePitchFrequencyThresholdLow &&
+                microphoneController.getPitch() < detector.inhalePitchFrequencyThresholdHigh);
+
+            Debug.Log($"Inhale condition. withinpitch {withinInhalePitch} LoudHigh: {isInhaleVolume} Varance: {hasLargeVolumeDifference}");// current pitch {micControl.getPitch()}
+
+            if (isInhaleVolume &&
+                hasLargeVolumeDifference &&
+                withinInhalePitch
+                )
+            {
+                mFsm.SetCurrentState((int)Breathing.INHALE);
+            }
+        }
+
+
+        /*
+        * This function checks if all the criteria to transition from EXHALE state to INHALE state have been met and then transitions to INHALE state
+        * 
+        * Criteria:
+        * Microphone loudness and variance have to be lower than our thresholds.
+        * OR 
+        * Microphone loudness has to be much lower than our inhale loudness threshold
+        * 
+        */
+        protected void CheckExhale()
+        {
+            float pitch = microphoneController.getPitch();
+            bool isVolumeExhale = detector.minimizedLoudness > detector.exhaleLoudnessThresholdLow;
+            bool isWithinExhalePitchRange = (pitch > detector.exhalePitchFrequencyThresholdLow &&
+                pitch < detector.exhalePitchFrequencyThresholdHigh);
+
+            Debug.Log($"Exhale condition. Loud: {isVolumeExhale} pitch: {isWithinExhalePitchRange}");// current pitch {micControl.getPitch()}
+
+            if (isVolumeExhale
+                &&
+                isWithinExhalePitchRange)
+            {
+                mFsm.SetCurrentState((int)Breathing.EXHALE); //Change state to exhaling
+            }
+        }
+
+        protected void CheckSilent()
+        {
+            bool isSilent = detector.minimizedLoudness < detector.silentVolumeThreshold;
+            bool hasLowPitch = microphoneController.getPitch() < detector.silentPitchThresholdHigh && 
+                                microphoneController.getPitch() > detector.silentPitchThresholdLow;
+            bool hasLowVariance = detector.Variance < detector.silentVarianceThreshold;
+            if(isSilent && hasLowPitch &&
+                hasLowVariance)
+            {
+                mFsm.SetCurrentState((int)Breathing.SILENT);
+            }
+        }
+    }
+   
     public class InhalingState : BreathingState
     {
         public InhalingState(FSM fsm, int id, BreathingDetection detector, MicrophoneController controller) : base(fsm, id, detector, controller)
@@ -39,33 +108,11 @@ namespace Breathing
 
         public override void FixedUpdate()
         {
-            float pitch = microphoneController.getPitch();
-            bool isVolumeExhale = detector.minimizedLoudness > detector.exhaleLoudnessThresholdLow;
-            bool isWithinExhalePitchRange = (pitch > detector.pitchFrequencyThresholdLow && 
-                pitch < detector.pitchFrequencyThresholdHigh);
-
-            Debug.Log($"Exhale condition. Loud: {isVolumeExhale} pitch: {isWithinExhalePitchRange}");// current pitch {micControl.getPitch()}
-
-            if (isVolumeExhale
-                &&
-                isWithinExhalePitchRange)
-            {
-                mFsm.SetCurrentState((int)Breathing.Exhale); //Change state to exhaling
-            }
-
+            CheckExhale();
+            CheckSilent();
         }
     }
-
-
-    /*
-        * This function checks if all the criteria to transition from Inhale state to Exhale state have been met and then transitions to Exhale state
-        * 
-        * Criteria:
-        * Microphone loudness and variance have to be higher than our thresholds.
-        * OR 
-        * Microphone loudness has to be very loud and variance has to be under threshold for the last X frames
-        * 
-        */
+    
     public class ExhalingState : BreathingState
     {
         public ExhalingState(FSM fsm, int id, BreathingDetection detector, MicrophoneController controller) : base(fsm, id, detector, controller)
@@ -74,18 +121,237 @@ namespace Breathing
 
         public override void FixedUpdate()
         {
-            bool isInhaleVolume =detector.minimizedLoudness < detector.inhaleLoudnessThresholdHigh;
-            bool isTooQuiet = detector.minimizedLoudness < detector.inhaleLoudnessThresholdLow;
-            bool hasLargeVolumeDifference = detector.Variance < detector.inhaleVarianceThreshold;
-            Debug.Log($"Inhale condition. LoudLow: {isTooQuiet} LoudHigh: {isInhaleVolume} Varance: {hasLargeVolumeDifference}");// current pitch {micControl.getPitch()}
-
-            if (
-                ((isInhaleVolume &&
-                hasLargeVolumeDifference) ||
-                isTooQuiet))
-            {
-                mFsm.SetCurrentState((int)Breathing.Inhale);			
-            }
+            CheckInhale();
+            CheckSilent() ;
         }
     }
+
+    public class SilentState : BreathingState
+    {
+        //can only transition to inhale
+        public SilentState(FSM fsm, int id, BreathingDetection detector, MicrophoneController controller) : base(fsm, id, detector, controller)
+        {
+        }
+
+        public override void FixedUpdate()
+        {
+            CheckInhale();
+            CheckExhale();
+
+        }
+    }
+
+    #region testing
+
+    public class TestingSilent : BreathingState
+    {
+        float volumeThreshold;
+        float minPitch;
+        float maxPitch;
+        float maxVariance;
+        float elapseTime;
+        public TestingSilent(FSM fsm, int id, BreathingDetection detector, MicrophoneController controller) : base(fsm, id, detector, controller)
+        {
+
+            volumeThreshold = float.NegativeInfinity;
+            minPitch = float.PositiveInfinity;
+            maxPitch = float.NegativeInfinity;
+            maxVariance = float.NegativeInfinity;
+            elapseTime = 0;
+        }
+
+
+        public override void Enter()
+        {
+            Debug.Log("running once");
+            microphoneController.StartRecording((int)detector.testingTimer);
+        }
+
+        public override void Update()
+        {
+            while(elapseTime < detector.testingTimer)
+            {
+                elapseTime += Time.deltaTime;
+                return;
+            }
+
+            mFsm.SetCurrentState((int)Breathing.SILENT);
+        }
+
+        public override void Exit()
+        {
+            microphoneController.StopRecording();
+        }
+
+        #region old code
+        //public override void Update()
+        //{
+        //    elapseTime += Time.deltaTime;
+        //}
+
+        //public override void FixedUpdate()
+        //{
+        //    while(elapseTime < detector.testingTimer)
+        //    {
+        //        float pitch = microphoneController.getPitch();
+        //        float volume = detector.minimizedLoudness;
+        //        float varance = detector.Variance;
+        //        if(volume > volumeThreshold)
+        //        {
+        //            volumeThreshold = volume;
+        //        }
+
+        //        if(pitch < minPitch)
+        //        {
+        //            minPitch = pitch;
+        //        }
+        //        if(pitch > maxPitch)
+        //        {
+        //            maxPitch = pitch;
+        //        }
+
+        //        if(varance > maxVariance)
+        //        {
+        //            maxVariance = varance;
+        //        }
+
+        //        return;
+        //    }
+        //    mFsm.SetCurrentState((int)Breathing.TESTING_INHALE);
+        //}
+
+        //public override void Exit()
+        //{
+        //    detector.silentPitchThresholdLow = minPitch;
+        //    detector.silentPitchThresholdHigh = maxPitch;
+        //    detector.silentVarianceThreshold = maxVariance;
+        //    detector.silentVolumeThreshold = volumeThreshold;
+        //}
+        #endregion
+    }
+
+    public class TestingInhaling : BreathingState
+    {
+        float elapseTime = 0f;
+        float minInhalePitchThreshold = float.PositiveInfinity;
+        float maxInhalePitchThreshold = float.NegativeInfinity;
+        float maxVolumeThreshold = float.NegativeInfinity;
+        public TestingInhaling(FSM fsm, int id, BreathingDetection detector, MicrophoneController controller) : base(fsm, id, detector, controller)
+        {
+        }
+
+        public override void Update()
+        {
+            elapseTime += Time.deltaTime;
+        }
+
+        public override void FixedUpdate()
+        {
+            while(elapseTime < detector.testingTimer)
+            {
+                float pitch = microphoneController.getPitch();
+                float volume = detector.minimizedLoudness;
+                //float varance = detector.Variance;
+
+                if(pitch <= detector.silentPitchThresholdHigh || volume <= detector.silentVolumeThreshold)
+                {
+                    //dont record as they are not prepared to do the inhaling
+                    return;
+                }
+
+                if (volume > maxVolumeThreshold )
+                {
+                    maxVolumeThreshold = volume;
+                }
+
+                if (pitch < minInhalePitchThreshold)
+                {
+                    minInhalePitchThreshold = pitch;
+                }
+                if(pitch > maxInhalePitchThreshold)
+                {
+                    maxInhalePitchThreshold = pitch;
+                }
+
+                return;
+            }
+            mFsm.SetCurrentState((int)Breathing.TESTING_EXHALE);
+
+            //todo change to exhaling testing
+        }
+
+
+        public override void Exit()
+        {
+            detector.inhaleLoudnessThresholdHigh = maxVolumeThreshold;
+            detector.inhalePitchFrequencyThresholdLow = minInhalePitchThreshold;
+            detector.inhalePitchFrequencyThresholdHigh = maxInhalePitchThreshold;
+        }
+    }
+
+    public class TestingExhaling : BreathingState
+    {
+        float minPitch;
+        float maxPitch;
+        float minVolumeThreshold;
+        float elapseTime;
+        public TestingExhaling(FSM fsm, int id, BreathingDetection detector, MicrophoneController controller) : base(fsm, id, detector, controller)
+        {
+            minPitch = float.PositiveInfinity;
+            maxPitch = float.NegativeInfinity;
+            elapseTime = 0;
+            minVolumeThreshold = float.PositiveInfinity;
+        }
+
+
+        public override void Update()
+        {
+            elapseTime += Time.deltaTime;
+        }
+
+        public override void FixedUpdate()
+        {
+            while (elapseTime < detector.testingTimer)
+            {
+                float pitch = microphoneController.getPitch();
+                float volume = detector.minimizedLoudness;
+
+
+                if (pitch <= detector.silentPitchThresholdHigh || volume <= detector.silentVolumeThreshold)
+                {
+                    //dont record as they are not prepared to do the exhaling
+                    Debug.Log("not recording exhale");
+                    return;
+                }
+
+                if (volume < minVolumeThreshold)
+                {
+                    minVolumeThreshold = volume;
+                }
+
+                if (pitch < minPitch)
+                {
+                    minPitch = pitch;
+                }
+                if (pitch > maxPitch)
+                {
+                    maxPitch = pitch;
+                }
+
+                return;
+            }
+            mFsm.SetCurrentState((int)Breathing.SILENT);
+        }
+
+        public override void Exit()
+        {
+            detector.exhalePitchFrequencyThresholdLow = minPitch;
+            detector.exhalePitchFrequencyThresholdHigh = maxPitch;
+            detector.exhaleLoudnessThresholdLow = minVolumeThreshold;
+
+        }
+
+    }
+
+    #endregion
 }

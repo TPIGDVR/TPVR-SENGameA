@@ -4,6 +4,10 @@
     using System.Collections;
     using UnityEngine.Audio;
     using System.Collections.Generic;
+    using TMPro;
+    using Unity.Mathematics;
+    using UnityEditor.ShaderGraph;
+    using static Unity.VisualScripting.Member;
 
     [RequireComponent(typeof(AudioSource))]
     public class MicrophoneController : MonoBehaviour
@@ -37,11 +41,12 @@
 
         private float maxPitch = 0.0f; //Delete this, its just for testing
 
+        private AudioClip recordedClip = null;
+        [SerializeField] TextMeshProUGUI dataText;
 
+        string microphoneDefaultName { get { return Microphone.devices[0]; } }
         IEnumerator Start()
         {
-            aSource = this.GetComponent<AudioSource>();
-
             aMixer = Resources.Load("MicrophoneMixer") as AudioMixer;
             if (mute)
             {
@@ -77,10 +82,17 @@
         }
 
         // Update is called once per frame
+        private void Update()
+        {
+            dataText.text = $"Data \n" +
+                    $"Pitch: {(int)pitchValue} ";
+        }
+
         void FixedUpdate()
         {
             if (isMicrophoneReady)
             {
+                print("ready");
                 loudness = calculateLoudness();
 
                 if (UseFFTCentroid)
@@ -91,6 +103,10 @@
                 {
                     calculatePitch();
                 }
+            }
+            else
+            {
+                print("Not ready");
             }
         }
 
@@ -107,6 +123,7 @@
 
         void prepareMicrophone()
         {
+            print("restarting microphone");
             if (Microphone.devices.Length > 0)
             {
                 //Gets the maxFrequency and minFrequency of the device
@@ -117,6 +134,7 @@
                 }
                 if (aSource.clip == null)
                 {
+                    print("Have set clip");
                     aSource.clip = Microphone.Start(Microphone.devices[0], true, 1, maxFrequency);
                     aSource.loop = true;
 
@@ -192,6 +210,49 @@
             Debug.Log("Centroid: " + pitchValue);
         }
 
+
+        [ContextMenu("startRecording")]
+        public void StartRecording()
+        {
+            if (Microphone.IsRecording(microphoneDefaultName))
+            {
+                aSource.Stop();
+                aSource.clip = null;
+                Microphone.End(microphoneDefaultName);
+                isMicrophoneReady = false;
+            }
+            recordedClip = Microphone.Start(microphoneDefaultName, false, 3, maxFrequency);
+        }
+
+        public void StartRecording(int seconds)
+        {
+            if (Microphone.IsRecording(microphoneDefaultName))
+            {
+                aSource.Stop();
+                aSource.clip = null;
+                Microphone.End(microphoneDefaultName);
+                isMicrophoneReady = false;
+            }
+            recordedClip = Microphone.Start(microphoneDefaultName, false, 3, maxFrequency);
+        }
+
+
+        [ContextMenu("stopRecording")]
+        public AudioClip StopRecording()
+        {
+            if (Microphone.IsRecording(microphoneDefaultName))
+            {
+                Microphone.End(microphoneDefaultName);
+            }            
+            prepareMicrophone();
+            return recordedClip;
+        }
+
+        [ContextMenu("restart recording")]
+        public void RestartRecording()
+        {
+            prepareMicrophone();
+        }
 
 
         float HighPassFilter(float pitch, float cutOff)
