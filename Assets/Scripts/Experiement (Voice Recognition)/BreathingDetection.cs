@@ -71,13 +71,9 @@ namespace Breathing
 
         public float Variance { get => variance; set => variance = value; }
 
-        private AudioSource calculatingSource;
 
         protected virtual void Start()
         {
-            calculatingSource = gameObject.AddComponent<AudioSource>();
-            calculatingSource.playOnAwake = false;
-
             micControl = this.GetComponent<MicrophoneController>();
             if (micControl == null)
             {
@@ -216,44 +212,6 @@ namespace Breathing
 
         }
 
-        public void CalculateCommonPitch(AudioClip clip)
-        {
-            //Create a container to hold 
-            var fftSpectrum = new float[samplingSize];
-            calculatingSource.clip = clip;
-
-            calculatingSource.GetSpectrumData(fftSpectrum, 0, FFTWindow.BlackmanHarris);
-            float maxV = 0;
-            int maxN = 0;
-
-            // Find the highest sample.
-            for (int i = 0; i < fftSpectrum.Length; i++)
-            {
-                if (fftSpectrum[i] > maxV)
-                {
-                    maxV = fftSpectrum[i];
-                    maxN = i; // maxN is the index of max
-                }
-            }
-
-            // Pass the index to a float variable
-            float freqN = maxN;
-
-            // Convert index to frequency
-            pitchValue = HighPassFilter(freqN * 24000 / samples, highPassCutoff);
-            updatePastPitches(pitchValue);
-
-            //update the max pitch
-            if (pitchValue > maxPitch)
-            {
-                maxPitch = pitchValue;
-                //Debug.Log ("MaxPitch: " + maxPitch);
-
-            }
-            /*	if (pitchValue > 750 && pitchValue < 3000) {
-                    Debug.Log ("Pitch could be exhale");
-                }*/
-        }
 
         void minimizeLoudness()
         {

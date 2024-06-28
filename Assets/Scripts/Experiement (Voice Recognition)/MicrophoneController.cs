@@ -8,12 +8,13 @@
     using Unity.Mathematics;
     using UnityEditor.ShaderGraph;
     using static Unity.VisualScripting.Member;
+    using System;
 
     [RequireComponent(typeof(AudioSource))]
     public class MicrophoneController : MonoBehaviour
     {
 
-        private AudioSource aSource;
+        [SerializeField]private AudioSource aSource;
         public int samples = 1024;
         private int maxFrequency = 44100;
         private int minFrequency = 0;
@@ -42,11 +43,17 @@
         private float maxPitch = 0.0f; //Delete this, its just for testing
 
         private AudioClip recordedClip = null;
-        [SerializeField] TextMeshProUGUI dataText;
+        //[SerializeField] TextMeshProUGUI dataText;
+
+        //for calculating the pitch and volume of a target volume/pitch
+        [SerializeField] private AudioSource calculatingSource;
+        private AudioSource testingClipSource;
+        private Coroutine currentCoroutine;
 
         string microphoneDefaultName { get { return Microphone.devices[0]; } }
         IEnumerator Start()
         {
+
             aMixer = Resources.Load("MicrophoneMixer") as AudioMixer;
             if (mute)
             {
@@ -56,6 +63,7 @@
             {
                 aMixer.SetFloat("MicrophoneVolume", 0);
             }
+
 
             if (Microphone.devices.Length == 0)
             {
@@ -77,22 +85,25 @@
 
             prepareMicrophone();
 
+
+
+            testingClipSource = gameObject.AddComponent<AudioSource>();
+            testingClipSource.playOnAwake = false;
+
             fftSpectrum = new float[samples];
             pastPitches = new List<float>();
         }
 
-        // Update is called once per frame
-        private void Update()
-        {
-            dataText.text = $"Data \n" +
-                    $"Pitch: {(int)pitchValue} ";
-        }
+        //private void Update()
+        //{
+        //    dataText.text = $"Data \n" +
+        //            $"Pitch: {(int)pitchValue} ";
+        //}
 
         void FixedUpdate()
         {
             if (isMicrophoneReady)
             {
-                print("ready");
                 loudness = calculateLoudness();
 
                 if (UseFFTCentroid)
@@ -104,10 +115,7 @@
                     calculatePitch();
                 }
             }
-            else
-            {
-                print("Not ready");
-            }
+            
         }
 
         void OnGUI()
@@ -123,7 +131,6 @@
 
         void prepareMicrophone()
         {
-            print("restarting microphone");
             if (Microphone.devices.Length > 0)
             {
                 //Gets the maxFrequency and minFrequency of the device
@@ -175,6 +182,8 @@
             float freqN = maxN;
 
             // Convert index to frequency
+            //24000 is the sampling frequency for the PC. 24000 / sample = frequency resolution
+            // frequency resolution * index of the sample would give the pitch as a result.
             pitchValue = HighPassFilter(freqN * 24000 / samples, highPassCutoff);
             updatePastPitches(pitchValue);
 
@@ -211,6 +220,83 @@
         }
 
 
+        //https://discussions.unity.com/t/getoutputdata-and-getspectrumdata-what-represent-the-values-returned/27063/2
+        /// <summary>
+        /// GetSpectrumData returns a array of float that contains the amplitude of the the freqency
+        /// The frequency (Hz) is represented by the index of the array. THe amplitude shows the
+        /// most common frequency in the spectrum.
+        /// It appear u need to call this every frame to get the average min and max pitch.
+        /// </summary>
+        /// <param name="clip"></param>
+        /// <param name="minPitchVal"></param>
+        /// <param name="maxPitchVal"></param>
+        /// 
+        public void CalculateRangePitch(AudioClip clip, out float minPitchVal, out float maxPitchVal)
+        {
+            calculatingSource.clip = clip;
+            calculatingSource.GetSpectrumData(fftSpectrum, 0 , FFTWindow.BlackmanHarris);
+;            float firstMax = 0;
+            float secondMax = 0;
+            float firstMaxValue = fftSpectrum[0];
+            float secondMaxValue = fftSpectrum[0];
+
+            for(int i = 1;i < fftSpectrum.Length ; i++)
+            {
+                var val = fftSpectrum[i];
+                if (val > firstMaxValue)
+                {
+                    firstMax = i;
+                    firstMaxValue = val;
+                }
+                else if(val > secondMaxValue)
+                {
+                    secondMax = i;
+                    secondMaxValue = val;
+                }
+            }
+
+            minPitchVal = HighPassFilter((float) secondMax * 24000 / samples, highPassCutoff);
+            maxPitchVal = HighPassFilter((float)firstMax * 24000 / samples, highPassCutoff);
+        }
+
+        public float CalculateVolume(AudioClip clip)
+        {
+            calculatingSource.clip = clip;
+            float[] microphoneData = new float[samples];
+            float sum = 0;
+
+
+            calculatingSource.GetOutputData(microphoneData, 0);
+            for (int i = 0; i < microphoneData.Length; i++)
+            {
+                sum += Mathf.Pow(microphoneData[i], 2);//Mathf.Abs(microphoneData[i]);
+            }
+
+            return Mathf.Sqrt(sum / samples) * loudnessMultiplier;
+        }
+
+        public void TestClipFromRecord(AudioClip clip)
+        {
+            if(currentCoroutine != null)
+            {
+                StopCoroutine(currentCoroutine);
+            }
+            testingClipSource.clip = clip;
+            testingClipSource.Play();
+            currentCoroutine = StartCoroutine(RemoveClipOnceItIsDone());
+        }
+
+        IEnumerator RemoveClipOnceItIsDone()
+        {
+            while (testingClipSource.isPlaying)
+            {
+                yield return null;
+            }
+            testingClipSource.clip=null;
+        }
+
+        #region recording
+
         [ContextMenu("startRecording")]
         public void StartRecording()
         {
@@ -233,7 +319,7 @@
                 Microphone.End(microphoneDefaultName);
                 isMicrophoneReady = false;
             }
-            recordedClip = Microphone.Start(microphoneDefaultName, false, 3, maxFrequency);
+            recordedClip = Microphone.Start(microphoneDefaultName, false, seconds, maxFrequency);
         }
 
 
@@ -253,7 +339,7 @@
         {
             prepareMicrophone();
         }
-
+        #endregion
 
         float HighPassFilter(float pitch, float cutOff)
         {
@@ -327,6 +413,13 @@
         void SaveRecordedAudio()
         {
             //EditorUtility.ExtractOggFile (GameObject.Find("TestAudioSource").GetComponent<AudioSource>().clip, Application.streamingAssetsPath);
+        }
+
+        void PrintArray(float[] array)
+        {
+            string arrayString = string.Join(", ", array);
+            // Print the string to the console
+            Debug.Log(arrayString);
         }
     }
 
