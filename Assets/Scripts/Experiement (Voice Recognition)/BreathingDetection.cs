@@ -212,7 +212,6 @@ namespace Breathing
 
         }
 
-
         void minimizeLoudness()
         {
 

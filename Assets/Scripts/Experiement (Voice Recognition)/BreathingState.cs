@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Breathing
 {
@@ -43,8 +44,8 @@ namespace Breathing
         protected void CheckInhale()
         {
             bool isInhaleVolume = detector.minimizedLoudness < detector.inhaleLoudnessThresholdHigh;
-            //bool isTooQuiet = detector.minimizedLoudness < detector.inhaleLoudnessThresholdLow;
-            bool hasLargeVolumeDifference = true; /*detector.Variance < detector.inhaleVarianceThreshold;*/
+            //bool isTooQuiet = _detector.minimizedLoudness < _detector.inhaleLoudnessThresholdLow;
+            bool hasLargeVolumeDifference = true; /*_detector.Variance < _detector.inhaleVarianceThreshold;*/
             bool withinInhalePitch = (microphoneController.getPitch() > detector.inhalePitchFrequencyThresholdLow &&
                 microphoneController.getPitch() < detector.inhalePitchFrequencyThresholdHigh);
 
@@ -142,302 +143,202 @@ namespace Breathing
     }
 
     #region testing
-
-    public class TestingSilent : BreathingState
+    
+    public class TestingBreathingState : FSMState
     {
-        float elapseTime;
-        public TestingSilent(FSM fsm, int id, BreathingDetection detector, MicrophoneController controller) : base(fsm, id, detector, controller)
-        {
-            elapseTime = 0;
-        }
+        protected BreathingDetectionNew _detector;
+        protected MicrophoneController _micController;
+        protected float elapseTime;
 
+
+
+        protected float totalMinPitch;
+        protected float totalMaxPitch;
+        protected float totalVolume;
+        protected int frameCounter;
+
+        protected float avgMinPitch => totalMinPitch / frameCounter;
+        protected float avgMaxPitch => totalMaxPitch / frameCounter;
+        protected float avgVolume => totalVolume / frameCounter;
+
+
+        protected int nextState = (int)Breathing.SILENT;
+        public TestingBreathingState(FSM fsm, int id,
+            BreathingDetectionNew detector,
+            MicrophoneController controller) : base(fsm, id)
+        {
+            this._detector = detector;
+            _micController = controller;
+        }
 
         public override void Enter()
         {
-            microphoneController.StartRecording((int)detector.testingTimer);
+            _micController.StartRecording();
+            totalMaxPitch = 0;
+            totalMinPitch = 0;
+            totalVolume = 0;
+
+            elapseTime = 0f;
+            frameCounter = 0;
         }
 
         public override void Update()
         {
-            while(elapseTime < detector.testingTimer)
+            while(elapseTime < _detector.testingTimer)
             {
+                //Debug.Log($"Running State: {(Breathing)mId} ");
                 elapseTime += Time.deltaTime;
                 return;
             }
-
-            mFsm.SetCurrentState((int)Breathing.TESTING_INHALE);
+            Debug.Log($"Next state {(Breathing)nextState}");
+            mFsm.SetCurrentState(nextState);
+            //add state change here
         }
+
+        public override void FixedUpdate()
+        {
+            frameCounter++;
+            totalVolume += _micController.CalculateVolumeFromRecording();
+            _micController.CalculateSpectrumDataFromRecording();
+
+            //PrintArray(_micController.FftSpectrum);
+
+            totalMinPitch += _micController.CalculateMinPitchFromRecording();
+            totalMaxPitch += _micController.CalculateMaxPitchFromRecording();
+            Debug.Log($"Evaluated values\n" +
+                $"totalMinPitch: {totalMinPitch} \n" +
+                $"totalMaxPtich: {totalMaxPitch}\n" +
+                $"frameCounter: {frameCounter}\n" +
+                $"Volume: {totalVolume}");
+
+        }
+
 
         public override void Exit()
         {
-           var slientClip = microphoneController.StopRecording();
-            microphoneController.TestClipFromRecord(slientClip);
-            if (slientClip != null)
-            {
-                float minCommonPitch;
-                float maxCommonPitch;
-                microphoneController.CalculateRangePitch(slientClip,out minCommonPitch, out maxCommonPitch);
-
-                //test this first
-                detector.silentPitchThresholdHigh = maxCommonPitch;
-                detector.silentPitchThresholdLow = minCommonPitch;
-
-                detector.silentVolumeThreshold = microphoneController.CalculateVolume(slientClip);
-            }
-            else
-            {
-                Debug.Log("ERROR!");
-            }
+            _micController.StopRecording();
         }
+        //do your calculation in exit
 
-        #region old code
-        //public override void Update()
-        //{
-        //    elapseTime += Time.deltaTime;
-        //}
-
-        //public override void FixedUpdate()
-        //{
-        //    while(elapseTime < detector.testingTimer)
-        //    {
-        //        float pitch = microphoneController.getPitch();
-        //        float volume = detector.minimizedLoudness;
-        //        float varance = detector.Variance;
-        //        if(volume > volumeThreshold)
-        //        {
-        //            volumeThreshold = volume;
-        //        }
-
-        //        if(pitch < minPitch)
-        //        {
-        //            minPitch = pitch;
-        //        }
-        //        if(pitch > maxPitch)
-        //        {
-        //            maxPitch = pitch;
-        //        }
-
-        //        if(varance > maxVariance)
-        //        {
-        //            maxVariance = varance;
-        //        }
-
-        //        return;
-        //    }
-        //    mFsm.SetCurrentState((int)Breathing.TESTING_INHALE);
-        //}
-
-        //public override void Exit()
-        //{
-        //    detector.silentPitchThresholdLow = minPitch;
-        //    detector.silentPitchThresholdHigh = maxPitch;
-        //    detector.silentVarianceThreshold = maxVariance;
-        //    detector.silentVolumeThreshold = volumeThreshold;
-        //}
-        #endregion
+        void PrintArray(float[] array)
+        {
+            // Join the array elements into a single string separated by commas
+            string arrayString = string.Join(", ", array);
+            // Print the string to the console
+            Debug.Log(arrayString);
+        }
     }
 
-    public class TestingInhaling : BreathingState
+
+    public class TestingSilence : TestingBreathingState
     {
-        float elapseTime = 0f;
-        //float minInhalePitchThreshold = float.PositiveInfinity;
-        //float maxInhalePitchThreshold = float.NegativeInfinity;
-        //float maxVolumeThreshold = float.NegativeInfinity;
-        public TestingInhaling(FSM fsm, int id, BreathingDetection detector, MicrophoneController controller) : base(fsm, id, detector, controller)
+
+        public TestingSilence(FSM fsm, int id, BreathingDetectionNew detector, MicrophoneController controller) : base(fsm, id, detector, controller)
         {
         }
 
         public override void Enter()
         {
-            microphoneController.StartRecording((int)detector.testingTimer);
+            base.Enter();
+            nextState = (int)Breathing.TESTING_INHALE;
         }
 
-        public override void Update()
-        {
-            while (elapseTime < detector.testingTimer)
-            {
-                elapseTime += Time.deltaTime;
-                return;
-            }
-
-            mFsm.SetCurrentState((int)Breathing.TESTING_EXHALE);
-        }
 
         public override void Exit()
         {
-            var inhaleClip = microphoneController.StopRecording();
-            microphoneController.TestClipFromRecord(inhaleClip);
-            if (inhaleClip != null)
-            {
-                float minCommonPitch;
-                float maxCommonPitch;
-                microphoneController.CalculateRangePitch(inhaleClip, out minCommonPitch, out maxCommonPitch);
-
-                //test this first
-                detector.inhalePitchFrequencyThresholdLow = minCommonPitch;
-                detector.inhalePitchFrequencyThresholdHigh = maxCommonPitch;
-
-                detector.inhaleLoudnessThresholdHigh = microphoneController.CalculateVolume(inhaleClip);
-            }
-            else
-            {
-                Debug.Log("ERROR!");
-            }
+            base.Exit();
+            _detector.silentPitchThresholdLow = avgMinPitch;
+            _detector.silentPitchThresholdHigh = avgMaxPitch;
+            _detector.silentVolumeThreshold = avgVolume;
         }
 
-        #region
-        //public override void Update()
-        //{
-        //    elapseTime += Time.deltaTime;
-        //}
-
-        //public override void FixedUpdate()
-        //{
-        //    while(elapseTime < detector.testingTimer)
-        //    {
-        //        float pitch = microphoneController.getPitch();
-        //        float volume = detector.minimizedLoudness;
-        //        //float varance = detector.Variance;
-
-        //        if(pitch <= detector.silentPitchThresholdHigh || volume <= detector.silentVolumeThreshold)
-        //        {
-        //            //dont record as they are not prepared to do the inhaling
-        //            return;
-        //        }
-
-        //        if (volume > maxVolumeThreshold )
-        //        {
-        //            maxVolumeThreshold = volume;
-        //        }
-
-        //        if (pitch < minInhalePitchThreshold)
-        //        {
-        //            minInhalePitchThreshold = pitch;
-        //        }
-        //        if(pitch > maxInhalePitchThreshold)
-        //        {
-        //            maxInhalePitchThreshold = pitch;
-        //        }
-
-        //        return;
-        //    }
-        //    mFsm.SetCurrentState((int)Breathing.TESTING_EXHALE);
-
-        //    //todo change to exhaling testing
-        //}
-
-
-        //public override void Exit()
-        //{
-        //    detector.inhaleLoudnessThresholdHigh = maxVolumeThreshold;
-        //    detector.inhalePitchFrequencyThresholdLow = minInhalePitchThreshold;
-        //    detector.inhalePitchFrequencyThresholdHigh = maxInhalePitchThreshold;
-        //}
-        #endregion
     }
 
-    public class TestingExhaling : BreathingState
+    public class TestingInhale : TestingBreathingState
     {
-        //float minPitch;
-        //float maxPitch;
-        //float minVolumeThreshold;
-        float elapseTime;
-        public TestingExhaling(FSM fsm, int id, BreathingDetection detector, MicrophoneController controller) : base(fsm, id, detector, controller)
+        public TestingInhale(FSM fsm, int id, BreathingDetectionNew detector, MicrophoneController controller) : base(fsm, id, detector, controller)
         {
-            //minPitch = float.PositiveInfinity;
-            //maxPitch = float.NegativeInfinity;
-            elapseTime = 0;
-            //minVolumeThreshold = float.PositiveInfinity;
         }
-
 
         public override void Enter()
         {
-            microphoneController.StartRecording((int)detector.testingTimer);
+            base.Enter();
+            nextState = (int)Breathing.TESTING_EXHALE;
         }
 
-        public override void Update()
+
+        public override void FixedUpdate()
         {
-            while (elapseTime < detector.testingTimer)
+            var curMaxPitch = _micController.CalculateMaxPitchFromRecording();
+            if(curMaxPitch < -_detector.ignoreMaxPitchInhale)
             {
-                elapseTime += Time.deltaTime;
+                //ignore it as we dont want it to dirty the data
                 return;
             }
+            totalMaxPitch += curMaxPitch;
+            totalVolume += _micController.CalculateVolumeFromRecording();
+            _micController.CalculateSpectrumDataFromRecording();
+            totalMinPitch += _micController.CalculateMinPitchFromRecording(
+                _detector.minAmplitudeThresholdInhale,
+                _detector.ignoreFrequencyThresholdInhale
+                );
 
-            mFsm.SetCurrentState((int)Breathing.SILENT);
+
+            frameCounter++;
+
+            Debug.Log($"Evaluated values\n" +
+            $"totalMinPitch: {totalMinPitch} \n" +
+            $"totalMaxPtich: {totalMaxPitch}\n" +
+            $"frameCounter: {frameCounter}\n" +
+            $"Volume: {totalVolume}");
         }
 
         public override void Exit()
         {
-            var exhale = microphoneController.StopRecording();
-            microphoneController.TestClipFromRecord(exhale);
-            if (exhale != null)
-            {
-                float minCommonPitch;
-                float maxCommonPitch;
-                microphoneController.CalculateRangePitch(exhale, out minCommonPitch, out maxCommonPitch);
-
-                //test this first
-                detector.exhaleLoudnessThresholdLow = minCommonPitch;
-                detector.exhaleLoudnessThresholdHigh = maxCommonPitch;
-
-                detector.exhaleLoudnessThresholdLow = microphoneController.CalculateVolume(exhale);
-            }
-            else
-            {
-                Debug.Log("ERROR!");
-            }
+            base.Exit();
+            _detector.inhalePitchFrequencyThresholdLow = avgMinPitch;
+            _detector.inhalePitchFrequencyThresholdHigh = avgMaxPitch;
+            _detector.inhaleLoudnessThresholdLow = avgVolume;
+            _detector.inhaleLoudnessThresholdHigh = avgVolume;
         }
 
-        #region old code
-        //public override void Update()
-        //{
-        //    elapseTime += Time.deltaTime;
-        //}
-
-        //public override void FixedUpdate()
-        //{
-        //    while (elapseTime < detector.testingTimer)
-        //    {
-        //        float pitch = microphoneController.getPitch();
-        //        float volume = detector.minimizedLoudness;
-
-
-        //        if (pitch <= detector.silentPitchThresholdHigh || volume <= detector.silentVolumeThreshold)
-        //        {
-        //            //dont record as they are not prepared to do the exhaling
-        //            Debug.Log("not recording exhale");
-        //            return;
-        //        }
-
-        //        if (volume < minVolumeThreshold)
-        //        {
-        //            minVolumeThreshold = volume;
-        //        }
-
-        //        if (pitch < minPitch)
-        //        {
-        //            minPitch = pitch;
-        //        }
-        //        if (pitch > maxPitch)
-        //        {
-        //            maxPitch = pitch;
-        //        }
-
-        //        return;
-        //    }
-        //    mFsm.SetCurrentState((int)Breathing.SILENT);
-        //}
-
-        //public override void Exit()
-        //{
-        //    detector.exhalePitchFrequencyThresholdLow = minPitch;
-        //    detector.exhalePitchFrequencyThresholdHigh = maxPitch;
-        //    detector.exhaleLoudnessThresholdLow = minVolumeThreshold;
-
-        //}
-        #endregion
     }
 
+
+    public class TestingExhale : TestingBreathingState
+    {
+        public TestingExhale(FSM fsm, int id, BreathingDetectionNew detector, MicrophoneController controller) : base(fsm, id, detector, controller)
+        {
+        }
+
+
+
+        public override void FixedUpdate()
+        {
+            frameCounter++;
+            totalVolume += _micController.CalculateVolumeFromRecording();
+            _micController.CalculateSpectrumDataFromRecording();
+            totalMinPitch += _micController.CalculateMinPitchFromRecording(
+                _detector.minAmplitudeThresholdExhale,
+                _detector.ignoreFrequencyThresholdExhale);
+            totalMaxPitch += _micController.CalculateMaxPitchFromRecording();
+
+            Debug.Log($"Evaluated values\n" +
+    $"totalMinPitch: {totalMinPitch} \n" +
+    $"totalMaxPtich: {totalMaxPitch}\n" +
+    $"frameCounter: {frameCounter}\n" +
+    $"Volume: {totalVolume}");
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            _detector.exhalePitchFrequencyThresholdLow = avgMinPitch;
+            _detector.exhalePitchFrequencyThresholdHigh = avgMaxPitch;
+            _detector.exhaleLoudnessThresholdHigh= avgVolume;
+            _detector.exhaleLoudnessThresholdLow = avgVolume;
+        }
+
+    }
     #endregion
 }

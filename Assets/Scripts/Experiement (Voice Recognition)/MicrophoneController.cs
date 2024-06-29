@@ -10,7 +10,6 @@
     using static Unity.VisualScripting.Member;
     using System;
 
-    [RequireComponent(typeof(AudioSource))]
     public class MicrophoneController : MonoBehaviour
     {
 
@@ -51,6 +50,9 @@
         private Coroutine currentCoroutine;
 
         string microphoneDefaultName { get { return Microphone.devices[0]; } }
+
+        public float[] FftSpectrum { get => fftSpectrum; }
+
         IEnumerator Start()
         {
 
@@ -141,7 +143,6 @@
                 }
                 if (aSource.clip == null)
                 {
-                    print("Have set clip");
                     aSource.clip = Microphone.Start(Microphone.devices[0], true, 1, maxFrequency);
                     aSource.loop = true;
 
@@ -231,14 +232,24 @@
         /// <param name="minPitchVal"></param>
         /// <param name="maxPitchVal"></param>
         /// 
-        public void CalculateRangePitch(AudioClip clip, out float minPitchVal, out float maxPitchVal)
+
+
+        //need to call this before u can call the other pitch related methods
+        public void CalculateSpectrumDataFromRecording()
         {
-            calculatingSource.clip = clip;
-            calculatingSource.GetSpectrumData(fftSpectrum, 0 , FFTWindow.BlackmanHarris);
+            calculatingSource.GetSpectrumData(fftSpectrum, 0, FFTWindow.BlackmanHarris);
+        }
+        public float CalculateMaxPitchFromRecording()
+        {
+            //not too sure if this safe performance if I only
+            //compute the spectrum data once and use accross different areas.
+            if(calculatingSource.clip == null)
+            {
+                throw new Exception("You cant calculate a pitch as it is not recording");
+            }
+
 ;            float firstMax = 0;
-            float secondMax = 0;
             float firstMaxValue = fftSpectrum[0];
-            float secondMaxValue = fftSpectrum[0];
 
             for(int i = 1;i < fftSpectrum.Length ; i++)
             {
@@ -248,23 +259,45 @@
                     firstMax = i;
                     firstMaxValue = val;
                 }
-                else if(val > secondMaxValue)
+            }
+
+            return HighPassFilter((float)firstMax * 24000 / samples, highPassCutoff);
+        }
+
+        public float CalculateMinPitchFromRecording(float amplitudeThreshold = 0f , int ignoreIndexBelow = 0)
+        {
+            if (calculatingSource.clip == null)
+            {
+                throw new Exception("You cant calculate a pitch as it is not recording");
+            }
+
+            int selectedFrequency = -1;
+            PrintArray(fftSpectrum);
+            //try get lowest frequency and have 
+            for (; ignoreIndexBelow < fftSpectrum.Length; ignoreIndexBelow++)
+            {
+                
+                if(fftSpectrum[ignoreIndexBelow] >= amplitudeThreshold)
                 {
-                    secondMax = i;
-                    secondMaxValue = val;
+                    selectedFrequency = ignoreIndexBelow;
+                    break;
                 }
             }
 
-            minPitchVal = HighPassFilter((float) secondMax * 24000 / samples, highPassCutoff);
-            maxPitchVal = HighPassFilter((float)firstMax * 24000 / samples, highPassCutoff);
+            print(selectedFrequency);
+
+            return HighPassFilter((float)selectedFrequency * 24000 / samples, highPassCutoff);
         }
 
-        public float CalculateVolume(AudioClip clip)
+        public float CalculateVolumeFromRecording()
         {
-            calculatingSource.clip = clip;
+            if (calculatingSource.clip == null)
+            {
+                throw new Exception("You cant calculate a pitch as it is not recording");
+            }
+
             float[] microphoneData = new float[samples];
             float sum = 0;
-
 
             calculatingSource.GetOutputData(microphoneData, 0);
             for (int i = 0; i < microphoneData.Length; i++)
@@ -300,14 +333,25 @@
         [ContextMenu("startRecording")]
         public void StartRecording()
         {
+            isMicrophoneReady = false;
+
             if (Microphone.IsRecording(microphoneDefaultName))
             {
                 aSource.Stop();
                 aSource.clip = null;
                 Microphone.End(microphoneDefaultName);
-                isMicrophoneReady = false;
             }
-            recordedClip = Microphone.Start(microphoneDefaultName, false, 3, maxFrequency);
+
+
+            calculatingSource.clip = Microphone.Start(microphoneDefaultName, true, 1, maxFrequency);
+            calculatingSource.loop = true;
+            //wait for the microphone to get ready
+            while (!(Microphone.GetPosition(Microphone.devices[0]) > 0))
+            {
+            }
+
+            //this is so that any script can start calculating the source pitch and volume
+            calculatingSource.Play();
         }
 
         public void StartRecording(int seconds)
@@ -319,19 +363,30 @@
                 Microphone.End(microphoneDefaultName);
                 isMicrophoneReady = false;
             }
-            recordedClip = Microphone.Start(microphoneDefaultName, false, seconds, maxFrequency);
+            recordedClip = Microphone.Start(microphoneDefaultName, true, 1, maxFrequency);
+
+            //wait for the microphone to get ready
+            while (!(Microphone.GetPosition(Microphone.devices[0]) > 0))
+            {
+            }
+
+            calculatingSource.clip = recordedClip;
+            calculatingSource.Play();
         }
 
 
         [ContextMenu("stopRecording")]
-        public AudioClip StopRecording()
+        public void StopRecording()
         {
             if (Microphone.IsRecording(microphoneDefaultName))
             {
                 Microphone.End(microphoneDefaultName);
-            }            
+            }
+            calculatingSource.Stop();
+            calculatingSource.clip = null;
+            recordedClip = null;
             prepareMicrophone();
-            return recordedClip;
+            //return recordedClip;
         }
 
         [ContextMenu("restart recording")]
