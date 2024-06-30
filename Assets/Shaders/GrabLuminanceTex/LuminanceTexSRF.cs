@@ -37,6 +37,10 @@ internal class LuminanceTexSRF : ScriptableRendererFeature
             Debug.LogErrorFormat("{0}.AddRenderPasses(): Missing material. {1} render pass will not be added.", GetType().Name, name);
             return;
         }
+
+        if (renderingData.cameraData.camera != Camera.main)
+            return;
+
         bool setup = pass.SetUp(ref mat, ref settings);
 
         if (setup)
