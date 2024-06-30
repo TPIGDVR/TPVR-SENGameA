@@ -9,9 +9,9 @@ namespace Breathing
 
     public class BreathingDetectionNew : BreathingDetection
     {
-        [Range(0.000000001f, 0)]
+        [Range(0, 0.00001f)]
         public float minAmplitudeThresholdInhale;
-        [Range(0.000000001f, 0)]
+        [Range( 0, 0.00001f)]
         public float minAmplitudeThresholdExhale;
 
         [Range(0, 1024)]
@@ -19,19 +19,21 @@ namespace Breathing
         [Range(0, 1024)]
         public int ignoreFrequencyThresholdExhale = 10;
 
-
         //ignore max pitch recorded below a threshold to increase accuracy of the data
         [Range(100, 8000)]
         public float ignoreMaxPitchInhale = 1000;
+        [Range(100, 8000)]
+        public float ignoreMaxPitchExhale = 1000;
+
+        public float pitchOffsetLenancyInhale = 100f;
+        public float pitchOffsetLenancyExhale = 100f;
         protected override void SetUpFSM()
         {
             fsm = new();
             fsm.Add(new InhalingState(fsm, (int)Breathing.INHALE, this, micControl));
             fsm.Add(new ExhalingState(fsm, (int)Breathing.EXHALE, this, micControl));
             fsm.Add(new SilentState(fsm, (int)Breathing.SILENT, this, micControl));
-            //fsm.Add(new TestingSilent(fsm, (int)Breathing.TESTING_SILENT, this, micControl));
-            //fsm.Add(new TestingInhaling(fsm, (int)Breathing.TESTING_INHALE, this, micControl));
-            //fsm.Add(new TestingExhaling(fsm, (int)Breathing.TESTING_EXHALE, this,micControl));
+            
             fsm.Add(new TestingSilence(fsm, (int)Breathing.TESTING_SILENT,this, micControl));
             fsm.Add(new TestingInhale(fsm, (int)Breathing.TESTING_INHALE, this, micControl));
             fsm.Add(new TestingExhale(fsm, (int)Breathing.TESTING_EXHALE, this, micControl));

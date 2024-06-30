@@ -272,7 +272,7 @@
             }
 
             int selectedFrequency = -1;
-            PrintArray(fftSpectrum);
+            //PrintArray(fftSpectrum);
             //try get lowest frequency and have 
             for (; ignoreIndexBelow < fftSpectrum.Length; ignoreIndexBelow++)
             {
@@ -284,7 +284,7 @@
                 }
             }
 
-            print(selectedFrequency);
+            //print(selectedFrequency);
 
             return HighPassFilter((float)selectedFrequency * 24000 / samples, highPassCutoff);
         }

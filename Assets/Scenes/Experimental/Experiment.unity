@@ -661,22 +661,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateText: {fileID: 199935898}
   dataProjector: {fileID: 1620850914}
-  exhaleLoudnessThresholdHigh: 0.5
-  exhaleLoudnessThresholdLow: 0.2
-  inhaleLoudnessThresholdHigh: 1.9
-  inhaleLoudnessThresholdLow: 0.05
-  silentVolumeThreshold: 0.09
-  silentPitchThresholdLow: 20
-  silentPitchThresholdHigh: 230
-  silentVarianceThreshold: 0.01
+  exhaleLoudnessThreshold: 0.2
+  inhaleLoudnessThreshold: 0.1
+  silentVolumeThreshold: 0.1377698
+  silentPitchThresholdLow: 0
+  silentPitchThresholdHigh: 342.1875
+  silentVarianceThreshold: 0.1
+  silentVariancePitchThreshold: 3
   exhaleVarianceThreshold: 2
-  inhaleVarianceThreshold: -3
-  exhalePitchFrequencyThresholdLow: 1000
-  exhalePitchFrequencyThresholdHigh: 2000
-  inhalePitchFrequencyThresholdLow: 3000
+  inhaleVariancePitchThreshold: 5
+  exhalePitchFrequencyThresholdLow: 310.9375
+  exhalePitchFrequencyThresholdHigh: 2247.773
+  inhalePitchFrequencyThresholdLow: 838.3
   inhalePitchFrequencyThresholdHigh: 5000
-  minimizedLoudness: 999
-  useMinimizedLoudness: 1
+  calculateLoudness: 999
+  calculatedPitch: Infinity
+  loudnessCalculationMethod: 0
+  pitchCalculationMethod: 0
   samplingSize: 1000
   testingTimer: 0
 --- !u!114 &784452944
@@ -713,29 +714,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateText: {fileID: 199935898}
   dataProjector: {fileID: 1620850914}
-  exhaleLoudnessThresholdHigh: 0.5
-  exhaleLoudnessThresholdLow: 0.2
-  inhaleLoudnessThresholdHigh: 0.1
-  inhaleLoudnessThresholdLow: 0.05
-  silentVolumeThreshold: 0.05
-  silentPitchThresholdLow: 20
-  silentPitchThresholdHigh: 40
+  exhaleLoudnessThreshold: 0.2
+  inhaleLoudnessThreshold: 0.1
+  silentVolumeThreshold: 0.1377698
+  silentPitchThresholdLow: 0
+  silentPitchThresholdHigh: 342.1875
   silentVarianceThreshold: 0.1
+  silentVariancePitchThreshold: 3
   exhaleVarianceThreshold: 2
-  inhaleVarianceThreshold: -3
-  exhalePitchFrequencyThresholdLow: 1000
-  exhalePitchFrequencyThresholdHigh: 2000
-  inhalePitchFrequencyThresholdLow: 3000
+  inhaleVariancePitchThreshold: 5
+  exhalePitchFrequencyThresholdLow: 310.9375
+  exhalePitchFrequencyThresholdHigh: 2247.773
+  inhalePitchFrequencyThresholdLow: 838.3
   inhalePitchFrequencyThresholdHigh: 5000
-  minimizedLoudness: 999
-  useMinimizedLoudness: 1
+  calculateLoudness: 999
+  calculatedPitch: Infinity
+  loudnessCalculationMethod: 2
+  pitchCalculationMethod: 1
   samplingSize: 1000
   testingTimer: 3
-  minAmplitudeThresholdInhale: 1e-12
-  minAmplitudeThresholdExhale: 4.4e-11
+  minAmplitudeThresholdInhale: 0.00001
+  minAmplitudeThresholdExhale: 0.00001
   ignoreFrequencyThresholdInhale: 21
   ignoreFrequencyThresholdExhale: 9
   ignoreMaxPitchInhale: 987
+  ignoreMaxPitchExhale: 1000
+  pitchOffsetLenancyInhale: 100
+  pitchOffsetLenancyExhale: 100
 --- !u!1 &1092855741
 GameObject:
   m_ObjectHideFlags: 0

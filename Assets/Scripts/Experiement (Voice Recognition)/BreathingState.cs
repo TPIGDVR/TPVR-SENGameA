@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.UI;
 
 namespace Breathing
 {
@@ -16,21 +17,29 @@ namespace Breathing
         EXHALE, 
         SILENT,
         
-    }; 
+    };
 
     public class BreathingState : FSMState
     {
-        protected BreathingDetection detector;
-        protected MicrophoneController microphoneController;
+        protected BreathingDetection _detector;
+        protected MicrophoneController _micController;
 
         public BreathingState(FSM fsm, int id , 
             BreathingDetection detector,
             MicrophoneController controller) : base(fsm, id)
         {
-            this.detector = detector;
-            microphoneController = controller;
+            this._detector = detector;
+            _micController = controller;
         }
 
+
+        //counter
+
+
+        //private void ResetChecker()
+        //{
+        //    inhaleVarianceChecker = 0;
+        //}
 
         /* 
         * This function checks if all the criteria to transition from INHALE state to EXHALE state have been met and then transitions to EXHALE state
@@ -43,16 +52,18 @@ namespace Breathing
         */
         protected void CheckInhale()
         {
-            bool isInhaleVolume = detector.minimizedLoudness < detector.inhaleLoudnessThresholdHigh;
-            //bool isTooQuiet = _detector.minimizedLoudness < _detector.inhaleLoudnessThresholdLow;
-            bool hasLargeVolumeDifference = true; /*_detector.Variance < _detector.inhaleVarianceThreshold;*/
-            bool withinInhalePitch = (microphoneController.getPitch() > detector.inhalePitchFrequencyThresholdLow &&
-                microphoneController.getPitch() < detector.inhalePitchFrequencyThresholdHigh);
+            float pitch = _detector.calculatedPitch;
 
-            Debug.Log($"Inhale condition. withinpitch {withinInhalePitch} LoudHigh: {isInhaleVolume} Varance: {hasLargeVolumeDifference}");// current pitch {micControl.getPitch()}
+            bool isInhaleVolume = _detector.calculateLoudness > _detector.inhaleLoudnessThreshold;
+            //bool hasConsistentPitch = inhaleVarianceChecker >= _detector.inhaleVariancePitchThreshold;
+            bool withinInhalePitch = (pitch > _detector.inhalePitchFrequencyThresholdLow &&
+                pitch < _detector.inhalePitchFrequencyThresholdHigh);
+
+            Debug.Log($"Inhale condition. \n" +
+                $"withinpitch {withinInhalePitch}\n" +
+                $" LoudHigh: {isInhaleVolume} \n");// current pitch {micControl.getPitch()}
 
             if (isInhaleVolume &&
-                hasLargeVolumeDifference &&
                 withinInhalePitch
                 )
             {
@@ -72,10 +83,11 @@ namespace Breathing
         */
         protected void CheckExhale()
         {
-            float pitch = microphoneController.getPitch();
-            bool isVolumeExhale = detector.minimizedLoudness > detector.exhaleLoudnessThresholdLow;
-            bool isWithinExhalePitchRange = (pitch > detector.exhalePitchFrequencyThresholdLow &&
-                pitch < detector.exhalePitchFrequencyThresholdHigh);
+            //float pitch = _micController.getPitch();
+            float pitch = _detector.calculatedPitch;
+            bool isVolumeExhale = _detector.calculateLoudness > _detector.exhaleLoudnessThreshold;
+            bool isWithinExhalePitchRange = (pitch > _detector.exhalePitchFrequencyThresholdLow &&
+                pitch < _detector.exhalePitchFrequencyThresholdHigh);
 
             Debug.Log($"Exhale condition. Loud: {isVolumeExhale} pitch: {isWithinExhalePitchRange}");// current pitch {micControl.getPitch()}
 
@@ -89,10 +101,12 @@ namespace Breathing
 
         protected void CheckSilent()
         {
-            bool isSilent = detector.minimizedLoudness < detector.silentVolumeThreshold;
-            bool hasLowPitch = microphoneController.getPitch() < detector.silentPitchThresholdHigh && 
-                                microphoneController.getPitch() > detector.silentPitchThresholdLow;
-            bool hasLowVariance = detector.Variance < detector.silentVarianceThreshold;
+
+            float pitch = _detector.calculatedPitch;
+            bool isSilent = _detector.calculateLoudness < _detector.silentVolumeThreshold;
+            bool hasLowPitch = pitch < _detector.silentPitchThresholdHigh &&
+                                pitch > _detector.silentPitchThresholdLow;
+            bool hasLowVariance = _detector.Variance < _detector.silentVarianceThreshold;
             if(isSilent && hasLowPitch &&
                 hasLowVariance)
             {
@@ -109,6 +123,7 @@ namespace Breathing
 
         public override void FixedUpdate()
         {
+            //check if it is still silent
             CheckExhale();
             CheckSilent();
         }
@@ -130,12 +145,22 @@ namespace Breathing
     public class SilentState : BreathingState
     {
         //can only transition to inhale
+        int counter;
         public SilentState(FSM fsm, int id, BreathingDetection detector, MicrophoneController controller) : base(fsm, id, detector, controller)
         {
         }
 
         public override void FixedUpdate()
         {
+
+            //bool isSilent = _detector.calculateLoudness < _detector.silentVolumeThreshold;
+            //bool hasLowPitch = _detector.calculatedPitch < _detector.silentPitchThresholdHigh;
+            //bool hasLowVariance = _detector.Variance < _detector.silentVarianceThreshold;
+
+            //Debug.Log($"silent condition. silent: {isSilent} low pitch: {hasLowPitch} Low Variance: {hasLowVariance}");// current pitch {micControl.getPitch()}
+
+            //if (isSilent && hasLowPitch && hasLowVariance) return;
+
             CheckInhale();
             CheckExhale();
 
@@ -269,6 +294,8 @@ namespace Breathing
 
         public override void FixedUpdate()
         {
+            _micController.CalculateSpectrumDataFromRecording();
+
             var curMaxPitch = _micController.CalculateMaxPitchFromRecording();
             if(curMaxPitch < -_detector.ignoreMaxPitchInhale)
             {
@@ -277,7 +304,6 @@ namespace Breathing
             }
             totalMaxPitch += curMaxPitch;
             totalVolume += _micController.CalculateVolumeFromRecording();
-            _micController.CalculateSpectrumDataFromRecording();
             totalMinPitch += _micController.CalculateMinPitchFromRecording(
                 _detector.minAmplitudeThresholdInhale,
                 _detector.ignoreFrequencyThresholdInhale
@@ -296,10 +322,10 @@ namespace Breathing
         public override void Exit()
         {
             base.Exit();
-            _detector.inhalePitchFrequencyThresholdLow = avgMinPitch;
-            _detector.inhalePitchFrequencyThresholdHigh = avgMaxPitch;
-            _detector.inhaleLoudnessThresholdLow = avgVolume;
-            _detector.inhaleLoudnessThresholdHigh = avgVolume;
+            _detector.inhalePitchFrequencyThresholdLow = avgMinPitch - _detector.pitchOffsetLenancyInhale ;
+            _detector.inhalePitchFrequencyThresholdHigh = avgMaxPitch + _detector.pitchOffsetLenancyInhale;
+            //_detector.inhaleLoudnessThresholdLow = avgVolume;
+            _detector.inhaleLoudnessThreshold = avgVolume;
         }
 
     }
@@ -315,13 +341,19 @@ namespace Breathing
 
         public override void FixedUpdate()
         {
+            _micController.CalculateSpectrumDataFromRecording();
+            var curMaxPitch = _micController.CalculateMaxPitchFromRecording();
+            if(curMaxPitch < _detector.ignoreMaxPitchExhale)
+            {
+                //ignore
+                return;
+            }
+            totalMaxPitch += curMaxPitch;
             frameCounter++;
             totalVolume += _micController.CalculateVolumeFromRecording();
-            _micController.CalculateSpectrumDataFromRecording();
             totalMinPitch += _micController.CalculateMinPitchFromRecording(
                 _detector.minAmplitudeThresholdExhale,
                 _detector.ignoreFrequencyThresholdExhale);
-            totalMaxPitch += _micController.CalculateMaxPitchFromRecording();
 
             Debug.Log($"Evaluated values\n" +
     $"totalMinPitch: {totalMinPitch} \n" +
@@ -333,10 +365,10 @@ namespace Breathing
         public override void Exit()
         {
             base.Exit();
-            _detector.exhalePitchFrequencyThresholdLow = avgMinPitch;
-            _detector.exhalePitchFrequencyThresholdHigh = avgMaxPitch;
-            _detector.exhaleLoudnessThresholdHigh= avgVolume;
-            _detector.exhaleLoudnessThresholdLow = avgVolume;
+            _detector.exhalePitchFrequencyThresholdLow = avgMinPitch + _detector.pitchOffsetLenancyExhale;
+            _detector.exhalePitchFrequencyThresholdHigh = avgMaxPitch + _detector.pitchOffsetLenancyExhale;
+            //_detector.exhaleLoudnessThresholdHigh= avgVolume;
+            _detector.exhaleLoudnessThreshold = avgVolume;
         }
 
     }
