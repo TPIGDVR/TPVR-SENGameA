@@ -123,21 +123,7 @@ internal class LuminanceTexSRF : ScriptableRendererFeature
             {
                 Blitter.BlitCameraTexture(cmd, cameraTexture, tempTexture, mat, 0); //copies the camera texture into our temporary texture and applies our shader on it
             }
-            //Texture2D lumTex2D = new(tempTexture.rt.width,tempTexture.rt.height);
-            //RenderTexture.active = tempTexture;
-            //lumTex2D.ReadPixels(new Rect(0, 0, tempTexture.rt.width, tempTexture.rt.height), 0, 0);
-            //lumTex2D.Apply();
-            //RenderTexture.active = null;
 
-            //Color[] lumArray = lumTex2D.GetPixels();
-            //float totalBrightness = 0;
-            //for (int i = 0; i < lumArray.Length; i++)
-            //{
-            //    float brightness = lumArray[i].grayscale;
-            //    totalBrightness += brightness;
-            //}
-            //totalBrightness /= lumArray.Length;
-            //Debug.Log(totalBrightness);
             context.ExecuteCommandBuffer(cmd); //execute the shader
             cmd.Clear();
             CommandBufferPool.Release(cmd); //release the command buffer
