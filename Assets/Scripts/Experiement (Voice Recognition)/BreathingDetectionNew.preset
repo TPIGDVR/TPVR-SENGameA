@@ -1,0 +1,140 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BreathingDetectionNew
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: 1922de5fb33a9bc4cbc9378a15da7fc2,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: stateText
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: dataProjector
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: exhaleLoudnessThresholdHigh
+    value: 0.6567029
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: exhaleLoudnessThresholdLow
+    value: 0.6567029
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: inhaleLoudnessThresholdHigh
+    value: 0.26794684
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: inhaleLoudnessThresholdLow
+    value: 0.26794684
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: silentVolumeThreshold
+    value: 0.13776977
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: silentPitchThresholdLow
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: silentPitchThresholdHigh
+    value: 342.1875
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: silentVarianceThreshold
+    value: 0.1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: exhaleVarianceThreshold
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: inhaleVariancePitchThreshold
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: exhalePitchFrequencyThresholdLow
+    value: 310.9375
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: exhalePitchFrequencyThresholdHigh
+    value: 2247.7727
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: inhalePitchFrequencyThresholdLow
+    value: 838.3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: inhalePitchFrequencyThresholdHigh
+    value: 5000
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: minimizedLoudness
+    value: 0.1472911
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: useMinimizedLoudness
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: samplingSize
+    value: 1000
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: testingTimer
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: minAmplitudeThresholdInhale
+    value: 0.00001
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: minAmplitudeThresholdExhale
+    value: 0.00001
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ignoreFrequencyThresholdInhale
+    value: 21
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ignoreFrequencyThresholdExhale
+    value: 9
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ignoreMaxPitchInhale
+    value: 987
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ignoreMaxPitchExhale
+    value: 1000
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pitchOffsetLenancyInhale
+    value: 100
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pitchOffsetLenancyExhale
+    value: 100
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []
