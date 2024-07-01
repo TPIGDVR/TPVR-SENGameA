@@ -30,7 +30,7 @@ public class PostProcessing : MonoBehaviour
 
     bool IsFainting = false;
 
-    EventManager em = EventSystem.em;
+    EventManager<Event> em = EventSystem.em;
 
     void Start()
     {

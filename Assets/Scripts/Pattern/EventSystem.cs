@@ -4,18 +4,22 @@ using UnityEngine;
 
 public static class EventSystem
 {
-    public static EventManager em = new();
-    public static EventManager postProcess = new();
+    public static EventManager<Event> em = new();
+    public static EventManager<PostProcessEvents> postProcess = new();
 
 }
 
 public enum PostProcessEvents
 {
-
+    SUNGLASSES_ON,
+    SUNGLASSES_OFF,
 }
 
 public enum Event
 {
     ANXIETY_UPDATE,
-    ANXIETY_BREATHE
+    ANXIETY_BREATHE,
+    START_GAME,
+    REQUEST_LUMTEXTURE,
+    GLARE_UPDATE
 }

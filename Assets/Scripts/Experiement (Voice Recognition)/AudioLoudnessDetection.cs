@@ -4,7 +4,7 @@ using UnityEngine;
 public class AudioLoudnessDetection : MonoBehaviour
 {
     public int sampleWindow = 64;
-    private AudioClip microPhoneClip;
+    public AudioClip microPhoneClip;
 
     private void Start()
     {
@@ -28,6 +28,7 @@ public class AudioLoudnessDetection : MonoBehaviour
             totalLoudness += Mathf.Abs(waveData[i]);
         }
 
+        //get the avergae of the loudness
         return totalLoudness / sampleWindow;
     }
 
@@ -35,6 +36,5 @@ public class AudioLoudnessDetection : MonoBehaviour
     {
         string microPhoneName = Microphone.devices[0];
         microPhoneClip = Microphone.Start(microPhoneName, true, 20, AudioSettings.outputSampleRate);
-
     }
 }

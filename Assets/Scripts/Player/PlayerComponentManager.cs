@@ -25,12 +25,13 @@ public class PlayerComponentManager : MonoBehaviour
     private void OnEnable()
     {
         OnBeginGame();
-        EventManager.Instance.AddListener(Event.START_GAME, OnStartGame);
+        //EventManager.Instance.AddListener(Event.START_GAME, OnStartGame);
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.RemoveListener(Event.START_GAME, OnStartGame);
+        //EventManager.Instance.RemoveListener(Event.START_GAME, OnStartGame);
+        
     }
 
     void OnBeginGame()

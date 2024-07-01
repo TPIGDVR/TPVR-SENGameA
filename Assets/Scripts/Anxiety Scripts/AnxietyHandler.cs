@@ -18,24 +18,28 @@ public class AnxietyHandler : MonoBehaviour
     [SerializeField]
     float _maxAnxietyIncreaseScale = 3;
     float _anxietyIncreaseScale = 0;
-
-
-    EventManager em = EventSystem.em;
+    float _maxGlareValue = 1;
+    float glareValue;
+    EventManager<Event> em = EventSystem.em;
 
     private void Start()
     {
         _noiseProximityHandler = GetComponent<NoiseProximityHandler>();
-        em.AddListener<float>((int)Event.ANXIETY_BREATHE, Breath);
+        em.AddListener<float>(Event.ANXIETY_BREATHE, Breath);
+        em.AddListener<float>(Event.GLARE_UPDATE, Glare);
     }
 
     private void Update()
     {
-        CalculateAnxietyScaleBasedOffNoiseLevel();
+        //CalculateAnxietyScaleBasedOffNoiseLevel();'
+        CalculateAnxietyScaleBasedOffGlareLevel();
         IncrementAnxietyLevel();
 
         _anxietyLevel = Mathf.Clamp(_anxietyLevel,0, _maxAnxietyLevel);
         //trigger the event after calculating the anxiety level
-        em.TriggerEvent<float>((int)Event.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
+        em.TriggerEvent<float>(Event.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
+
+        Debug.Log("Anxiety level = " + _anxietyIncreaseScale);
     }
 
     void CalculateAnxietyScaleBasedOffNoiseLevel()
@@ -43,6 +47,13 @@ public class AnxietyHandler : MonoBehaviour
         _anxietyIncreaseScale = Mathf.Lerp(_minAnxietyIncreaseScale
             ,_maxAnxietyIncreaseScale
             ,_noiseProximityHandler.TotalNoiseValue / _maxNoiseLevel);
+    }
+
+    void CalculateAnxietyScaleBasedOffGlareLevel()
+    {
+        _anxietyIncreaseScale = Mathf.Lerp(_minAnxietyIncreaseScale
+            , _maxAnxietyIncreaseScale
+            , glareValue / _maxGlareValue);
     }
 
     void IncrementAnxietyLevel()
@@ -53,6 +64,11 @@ public class AnxietyHandler : MonoBehaviour
     void Breath(float decrease)
     {
         _anxietyLevel *= decrease;
+    }
+
+    void Glare(float gv)
+    {
+        glareValue = gv;
     }
 
 }
