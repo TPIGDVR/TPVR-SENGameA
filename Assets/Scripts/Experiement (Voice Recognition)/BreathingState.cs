@@ -59,9 +59,9 @@ namespace Breathing
             bool withinInhalePitch = (pitch > _detector.inhalePitchFrequencyThresholdLow &&
                 pitch < _detector.inhalePitchFrequencyThresholdHigh);
 
-            Debug.Log($"Inhale condition. \n" +
-                $"withinpitch {withinInhalePitch}\n" +
-                $" LoudHigh: {isInhaleVolume} \n");// current pitch {micControl.getPitch()}
+            //Debug.Log($"Inhale condition. \n" +
+            //    $"withinpitch {withinInhalePitch}\n" +
+            //    $" LoudHigh: {isInhaleVolume} \n");// current pitch {micControl.getPitch()}
 
             if (isInhaleVolume &&
                 withinInhalePitch
@@ -89,7 +89,7 @@ namespace Breathing
             bool isWithinExhalePitchRange = (pitch > _detector.exhalePitchFrequencyThresholdLow &&
                 pitch < _detector.exhalePitchFrequencyThresholdHigh);
 
-            Debug.Log($"Exhale condition. Loud: {isVolumeExhale} pitch: {isWithinExhalePitchRange}");// current pitch {micControl.getPitch()}
+            //Debug.Log($"Exhale condition. Loud: {isVolumeExhale} pitch: {isWithinExhalePitchRange}");// current pitch {micControl.getPitch()}
 
             if (isVolumeExhale
                 &&
@@ -175,8 +175,6 @@ namespace Breathing
         protected MicrophoneController _micController;
         protected float elapseTime;
 
-
-
         protected float totalMinPitch;
         protected float totalMaxPitch;
         protected float totalVolume;
@@ -198,7 +196,9 @@ namespace Breathing
 
         public override void Enter()
         {
+            Debug.Log("start recording for controller");
             _micController.StartRecording();
+            Debug.Log($"mic is ready: {_micController.IsMicrophoneReady}");
             totalMaxPitch = 0;
             totalMinPitch = 0;
             totalVolume = 0;
@@ -241,6 +241,7 @@ namespace Breathing
 
         public override void Exit()
         {
+            Debug.Log("Stop recording for controller");
             _micController.StopRecording();
         }
         //do your calculation in exit

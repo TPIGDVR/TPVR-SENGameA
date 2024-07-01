@@ -52,6 +52,46 @@
         string microphoneDefaultName { get { return Microphone.devices[0]; } }
 
         public float[] FftSpectrum { get => fftSpectrum; }
+        public bool IsMicrophoneReady { get => isMicrophoneReady; set => isMicrophoneReady = value; }
+        public bool IsScriptRunned { get; private set; } = false;
+
+        //private void Awake()
+        //{
+        //    aMixer = Resources.Load("MicrophoneMixer") as AudioMixer;
+        //    if (mute)
+        //    {
+        //        aMixer.SetFloat("MicrophoneVolume", -80);
+        //    }
+        //    else
+        //    {
+        //        aMixer.SetFloat("MicrophoneVolume", 0);
+        //    }
+
+
+        //    if (Microphone.devices.Length == 0)
+        //    {
+        //        Debug.LogWarning("No microphone detected.");
+        //    }
+
+
+        //    //if using Android or iOS -> request microphone permission
+        //    if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+        //    {
+        //        yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
+
+        //        if (!Application.HasUserAuthorization(UserAuthorization.Microphone))
+        //        {
+        //            Debug.LogWarning("Application does not have microphone permission.");
+        //            yield break;
+        //        }
+        //    }
+        //}
+
+        //IEnumerator StartingMic()
+        //{
+
+        //}
+
 
         IEnumerator Start()
         {
@@ -86,14 +126,12 @@
             }
 
             prepareMicrophone();
-
-
-
             testingClipSource = gameObject.AddComponent<AudioSource>();
             testingClipSource.playOnAwake = false;
 
             fftSpectrum = new float[samples];
             pastPitches = new List<float>();
+            IsScriptRunned = true;
         }
 
         //private void Update()
@@ -104,6 +142,7 @@
 
         void FixedUpdate()
         {
+            print($"Is mic ready {IsMicrophoneReady}");
             if (isMicrophoneReady)
             {
                 loudness = calculateLoudness();
@@ -133,6 +172,7 @@
 
         void prepareMicrophone()
         {
+            Debug.Log("warming up mic");
             if (Microphone.devices.Length > 0)
             {
                 //Gets the maxFrequency and minFrequency of the device
@@ -354,25 +394,6 @@
             calculatingSource.Play();
         }
 
-        public void StartRecording(int seconds)
-        {
-            if (Microphone.IsRecording(microphoneDefaultName))
-            {
-                aSource.Stop();
-                aSource.clip = null;
-                Microphone.End(microphoneDefaultName);
-                isMicrophoneReady = false;
-            }
-            recordedClip = Microphone.Start(microphoneDefaultName, true, 1, maxFrequency);
-
-            //wait for the microphone to get ready
-            while (!(Microphone.GetPosition(Microphone.devices[0]) > 0))
-            {
-            }
-
-            calculatingSource.clip = recordedClip;
-            calculatingSource.Play();
-        }
 
 
         [ContextMenu("stopRecording")]
