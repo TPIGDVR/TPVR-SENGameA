@@ -38,7 +38,7 @@ public class NoiseProximityHandler : MonoBehaviour
             totalNoiseLevel += noiseLevel;
             
         }
-        Debug.Log(totalNoiseLevel);
+        //Debug.Log(totalNoiseLevel);
         return totalNoiseLevel;
     }
 

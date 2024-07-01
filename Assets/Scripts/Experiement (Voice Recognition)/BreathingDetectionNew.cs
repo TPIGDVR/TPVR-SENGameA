@@ -37,7 +37,8 @@ namespace Breathing
             fsm.Add(new TestingSilence(fsm, (int)Breathing.TESTING_SILENT,this, micControl));
             fsm.Add(new TestingInhale(fsm, (int)Breathing.TESTING_INHALE, this, micControl));
             fsm.Add(new TestingExhale(fsm, (int)Breathing.TESTING_EXHALE, this, micControl));
-            fsm.SetCurrentState((int)Breathing.TESTING_SILENT);
+            startingState = (int)Breathing.TESTING_SILENT;
+            //fsm.SetCurrentState((int)Breathing.TESTING_SILENT);
 
         }
 

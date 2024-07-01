@@ -81,28 +81,32 @@ namespace Breathing
         public float testingTimer;
         //for deciding the states
         protected FSM fsm;
-
+        protected int startingState;
         public float Variance { get => variance; set => variance = value; }
-
+        protected bool canRun = false;
         protected virtual void Start()
         {
             micControl = this.GetComponent<MicrophoneController>();
             if (micControl == null)
             {
                 Debug.LogError("Cannot find MicrophoneController attached to this object.");
-
             }
+
             fsm = new FSM();
             SetUpFSM();
+            StartCoroutine(WaitForMicophoneController());
         }
 
         protected virtual void FixedUpdate()
         {
-            UpdateVariance();
-            CalculateLoudness();
-            CalculatePitch();
-            fsm.FixedUpdate();
-            ProjectText();
+            if (canRun)
+            {
+                UpdateVariance();
+                CalculateLoudness();
+                CalculatePitch();
+                fsm.FixedUpdate();
+                ProjectText();
+            }
         }
 
         private void ProjectText()
@@ -122,85 +126,14 @@ namespace Breathing
             }
         }
 
-        #region old code
-        /*
-         * This function checks if all the criteria to transition from INHALE state to EXHALE state have been met and then transitions to EXHALE state
-         * 
-         * Criteria:
-         * Microphone loudness and variance have to be higher than our thresholds.
-         * OR 
-         * Microphone loudness has to be very loud and variance has to be under threshold for the last X frames
-         * 
-         */
-
-        //void checkIfExhaling()
-        //{
-
-        //    if (currentState == Breathing.INHALE)
-        //    {
-        //        //if (calculateLoudness > exhaleLoudnessThreshold
-        //        //    && 
-        //        //	//check if the pitch is within a certain threshold.
-        //        //	(micControl.getPitch() > exhalePitchFrequencyThresholdLow &&
-        //        //	micControl.getPitch() < exhalePitchFrequencyThresholdHigh)) 
-        //        //{
-        //        //	currentState = Breathing.EXHALE; //Change state to exhaling
-        //        //	BreathingEvents.TriggerOnExhale (); //Trigger onExhale event
-        //        //}
-        //        print($"current loudness now {calculateLoudness}");
-        //        bool isLoudLow = calculateLoudness > exhaleLoudnessThreshold;
-        //        bool isRightPitch = (micControl.getPitch() > exhalePitchFrequencyThresholdLow && micControl.getPitch() < exhalePitchFrequencyThresholdHigh);
-        //        print($"EXHALE condition. Loud: {isLoudLow} pitch: {isRightPitch}");// current pitch {micControl.getPitch()}
-
-        //        if (calculateLoudness > exhaleLoudnessThreshold
-        //            &&
-        //            //check if the pitch is within a certain threshold.
-        //            (micControl.getPitch() > exhalePitchFrequencyThresholdLow &&
-        //            micControl.getPitch() < exhalePitchFrequencyThresholdHigh))
-        //        {
-        //            currentState = Breathing.EXHALE; //Change state to exhaling
-        //            //BreathingEvents.TriggerOnExhale(); //Trigger onExhale event
-        //        }
-        //    }
-        //}
-
-
-        /*
-         * This function checks if all the criteria to transition from EXHALE state to INHALE state have been met and then transitions to INHALE state
-         * 
-         * Criteria:
-         * Microphone loudness and variance have to be lower than our thresholds.
-         * OR 
-         * Microphone loudness has to be much lower than our inhale loudness threshold
-         * 
-         */
-
-        //void checkIfInhaling()
-        //{
-        //    bool isRightVolumeHigh = calculateLoudness < inhaleLoudnessThreshold;
-        //    bool isRightVolumeLow = calculateLoudness < inhaleLoudnessThresholdLow;
-        //    bool isRightVarance = variance < inhaleVariancePitchThreshold;
-        //    print($"INHALE condition. LoudLow: {isRightVolumeLow} LoudHigh: {isRightVolumeHigh} Varance: {isRightVarance}");// current pitch {micControl.getPitch()}
-
-        //    if (currentState == Breathing.EXHALE &&
-
-        //        ((calculateLoudness < inhaleLoudnessThreshold &&
-        //        variance < inhaleVariancePitchThreshold) ||
-        //        calculateLoudness < inhaleLoudnessThresholdLow))
-        //    {
-
-        //        currentState = Breathing.INHALE; //Change state to inhaling			
-        //        //BreathingEvents.TriggerOnInhale(); //Trigger onInhale event			
-        //    }
-        //}
-        #endregion
-
         protected virtual void SetUpFSM()
         {
+            startingState = (int)Breathing.SILENT;
             fsm.Add(new InhalingState(fsm, (int)Breathing.INHALE, this, micControl));
             fsm.Add(new ExhalingState(fsm, (int)Breathing.EXHALE, this, micControl));
-            fsm.Add(new SilentState(fsm, (int)Breathing.SILENT, this, micControl)); 
-            fsm.SetCurrentState((int)Breathing.INHALE);
+            fsm.Add(new SilentState(fsm, (int)Breathing.SILENT, this, micControl));
+
+            //fsm.SetCurrentState((int)Breathing.INHALE);
         }
         /// <summary>
         /// Get the difference of loudness between different
@@ -373,6 +306,16 @@ namespace Breathing
             {
                 calculatedPitch = micControl.getPitch();
             }
+        }
+
+        IEnumerator WaitForMicophoneController()
+        {
+            while(!micControl.IsScriptRunned)
+            {
+                yield return null;
+            }
+            fsm.SetCurrentState(startingState);
+            canRun = true;
         }
 
         enum CalculationMethod
