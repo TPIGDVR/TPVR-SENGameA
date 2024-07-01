@@ -30,16 +30,19 @@ namespace Breathing
         protected override void SetUpFSM()
         {
             fsm = new();
-            fsm.Add(new InhalingState(fsm, (int)Breathing.INHALE, this, micControl));
-            fsm.Add(new ExhalingState(fsm, (int)Breathing.EXHALE, this, micControl));
-            fsm.Add(new SilentState(fsm, (int)Breathing.SILENT, this, micControl));
-            
-            fsm.Add(new TestingSilence(fsm, (int)Breathing.TESTING_SILENT,this, micControl));
-            fsm.Add(new TestingInhale(fsm, (int)Breathing.TESTING_INHALE, this, micControl));
-            fsm.Add(new TestingExhale(fsm, (int)Breathing.TESTING_EXHALE, this, micControl));
-            startingState = (int)Breathing.TESTING_SILENT;
-            //fsm.SetCurrentState((int)Breathing.TESTING_SILENT);
+            fsm.Add(new InhalingState(fsm, (int)Breathing.INHALE, this));
+            fsm.Add(new ExhalingState(fsm, (int)Breathing.EXHALE, this));
+            fsm.Add(new SilentState(fsm, (int)Breathing.SILENT, this));
 
+            //fsm.Add(new TestingSilence(fsm, (int)Breathing.TESTING_SILENT,this, micControl));
+            //fsm.Add(new TestingInhale(fsm, (int)Breathing.TESTING_INHALE, this, micControl));
+            //fsm.Add(new TestingExhale(fsm, (int)Breathing.TESTING_EXHALE, this, micControl));
+
+            fsm.Add(new TestingSilenceNew(fsm, (int)Breathing.TESTING_SILENT, this, micControl));
+            fsm.Add(new TestingInhaleNew(fsm, (int)Breathing.TESTING_INHALE, this, micControl));
+            fsm.Add(new TestingExhaleNew(fsm, (int)Breathing.TESTING_EXHALE, this, micControl));
+
+            startingState = (int)Breathing.TESTING_SILENT;
         }
 
 

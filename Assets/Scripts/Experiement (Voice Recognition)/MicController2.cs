@@ -6,10 +6,10 @@
     using System.Collections.Generic;
     using System;
 
-    public class MicrophoneController : MonoBehaviour
+    public class MicController2 : MonoBehaviour
     {
-        [SerializeField]private AudioSource aSource;
-        public int samples = 1024;
+        [SerializeField] private AudioSource audioSource;
+        public int samplesSize = 1024;
         private int maxFrequency = 44100;
         private int minFrequency = 0;
         public bool mute = true;
@@ -17,12 +17,13 @@
         public float loudness;
         [SerializeField] private float loudnessMultiplier = 10.0f; //Multiply loudness with this number
 
-        private float[] fftSpectrum;
+        //stores all the data for spectrum, volume.
+        public static float[] dataContainer;
 
         private bool isMicrophoneReady = false;
         private AudioMixer aMixer;
 
-        public float highPassCutoff; //Ignores all frequencies above this value
+        public float highPassCutoff = 10000; //Ignores all frequencies above this value
         private float pitchValue;
         private List<float> pastPitches;
         [HideInInspector]
@@ -36,17 +37,8 @@
 
         private float maxPitch = 0.0f; //Delete this, its just for testing
 
-        private AudioClip recordedClip = null;
-        //[SerializeField] TextMeshProUGUI dataText;
-
         //for calculating the pitch and volume of a target volume/pitch
-        [SerializeField] private AudioSource calculatingSource;
-        private AudioSource testingClipSource;
-        private Coroutine currentCoroutine;
-
-        string microphoneDefaultName { get { return Microphone.devices[0]; } }
-
-        public float[] FftSpectrum { get => fftSpectrum; }
+        private string microphoneDefaultName;
         public bool IsMicrophoneReady { get => isMicrophoneReady; set => isMicrophoneReady = value; }
         public bool IsScriptRunned { get; private set; } = false;
 
@@ -83,26 +75,18 @@
             }
 
             prepareMicrophone();
-            testingClipSource = gameObject.AddComponent<AudioSource>();
-            testingClipSource.playOnAwake = false;
 
-            fftSpectrum = new float[samples];
+            dataContainer = new float[samplesSize];
             pastPitches = new List<float>();
             IsScriptRunned = true;
         }
 
-        //private void Update()
-        //{
-        //    dataText.text = $"Data \n" +
-        //            $"Pitch: {(int)pitchValue} ";
-        //}
-
         void FixedUpdate()
         {
-            print($"Is mic ready {IsMicrophoneReady}");
             if (isMicrophoneReady)
             {
-                loudness = calculateLoudness();
+                print("mic working");
+                loudness = CalculateLoudness();
 
                 if (UseFFTCentroid)
                 {
@@ -113,23 +97,10 @@
                     calculatePitch();
                 }
             }
-            
-        }
-
-        void OnGUI()
-        {
-            if (EnableSavingOfRecordedAudio)
-            {
-                if (GUI.Button(new Rect(10, 10, 50, 50), "Save"))
-                {
-                    SaveRecordedAudio();
-                }
-            }
         }
 
         void prepareMicrophone()
         {
-            Debug.Log("warming up mic");
             if (Microphone.devices.Length > 0)
             {
                 //Gets the maxFrequency and minFrequency of the device
@@ -138,17 +109,20 @@
                 {//These 2 lines of code are mainly for windows computers
                     maxFrequency = 44100;
                 }
-                if (aSource.clip == null)
+                if (audioSource.clip == null)
                 {
-                    aSource.clip = Microphone.Start(Microphone.devices[0], true, 1, maxFrequency);
-                    aSource.loop = true;
+                    audioSource.clip = Microphone.Start(Microphone.devices[0], true, 1, maxFrequency);
+                    audioSource.loop = true;
 
                     //Wait until microphone starts recording
                     while (!(Microphone.GetPosition(Microphone.devices[0]) > 0))
                     {
                     }
                 }
-                aSource.Play();
+
+                microphoneDefaultName = Microphone.devices[0];
+
+                audioSource.Play();
                 isMicrophoneReady = true;
 
             }
@@ -162,16 +136,16 @@
         void calculatePitch()
         {
             // Gets the sound spectrum.
-            aSource.GetSpectrumData(fftSpectrum, 0, FFTWindow.BlackmanHarris);
+            audioSource.GetSpectrumData(dataContainer, 0, FFTWindow.BlackmanHarris);
             float maxV = 0;
             int maxN = 0;
 
             // Find the highest sample.
-            for (int i = 0; i < fftSpectrum.Length; i++)
+            for (int i = 0; i < dataContainer.Length; i++)
             {
-                if (fftSpectrum[i] > maxV)
+                if (dataContainer[i] > maxV)
                 {
-                    maxV = fftSpectrum[i];
+                    maxV = dataContainer[i];
                     maxN = i; // maxN is the index of max
                 }
             }
@@ -182,7 +156,7 @@
             // Convert index to frequency
             //24000 is the sampling frequency for the PC. 24000 / sample = frequency resolution
             // frequency resolution * index of the sample would give the pitch as a result.
-            pitchValue = HighPassFilter(freqN * 24000 / samples, highPassCutoff);
+            pitchValue = HighPassFilter(freqN * 24000 / samplesSize, highPassCutoff);
             updatePastPitches(pitchValue);
 
             //update the max pitch
@@ -199,16 +173,16 @@
 
         void calculateFFTCentroid()
         {
-            aSource.GetSpectrumData(fftSpectrum, 0, FFTWindow.BlackmanHarris);
+            audioSource.GetSpectrumData(dataContainer, 0, FFTWindow.BlackmanHarris);
 
             float centroid = 0.0f;
             float fftSum = 0.0f;
             float weightedSum = 0.0f;
 
-            for (int i = 0; i < fftSpectrum.Length / 2; i++)
+            for (int i = 0; i < dataContainer.Length / 2; i++)
             {
-                fftSum += fftSpectrum[i];
-                weightedSum += fftSpectrum[i] * i * 24000 / samples;
+                fftSum += dataContainer[i];
+                weightedSum += dataContainer[i] * i * 24000 / samplesSize;
             }
 
             pitchValue =/*(24000 / samplesSize) * */(weightedSum / fftSum);
@@ -233,23 +207,18 @@
         //need to call this before u can call the other pitch related methods
         public void CalculateSpectrumDataFromRecording()
         {
-            calculatingSource.GetSpectrumData(fftSpectrum, 0, FFTWindow.BlackmanHarris);
+            audioSource.GetSpectrumData(dataContainer, 0, FFTWindow.BlackmanHarris);
         }
-        public float CalculateMaxPitchFromRecording()
+
+        public float CalculateMaxPitchFromRecording(int startindex = 0)
         {
-            //not too sure if this safe performance if I only
-            //compute the spectrum data once and use accross different areas.
-            if(calculatingSource.clip == null)
-            {
-                throw new Exception("You cant calculate a pitch as it is not recording");
-            }
+            float firstMax = float.NegativeInfinity;
+            float firstMaxValue = float.NegativeInfinity;
+            //PrintArray(dataContainer);
 
-;            float firstMax = 0;
-            float firstMaxValue = fftSpectrum[0];
-
-            for(int i = 1;i < fftSpectrum.Length ; i++)
+            for (int i = startindex; i < dataContainer.Length; i++)
             {
-                var val = fftSpectrum[i];
+                var val = dataContainer[i];
                 if (val > firstMaxValue)
                 {
                     firstMax = i;
@@ -257,23 +226,18 @@
                 }
             }
 
-            return HighPassFilter((float)firstMax * 24000 / samples, highPassCutoff);
+            return HighPassFilter((float)firstMax * 24000 / samplesSize, highPassCutoff);
         }
 
-        public float CalculateMinPitchFromRecording(float amplitudeThreshold = 0f , int ignoreIndexBelow = 0)
+        public float CalculateMinPitchFromRecording(float amplitudeThreshold = 0f, int ignoreIndexBelow = 0)
         {
-            if (calculatingSource.clip == null)
-            {
-                throw new Exception("You cant calculate a pitch as it is not recording");
-            }
-
             int selectedFrequency = -1;
             //PrintArray(dataContainer);
             //try get lowest frequency and have 
-            for (; ignoreIndexBelow < fftSpectrum.Length; ignoreIndexBelow++)
+            for (; ignoreIndexBelow < dataContainer.Length; ignoreIndexBelow++)
             {
-                
-                if(fftSpectrum[ignoreIndexBelow] >= amplitudeThreshold)
+
+                if (dataContainer[ignoreIndexBelow] >= amplitudeThreshold)
                 {
                     selectedFrequency = ignoreIndexBelow;
                     break;
@@ -282,93 +246,25 @@
 
             //print(selectedFrequency);
 
-            return HighPassFilter((float)selectedFrequency * 24000 / samples, highPassCutoff);
+            return HighPassFilter((float)selectedFrequency * 24000 / samplesSize, highPassCutoff);
         }
-
-        public float CalculateVolumeFromRecording()
-        {
-            if (calculatingSource.clip == null)
-            {
-                throw new Exception("You cant calculate a pitch as it is not recording");
-            }
-
-            float[] microphoneData = new float[samples];
-            float sum = 0;
-
-            calculatingSource.GetOutputData(microphoneData, 0);
-            for (int i = 0; i < microphoneData.Length; i++)
-            {
-                sum += Mathf.Pow(microphoneData[i], 2);//Mathf.Abs(microphoneData[i]);
-            }
-
-            return Mathf.Sqrt(sum / samples) * loudnessMultiplier;
-        }
-
-        public void TestClipFromRecord(AudioClip clip)
-        {
-            if(currentCoroutine != null)
-            {
-                StopCoroutine(currentCoroutine);
-            }
-            testingClipSource.clip = clip;
-            testingClipSource.Play();
-            currentCoroutine = StartCoroutine(RemoveClipOnceItIsDone());
-        }
-
-        IEnumerator RemoveClipOnceItIsDone()
-        {
-            while (testingClipSource.isPlaying)
-            {
-                yield return null;
-            }
-            testingClipSource.clip=null;
-        }
-
         #region recording
 
         [ContextMenu("startRecording")]
         public void StartRecording()
         {
             isMicrophoneReady = false;
-
-            if (Microphone.IsRecording(microphoneDefaultName))
-            {
-                aSource.Stop();
-                aSource.clip = null;
-                Microphone.End(microphoneDefaultName);
-            }
-
-
-            calculatingSource.clip = Microphone.Start(microphoneDefaultName, true, 1, maxFrequency);
-            calculatingSource.loop = true;
-            //wait for the microphone to get ready
-            while (!(Microphone.GetPosition(Microphone.devices[0]) > 0))
-            {
-            }
-
-            //this is so that any script can start calculating the source pitch and volume
-            calculatingSource.Play();
+            //so the other script can access the data and calculate the data
+            //manually
         }
 
         [ContextMenu("stopRecording")]
         public void StopRecording()
         {
-            if (Microphone.IsRecording(microphoneDefaultName))
-            {
-                Microphone.End(microphoneDefaultName);
-            }
-            calculatingSource.Stop();
-            calculatingSource.clip = null;
-            recordedClip = null;
-            prepareMicrophone();
+            isMicrophoneReady = true;
             //return recordedClip;
         }
 
-        [ContextMenu("restart recording")]
-        public void RestartRecording()
-        {
-            prepareMicrophone();
-        }
         #endregion
 
         float HighPassFilter(float pitch, float cutOff)
@@ -389,8 +285,6 @@
         /// <param name="newPitch">the pitch that is added</param>
         void updatePastPitches(float newPitch)
         {
-            pastPitches.Add(newPitch);
-
             if (pastPitches.Count > pitchRecordTime)
             {
                 pastPitches.RemoveAt(0);
@@ -410,18 +304,16 @@
         /// Get data from a the source
         /// </summary>
         /// <returns></returns>
-        float calculateLoudness()
+       public float CalculateLoudness()
         {
-            float[] microphoneData = new float[samples];
             float sum = 0;
-
-            aSource.GetOutputData(microphoneData, 0);
-            for (int i = 0; i < microphoneData.Length; i++)
+            audioSource.GetOutputData(dataContainer, 0);
+            for (int i = 0; i < dataContainer.Length; i++)
             {
-                sum += Mathf.Pow(microphoneData[i], 2);//Mathf.Abs(microphoneData[i]);
+                sum += Mathf.Pow(dataContainer[i], 2);//Mathf.Abs(dataContainer[i]);
             }
 
-            return Mathf.Sqrt(sum / samples) * loudnessMultiplier;
+            return Mathf.Sqrt(sum / samplesSize) * loudnessMultiplier;
         }
 
         #region getter
@@ -440,10 +332,6 @@
             return centroidValue;
         }
         #endregion
-        void SaveRecordedAudio()
-        {
-            //EditorUtility.ExtractOggFile (GameObject.Find("TestAudioSource").GetComponent<AudioSource>().clip, Application.streamingAssetsPath);
-        }
 
         void PrintArray(float[] array)
         {
@@ -452,5 +340,4 @@
             Debug.Log(arrayString);
         }
     }
-
 }

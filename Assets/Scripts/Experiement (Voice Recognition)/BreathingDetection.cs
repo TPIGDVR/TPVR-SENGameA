@@ -10,14 +10,14 @@ using static Unity.VisualScripting.Member;
 
 namespace Breathing
 {
-    [RequireComponent(typeof(MicrophoneController))]
+    //[RequireComponent(typeof(MicrophoneController))]
     public class BreathingDetection : MonoBehaviour
     {
         [Header("Data Text")]
         public TextMeshProUGUI stateText;
         public TextMeshProUGUI dataProjector;
 
-        protected MicrophoneController micControl; //microphone controller for loudness and variance calculation
+        protected MicController2 micControl; //microphone controller for loudness and variance calculation
 
         private float prevLoudness = 0f; //loudness in previous frame
         private float variance = 0f; //variance of current frame
@@ -77,7 +77,7 @@ namespace Breathing
         [Header("Other settings")]
         [SerializeField] private CalculationMethod loudnessCalculationMethod;
         [SerializeField] private CalculationMethod pitchCalculationMethod;
-        [SerializeField] float samplingSize = 1000;
+
         public float testingTimer;
         //for deciding the states
         protected FSM fsm;
@@ -86,7 +86,8 @@ namespace Breathing
         protected bool canRun = false;
         protected virtual void Start()
         {
-            micControl = this.GetComponent<MicrophoneController>();
+            //micControl = this.GetComponent<MicrophoneController>();
+            micControl = GetComponent<MicController2>();
             if (micControl == null)
             {
                 Debug.LogError("Cannot find MicrophoneController attached to this object.");
@@ -111,7 +112,7 @@ namespace Breathing
 
         private void ProjectText()
         {
-            //Debug.Log($"current loudness now {calculateLoudness}");
+            //Debug.Log($"current loudness now {CalculateLoudness}");
             //Debug.Log($"current variance {variance}");
             if (stateText != null)
             {
@@ -129,11 +130,9 @@ namespace Breathing
         protected virtual void SetUpFSM()
         {
             startingState = (int)Breathing.SILENT;
-            fsm.Add(new InhalingState(fsm, (int)Breathing.INHALE, this, micControl));
-            fsm.Add(new ExhalingState(fsm, (int)Breathing.EXHALE, this, micControl));
-            fsm.Add(new SilentState(fsm, (int)Breathing.SILENT, this, micControl));
-
-            //fsm.SetCurrentState((int)Breathing.INHALE);
+            fsm.Add(new InhalingState(fsm, (int)Breathing.INHALE,this));
+            fsm.Add(new ExhalingState(fsm, (int)Breathing.EXHALE, this));
+            fsm.Add(new SilentState(fsm, (int)Breathing.SILENT , this));
         }
         /// <summary>
         /// Get the difference of loudness between different
@@ -202,13 +201,13 @@ namespace Breathing
                     calculateLoudness = prevLoudness;
                 }
 
-                //Remove oldest loudness from list and recalculate calculateLoudness
+                //Remove oldest loudness from list and recalculate CalculateLoudness
                 //(only if the oldest loudness is the currentMinimizedLoudness)
                 if (loudnessList.Count >= maxLoudnessListCount)
                 {
                     if (loudnessList[0] <= calculateLoudness)
                     {
-                        //Find new calculateLoudness
+                        //Find new CalculateLoudness
                         float min = loudnessList[1];
                         for (int i = 1; i < loudnessList.Count; i++)
                         {
@@ -230,7 +229,7 @@ namespace Breathing
                 dLog += loudnessList[i] + ", ";
             }
             Debug.Log (dLog);
-            Debug.Log("MinimizedLoudness: " + calculateLoudness + " Past loudness: " + prevLoudness);
+            Debug.Log("MinimizedLoudness: " + CalculateLoudness + " Past loudness: " + prevLoudness);
             */
         }
 
