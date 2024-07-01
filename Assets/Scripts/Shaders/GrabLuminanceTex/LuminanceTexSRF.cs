@@ -88,7 +88,6 @@ internal class LuminanceTexSRF : ScriptableRendererFeature
         public void Dispose()
         {
             //dispose of all the unused assets here
-
             //tempTexture.Release();// release the temporary texture
         }
 
@@ -131,6 +130,10 @@ internal class LuminanceTexSRF : ScriptableRendererFeature
             context.ExecuteCommandBuffer(cmd); //execute the shader
             cmd.Clear();
             CommandBufferPool.Release(cmd); //release the command buffer
+        }
+        public override void OnFinishCameraStackRendering(CommandBuffer cmd)
+        {
+            tempTexture.Release();
         }
     }
 }

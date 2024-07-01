@@ -19,13 +19,15 @@ public class HeartbeatHandler : MonoBehaviour
     float currBPM;
 
     float updateTiming;
+    EventManager<Event> em = EventSystem.em;
 
     private void Start()
     {
         defaultFreq = pulse.Frequency;
         defaultSpeed = pulse.Speed;
         defaultAmp = pulse.Amplitude;
-        StartCoroutine(Heartbeat());
+        //StartCoroutine(Heartbeat());
+        em.AddListener<float>(Event.ANXIETY_UPDATE,UpdateHeartbeat);
     }
     
     IEnumerator Heartbeat()
@@ -36,6 +38,13 @@ public class HeartbeatHandler : MonoBehaviour
             UpdateUI(currFreq,currSpd,currBPM);
             yield return new WaitForSeconds(updateTiming);
         }
+    }
+
+    void UpdateHeartbeat(float anxVal)
+    {
+        anxietyLevel = anxVal;
+        CalculateValues();
+        UpdateUI(currFreq, currSpd, currBPM);
     }
 
     void CalculateValues()
