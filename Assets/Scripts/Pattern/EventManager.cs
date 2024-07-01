@@ -33,7 +33,7 @@ public class EventManager<ev> where ev : System.Enum
 
     //uses the Action delegate which does not return a value
     #region ADD/REMOVE/TRIGGER (NO PARAMETERS)
-    public void AddListeners(ev id, params Action[] listeners)
+    public void AddListener(ev id, params Action[] listeners)
     {
         // If the event does not exist in the dictionary, add it.
         if (!eventListeners.ContainsKey(id))

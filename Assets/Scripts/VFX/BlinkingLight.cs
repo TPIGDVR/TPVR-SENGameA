@@ -6,8 +6,12 @@ public class BlinkingLights : MonoBehaviour
 {
     Light _light;
     [SerializeField]Color _color;
+    [SerializeField] float minRandInterval_WAIT;
+    [SerializeField] float maxRandInterval_WAIT;
+    [SerializeField] float minRandInterval_DELAY;
+    [SerializeField] float maxRandInterval_DELAY;
     float randInterval;
-    float randChance;
+    [SerializeField]float randChance;
 
     private void Start()
     {
@@ -21,14 +25,14 @@ public class BlinkingLights : MonoBehaviour
         while (true)
         {
             float rV = Random.value;
-            randInterval = Random.Range(0, 1f);
+            randInterval = Random.Range(minRandInterval_WAIT, maxRandInterval_WAIT);
             
             if (rV > randChance)
             {
                 _light.enabled = false;
             }
 
-            float rW = Random.Range(0.2f,0.5f);
+            float rW = Random.Range(minRandInterval_DELAY,maxRandInterval_DELAY);
 
             yield return new WaitForSeconds(rW);
 

@@ -11,12 +11,15 @@ public static class EventSystem
 
 public enum PostProcessEvents
 {
-    SUNGLASSES_ON
+    SUNGLASSES_ON,
+    SUNGLASSES_OFF,
 }
 
 public enum Event
 {
     ANXIETY_UPDATE,
     ANXIETY_BREATHE,
-    START_GAME
+    START_GAME,
+    REQUEST_LUMTEXTURE,
+    GLARE_UPDATE
 }
