@@ -7,21 +7,22 @@ public class ProximityInteractable : MonoBehaviour
     // Start is called before the first frame update
     Outline outline;
     public Transform player;
+    public GameObject intBall;
     void Start()
     {
-        outline = GetComponent<Outline>();
+        intBall.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(player.position, this.transform.position) < 3f)
+        if (Vector3.Distance(player.position, this.transform.position) < 1f)
         {
-            outline.enabled = true;
+            intBall.SetActive(true);
         }
         else
         {
-            outline.enabled = false;
+            intBall.SetActive(false);
         }
     }
 }
