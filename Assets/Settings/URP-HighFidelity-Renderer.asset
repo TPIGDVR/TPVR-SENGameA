@@ -18,7 +18,7 @@ MonoBehaviour:
     InjectionPoint: 600
     Requirements: 4
     ProfilerName: GRAB LUMINANCE TEX
-    DownscaleSize: 8
+    DownscaleSize: 512
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37,8 +37,7 @@ MonoBehaviour:
     hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
   - {fileID: -2311892099899377785}
-  - {fileID: 1825883999883481052}
-  m_RendererFeatureMap: 873777526282eadfdccf1feed2d75619
+  m_RendererFeatureMap: 873777526282eadf
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
