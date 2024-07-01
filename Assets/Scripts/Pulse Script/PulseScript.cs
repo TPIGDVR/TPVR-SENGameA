@@ -99,5 +99,25 @@ public class PulseScript : MonoBehaviour
         currentAngle -= minAngle;
         return 360 * Mathf.InverseLerp(0 , maxAngle, currentAngle);
     }
+
+    public void SetSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+    }
+
+    public void SetFrequency(float newFreq)
+    {
+        frequency = newFreq;
+    }
+
+    public void SetAmplitude(float newAmp)
+    {
+        amp = newAmp;
+    }
+
+
+    public float Speed { get => speed; }
+    public float Frequency { get => frequency; }
+    public float Amplitude { get => amp; }
 }
 
