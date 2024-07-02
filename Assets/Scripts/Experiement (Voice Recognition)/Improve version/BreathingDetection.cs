@@ -1,4 +1,5 @@
 ﻿using PGGE.Patterns;
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -10,7 +11,6 @@ namespace Breathing3
         InhaleData,
         ExhaleData
     {
-
         //information about the volume currently
         VolumeProvider audioProvider;
         [Header("Silence")]
@@ -36,6 +36,10 @@ namespace Breathing3
 
         [Header("other settings")]
         [SerializeField] private float testTimer;
+        public InhaleData presetInhaleData;
+        public ExhaleData presetExhaleData;
+        public SilenceData PresetSilenceData;
+        [SerializeField] private bool usedPresetData;
 
         #region implemented interface
         public float SilenceVolumeThreshold { get => silenceVolumeThreshold; set => silenceVolumeThreshold = value; }
@@ -63,9 +67,18 @@ namespace Breathing3
             audioProvider = GetComponent<VolumeProvider>();
 
             fsm = new FSM();
-            fsm.Add(new SilentState(fsm, (int)States.SILENT, audioProvider, this, this, this));
-            fsm.Add(new InhaleState(fsm, (int)States.INHALE, audioProvider, this, this, this));
-            fsm.Add(new ExhaleState(fsm, (int)States.EXHALE, audioProvider, this, this, this));
+            if (usedPresetData)
+            {
+                fsm.Add(new SilentState(fsm, (int)States.SILENT, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
+                fsm.Add(new InhaleState(fsm, (int)States.INHALE, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
+                fsm.Add(new ExhaleState(fsm, (int)States.EXHALE, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
+            }
+            else
+            {
+                fsm.Add(new SilentState(fsm, (int)States.SILENT, audioProvider, this, this, this));
+                fsm.Add(new InhaleState(fsm, (int)States.INHALE, audioProvider, this, this, this));
+                fsm.Add(new ExhaleState(fsm, (int)States.EXHALE, audioProvider, this, this, this));
+            }
             //fsm.Add(new TestSilentState(fsm, (int)States.SILENT_TESTING, audioProvider, testTimer, this));
             //fsm.Add(new TestInhaleState(fsm, (int)States.INHALE_TESTING, audioProvider, testTimer, this));
             fsm.Add(new TestInhaleStateNew(fsm, (int)States.INHALE_TESTING, audioProvider, testTimer, this,this));
