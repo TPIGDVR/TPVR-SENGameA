@@ -3,22 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Test : MonoBehaviour
+public class CalculateLuminosity : MonoBehaviour
 {
     Texture2D lumTex2D;
     EventManager<Event> em = EventSystem.em;
-    void TestMethod()
+    [SerializeField,Range(0,1)]float lT;
+
+    private void Start()
     {
-       // Material mat = new();
+        em.AddListener(Event.ANXIETY_UPDATE,ProcessTexture);
     }
 
-
-    private void Update()
-    {
-        Process();
-    }
-
-    void Process() 
+    void ProcessTexture()
     {
         try
         {
@@ -37,6 +33,8 @@ public class Test : MonoBehaviour
                 totalBrightness += brightness;
             }
             totalBrightness /= lumArray.Length;
+            if (totalBrightness < lT)
+                totalBrightness = 0;
             rt.Release();
             Debug.Log(totalBrightness);
             em.TriggerEvent<float>(Event.GLARE_UPDATE, totalBrightness);
