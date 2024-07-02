@@ -37,7 +37,8 @@ MonoBehaviour:
     hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
   - {fileID: -2311892099899377785}
-  m_RendererFeatureMap: 873777526282eadf
+  - {fileID: 3049069423971431189}
+  m_RendererFeatureMap: 873777526282eadf157352877c78502a
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -94,3 +95,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 0
   renderInt: 0
+--- !u!114 &3049069423971431189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45c23c61e0852ec48908bdb8319de283, type: 3}
+  m_Name: GlareSRF
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  shader: {fileID: -6465566751694194690, guid: 1706b697b9a3e2542bc97724b2cdbffa, type: 3}
+  settings:
+    InjectionPoint: 600
+    Requirements: 4
+    ProfilerName: LIGHT GLARE
+    GlareColor: {r: 1, g: 1, b: 1, a: 0}
+    GlareAmount: 0

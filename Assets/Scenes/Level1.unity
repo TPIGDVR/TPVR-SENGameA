@@ -3282,7 +3282,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &937901570
 Transform:
   m_ObjectHideFlags: 0
@@ -3341,6 +3341,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: OverheadLight
       objectReference: {fileID: 0}
+    - target: {fileID: 604208722972355802, guid: c7165cce8832611499bafdf0f167298b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2527633360422689932, guid: c7165cce8832611499bafdf0f167298b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3391,6 +3396,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7626316850678014159, guid: c7165cce8832611499bafdf0f167298b,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: af83d19f1971cc64f813e40c0604d7f2, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
