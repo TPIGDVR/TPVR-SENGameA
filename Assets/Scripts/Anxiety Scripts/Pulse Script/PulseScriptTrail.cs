@@ -60,8 +60,8 @@ public class PulseScriptTrail : MonoBehaviour
 
     void ChangeCurrentTrail()
     {
-        trailPool.Retrieve(currentTrail.gameObject);
-        currentTrail = trailPool.Get().transform;
+        //trailPool.Retrieve(currentTrail.gameObject);
+        //currentTrail = trailPool.Get().transform;
     }
 
     float ArcTooth(float degrees)
