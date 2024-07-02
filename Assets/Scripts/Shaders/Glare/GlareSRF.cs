@@ -118,7 +118,7 @@ internal class GlareSRF : ScriptableRendererFeature
 
             CommandBuffer cmd = CommandBufferPool.Get(); // get a command buffer from the pool
             RTHandle cameraTexture = renderingData.cameraData.renderer.cameraColorTargetHandle; //get the camera texture
-
+            cmd.SetRenderTarget(BuiltinRenderTextureType.CameraTarget, 0, CubemapFace.Unknown, -1);
             //assigns a identification scope so it can be identified in the frame debugger
             using (new ProfilingScope(cmd, profileSampler))
             {
