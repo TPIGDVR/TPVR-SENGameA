@@ -707,7 +707,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 784452938}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1922de5fb33a9bc4cbc9378a15da7fc2, type: 3}
   m_Name: 
@@ -747,7 +747,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 784452938}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c5f7dcd77df6684cbc3863ec80d0b63, type: 3}
   m_Name: 
@@ -1452,8 +1452,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1830706058}
   - component: {fileID: 1830706057}
+  - component: {fileID: 1830706059}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Breathing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1478,6 +1479,9 @@ MonoBehaviour:
   mute: 1
   loudnessMultiplier: 100
   highPassCutoff: 10000
+  startingCheckingFrequencyIndex: 4
+  pitchCalculationMethod: 3
+  volumeCalculationMethod: 3
 --- !u!4 &1830706058
 Transform:
   m_ObjectHideFlags: 0
@@ -1493,6 +1497,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1830706059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830706056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b370a8f393758e3458851b033820b452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  silenceVolumeThreshold: 0
+  silencePitchUpperBound: 0
+  silencePitchLowerBound: 0
+  silencePitchVaranceThreshold: 0.2
+  inhaleVolumeThreshold: 0
+  inhalePitchUpperBound: 0
+  inhalePitchLowerBound: 0
+  inhalePitchOffset: 100
+  inhaleLoudnessVaranceThreshold: 0
+  inhaleVolumeOffset: 0.3
+  exhaleVolumethreshold: 0
+  exhalePitchUpperBound: 0
+  exhalePitchLowerBound: 0
+  exhalePitchOffset: 100
+  exhaleVolumeOffset: 0.3
+  stateText: {fileID: 199935898}
+  testTimer: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

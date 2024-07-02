@@ -28,8 +28,26 @@ namespace Breathing3
         [Header("Other settings")]
         [SerializeField] private float loudnessMultiplier = 100f; //Multiply loudness with this number
         [SerializeField] private float highPassCutoff = 10000;
+
+        [SerializeField] private int startingCheckingFrequencyIndex = 0;
+
+        [SerializeField] private CalculationMethod pitchCalculationMethod = CalculationMethod.MIN;
+        [SerializeField] private CalculationMethod volumeCalculationMethod = CalculationMethod.AVG;
         private string _micphoneName;
         private bool isMicrophoneReady;
+
+        private float prevVolume =0f;
+        private float prevPitch = 0f;
+
+        enum CalculationMethod
+        {
+            REAL_TIME,
+            MIN,
+            MAX,
+            AVG
+        }
+
+
         #region volume provider implementation
         public float volume { get; set; }
         public float pitch { get; set; }
@@ -39,6 +57,50 @@ namespace Breathing3
         public float minVolume { get; set; }
         public float maxPitch { get; set; }
         public float minPitch { get; set; }
+
+        public float CalculatedPitch
+        {
+            get
+            {
+                switch (pitchCalculationMethod)
+                {
+                    case CalculationMethod.REAL_TIME:
+                        return pitch;
+                    case CalculationMethod.MIN:
+                        return minPitch;
+                    case CalculationMethod.MAX:
+                        return maxPitch;
+                    case CalculationMethod.AVG:
+                        return avgPitch;
+                    default:
+                        return avgPitch;
+                }
+            }
+        }
+
+        public float CalculatedVolume
+        {
+            get
+            {
+                switch (pitchCalculationMethod)
+                {
+                    case CalculationMethod.REAL_TIME:
+                        return volume;
+                    case CalculationMethod.MIN:
+                        return minVolume;
+                    case CalculationMethod.MAX:
+                        return maxVolume;
+                    case CalculationMethod.AVG:
+                        return avgVolume;
+                    default:
+                        return avgVolume;
+                }
+            }
+        }
+
+        public float CalculatedVolumeVariance { get; set; }
+
+        public float CalculatePitchVariance { get; set; }
         #endregion
 
         IEnumerator Start()
@@ -83,6 +145,7 @@ namespace Breathing3
             _volumeContainer = new();
         }
 
+
         private void Update()
         {
             CalculateVolume();
@@ -95,7 +158,9 @@ namespace Breathing3
                 $"Pitch: {pitch}\n" +
                 $"Min pitch: {minPitch}\n" +
                 $"Max pitch: {maxPitch} \n" +
-                $"Avg pitch: {avgPitch}";
+                $"Avg pitch: {avgPitch}\n" +
+                $"Cal pitch: {CalculatedPitch}\n" +
+                $"Cal vol: {CalculatedVolume}";
         }
 
         void prepareMicrophone()
@@ -135,6 +200,14 @@ namespace Breathing3
             _audioSource.GetOutputData(_dataContainer, 0);
             CalculateNormalVolume();
             CalculateMaxMinAverageVolume();
+            CalculateVolumeVariance();
+
+            void CalculateVolumeVariance()
+            {
+                CalculatedVolumeVariance = CalculatedVolume - prevVolume;
+                prevVolume = CalculatedVolume;
+            }
+
 
 
             void CalculateNormalVolume()
@@ -164,7 +237,7 @@ namespace Breathing3
                     {
                         minVol = vol;
                     }
-                    else if(vol > maxVol)
+                    if(vol > maxVol)
                     {
                         maxVol = vol;
                     }
@@ -184,14 +257,14 @@ namespace Breathing3
             _audioSource.GetSpectrumData(_dataContainer, 0, FFTWindow.BlackmanHarris);
             CalculateNormalPitch();
             CalculateMinMaxAveragePitch();
-
+            CalculationPitchVarance();
             void CalculateNormalPitch()
             {
                 float maxV = 0;
                 int maxN = 0;
 
                 // Find the highest sample.
-                for (int i = 0; i < _dataContainer.Length; i++)
+                for (int i = startingCheckingFrequencyIndex; i < _dataContainer.Length; i++)
                 {
                     if (_dataContainer[i] > maxV)
                     {
@@ -228,7 +301,7 @@ namespace Breathing3
                     {
                         minPitch = pit;
                     }
-                    else if (pit > maxPitch)
+                    if (pit > maxPitch)
                     {
                         maxPitch = pit;
                     }
@@ -236,9 +309,20 @@ namespace Breathing3
                     avgPitch += pit;
                 }
 
+                if(maxPitch == float.MinValue)
+                {
+                    Debug.Log("something is wrong");
+                }
+
                 this.minPitch = minPitch;
                 this.maxPitch = maxPitch;
                 this.avgPitch = avgPitch / _pitchContainer.Count;
+            }
+
+            void CalculationPitchVarance()
+            {
+                CalculatePitchVariance = CalculatedPitch - prevPitch;
+                prevPitch = CalculatedPitch;
             }
         }
 
@@ -257,7 +341,7 @@ namespace Breathing3
     }
 
 
-    interface VolumeProvider
+    public interface VolumeProvider
     {
         float volume { get; set; }
         float pitch { get; set; }
@@ -267,5 +351,10 @@ namespace Breathing3
         float minVolume { get; set; }
         float maxPitch { get; set; }
         float minPitch { get; set; }
+
+        float CalculatedPitch { get; }
+        float CalculatedVolume { get; }
+        float CalculatedVolumeVariance { get; set; }
+        float CalculatePitchVariance { get; set; }
     }
 }
