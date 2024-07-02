@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Unity.Burst.Intrinsics.X86.Avx;
 using UnityEngine.UIElements;
+using UnityEngine.Pool;
+using Assets.Scripts.pattern;
 
 public class PulseScriptTrail : MonoBehaviour
 {
@@ -12,11 +14,11 @@ public class PulseScriptTrail : MonoBehaviour
     /// </summary>
     /// 
     Transform currentTrail;
-    [SerializeField] Transform trail;
-    [SerializeField] Transform trail2;
-    TrailRenderer trailRenderer;
-    TrailRenderer trailRenderer2;
-    [SerializeField] float zeroOffsetAngle = 10f;
+    [SerializeField] TrailRenderer trailPrefab;
+    [SerializeField] int numberOfTrail;
+    PooledObject<TrailRenderer> trails;
+
+    [SerializeField] float zeroOffsetAngle = 130f;
     [Range(-1, 1)]
     [SerializeField] float yInitOffset = -0.5f;
     [SerializeField] float WidthBoundingBox = 10f;
@@ -28,22 +30,16 @@ public class PulseScriptTrail : MonoBehaviour
     [SerializeField] float frequency;
     [SerializeField] float amp;
     Vector3 trailNewPosition;
+    Vector3 originalPos => new Vector3(-halfBoundBox, 0, 0);
     private void Start()
-    {
-        trail.localPosition = new Vector3(-halfBoundBox, 0, 0);
-        trailRenderer = trail.GetComponent<TrailRenderer>();
-
-        trail2.localPosition = new Vector3(-halfBoundBox, 0, 0);
-        trailRenderer2 = trail2.GetComponent<TrailRenderer>();
-
-        currentTrail = transform;
+    {   
 
         phase = 0;
     }
 
     private void Update()
     {
-        currentTrail.localPosition = trail.localPosition;
+        trailNewPosition = currentTrail.localPosition;
         float newPhase = speed * Time.deltaTime;
 
         trailNewPosition.x += newPhase;
@@ -55,30 +51,18 @@ public class PulseScriptTrail : MonoBehaviour
         //clamp the new position value
         if(trailNewPosition.x > halfBoundBox)
         {
-            
+            ChangeCurrentTrail();
+            trailNewPosition.x = -halfBoundBox;
         }
-        else
-        {
-            trailRenderer.emitting = true;
-        }
-        trail.localPosition = trailNewPosition;
+        
+        currentTrail.localPosition = trailNewPosition;
     }
 
-    void UpdateSinWave()
+    void ChangeCurrentTrail()
     {
-        phase += Time.deltaTime;
-        //float increaseConst = 360 / (sizeAccuracy - 1);
-        //for (int i = 0; i < sizeAccuracy; ++i)
-        //{
-        //    float positionForPoint = increaseConst * i;
-        //    float yOffset = amp * PulseWave(frequency * (positionForPoint + phase * speed));
-        //    positions[i].y = yOffset;
-        //}
-        //lineRenderer.SetPositions(positions);
-
+        trailPool.Retrieve(currentTrail.gameObject);
+        currentTrail = trailPool.Get().transform;
     }
-
-
 
     float ArcTooth(float degrees)
     {
