@@ -27,9 +27,9 @@ namespace Assets.Scripts.Audio_script
                 new Vector2(0.5f, 0.5f));
             img.sprite = sprite;
 
-            //.GetWaveFormFast(audioClip, 1, 0, audioClip.samples, r.width, r.height);
+            //.GetWaveFormFast(audioClip, 1, 0, audioClip.samplesSize, r.width, r.height);
             //print("running");
-            //texture = AudioUtility.GetWaveFormFast(clip, 1, 0, clip.samples,width,height);
+            //texture = AudioUtility.GetWaveFormFast(clip, 1, 0, clip.samplesSize,width,height);
             //sprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height),
             //    new Vector2(0.5f, 0.5f));
             //img.sprite = sprite;

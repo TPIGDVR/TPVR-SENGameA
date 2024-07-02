@@ -7,6 +7,13 @@ using UnityEngine.Rendering.UI;
 
 namespace Breathing
 {
+    interface BreathingCalculator
+    {
+        public float calculateLoudness { get; set; }
+        public float calculatedPitch { get; set; }
+
+    }
+
 
     public enum Breathing 
     { 
@@ -22,24 +29,13 @@ namespace Breathing
     public class BreathingState : FSMState
     {
         protected BreathingDetection _detector;
-        protected MicrophoneController _micController;
+        //protected MicrophoneController _micController;
 
         public BreathingState(FSM fsm, int id , 
-            BreathingDetection detector,
-            MicrophoneController controller) : base(fsm, id)
+            BreathingDetection detector) : base(fsm, id)
         {
             this._detector = detector;
-            _micController = controller;
         }
-
-
-        //counter
-
-
-        //private void ResetChecker()
-        //{
-        //    inhaleVarianceChecker = 0;
-        //}
 
         /* 
         * This function checks if all the criteria to transition from INHALE state to EXHALE state have been met and then transitions to EXHALE state
@@ -117,13 +113,14 @@ namespace Breathing
    
     public class InhalingState : BreathingState
     {
-        public InhalingState(FSM fsm, int id, BreathingDetection detector, MicrophoneController controller) : base(fsm, id, detector, controller)
+        public InhalingState(FSM fsm, int id, BreathingDetection detector) : base(fsm, id, detector)
         {
         }
 
         public override void FixedUpdate()
         {
             //check if it is still silent
+            CheckInhale();
             CheckExhale();
             CheckSilent();
         }
@@ -131,12 +128,13 @@ namespace Breathing
     
     public class ExhalingState : BreathingState
     {
-        public ExhalingState(FSM fsm, int id, BreathingDetection detector, MicrophoneController controller) : base(fsm, id, detector, controller)
+        public ExhalingState(FSM fsm, int id, BreathingDetection detector) : base(fsm, id, detector)
         {
         }
 
         public override void FixedUpdate()
         {
+            CheckExhale();
             CheckInhale();
             CheckSilent() ;
         }
@@ -144,30 +142,18 @@ namespace Breathing
 
     public class SilentState : BreathingState
     {
-        //can only transition to inhale
-        int counter;
-        public SilentState(FSM fsm, int id, BreathingDetection detector, MicrophoneController controller) : base(fsm, id, detector, controller)
+        public SilentState(FSM fsm, int id, BreathingDetection detector) : base(fsm, id, detector)
         {
         }
 
         public override void FixedUpdate()
         {
-
-            //bool isSilent = _detector.calculateLoudness < _detector.silentVolumeThreshold;
-            //bool hasLowPitch = _detector.calculatedPitch < _detector.silentPitchThresholdHigh;
-            //bool hasLowVariance = _detector.Variance < _detector.silentVarianceThreshold;
-
-            //Debug.Log($"silent condition. silent: {isSilent} low pitch: {hasLowPitch} Low Variance: {hasLowVariance}");// current pitch {micControl.getPitch()}
-
-            //if (isSilent && hasLowPitch && hasLowVariance) return;
-
             CheckInhale();
             CheckExhale();
-
         }
     }
 
-    #region testing
+    #region testing 1
     
     public class TestingBreathingState : FSMState
     {
@@ -255,7 +241,6 @@ namespace Breathing
         }
     }
 
-
     public class TestingSilence : TestingBreathingState
     {
 
@@ -331,7 +316,6 @@ namespace Breathing
 
     }
 
-
     public class TestingExhale : TestingBreathingState
     {
         public TestingExhale(FSM fsm, int id, BreathingDetectionNew detector, MicrophoneController controller) : base(fsm, id, detector, controller)
@@ -361,6 +345,213 @@ namespace Breathing
     $"totalMaxPtich: {totalMaxPitch}\n" +
     $"frameCounter: {frameCounter}\n" +
     $"Volume: {totalVolume}");
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            _detector.exhalePitchFrequencyThresholdLow = avgMinPitch + _detector.pitchOffsetLenancyExhale;
+            _detector.exhalePitchFrequencyThresholdHigh = avgMaxPitch + _detector.pitchOffsetLenancyExhale;
+            //_detector.exhaleLoudnessThresholdHigh= avgVolume;
+            _detector.exhaleLoudnessThreshold = avgVolume;
+        }
+
+    }
+    #endregion
+
+    #region testing 2
+
+    public class TestingBreathingStateNew : FSMState
+    {
+        protected BreathingDetectionNew _detector;
+        protected MicController2 _micController;
+        protected float elapseTime;
+
+        protected float totalMinPitch;
+        protected float totalMaxPitch;
+        protected float totalVolume;
+        protected int frameCounter;
+
+        protected float avgMinPitch => totalMinPitch / frameCounter;
+        protected float avgMaxPitch => totalMaxPitch / frameCounter;
+        protected float avgVolume => totalVolume / frameCounter;
+
+
+        protected int nextState = (int)Breathing.SILENT;
+        public TestingBreathingStateNew(FSM fsm, int id,
+            BreathingDetectionNew detector,
+            MicController2 controller) : base(fsm, id)
+        {
+            this._detector = detector;
+            _micController = controller;
+        }
+
+        public override void Enter()
+        {
+            Debug.Log("start recording for controller");
+            _micController.StartRecording();
+            Debug.Log($"mic is ready: {_micController.IsMicrophoneReady}");
+            totalMaxPitch = 0;
+            totalMinPitch = 0;
+            totalVolume = 0;
+
+            elapseTime = 0f;
+            frameCounter = 0;
+        }
+
+        public override void Update()
+        {
+            while (elapseTime < _detector.testingTimer)
+            {
+                //Debug.Log($"Running State: {(Breathing)mId} ");
+                elapseTime += Time.deltaTime;
+                return;
+            }
+            Debug.Log($"Next state {(Breathing)nextState}");
+            mFsm.SetCurrentState(nextState);
+            //add state change here
+        }
+
+        public override void FixedUpdate()
+        {
+            frameCounter++;
+            totalVolume += _micController.CalculateLoudness();
+            _micController.CalculateSpectrumDataFromRecording();
+
+            //PrintArray(_micController.FftSpectrum);
+
+            totalMinPitch += _micController.CalculateMinPitchFromRecording();
+            totalMaxPitch += _micController.CalculateMaxPitchFromRecording();
+            Debug.Log($"Evaluated values\n" +
+                $"totalMinPitch: {totalMinPitch} \n" +
+                $"totalMaxPtich: {totalMaxPitch}\n" +
+                $"frameCounter: {frameCounter}\n" +
+                $"Volume: {totalVolume}");
+
+        }
+
+
+        public override void Exit()
+        {
+            Debug.Log("Stop recording for controller");
+            _micController.StopRecording();
+        }
+        //do your calculation in exit
+
+        protected void PrintArray(float[] array)
+        {
+            // Join the array elements into a single string separated by commas
+            string arrayString = string.Join(", ", array);
+            // Print the string to the console
+            Debug.Log(arrayString);
+        }
+    }
+
+    public class TestingSilenceNew : TestingBreathingStateNew
+    {
+
+        public TestingSilenceNew(FSM fsm, int id, BreathingDetectionNew detector, MicController2 controller) : base(fsm, id, detector, controller)
+        {
+        }
+
+        public override void Enter()
+        {
+            base.Enter();
+            nextState = (int)Breathing.TESTING_INHALE;
+        }
+
+
+        public override void Exit()
+        {
+            base.Exit();
+            _detector.silentPitchThresholdLow = avgMinPitch;
+            _detector.silentPitchThresholdHigh = avgMaxPitch;
+            _detector.silentVolumeThreshold = avgVolume;
+        }
+
+    }
+
+    public class TestingInhaleNew : TestingBreathingStateNew
+    {
+        public TestingInhaleNew(FSM fsm, int id, BreathingDetectionNew detector, MicController2 controller) : base(fsm, id, detector, controller)
+        {
+        }
+
+        public override void Enter()
+        {
+            base.Enter();
+            nextState = (int)Breathing.TESTING_EXHALE;
+        }
+
+
+        public override void FixedUpdate()
+        {
+            _micController.CalculateSpectrumDataFromRecording();
+
+            var curMaxPitch = _micController.CalculateMaxPitchFromRecording(_detector.ignoreFrequencyThresholdInhale);
+            Debug.Log("Inhale state " + curMaxPitch);
+            if (curMaxPitch < _detector.ignoreMaxPitchInhale)
+            {
+                //ignore it as we dont want it to dirty the data
+                return;
+            }
+            totalMaxPitch += curMaxPitch;
+            totalMinPitch += _micController.CalculateMinPitchFromRecording(
+                _detector.minAmplitudeThresholdInhale,
+                _detector.ignoreFrequencyThresholdInhale
+                );
+
+            totalVolume += _micController.CalculateLoudness();
+
+            frameCounter++;
+
+            Debug.Log($"Evaluated values\n" +
+            $"totalMinPitch: {totalMinPitch} \n" +
+            $"totalMaxPtich: {totalMaxPitch}\n" +
+            $"frameCounter: {frameCounter}\n" +
+            $"Volume: {totalVolume}");
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            _detector.inhalePitchFrequencyThresholdLow = avgMinPitch - _detector.pitchOffsetLenancyInhale;
+            _detector.inhalePitchFrequencyThresholdHigh = avgMaxPitch + _detector.pitchOffsetLenancyInhale;
+            //_detector.inhaleLoudnessThresholdLow = avgVolume;
+            _detector.inhaleLoudnessThreshold = avgVolume;
+        }
+
+    }
+
+    public class TestingExhaleNew : TestingBreathingStateNew
+    {
+        public TestingExhaleNew(FSM fsm, int id, BreathingDetectionNew detector, MicController2 controller) : base(fsm, id, detector, controller)
+        {
+        }
+
+        public override void FixedUpdate()
+        {
+            _micController.CalculateSpectrumDataFromRecording();
+
+            var curMaxPitch = _micController.CalculateMaxPitchFromRecording(_detector.ignoreFrequencyThresholdExhale);
+            Debug.Log("exhale state: "+ curMaxPitch );
+            if (curMaxPitch < _detector.ignoreMaxPitchExhale)
+            {
+                //ignore
+                return;
+            }
+            totalMaxPitch += curMaxPitch;
+            frameCounter++;
+            totalMinPitch += _micController.CalculateMinPitchFromRecording(
+                _detector.minAmplitudeThresholdExhale,
+                _detector.ignoreFrequencyThresholdExhale);
+
+            totalVolume += _micController.CalculateLoudness();
+            Debug.Log($"Evaluated values\n" +
+            $"totalMinPitch: {totalMinPitch} \n" +
+            $"totalMaxPtich: {totalMaxPitch}\n" +
+            $"frameCounter: {frameCounter}\n" +
+            $"Volume: {totalVolume}");
         }
 
         public override void Exit()

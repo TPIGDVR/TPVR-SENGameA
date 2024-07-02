@@ -621,6 +621,7 @@ GameObject:
   m_Component:
   - component: {fileID: 784452941}
   - component: {fileID: 784452944}
+  - component: {fileID: 784452947}
   - component: {fileID: 784452943}
   - component: {fileID: 784452946}
   m_Layer: 0
@@ -629,7 +630,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &784452941
 Transform:
   m_ObjectHideFlags: 0
@@ -678,7 +679,6 @@ MonoBehaviour:
   calculatedPitch: Infinity
   loudnessCalculationMethod: 0
   pitchCalculationMethod: 0
-  samplingSize: 1000
   testingTimer: 0
 --- !u!114 &784452944
 MonoBehaviour:
@@ -687,7 +687,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 784452938}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c8a9c1389d579c49870ee82d22b3d0c, type: 3}
   m_Name: 
@@ -707,7 +707,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 784452938}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1922de5fb33a9bc4cbc9378a15da7fc2, type: 3}
   m_Name: 
@@ -731,16 +731,34 @@ MonoBehaviour:
   calculatedPitch: Infinity
   loudnessCalculationMethod: 2
   pitchCalculationMethod: 1
-  samplingSize: 1000
   testingTimer: 3
   minAmplitudeThresholdInhale: 0.00001
   minAmplitudeThresholdExhale: 0.00001
-  ignoreFrequencyThresholdInhale: 21
-  ignoreFrequencyThresholdExhale: 9
-  ignoreMaxPitchInhale: 987
-  ignoreMaxPitchExhale: 1000
+  ignoreFrequencyThresholdInhale: 20
+  ignoreFrequencyThresholdExhale: 20
+  ignoreMaxPitchInhale: 500
+  ignoreMaxPitchExhale: 500
   pitchOffsetLenancyInhale: 100
   pitchOffsetLenancyExhale: 100
+--- !u!114 &784452947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784452938}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c5f7dcd77df6684cbc3863ec80d0b63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 1499936457}
+  samplesSize: 1024
+  mute: 1
+  loudness: 0
+  loudnessMultiplier: 100
+  highPassCutoff: 10000
+  pitchRecordTime: 5
 --- !u!1 &1092855741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,8 +1204,7 @@ AudioSource:
   m_GameObject: {fileID: 1499936456}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 9945e7c079716de4d9ae802432f575cf,
-    type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -1425,6 +1442,91 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1620850912}
   m_CullTransparentMesh: 1
+--- !u!1 &1830706056
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1830706058}
+  - component: {fileID: 1830706057}
+  - component: {fileID: 1830706059}
+  m_Layer: 0
+  m_Name: Breathing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1830706057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830706056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71a8572809ecb764082e94c2e750b21c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1620850914}
+  _pitchRecordTime: 5
+  _volumeRecordTime: 5
+  _datalength: 1024
+  mute: 1
+  loudnessMultiplier: 100
+  highPassCutoff: 10000
+  startingCheckingFrequencyIndex: 4
+  pitchCalculationMethod: 3
+  volumeCalculationMethod: 3
+--- !u!4 &1830706058
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830706056}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 992.25653, y: 407.65683, z: 494.09143}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1830706059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830706056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b370a8f393758e3458851b033820b452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  silenceVolumeThreshold: 0
+  silencePitchUpperBound: 0
+  silencePitchLowerBound: 0
+  silencePitchVaranceThreshold: 0.2
+  inhaleVolumeThreshold: 0
+  inhalePitchUpperBound: 0
+  inhalePitchLowerBound: 0
+  inhalePitchOffset: 100
+  inhaleLoudnessVaranceThreshold: 0
+  inhaleVolumeOffset: 0.3
+  exhaleVolumethreshold: 0
+  exhalePitchUpperBound: 0
+  exhalePitchLowerBound: 0
+  exhalePitchOffset: 100
+  exhaleVolumeOffset: 0.3
+  stateText: {fileID: 199935898}
+  testTimer: 3
+  usedPresetData: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1435,3 +1537,4 @@ SceneRoots:
   - {fileID: 1182887229}
   - {fileID: 784452941}
   - {fileID: 1324114099}
+  - {fileID: 1830706058}
