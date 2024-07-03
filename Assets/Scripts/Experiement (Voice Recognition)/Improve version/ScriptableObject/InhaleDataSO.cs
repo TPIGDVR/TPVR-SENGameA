@@ -6,12 +6,12 @@ namespace Breathing3
     [CreateAssetMenu(fileName = "Inhale data", menuName = "breathing Data/Inhale data")]
     public class InhaleDataSO : ScriptableObject, InhaleData
     {
-        private float inhaleVolumeThreshold;
-        private float inhalePitchLowBound;
-        private float inhalePitchUpperBound;
-        private float inhaleLoudnessVarance;
-        private float inhalePitchOffset;
-        private float inhaleVolumeOffset;
+        [SerializeField] private float inhaleVolumeThreshold;
+        [SerializeField]private float inhalePitchLowBound;
+        [SerializeField]private float inhalePitchUpperBound;
+        [SerializeField]private float inhaleLoudnessVarance;
+        [SerializeField]private float inhalePitchOffset;
+        [SerializeField]private float inhaleVolumeOffset;
 
         public float InhaleVolumeThreshold { get => inhaleVolumeThreshold; set => inhaleVolumeThreshold = value; }
         public float InhalePitchLowBound { get => inhalePitchLowBound; set => inhalePitchLowBound = value; }

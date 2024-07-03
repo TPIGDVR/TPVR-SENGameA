@@ -8,10 +8,10 @@ namespace Breathing3
     public class SilentDataSO : ScriptableObject, SilenceData
     {
 
-        private float silenceVolumeThreshold;
-        private float silencePitchLowBound;
-        private float silencePitchUpperBound;
-        private float silencePitchVaranceThreshold;
+        [SerializeField] private float silenceVolumeThreshold;
+        [SerializeField]private float silencePitchLowBound;
+        [SerializeField]private float silencePitchUpperBound;
+        [SerializeField]private float silencePitchVaranceThreshold;
 
         public float SilenceVolumeThreshold { get => silenceVolumeThreshold; set => silenceVolumeThreshold = value; }
         public float SilencePitchLowBound { get => silencePitchLowBound; set => silencePitchLowBound = value; }

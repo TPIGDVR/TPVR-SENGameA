@@ -7,16 +7,19 @@ namespace Breathing3
 
     public class ExhaleDataSO : ScriptableObject, ExhaleData
     {
-        private float exhaleVolumeThreshold;
-        private float exhalePitchLowBound;
-        private float exhalePitchUpperBound;
-        private float exhalePitchOffset;
-        private float exhaleVolumeOffset;
-
+        [SerializeField]private float exhaleVolumeThreshold;
+        [SerializeField]private float exhalePitchLowBound;
+        [SerializeField]private float exhalePitchUpperBound;
+        [SerializeField]private float exhalePitchOffset;
+        [SerializeField]private float exhaleVolumeOffset;
+        [SerializeField]private float exhaleVolumeVaranceThreshold;
+        [SerializeField]private float exhalePitchVaranceThreshold;
         public float ExhaleVolumeThreshold { get => exhaleVolumeThreshold; set => exhaleVolumeThreshold = value; }
         public float ExhalePitchLowBound { get => exhalePitchLowBound; set => exhalePitchLowBound = value; }
         public float ExhalePitchUpperBound { get => exhalePitchUpperBound; set => exhalePitchUpperBound = value; }
         public float ExhalePitchOffset { get => exhalePitchOffset; set => exhalePitchOffset = value; }
         public float ExhaleVolumeOffset { get => exhaleVolumeOffset; set => exhaleVolumeOffset = value; }
+        public float ExhaleVolumeVaranceThreshold { get => exhaleVolumeVaranceThreshold; set => exhaleVolumeVaranceThreshold = value; }
+        public float ExhalePitchVaranceThreshold { get => exhalePitchVaranceThreshold; set => exhalePitchVaranceThreshold = value; }
     }
 }

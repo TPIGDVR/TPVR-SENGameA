@@ -31,16 +31,20 @@ namespace Breathing3
         [SerializeField] float exhalePitchLowerBound;
         [SerializeField] float exhalePitchOffset;
         [SerializeField] float exhaleVolumeOffset;
+        [SerializeField] float exhaleLoudnessVaranceThreshold;
+        [SerializeField] float exhalePitchVaranceThreshold;
+
+
         [Header("Data Text")]
         public TextMeshProUGUI stateText;
 
         [Header("other settings")]
         [SerializeField] private float testTimer;
-        public InhaleData presetInhaleData;
-        public ExhaleData presetExhaleData;
-        public SilenceData PresetSilenceData;
+        public InhaleDataSO  presetInhaleData;
+        public ExhaleDataSO presetExhaleData;
+        public SilentDataSO PresetSilenceData;
         [SerializeField] private bool usedPresetData;
-
+        
         #region implemented interface
         public float SilenceVolumeThreshold { get => silenceVolumeThreshold; set => silenceVolumeThreshold = value; }
         public float SilencePitchUpperBound { get => silencePitchUpperBound; set => silencePitchUpperBound = value; }
@@ -59,6 +63,9 @@ namespace Breathing3
 
 
         public float InhaleVolumeOffset => inhaleVolumeOffset;
+
+        public float ExhaleVolumeVaranceThreshold {get => exhaleLoudnessVaranceThreshold; set => exhaleLoudnessVaranceThreshold = value; }
+        public float ExhalePitchVaranceThreshold { get => exhalePitchVaranceThreshold; set => exhalePitchVaranceThreshold = value; }
         #endregion
 
         FSM fsm;
@@ -84,7 +91,14 @@ namespace Breathing3
             fsm.Add(new TestInhaleStateNew(fsm, (int)States.INHALE_TESTING, audioProvider, testTimer, this,this));
             fsm.Add(new TestExhaleState(fsm, (int)States.EXHALE_TESTING, audioProvider, testTimer, this));
 
-            fsm.SetCurrentState((int)States.INHALE_TESTING);
+            if (usedPresetData)
+            {
+                fsm.SetCurrentState((int)States.SILENT);
+            }
+            else
+            {
+                fsm.SetCurrentState((int)States.INHALE_TESTING);
+            }
         }
 
 
@@ -112,6 +126,17 @@ namespace Breathing3
             fsm.SetCurrentState((int)(States.INHALE_TESTING));
         }
 
+        [ContextMenu("Copy Data")]
+        public void CopyData()
+        {
+            SilenceData curDataS = (SilenceData)this;
+            ExhaleData  curDataE = (ExhaleData) this;
+            InhaleData  curDataI = (InhaleData) this;
+
+            curDataI.CopyData(presetInhaleData);
+            curDataE.CopyData(presetExhaleData);
+            curDataS.CopyData(PresetSilenceData);
+        }
     }
 
     public interface SilenceData
@@ -120,6 +145,14 @@ namespace Breathing3
         public float SilencePitchLowBound { get; set; }
         public float SilencePitchUpperBound { get; set; }
         public float SilencePitchVaranceThreshold { get; set; }
+
+        public void CopyData(SilenceData toData)
+        {
+            toData.SilencePitchLowBound = SilencePitchLowBound;
+            toData.SilencePitchUpperBound = SilencePitchUpperBound;
+            toData.SilenceVolumeThreshold = SilenceVolumeThreshold;
+            toData.SilencePitchVaranceThreshold = SilencePitchVaranceThreshold;
+        }
     }
 
     public interface ExhaleData
@@ -127,9 +160,20 @@ namespace Breathing3
         public float ExhaleVolumeThreshold { get; set; }
         public float ExhalePitchLowBound { get; set; }
         public float ExhalePitchUpperBound { get; set; }
+        public float ExhaleVolumeVaranceThreshold { get; set; }
+        public float ExhalePitchVaranceThreshold { get; set; }
         public float ExhalePitchOffset { get;  }
         public float ExhaleVolumeOffset { get; }
 
+
+        public void CopyData(ExhaleData toData)
+        {
+            toData.ExhaleVolumeThreshold = ExhaleVolumeThreshold;
+            toData.ExhalePitchLowBound = ExhalePitchLowBound;
+            toData.ExhalePitchUpperBound = ExhalePitchUpperBound;
+            toData.ExhaleVolumeVaranceThreshold = ExhaleVolumeVaranceThreshold;
+            toData.ExhalePitchVaranceThreshold = ExhalePitchVaranceThreshold;
+        }
     }
 
     public interface InhaleData
@@ -141,6 +185,14 @@ namespace Breathing3
         public float InhalePitchOffset { get; }
 
         public float InhaleVolumeOffset { get; }
+
+        public void CopyData(InhaleData toData)
+        {
+            toData.InhaleVolumeThreshold = InhaleVolumeThreshold;
+            toData.InhalePitchLowBound = InhalePitchLowBound;
+            toData.InhalePitchUpperBound = InhalePitchUpperBound;
+            toData.InhaleLoudnessVarance = InhaleLoudnessVarance;
+        }
     }
 
 

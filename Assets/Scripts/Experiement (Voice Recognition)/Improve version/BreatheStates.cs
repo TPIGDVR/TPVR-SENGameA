@@ -46,11 +46,15 @@ namespace Breathing3
             }
         }
 
+        //addd pitch and volume varance to test whether that can be used to 
+        //determine the exhale state
         public bool IsExhale
         {
             get
             {
                 return provider.CalculatedVolume > exhaleData.ExhaleVolumeThreshold;
+                    //provider.CalculatedVolumeVariance > exhaleData.ExhaleVolumeVaranceThreshold;
+                    //provider.CalculatePitchVariance > exhaleData.ExhalePitchVaranceThreshold;
                     //(exhaleData.ExhalePitchLowBound < provider.CalculatedPitch &&
                     //provider.CalculatedPitch < exhaleData.ExhalePitchUpperBound
                     //);
@@ -293,6 +297,8 @@ namespace Breathing3
             totalVolume += volumeProvider.CalculatedVolume;
             totalMaxPitch += volumeProvider.maxPitch;
             totalMinPitch += volumeProvider.minPitch > 50 ? volumeProvider.minPitch : volumeProvider.avgPitch;
+            totalPitchVarance += volumeProvider.CalculatePitchVariance;
+            totalVolumeVarance += volumeProvider.CalculatedVolumeVariance;
         }
 
         public override void Exit()
@@ -300,7 +306,8 @@ namespace Breathing3
             data.ExhaleVolumeThreshold = totalVolume / counter + data.ExhaleVolumeOffset;
             data.ExhalePitchLowBound = totalMinPitch / counter;
             data.ExhalePitchUpperBound = totalMaxPitch / counter;
-
+            data.ExhalePitchVaranceThreshold = totalPitchVarance / counter;
+            data.ExhaleVolumeVaranceThreshold = totalVolumeVarance / counter;
             data.ExhalePitchLowBound -= data.ExhalePitchOffset;
             data.ExhalePitchUpperBound += data.ExhalePitchOffset;
         }

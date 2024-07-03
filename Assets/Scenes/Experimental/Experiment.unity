@@ -410,7 +410,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &413328495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,7 +429,7 @@ MonoBehaviour:
   originalTime: 0.5
   reductionTime: 0.01
   zeroOffsetAngle: 130
-  WidthBoundingBox: 2.13
+  WidthBoundingBox: 1
   speed: 1
   amp: 1
 --- !u!4 &413328496
@@ -1146,7 +1146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1324114096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1571,15 +1571,20 @@ MonoBehaviour:
   inhalePitchLowerBound: 0
   inhalePitchOffset: 100
   inhaleLoudnessVaranceThreshold: 0
-  inhaleVolumeOffset: 0.3
+  inhaleVolumeOffset: 0.11
   exhaleVolumethreshold: 0
   exhalePitchUpperBound: 0
   exhalePitchLowerBound: 0
   exhalePitchOffset: 100
   exhaleVolumeOffset: 0.3
+  exhaleLoudnessVaranceThreshold: 0
+  exhalePitchVaranceThreshold: 0
   stateText: {fileID: 199935898}
   testTimer: 3
-  usedPresetData: 0
+  presetInhaleData: {fileID: 11400000, guid: f67dbaf0115da1d4d951de9e5d5d6b31, type: 2}
+  presetExhaleData: {fileID: 11400000, guid: e89b5fd5836b39c48b81c76f9f1d41e2, type: 2}
+  PresetSilenceData: {fileID: 11400000, guid: df41c0e455ec4614e9a836b54298ba68, type: 2}
+  usedPresetData: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
