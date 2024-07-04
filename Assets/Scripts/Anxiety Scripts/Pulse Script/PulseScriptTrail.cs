@@ -9,10 +9,16 @@ public class PulseScriptTrail : MonoBehaviour
     /// 
     TrailRenderer currentTrail;
     Transform trailTransform => currentTrail.transform;
+    [Header("trail details")]
     [SerializeField] TrailRenderer trailPrefab;
+    [SerializeField] float originalEmittingTime = 0.3f;
+    [SerializeField] float emittingReduction = 0.2f;
+    [SerializeField] float maxReductionEmittingTIme = 0.1f;
     [SerializeField] int numberOfTrail;
     PoolingPattern<TrailRenderer> trails;
 
+
+    [Header("Properties")]
     [SerializeField] float zeroOffsetAngle = 130f;
     [SerializeField] float WidthBoundingBox = 10f;
     float halfBoundBox => WidthBoundingBox / 2;
@@ -20,7 +26,7 @@ public class PulseScriptTrail : MonoBehaviour
     //starting point is 0,
     [SerializeField] float speed;
     [SerializeField] private float phase;
-    [SerializeField] float frequency;
+    [SerializeField] float frequency = 1f;
     [SerializeField] float amp;
     Vector3 trailNewPosition;
     Vector3 originalPos => new Vector3(-halfBoundBox, 0, 0);
@@ -58,7 +64,7 @@ public class PulseScriptTrail : MonoBehaviour
 
         trails.Retrieve(currentTrail);
         currentTrail = trails.Get();
-
+        currentTrail.time = originalEmittingTime - Mathf.Min(maxReductionEmittingTIme, emittingReduction * speed);
         currentTrail.gameObject.SetActive(true);
     }
 
@@ -77,7 +83,7 @@ public class PulseScriptTrail : MonoBehaviour
             return 0;
         }
 
-        return ArcTooth(NormaliseAngle(zeroOffsetAngle, 360 - zeroOffsetAngle, degrees));
+        return ArcTooth(frequency*NormaliseAngle(zeroOffsetAngle, 360 - zeroOffsetAngle, degrees));
     }
 
     float NormaliseAngle(float minAngle, float maxAngle, float currentAngle)
@@ -86,7 +92,6 @@ public class PulseScriptTrail : MonoBehaviour
         currentAngle -= minAngle;
         return Mathf.InverseLerp(0, maxAngle, currentAngle) * 360;
     }
-
 
     void DeterminePhase(float x)
     {
