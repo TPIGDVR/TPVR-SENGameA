@@ -8,10 +8,11 @@ using static Unity.VisualScripting.Member;
 
 namespace Breathing3
 {
+    [RequireComponent(typeof(AudioSource))]
     public class MicController : MonoBehaviour, VolumeProvider
     {
         [SerializeField] TextMeshProUGUI text;
-        AudioSource _audioSource;
+        [SerializeField] AudioSource _audioSource;
         private AudioMixer aMixer;
         
         private float[] _dataContainer;
@@ -135,7 +136,6 @@ namespace Breathing3
                 }
             }
 
-            _audioSource = gameObject.AddComponent<AudioSource>();
             prepareMicrophone();
             
             _audioSource.playOnAwake = false;
