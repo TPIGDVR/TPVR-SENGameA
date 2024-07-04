@@ -40,7 +40,7 @@ namespace Breathing3
             {
                 return provider.CalculatedVolume > inhaleData.InhaleVolumeThreshold &&
                     //provider.CalculatedVolume < exhaleData.ExhaleVolumeThreshold &&
-                    provider.CalculatedVolumeVariance < inhaleData.InhaleLoudnessVarance &&
+                    //provider.CalculatedVolumeVariance < inhaleData.InhaleLoudnessVarance &&
                     //(inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
                     provider.CalculatedPitch < inhaleData.InhalePitchUpperBound;
             }

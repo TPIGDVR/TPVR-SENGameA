@@ -410,7 +410,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &413328495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -423,14 +423,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73d2743a4b3ca8c4fadd9368a4ae4d18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trailPrefab: {fileID: 1374397333522384562, guid: 95bde4197eee01f498b627fa02a5d552,
+  trailPrefab: {fileID: 1374397333522384562, guid: 4a85835752875cc4ca00dabb43cc434d,
     type: 3}
+  originalEmittingTime: 0.3
+  emittingReduction: 0.2
+  maxReductionEmittingTIme: 0.1
   numberOfTrail: 4
   zeroOffsetAngle: 130
   WidthBoundingBox: 1
+  minAmp: 0.5
+  maxAmp: 1
+  randAmpRange: 0.3
+  minFreq: 1
+  maxFreq: 1.2
+  restingBPM: 60
+  maxBPM: 200
+  heartBeatRand: 2
+  bpmText: {fileID: 0}
   speed: 1
   phase: 0
-  frequency: 0
+  frequency: 1
   amp: 1
 --- !u!4 &413328496
 Transform:
@@ -1109,7 +1121,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1830706057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1123,7 +1135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 1620850914}
-  _audioSource: {fileID: 0}
+  _audioSource: {fileID: 1830706060}
   _pitchRecordTime: 5
   _volumeRecordTime: 5
   _datalength: 1024

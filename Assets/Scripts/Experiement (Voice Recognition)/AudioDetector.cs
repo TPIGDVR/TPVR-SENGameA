@@ -106,6 +106,7 @@ namespace Breathing3
 
         private void Update()
         {
+            stateText.text = ((BreathingStates)fsm.GetCurrentState().ID).ToString();
             fsm.Update();
         }
 

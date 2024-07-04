@@ -20,18 +20,26 @@ public class AnxietyHandler : MonoBehaviour
     float _anxietyIncreaseScale = 0;
     float _maxGlareValue = 1;
     float glareValue;
-    EventManager<Event> em = EventSystem.em;
 
+    [Header("Glare anxiety Reduction")]
+    [Range(0,1)]
+    [SerializeField] float maxGlareForReduction = 0.1f;
+    [SerializeField] float glareAnxietyReduction = 0.1f;
+
+    EventManager<Event> em = EventSystem.em;
+    float curAnxiety => _anxietyLevel / _maxAnxietyLevel;
     private void Start()
     {
         _noiseProximityHandler = GetComponent<NoiseProximityHandler>();
         em.AddListener<float>(Event.ANXIETY_BREATHE, Breath);
         em.AddListener<float>(Event.GLARE_UPDATE, Glare);
+        em.AddListener<float>(Event.HEART_BEAT, () => curAnxiety);
     }
 
     private void Update()
     {
-        //CalculateAnxietyScaleBasedOffNoiseLevel();'
+        //CalculateAnxietyScaleBasedOffNoiseLevel();
+
         CalculateAnxietyScaleBasedOffGlareLevel();
         IncrementAnxietyLevel();
 
@@ -39,8 +47,6 @@ public class AnxietyHandler : MonoBehaviour
         //trigger the event after calculating the anxiety level
         em.TriggerEvent(Event.ANXIETY_UPDATE);
         em.TriggerEvent<float>(Event.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
-
-        //Debug.Log("Anxiety level = " + _anxietyIncreaseScale);
     }
 
     void CalculateAnxietyScaleBasedOffNoiseLevel()
@@ -52,9 +58,18 @@ public class AnxietyHandler : MonoBehaviour
 
     void CalculateAnxietyScaleBasedOffGlareLevel()
     {
-        _anxietyIncreaseScale = Mathf.Lerp(_minAnxietyIncreaseScale
-            , _maxAnxietyIncreaseScale
-            , glareValue / _maxGlareValue);
+        if(glareValue <= maxGlareForReduction)
+        {
+            //do change this if u adding the anxiety for noise;
+            _anxietyIncreaseScale = Mathf.InverseLerp(0, maxGlareForReduction, glareValue) 
+                * -glareAnxietyReduction ;
+        }
+        else
+        {
+            _anxietyIncreaseScale = Mathf.Lerp(_minAnxietyIncreaseScale
+                , _maxAnxietyIncreaseScale
+                , glareValue / _maxGlareValue);
+        }
     }
 
     void IncrementAnxietyLevel()
