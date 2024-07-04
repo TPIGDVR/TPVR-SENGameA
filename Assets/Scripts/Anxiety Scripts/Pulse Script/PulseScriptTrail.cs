@@ -1,11 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using static Unity.Burst.Intrinsics.X86.Avx;
-using UnityEngine.UIElements;
-using UnityEngine.Pool;
 using Assets.Scripts.pattern;
-
+using UnityEngine;
 public class PulseScriptTrail : MonoBehaviour
 {
     //task
@@ -13,14 +7,13 @@ public class PulseScriptTrail : MonoBehaviour
     /// 1. Bound the trail to a certain width
     /// </summary>
     /// 
-    Transform currentTrail;
+    TrailRenderer currentTrail;
+    Transform trailTransform => currentTrail.transform;
     [SerializeField] TrailRenderer trailPrefab;
     [SerializeField] int numberOfTrail;
-    PooledObject<TrailRenderer> trails;
+    PoolingPattern<TrailRenderer> trails;
 
     [SerializeField] float zeroOffsetAngle = 130f;
-    [Range(-1, 1)]
-    [SerializeField] float yInitOffset = -0.5f;
     [SerializeField] float WidthBoundingBox = 10f;
     float halfBoundBox => WidthBoundingBox / 2;
 
@@ -32,41 +25,47 @@ public class PulseScriptTrail : MonoBehaviour
     Vector3 trailNewPosition;
     Vector3 originalPos => new Vector3(-halfBoundBox, 0, 0);
     private void Start()
-    {   
-
+    {
+        trails = new(trailPrefab.gameObject);
+        trails.InitWithParent(numberOfTrail, transform);
         phase = 0;
+        currentTrail = trails.Get();
     }
 
     private void Update()
     {
-        trailNewPosition = currentTrail.localPosition;
-        float newPhase = speed * Time.deltaTime;
+        trailNewPosition = trailTransform.localPosition;
+        trailNewPosition.x += speed * Time.deltaTime;
 
-        trailNewPosition.x += newPhase;
-
-        phase += newPhase;
-        phase %= 360;
-        float yOffset = amp * PulseWave(frequency * phase);
-        trailNewPosition.y = yOffset;
         //clamp the new position value
-        if(trailNewPosition.x > halfBoundBox)
+        if (trailNewPosition.x > halfBoundBox)
         {
             ChangeCurrentTrail();
-            trailNewPosition.x = -halfBoundBox;
+            trailNewPosition.x = -WidthBoundingBox;
         }
-        
-        currentTrail.localPosition = trailNewPosition;
+
+        DeterminePhase(trailNewPosition.x);
+        float yOffset = amp * PulseWave(phase);
+        trailNewPosition.y = yOffset;
+
+        trailTransform.localPosition = trailNewPosition;
     }
 
     void ChangeCurrentTrail()
     {
-        //trailPool.Retrieve(currentTrail.gameObject);
-        //currentTrail = trailPool.Get().transform;
+        currentTrail.gameObject.SetActive(false);
+        trailTransform.localPosition = originalPos;
+
+        trails.Retrieve(currentTrail);
+        currentTrail = trails.Get();
+
+        currentTrail.gameObject.SetActive(true);
     }
 
     float ArcTooth(float degrees)
     {
-        return Mathf.Atan(Mathf.Tan(degrees * 0.01f));
+
+        return Mathf.Atan(Mathf.Tan(degrees / 2 * Mathf.Deg2Rad));
     }
 
     float PulseWave(float degrees)
@@ -75,7 +74,7 @@ public class PulseScriptTrail : MonoBehaviour
         if (degrees < zeroOffsetAngle || degrees > (360 - zeroOffsetAngle))
         {
             //we want the pulse to be zero by then
-            return yInitOffset;
+            return 0;
         }
 
         return ArcTooth(NormaliseAngle(zeroOffsetAngle, 360 - zeroOffsetAngle, degrees));
@@ -85,7 +84,16 @@ public class PulseScriptTrail : MonoBehaviour
     {
         maxAngle -= minAngle;
         currentAngle -= minAngle;
-        return 360 * Mathf.InverseLerp(0, maxAngle, currentAngle);
+        return Mathf.InverseLerp(0, maxAngle, currentAngle) * 360;
     }
 
+
+    void DeterminePhase(float x)
+    {
+        float width = halfBoundBox;
+
+        phase = 360 *
+            Mathf.InverseLerp(-width, width,
+            Mathf.Clamp(x, -width, width));
+    }
 }

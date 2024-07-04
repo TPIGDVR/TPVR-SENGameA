@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Breathing3
 {
 
-    public enum States
+    public enum BreathingStates
     {
         INHALE,
         EXHALE,
@@ -90,11 +90,11 @@ namespace Breathing3
         {
             if(IsExhale)
             {
-                mFsm.SetCurrentState((int)States.EXHALE);
+                mFsm.SetCurrentState((int)BreathingStates.EXHALE);
             }
             else if (IsSilence)
             {
-                mFsm.SetCurrentState((int)States.SILENT);
+                mFsm.SetCurrentState((int)BreathingStates.SILENT);
             }
             
         }
@@ -114,11 +114,11 @@ namespace Breathing3
             if (IsExhale) return;
             if (IsInhale)
             {
-                mFsm.SetCurrentState((int)States.INHALE);
+                mFsm.SetCurrentState((int)BreathingStates.INHALE);
             }
             else if (IsSilence)
             {
-                mFsm.SetCurrentState((int)States.SILENT);
+                mFsm.SetCurrentState((int)BreathingStates.SILENT);
             }
         }
     }
@@ -135,11 +135,11 @@ namespace Breathing3
         {
             if (IsInhale)
             {
-                mFsm.SetCurrentState((int)States.INHALE);
+                mFsm.SetCurrentState((int)BreathingStates.INHALE);
             }
             else if (IsExhale)
             {
-                mFsm.SetCurrentState((int)States.EXHALE);
+                mFsm.SetCurrentState((int)BreathingStates.EXHALE);
             }
         }
 
@@ -207,7 +207,7 @@ namespace Breathing3
         public TestInhaleState(FSM fsm, int id, VolumeProvider provider, float timer, InhaleData data) : base(fsm, id, provider, timer)
         {
             this.data = data;
-            nextState = (int)States.EXHALE_TESTING;
+            nextState = (int)BreathingStates.EXHALE_TESTING;
         }
 
         protected override void CalculatingTotals()
@@ -259,7 +259,7 @@ namespace Breathing3
 
         public TestSilentState(FSM fsm, int id, VolumeProvider provider, float timer , SilenceData data) : base(fsm, id, provider, timer)
         {
-            nextState = (int)States.INHALE_TESTING;
+            nextState = (int)BreathingStates.INHALE_TESTING;
             Data = data;
         }
 
@@ -288,7 +288,7 @@ namespace Breathing3
         public TestExhaleState(FSM fsm, int id, VolumeProvider provider, float timer, ExhaleData data) : base(fsm, id, provider, timer)
         {
             this.data = data;
-            nextState = (int)States.SILENT;
+            nextState = (int)BreathingStates.SILENT;
         }
 
         protected override void CalculatingTotals()

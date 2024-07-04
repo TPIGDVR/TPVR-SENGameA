@@ -6,13 +6,16 @@ using UnityEngine;
 
 namespace Breathing3
 {
-    public class BreathingDetection : MonoBehaviour,
+    public class AudioDetector : MonoBehaviour,
         SilenceData,
         InhaleData,
-        ExhaleData
+        ExhaleData,
+        OutputBreath
     {
         //information about the volume currently
         VolumeProvider audioProvider;
+
+        #region properties
         [Header("Silence")]
         [SerializeField] float silenceVolumeThreshold;
         [SerializeField] float silencePitchUpperBound;
@@ -34,7 +37,6 @@ namespace Breathing3
         [SerializeField] float exhaleLoudnessVaranceThreshold;
         [SerializeField] float exhalePitchVaranceThreshold;
 
-
         [Header("Data Text")]
         public TextMeshProUGUI stateText;
 
@@ -44,7 +46,8 @@ namespace Breathing3
         public ExhaleDataSO presetExhaleData;
         public SilentDataSO PresetSilenceData;
         [SerializeField] private bool usedPresetData;
-        
+        #endregion
+
         #region implemented interface
         public float SilenceVolumeThreshold { get => silenceVolumeThreshold; set => silenceVolumeThreshold = value; }
         public float SilencePitchUpperBound { get => silencePitchUpperBound; set => silencePitchUpperBound = value; }
@@ -76,36 +79,34 @@ namespace Breathing3
             fsm = new FSM();
             if (usedPresetData)
             {
-                fsm.Add(new SilentState(fsm, (int)States.SILENT, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
-                fsm.Add(new InhaleState(fsm, (int)States.INHALE, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
-                fsm.Add(new ExhaleState(fsm, (int)States.EXHALE, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
+                fsm.Add(new SilentState(fsm, (int)BreathingStates.SILENT, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
+                fsm.Add(new InhaleState(fsm, (int)BreathingStates.INHALE, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
+                fsm.Add(new ExhaleState(fsm, (int)BreathingStates.EXHALE, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
             }
             else
             {
-                fsm.Add(new SilentState(fsm, (int)States.SILENT, audioProvider, this, this, this));
-                fsm.Add(new InhaleState(fsm, (int)States.INHALE, audioProvider, this, this, this));
-                fsm.Add(new ExhaleState(fsm, (int)States.EXHALE, audioProvider, this, this, this));
+                fsm.Add(new SilentState(fsm, (int)BreathingStates.SILENT, audioProvider, this, this, this));
+                fsm.Add(new InhaleState(fsm, (int)BreathingStates.INHALE, audioProvider, this, this, this));
+                fsm.Add(new ExhaleState(fsm, (int)BreathingStates.EXHALE, audioProvider, this, this, this));
             }
-            //fsm.Add(new TestSilentState(fsm, (int)States.SILENT_TESTING, audioProvider, testTimer, this));
-            //fsm.Add(new TestInhaleState(fsm, (int)States.INHALE_TESTING, audioProvider, testTimer, this));
-            fsm.Add(new TestInhaleStateNew(fsm, (int)States.INHALE_TESTING, audioProvider, testTimer, this,this));
-            fsm.Add(new TestExhaleState(fsm, (int)States.EXHALE_TESTING, audioProvider, testTimer, this));
+            //fsm.Add(new TestSilentState(fsm, (int)BreathingStates.SILENT_TESTING, audioProvider, testTimer, this));
+            //fsm.Add(new TestInhaleState(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this));
+            fsm.Add(new TestInhaleStateNew(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this,this));
+            fsm.Add(new TestExhaleState(fsm, (int)BreathingStates.EXHALE_TESTING, audioProvider, testTimer, this));
 
             if (usedPresetData)
             {
-                fsm.SetCurrentState((int)States.SILENT);
+                fsm.SetCurrentState((int)BreathingStates.SILENT);
             }
             else
             {
-                fsm.SetCurrentState((int)States.INHALE_TESTING);
+                fsm.SetCurrentState((int)BreathingStates.INHALE_TESTING);
             }
         }
-
 
         private void Update()
         {
             fsm.Update();
-            stateText.text = $"Current state {(States) fsm.GetCurrentState().ID}";
         }
 
         private void FixedUpdate()
@@ -116,14 +117,14 @@ namespace Breathing3
         [ContextMenu("Testing")]
         public void Testing()
         {
-            fsm.SetCurrentState((int)(States.SILENT_TESTING));
+            fsm.SetCurrentState((int)(BreathingStates.SILENT_TESTING));
         }
 
 
         [ContextMenu("Testing new")]
         public void Testing2()
         {
-            fsm.SetCurrentState((int)(States.INHALE_TESTING));
+            fsm.SetCurrentState((int)(BreathingStates.INHALE_TESTING));
         }
 
         [ContextMenu("Copy Data")]
@@ -136,6 +137,20 @@ namespace Breathing3
             curDataI.CopyData(presetInhaleData);
             curDataE.CopyData(presetExhaleData);
             curDataS.CopyData(PresetSilenceData);
+        }
+
+        public BreathingStates PlayerBreathState()
+        {
+            BreathingStates currentState = (BreathingStates)fsm.GetCurrentState().ID;
+
+            if(currentState == BreathingStates.INHALE_TESTING || 
+                currentState == BreathingStates.EXHALE_TESTING ||
+                currentState == BreathingStates.SILENT_TESTING)
+            {
+                return BreathingStates.SILENT;
+            }
+
+            return currentState;
         }
     }
 
@@ -195,5 +210,8 @@ namespace Breathing3
         }
     }
 
-
+    public interface OutputBreath
+    {
+        public BreathingStates PlayerBreathState();
+    }
 }
