@@ -21,6 +21,7 @@ namespace Breathing3
         [SerializeField] float silencePitchUpperBound;
         [SerializeField] float silencePitchLowerBound;
         [SerializeField] float silencePitchVaranceThreshold;
+        [SerializeField] float silenceVolumeOffset;
         [Header("Inhale")]
         [SerializeField] float inhaleVolumeThreshold;
         [SerializeField] float inhalePitchUpperBound;
@@ -69,6 +70,7 @@ namespace Breathing3
 
         public float ExhaleVolumeVaranceThreshold {get => exhaleLoudnessVaranceThreshold; set => exhaleLoudnessVaranceThreshold = value; }
         public float ExhalePitchVaranceThreshold { get => exhalePitchVaranceThreshold; set => exhalePitchVaranceThreshold = value; }
+        public float SilenceVolumeOffset { get => silenceVolumeOffset; set => silenceVolumeOffset =value; }
         #endregion
 
         FSM fsm;
@@ -91,7 +93,7 @@ namespace Breathing3
             }
             //fsm.Add(new TestSilentState(fsm, (int)BreathingStates.SILENT_TESTING, audioProvider, testTimer, this));
             //fsm.Add(new TestInhaleState(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this));
-            fsm.Add(new TestInhaleStateNew(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this,this));
+            fsm.Add(new TestInhaleStateNew(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this, this));
             fsm.Add(new TestExhaleState(fsm, (int)BreathingStates.EXHALE_TESTING, audioProvider, testTimer, this));
 
             if (usedPresetData)
@@ -161,6 +163,8 @@ namespace Breathing3
         public float SilencePitchLowBound { get; set; }
         public float SilencePitchUpperBound { get; set; }
         public float SilencePitchVaranceThreshold { get; set; }
+
+        public float SilenceVolumeOffset { get; set; }
 
         public void CopyData(SilenceData toData)
         {

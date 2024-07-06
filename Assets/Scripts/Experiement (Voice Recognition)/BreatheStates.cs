@@ -39,10 +39,10 @@ namespace Breathing3
             get
             {
                 return provider.CalculatedVolume > inhaleData.InhaleVolumeThreshold &&
-                    //provider.CalculatedVolume < exhaleData.ExhaleVolumeThreshold &&
-                    //provider.CalculatedVolumeVariance < inhaleData.InhaleLoudnessVarance &&
-                    //(inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
-                    provider.CalculatedPitch < inhaleData.InhalePitchUpperBound;
+                //provider.CalculatedVolume < exhaleData.ExhaleVolumeThreshold &&
+                //provider.CalculatedVolumeVariance < inhaleData.InhaleLoudnessVarance &&
+                //(inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
+                provider.CalculatedPitch < inhaleData.InhalePitchUpperBound;
             }
         }
 
@@ -53,11 +53,12 @@ namespace Breathing3
             get
             {
                 return provider.CalculatedVolume > exhaleData.ExhaleVolumeThreshold;
-                    //provider.CalculatedVolumeVariance > exhaleData.ExhaleVolumeVaranceThreshold;
-                    //provider.CalculatePitchVariance > exhaleData.ExhalePitchVaranceThreshold;
-                    //(exhaleData.ExhalePitchLowBound < provider.CalculatedPitch &&
-                    //provider.CalculatedPitch < exhaleData.ExhalePitchUpperBound
-                    //);
+                //provider.CalculatedVolumeVariance > exhaleData.ExhaleVolumeVaranceThreshold;
+                //provider.CalculatePitchVariance > exhaleData.ExhalePitchVaranceThreshold;
+                //provider.CalculatedPitch > exhaleData.ExhalePitchLowBound;
+                //(exhaleData.ExhalePitchLowBound < provider.CalculatedPitch &&
+                //provider.CalculatedPitch < exhaleData.ExhalePitchUpperBound
+                //);
             }
         }
 
@@ -66,8 +67,8 @@ namespace Breathing3
             get
             {
                 return provider.CalculatedVolume < silenceData.SilenceVolumeThreshold &&
-                    provider.CalculatedPitch < silenceData.SilencePitchUpperBound &&
-                    provider.CalculatePitchVariance < silenceData.SilencePitchVaranceThreshold;
+                    provider.CalculatedPitch < silenceData.SilencePitchUpperBound;
+                    //provider.CalculatePitchVariance < silenceData.SilencePitchVaranceThreshold;
             }
         }
 
@@ -88,6 +89,7 @@ namespace Breathing3
 
         public override void Update()
         {
+            if (IsInhale) return;
             if(IsExhale)
             {
                 mFsm.SetCurrentState((int)BreathingStates.EXHALE);
@@ -133,13 +135,14 @@ namespace Breathing3
 
         public override void Update()
         {
+            if(IsSilence) return;
+            if (IsExhale)
+            {
+                mFsm.SetCurrentState((int)BreathingStates.EXHALE);
+            }
             if (IsInhale)
             {
                 mFsm.SetCurrentState((int)BreathingStates.INHALE);
-            }
-            else if (IsExhale)
-            {
-                mFsm.SetCurrentState((int)BreathingStates.EXHALE);
             }
         }
 
@@ -215,7 +218,7 @@ namespace Breathing3
             base.CalculatingTotals();
             totalVolume += volumeProvider.CalculatedVolume;
             totalMaxPitch += volumeProvider.maxPitch;
-            totalMinPitch += volumeProvider.minPitch > 50 ? volumeProvider.minPitch : volumeProvider.avgPitch;
+            totalMinPitch += volumeProvider.minPitch;
             totalVolumeVarance += volumeProvider.CalculatedVolumeVariance;
         }
 
@@ -246,7 +249,7 @@ namespace Breathing3
         public override void Exit()
         {
             base.Exit();
-            silentData.SilenceVolumeThreshold = data.InhaleVolumeThreshold;
+            silentData.SilenceVolumeThreshold = data.InhaleVolumeThreshold + silentData.SilenceVolumeOffset;
             silentData.SilencePitchUpperBound = data.InhalePitchLowBound;
             silentData.SilencePitchLowBound = 0;
         }

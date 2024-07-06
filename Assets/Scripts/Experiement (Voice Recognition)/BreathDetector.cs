@@ -29,8 +29,8 @@ namespace Assets.Scripts.Experiement__Voice_Recognition_
         BreathingStates currentState = BreathingStates.SILENT;
         bool waitingForBreathOut = false;
 
-        float inhaleElapseTime = 0f;
-        float exhaleElapseTime = 0f;
+        [SerializeField]float inhaleElapseTime = 0f;
+        [SerializeField]float exhaleElapseTime = 0f;
         EventManager<Event> em = EventSystem.em;
 
         private void Start()

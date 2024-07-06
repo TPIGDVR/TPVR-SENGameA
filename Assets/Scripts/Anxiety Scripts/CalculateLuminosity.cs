@@ -36,7 +36,7 @@ public class CalculateLuminosity : MonoBehaviour
             if (totalBrightness < lT)
                 totalBrightness = 0;
             rt.Release();
-            Debug.Log(totalBrightness);
+            //Debug.Log(totalBrightness);
             em.TriggerEvent<float>(Event.GLARE_UPDATE, totalBrightness);
         }
         catch { }
