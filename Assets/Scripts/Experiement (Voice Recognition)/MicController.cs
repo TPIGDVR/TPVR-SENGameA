@@ -29,8 +29,8 @@ namespace Breathing3
         [Header("Other settings")]
         [SerializeField] private float loudnessMultiplier = 100f; //Multiply loudness with this number
         [SerializeField] private float highPassCutoff = 10000;
-
-        [SerializeField] private int startingCheckingFrequencyIndex = 0;
+        [SerializeField] private float LowPassCutoff = 100;
+        [SerializeField] private bool pitchDebugger = false;
 
         [SerializeField] private CalculationMethod pitchCalculationMethod = CalculationMethod.MIN;
         [SerializeField] private CalculationMethod volumeCalculationMethod = CalculationMethod.AVG;
@@ -258,13 +258,19 @@ namespace Breathing3
             CalculateNormalPitch();
             CalculateMinMaxAveragePitch();
             CalculationPitchVarance();
+
             void CalculateNormalPitch()
             {
+                int startingCheckingFrequencyIndex = 0;
+                int endingCheckingFrequencyIndex = _dataContainer.Length;
+                float pitchIncrementor = 24000 / _datalength;
+                startingCheckingFrequencyIndex = Mathf.FloorToInt(LowPassCutoff / pitchIncrementor);
+                endingCheckingFrequencyIndex = Mathf.FloorToInt( highPassCutoff / pitchIncrementor);
                 float maxV = 0;
                 int maxN = 0;
 
                 // Find the highest sample.
-                for (int i = startingCheckingFrequencyIndex; i < _dataContainer.Length; i++)
+                for (int i = startingCheckingFrequencyIndex; i < endingCheckingFrequencyIndex; i++)
                 {
                     if (_dataContainer[i] > maxV)
                     {
@@ -279,8 +285,14 @@ namespace Breathing3
                 // Convert index to frequency
                 //24000 is the sampling frequency for the PC. 24000 / sample = frequency resolution
                 // frequency resolution * index of the sample would give the pitch as a result.
-                pitch = HighPassFilter(freqN * 24000 / _datalength, highPassCutoff);
+                //pitch = HighPassFilter(freqN * pitchIncrementor, highPassCutoff);
+                pitch = freqN * pitchIncrementor;
+                if (pitchDebugger)
+                {
+                    print($"Pitch values {pitch} , freqN {freqN}, max N {maxV}");
+                    PrintArray(_dataContainer);
 
+                }
             }
 
             void CalculateMinMaxAveragePitch()
@@ -326,18 +338,27 @@ namespace Breathing3
             }
         }
 
-        float HighPassFilter(float pitch, float cutOff)
-        {
-            if (pitch > cutOff)
-            {
-                return 0;
-            }
-            else
-            {
-                return pitch;
-            }
-        }
+        //float HighPassFilter(float pitch, float cutOff)
+        //{
+        //    if (pitch > cutOff)
+        //    {
+        //        return prevPitch;
+        //    }
+        //    else
+        //    {
+        //        return pitch;
+        //    }
+        //}
 
+        void PrintArray(float[] array)
+        {
+            string arrayString = "";
+            for (int i = 0; i < array.Length; i++)
+            {
+                arrayString += array[i].ToString("F4") + " "; // Format to 4 decimal places for readability
+            }
+            Debug.Log(arrayString);
+        }
     }
 
 

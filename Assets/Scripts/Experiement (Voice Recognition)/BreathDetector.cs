@@ -1,5 +1,6 @@
 ﻿using Breathing3;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 namespace Assets.Scripts.Experiement__Voice_Recognition_
@@ -20,6 +21,7 @@ namespace Assets.Scripts.Experiement__Voice_Recognition_
         [SerializeField] float maxAnxietyReduction = 0.8f;
         [SerializeField] float maximumInhaleTimer = 3f;
         [SerializeField] float maximumExhaleTimer = 3f;
+        [SerializeField] TextMeshProUGUI displayText;
         private int leniecyCounter = 0;
         [SerializeField] int leniecyThreshold;
 
@@ -27,8 +29,8 @@ namespace Assets.Scripts.Experiement__Voice_Recognition_
         BreathingStates currentState = BreathingStates.SILENT;
         bool waitingForBreathOut = false;
 
-        float inhaleElapseTime = 0f;
-        float exhaleElapseTime = 0f;
+        [SerializeField]float inhaleElapseTime = 0f;
+        [SerializeField]float exhaleElapseTime = 0f;
         EventManager<Event> em = EventSystem.em;
 
         private void Start()
@@ -39,6 +41,8 @@ namespace Assets.Scripts.Experiement__Voice_Recognition_
         private void Update()
         {
             DecideBreathingState();
+            displayText.text = $"Cur State: {currentState}\n" +
+                $"prev State: {previousState}";
             CalculateInhaleElapseTime();
             CalculateExhaleElapseTime();
         }

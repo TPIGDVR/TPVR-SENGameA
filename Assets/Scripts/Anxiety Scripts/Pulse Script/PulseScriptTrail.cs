@@ -1,4 +1,7 @@
 using Assets.Scripts.pattern;
+using System.Collections;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 public class PulseScriptTrail : MonoBehaviour
 {
@@ -21,15 +24,34 @@ public class PulseScriptTrail : MonoBehaviour
     [Header("Properties")]
     [SerializeField] float zeroOffsetAngle = 130f;
     [SerializeField] float WidthBoundingBox = 10f;
+    
+    [Header("Amp")]
+    [SerializeField] float minAmp = 0.5f;
+    [SerializeField] float maxAmp = 1f;
+    [SerializeField] float randAmpRange = 0.3f;
+
+    [Header("Frequency")]
+    [SerializeField] float minFreq = 1f;
+    [SerializeField] float maxFreq = 1.2f;
+
+    [Header("Heart Related")]
+    [SerializeField] float restingBPM = 60;
+    [SerializeField] float maxBPM = 200;
+    [SerializeField] int heartBeatRand = 2;
+    [SerializeField] TMP_Text bpmText;
+    EventManager<Event> em = EventSystem.em;
+
     float halfBoundBox => WidthBoundingBox / 2;
 
-    //starting point is 0,
+    [Header("Pulse debugging")]
     [SerializeField] float speed;
     [SerializeField] private float phase;
     [SerializeField] float frequency = 1f;
     [SerializeField] float amp;
+    
     Vector3 trailNewPosition;
     Vector3 originalPos => new Vector3(-halfBoundBox, 0, 0);
+    
     private void Start()
     {
         trails = new(trailPrefab.gameObject);
@@ -66,8 +88,14 @@ public class PulseScriptTrail : MonoBehaviour
         currentTrail = trails.Get();
         currentTrail.time = originalEmittingTime - Mathf.Min(maxReductionEmittingTIme, emittingReduction * speed);
         currentTrail.gameObject.SetActive(true);
-    }
 
+
+        //calculate the currentBPM
+        float anxiety = em.TriggerEvent<float>(Event.HEART_BEAT);
+        CalBeat(anxiety);
+
+    }
+    #region sin wave related
     float ArcTooth(float degrees)
     {
 
@@ -92,7 +120,6 @@ public class PulseScriptTrail : MonoBehaviour
         currentAngle -= minAngle;
         return Mathf.InverseLerp(0, maxAngle, currentAngle) * 360;
     }
-
     void DeterminePhase(float x)
     {
         float width = halfBoundBox;
@@ -100,5 +127,44 @@ public class PulseScriptTrail : MonoBehaviour
         phase = 360 *
             Mathf.InverseLerp(-width, width,
             Mathf.Clamp(x, -width, width));
+    }
+    #endregion
+
+    /// <summary>
+    /// calculate the speed based on 
+    /// </summary>
+    /// <param name="numberOfBeatPerMin"></param>
+    public void CalculateSpeed(float numberOfBeatPerMin)
+    {
+        float timeToCompleteOneBeat = 60 / numberOfBeatPerMin;
+        speed = WidthBoundingBox / timeToCompleteOneBeat;
+    }
+
+    public void CalculateAmp(float numberOfBeatPerMin, float minHeartBeat ,float maxHeartBeat) 
+    {
+        float calAmp = Mathf.Lerp(minAmp,
+            maxAmp, 
+            Mathf.InverseLerp(minHeartBeat, maxHeartBeat, numberOfBeatPerMin));
+
+        calAmp += Random.Range(-randAmpRange, randAmpRange);
+        amp = calAmp;
+    }
+
+    public void CalculateFrequency()
+    {
+        frequency = Random.Range(minFreq, maxFreq);
+    }
+
+    void CalBeat(float anxiety)
+    {
+        float currBPM = Mathf.Lerp(restingBPM, maxBPM, anxiety);
+        currBPM += Random.Range(-heartBeatRand, heartBeatRand);
+
+        CalculateSpeed(currBPM);
+        CalculateAmp(currBPM, restingBPM, maxBPM);
+        CalculateFrequency();
+
+
+        bpmText.text = $"{Mathf.CeilToInt(currBPM)} BPM"; ;
     }
 }
