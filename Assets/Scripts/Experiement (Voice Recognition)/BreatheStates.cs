@@ -14,7 +14,10 @@ namespace Breathing3
         INHALE_TESTING,
         EXHALE_TESTING,
         SILENT_TESTING,
+        WAIT_FOR_BREATH,
     }
+
+    #region breathe states
     public class BreatheState : FSMState
     {
         //u can then swap the provider of this data to test which one is better suited :)
@@ -39,6 +42,7 @@ namespace Breathing3
             get
             {
                 return provider.CalculatedVolume > inhaleData.InhaleVolumeThreshold &&
+                //provider.CalculatedPitch > inhaleData.InhalePitchLowBound;
                 //provider.CalculatedVolume < exhaleData.ExhaleVolumeThreshold &&
                 //provider.CalculatedVolumeVariance < inhaleData.InhaleLoudnessVarance &&
                 //(inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
@@ -79,6 +83,8 @@ namespace Breathing3
 
     }
 
+
+
     public class InhaleState : BreatheState
     {
         public InhaleState(FSM fsm, 
@@ -90,7 +96,7 @@ namespace Breathing3
         public override void Update()
         {
             if (IsInhale) return;
-            if(IsExhale)
+            else if (IsExhale)
             {
                 mFsm.SetCurrentState((int)BreathingStates.EXHALE);
             }
@@ -98,7 +104,6 @@ namespace Breathing3
             {
                 mFsm.SetCurrentState((int)BreathingStates.SILENT);
             }
-            
         }
 
     }
@@ -114,10 +119,6 @@ namespace Breathing3
         public override void Update()
         {
             if (IsExhale) return;
-            if (IsInhale)
-            {
-                mFsm.SetCurrentState((int)BreathingStates.INHALE);
-            }
             else if (IsSilence)
             {
                 mFsm.SetCurrentState((int)BreathingStates.SILENT);
@@ -148,7 +149,147 @@ namespace Breathing3
 
     }
 
+    public class BreatheStateNew : FSMState
+    {
+        VolumeProvider provider;
+        InhaleData inhaleData;
+        ExhaleData exhaleData;
+        SilenceData silenceData;
 
+        public BreatheStateNew(FSM fsm, int id, VolumeProvider provider,
+        InhaleData inhaleData,
+        ExhaleData exhaleData,
+        SilenceData silenceData) : base(fsm, id)
+        {
+            this.provider = provider;
+            this.inhaleData = inhaleData;
+            this.exhaleData = exhaleData;
+            this.silenceData = silenceData;
+        }
+
+        public bool CanInhaleTransition
+        {
+            get
+            {
+                return provider.CalculatedVolume > inhaleData.InhaleVolumeThreshold &&
+                //provider.CalculatedPitch > inhaleData.InhalePitchLowBound;
+                //provider.CalculatedVolume < exhaleData.ExhaleVolumeThreshold &&
+                provider.CalculatedVolumeVariance > inhaleData.InhaleLoudnessVarance &&
+                //(inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
+                inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
+                provider.CalculatedPitch < inhaleData.InhalePitchUpperBound;
+            }
+        }
+
+        public bool CanMatainInhale
+        {
+            get
+            {
+                return provider.CalculatedVolume > inhaleData.InhaleVolumeThreshold;
+            }
+        }
+
+        public bool CanExhaleTransition
+        {
+            get
+            {
+                return provider.CalculatedVolume > exhaleData.ExhaleVolumeThreshold;
+                //provider.CalculatedVolumeVariance > exhaleData.ExhaleVolumeVaranceThreshold;
+                //provider.CalculatePitchVariance > exhaleData.ExhalePitchVaranceThreshold;
+                //provider.CalculatedPitch > exhaleData.ExhalePitchLowBound;
+                //(exhaleData.ExhalePitchLowBound < provider.CalculatedPitch &&
+                //provider.CalculatedPitch < exhaleData.ExhalePitchUpperBound
+                //);
+            }
+        }
+
+        public bool CanMainExhale
+        {
+            get => CanExhaleTransition;
+        }
+
+        public bool IsSilence
+        {
+            get
+            {
+                return provider.CalculatedVolume < silenceData.SilenceVolumeThreshold &&
+                    provider.CalculatedPitch < silenceData.SilencePitchUpperBound;
+                //provider.CalculatePitchVariance < silenceData.SilencePitchVaranceThreshold;
+            }
+        }
+
+
+    }
+
+    public class InhaleStateNew : BreatheStateNew
+    {
+
+        public InhaleStateNew(FSM fsm, int id, VolumeProvider provider, InhaleData inhaleData, ExhaleData exhaleData, SilenceData silenceData) : base(fsm, id, provider, inhaleData, exhaleData, silenceData)
+        {
+        }
+
+        public override void Update()
+        {
+            if (CanMatainInhale) return;
+            if (IsSilence)
+            {
+                mFsm.SetCurrentState((int)BreathingStates.WAIT_FOR_BREATH);
+            }
+            else if(CanExhaleTransition)
+            {
+                mFsm.SetCurrentState((int)BreathingStates.EXHALE);
+            }
+        }
+    }
+
+
+    public class WaitForExhaleState : BreatheStateNew
+    {
+        public WaitForExhaleState(FSM fsm, int id, VolumeProvider provider, InhaleData inhaleData, ExhaleData exhaleData, SilenceData silenceData) : base(fsm, id, provider, inhaleData, exhaleData, silenceData)
+        {
+        }
+
+        public override void Update()
+        {
+            if(CanExhaleTransition)
+            {
+                mFsm.SetCurrentState((int)BreathingStates.EXHALE);
+            }
+        }
+    }
+
+    public class ExhaleStateNew : BreatheStateNew
+    {
+        public ExhaleStateNew(FSM fsm, int id, VolumeProvider provider, InhaleData inhaleData, ExhaleData exhaleData, SilenceData silenceData) : base(fsm, id, provider, inhaleData, exhaleData, silenceData)
+        {
+        }
+
+        public override void Update()
+        {
+            if (IsSilence)
+            {
+                mFsm.SetCurrentState((int)BreathingStates.SILENT);
+            }
+        }
+    }
+
+    public class SilentStateNew : BreatheStateNew
+    {
+        public SilentStateNew(FSM fsm, int id, VolumeProvider provider, InhaleData inhaleData, ExhaleData exhaleData, SilenceData silenceData) : base(fsm, id, provider, inhaleData, exhaleData, silenceData)
+        {
+        }
+
+        public override void Update()
+        {//will wait for inhale
+            if (IsSilence) return;
+            if (CanInhaleTransition)
+            {
+                mFsm.SetCurrentState((int)BreathingStates.INHALE);
+            }
+        }
+    }
+
+    #endregion
     public class TestState : FSMState
     {
         protected VolumeProvider volumeProvider;

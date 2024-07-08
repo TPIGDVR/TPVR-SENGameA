@@ -9,24 +9,43 @@ public class NoiseProximityHandler : MonoBehaviour
     NoiseSource[] _noiseSources;
     [SerializeField]
     float _maxDistanceFromSource;
-
-    float _totalNoiseValue;
+    [SerializeField] float _totalNoiseValue;
     float _maxSqrDist;
     [SerializeField]
     int numberOfSample = 64;
     [SerializeField]
     float[] _dataSample;
 
+    [SerializeField]
+    float sampleSize;
+    List<float> avgNoise; 
     private void Start()
     {
         _dataSample = new float[numberOfSample];
         _noiseSources = FindObjectsOfType<NoiseSource>();
         _maxSqrDist = _maxDistanceFromSource * _maxDistanceFromSource;
+
+        avgNoise = new();
     }
 
     private void Update()
     {
         _totalNoiseValue = CalculateNoiseBasedOnListener();
+
+        if (avgNoise.Count >= sampleSize)
+        {
+            avgNoise.RemoveAt(0);
+        }
+
+        float noise = 0f;
+        avgNoise.Add(TotalNoiseValue);
+        for(int i = 0; i < avgNoise.Count; i++)
+        {
+            noise += avgNoise[i];
+        }
+        noise /= avgNoise.Count;
+
+        print($"avg noise {noise}");
     }
 
     float CalculateNoiseLevelBasedOffDistance()

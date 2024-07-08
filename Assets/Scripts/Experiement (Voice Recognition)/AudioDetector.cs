@@ -87,12 +87,20 @@ namespace Breathing3
             }
             else
             {
-                fsm.Add(new SilentState(fsm, (int)BreathingStates.SILENT, audioProvider, this, this, this));
-                fsm.Add(new InhaleState(fsm, (int)BreathingStates.INHALE, audioProvider, this, this, this));
-                fsm.Add(new ExhaleState(fsm, (int)BreathingStates.EXHALE, audioProvider, this, this, this));
+                //old
+                //fsm.Add(new SilentState(fsm, (int)BreathingStates.SILENT, audioProvider, this, this, this));
+                //fsm.Add(new InhaleState(fsm, (int)BreathingStates.INHALE, audioProvider, this, this, this));
+                //fsm.Add(new ExhaleState(fsm, (int)BreathingStates.EXHALE, audioProvider, this, this, this));
+
+                fsm.Add(new SilentStateNew(fsm, (int)BreathingStates.SILENT, audioProvider, this, this, this));
+                fsm.Add(new InhaleStateNew(fsm, (int)BreathingStates.INHALE, audioProvider, this, this, this));
+                fsm.Add(new ExhaleStateNew(fsm, (int)BreathingStates.EXHALE, audioProvider, this, this, this));
+                fsm.Add(new WaitForExhaleState(fsm, (int)BreathingStates.WAIT_FOR_BREATH, audioProvider, this, this, this));
             }
+            //old testing
             //fsm.Add(new TestSilentState(fsm, (int)BreathingStates.SILENT_TESTING, audioProvider, testTimer, this));
             //fsm.Add(new TestInhaleState(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this));
+
             fsm.Add(new TestInhaleStateNew(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this, this));
             fsm.Add(new TestExhaleState(fsm, (int)BreathingStates.EXHALE_TESTING, audioProvider, testTimer, this));
 

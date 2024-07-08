@@ -1292,14 +1292,14 @@ MonoBehaviour:
   _audioSource: {fileID: 1830706060}
   _pitchRecordTime: 5
   _volumeRecordTime: 5
-  _datalength: 1024
+  _datalength: 8192
   mute: 1
   loudnessMultiplier: 100
   highPassCutoff: 10000
   LowPassCutoff: 100
   pitchDebugger: 0
-  pitchCalculationMethod: 3
-  volumeCalculationMethod: 3
+  pitchCalculationMethod: 1
+  volumeCalculationMethod: 1
 --- !u!4 &1830706058
 Transform:
   m_ObjectHideFlags: 0
@@ -1331,6 +1331,7 @@ MonoBehaviour:
   silencePitchUpperBound: 0
   silencePitchLowerBound: 0
   silencePitchVaranceThreshold: 0.2
+  silenceVolumeOffset: 0.19
   inhaleVolumeThreshold: 0
   inhalePitchUpperBound: 0
   inhalePitchLowerBound: 0
