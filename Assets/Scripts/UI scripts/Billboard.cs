@@ -8,6 +8,7 @@ public class Billboard : MonoBehaviour
     void Start()
     {
         mainTransform = Camera.main.transform;
+        Debug.Log(mainTransform);
     }
 
     private void LateUpdate()
