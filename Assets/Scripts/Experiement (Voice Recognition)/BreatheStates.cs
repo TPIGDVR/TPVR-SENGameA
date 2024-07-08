@@ -1,5 +1,7 @@
 ﻿using PGGE.Patterns;
 using System.Collections;
+using System.Data;
+using Unity.VisualScripting.FullSerializer;
 using UnityEditor.VersionControl;
 using UnityEngine;
 
@@ -14,7 +16,10 @@ namespace Breathing3
         INHALE_TESTING,
         EXHALE_TESTING,
         SILENT_TESTING,
+        WAIT_FOR_BREATH,
     }
+
+    #region breathe states
     public class BreatheState : FSMState
     {
         //u can then swap the provider of this data to test which one is better suited :)
@@ -39,6 +44,7 @@ namespace Breathing3
             get
             {
                 return provider.CalculatedVolume > inhaleData.InhaleVolumeThreshold &&
+                //provider.CalculatedPitch > inhaleData.InhalePitchLowBound;
                 //provider.CalculatedVolume < exhaleData.ExhaleVolumeThreshold &&
                 //provider.CalculatedVolumeVariance < inhaleData.InhaleLoudnessVarance &&
                 //(inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
@@ -90,7 +96,7 @@ namespace Breathing3
         public override void Update()
         {
             if (IsInhale) return;
-            if(IsExhale)
+            else if (IsExhale)
             {
                 mFsm.SetCurrentState((int)BreathingStates.EXHALE);
             }
@@ -98,7 +104,6 @@ namespace Breathing3
             {
                 mFsm.SetCurrentState((int)BreathingStates.SILENT);
             }
-            
         }
 
     }
@@ -114,10 +119,6 @@ namespace Breathing3
         public override void Update()
         {
             if (IsExhale) return;
-            if (IsInhale)
-            {
-                mFsm.SetCurrentState((int)BreathingStates.INHALE);
-            }
             else if (IsSilence)
             {
                 mFsm.SetCurrentState((int)BreathingStates.SILENT);
@@ -148,7 +149,160 @@ namespace Breathing3
 
     }
 
+    public class BreatheStateNew : FSMState
+    {
+        VolumeProvider provider;
+        InhaleData inhaleData;
+        ExhaleData exhaleData;
+        SilenceData silenceData;
 
+        public BreatheStateNew(FSM fsm, int id, VolumeProvider provider,
+        InhaleData inhaleData,
+        ExhaleData exhaleData,
+        SilenceData silenceData) : base(fsm, id)
+        {
+            this.provider = provider;
+            this.inhaleData = inhaleData;
+            this.exhaleData = exhaleData;
+            this.silenceData = silenceData;
+        }
+
+        public bool CanInhaleTransition
+        {
+            get
+            {
+                return provider.CalculatedVolume > inhaleData.InhaleVolumeThreshold &&
+                //provider.CalculatedPitch > inhaleData.InhalePitchLowBound;
+                //provider.CalculatedVolume < exhaleData.ExhaleVolumeThreshold &&
+                //provider.CalculatedVolumeVariance > inhaleData.InhaleLoudnessVarance &&
+                //(inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
+                //inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
+                provider.maxPitch < inhaleData.InhalePitchUpperBound;
+            }
+        }
+
+        public bool CanMatainInhale
+        {
+            get
+            {
+                return provider.CalculatedVolume > inhaleData.InhaleVolumeThreshold;
+            }
+        }
+
+        public bool CanExhaleTransition
+        {
+            get
+            {
+                return provider.CalculatedVolume > exhaleData.ExhaleVolumeThreshold;
+                //provider.CalculatedVolumeVariance > exhaleData.ExhaleVolumeVaranceThreshold;
+                //provider.CalculatePitchVariance > exhaleData.ExhalePitchVaranceThreshold;
+                //provider.CalculatedPitch > exhaleData.ExhalePitchLowBound;
+                //(exhaleData.ExhalePitchLowBound < provider.CalculatedPitch &&
+                //provider.CalculatedPitch < exhaleData.ExhalePitchUpperBound
+                //);
+            }
+        }
+
+        public bool CanMainExhale
+        {
+            get => CanExhaleTransition;
+        }
+
+        public bool IsSilence
+        {
+            get
+            {
+                return provider.CalculatedVolume < silenceData.SilenceVolumeThreshold &&
+                    provider.CalculatedPitch < silenceData.SilencePitchUpperBound;
+                //provider.CalculatePitchVariance < silenceData.SilencePitchVaranceThreshold;
+            }
+        }
+
+
+    }
+
+    public class InhaleStateNew : BreatheStateNew
+    {
+
+        public InhaleStateNew(FSM fsm, int id, VolumeProvider provider, InhaleData inhaleData, ExhaleData exhaleData, SilenceData silenceData) : base(fsm, id, provider, inhaleData, exhaleData, silenceData)
+        {
+        }
+
+        public override void Update()
+        {
+            if (CanMatainInhale) return;
+            if (IsSilence)
+            {
+                mFsm.SetCurrentState((int)BreathingStates.WAIT_FOR_BREATH);
+            }
+            else if(CanExhaleTransition)
+            {
+                mFsm.SetCurrentState((int)BreathingStates.EXHALE);
+            }
+        }
+    }
+
+    public class WaitForExhaleState : BreatheStateNew
+    {
+        public WaitForExhaleState(FSM fsm, int id, VolumeProvider provider, InhaleData inhaleData, ExhaleData exhaleData, SilenceData silenceData) : base(fsm, id, provider, inhaleData, exhaleData, silenceData)
+        {
+        }
+
+        public override void Update()
+        {
+            if(CanExhaleTransition)
+            {
+                mFsm.SetCurrentState((int)BreathingStates.EXHALE);
+            }
+        }
+    }
+
+    public class ExhaleStateNew : BreatheStateNew
+    {
+        public ExhaleStateNew(FSM fsm, int id, VolumeProvider provider, InhaleData inhaleData, ExhaleData exhaleData, SilenceData silenceData) : base(fsm, id, provider, inhaleData, exhaleData, silenceData)
+        {
+        }
+
+        public override void Update()
+        {
+            if (IsSilence)
+            {
+                mFsm.SetCurrentState((int)BreathingStates.SILENT);
+            }
+        }
+    }
+
+    public class SilentStateNew : BreatheStateNew
+    {
+        float elapseTime = 0f;
+        float coolDownTime = 0.1f;
+        public SilentStateNew(FSM fsm, int id, VolumeProvider provider, InhaleData inhaleData, ExhaleData exhaleData, SilenceData silenceData) : base(fsm, id, provider, inhaleData, exhaleData, silenceData)
+        {
+        }
+
+        public override void Enter()
+        {
+            elapseTime = 0f;
+        }
+
+        public override void Update()
+        {//will wait for inhale
+            while(coolDownTime > elapseTime)
+            {
+                elapseTime += Time.deltaTime;
+                return;
+            }
+            if (IsSilence) return;
+            if (CanInhaleTransition)
+            {
+                mFsm.SetCurrentState((int)BreathingStates.INHALE);
+            }
+        }
+
+
+    }
+
+    #endregion
     public class TestState : FSMState
     {
         protected VolumeProvider volumeProvider;
@@ -163,38 +317,72 @@ namespace Breathing3
         protected float totalPitchVarance;
         protected int counter;
         protected int nextState;
-
-        public TestState(FSM fsm, int id, VolumeProvider provider, float timer) : base(fsm, id)
+        protected int prevState;
+        protected int amountToTest; 
+        int testCounter;
+        bool haveFinishTesting = false;
+        public TestState(FSM fsm, int id, VolumeProvider provider, 
+            float timer, 
+            int amountToTest) : base(fsm, id)
         {
             this.timer = timer;
             this.volumeProvider = provider;
+            this.amountToTest = amountToTest;
         }
 
         public override void Enter()
         {
+            if (testCounter < amountToTest)
+            {
+                testCounter++;
+            }
+            else
+            {
+                haveFinishTesting = true;
+            }
+            elapseTimer = 0;
+        }
+
+        private void ResetVariables()
+        {
             totalVolume = 0;
             totalMinPitch = 0;
             totalMaxPitch = 0;
-            counter = 0;
-            elapseTimer = 0;
             totalVolumeVarance = 0;
             totalPitchVarance = 0;
+            counter = 0;
         }
 
         public override void Update()
         {
+            //Debug.Log($"Timer :{timer}");
             while (timer > elapseTimer)
             {
                 elapseTimer += Time.deltaTime;
                 return;
             }
-            mFsm.SetCurrentState(nextState);
+            if (haveFinishTesting)
+            {
+                haveFinishTesting = false;
+                testCounter = 0;
+                FinishTesting();
+                ResetVariables();
+                mFsm.SetCurrentState(nextState);
+            }
+            else
+            {
+                mFsm.SetCurrentState(prevState);
+            }
+        }
+
+        protected virtual void FinishTesting()
+        {
+
         }
 
         public override void FixedUpdate()
         {
             CalculatingTotals();
-            
         }
 
         protected virtual void CalculatingTotals()
@@ -207,10 +395,11 @@ namespace Breathing3
     public class TestInhaleState : TestState
     {
         protected InhaleData data;
-        public TestInhaleState(FSM fsm, int id, VolumeProvider provider, float timer, InhaleData data) : base(fsm, id, provider, timer)
+        public TestInhaleState(FSM fsm, int id, VolumeProvider provider, float timer, InhaleData data, int amountToTest) : base(fsm, id, provider, timer, amountToTest)
         {
             this.data = data;
             nextState = (int)BreathingStates.EXHALE_TESTING;
+            prevState = (int)BreathingStates.SILENT_TESTING;
         }
 
         protected override void CalculatingTotals()
@@ -224,12 +413,29 @@ namespace Breathing3
 
         public override void Exit()
         {
+            //data.InhaleVolumeThreshold += totalVolume / counter + data.InhaleVolumeOffset;
+            //data.InhalePitchLowBound += totalMinPitch / counter;
+            //data.InhalePitchUpperBound += totalMaxPitch / counter;
+            //data.InhaleLoudnessVarance += totalVolumeVarance / counter;
+            //data.InhalePitchLowBound -= data.InhalePitchOffset;
+            //data.InhalePitchUpperBound += data.InhalePitchOffset;
+        }
+
+        protected override void FinishTesting()
+        {
+            //data.InhaleVolumeThreshold /= amountToTest;
+            //data.InhalePitchLowBound /= amountToTest;
+            //data.InhalePitchUpperBound /= amountToTest;
+            //data.InhaleLoudnessVarance /= amountToTest;
+
             data.InhaleVolumeThreshold = totalVolume / counter + data.InhaleVolumeOffset;
             data.InhalePitchLowBound = totalMinPitch / counter;
-            data.InhalePitchUpperBound = totalMaxPitch / counter;
+            data.InhalePitchUpperBound+= totalMaxPitch / counter;
             data.InhaleLoudnessVarance = totalVolumeVarance / counter;
+
             data.InhalePitchLowBound -= data.InhalePitchOffset;
             data.InhalePitchUpperBound += data.InhalePitchOffset;
+
         }
     }
 
@@ -239,16 +445,25 @@ namespace Breathing3
         public TestInhaleStateNew(FSM fsm, 
             int id, 
             VolumeProvider provider, 
-            float timer, 
+            float timer,
             InhaleData data,
-            SilenceData data2) : base(fsm, id, provider, timer, data)
+            int amountToTest,
+            SilenceData data2) : base(fsm, id, provider, timer, data,amountToTest)
         {
             silentData = data2;
+            prevState = (int)BreathingStates.EXHALE_TESTING;
+            nextState = (int)BreathingStates.EXHALE_TESTING;
         }
 
         public override void Exit()
         {
             base.Exit();
+
+        }
+
+        protected override void FinishTesting()
+        {
+            base.FinishTesting();
             silentData.SilenceVolumeThreshold = data.InhaleVolumeThreshold + silentData.SilenceVolumeOffset;
             silentData.SilencePitchUpperBound = data.InhalePitchLowBound;
             silentData.SilencePitchLowBound = 0;
@@ -259,8 +474,8 @@ namespace Breathing3
     {
         public SilenceData Data;
 
-
-        public TestSilentState(FSM fsm, int id, VolumeProvider provider, float timer , SilenceData data) : base(fsm, id, provider, timer)
+        public TestSilentState(FSM fsm, int id, VolumeProvider provider, float timer , SilenceData data, int amountToTest) : 
+            base(fsm, id, provider, timer, amountToTest)
         {
             nextState = (int)BreathingStates.INHALE_TESTING;
             Data = data;
@@ -288,10 +503,12 @@ namespace Breathing3
     public class TestExhaleState : TestState
     {
         ExhaleData data;
-        public TestExhaleState(FSM fsm, int id, VolumeProvider provider, float timer, ExhaleData data) : base(fsm, id, provider, timer)
+        public TestExhaleState(FSM fsm, int id, VolumeProvider provider, float timer, ExhaleData data, int amountToTest) : 
+            base(fsm, id, provider, timer, amountToTest)
         {
             this.data = data;
             nextState = (int)BreathingStates.SILENT;
+            prevState = (int)BreathingStates.INHALE_TESTING;
         }
 
         protected override void CalculatingTotals()
@@ -299,12 +516,12 @@ namespace Breathing3
             base.CalculatingTotals();
             totalVolume += volumeProvider.CalculatedVolume;
             totalMaxPitch += volumeProvider.maxPitch;
-            totalMinPitch += volumeProvider.minPitch > 50 ? volumeProvider.minPitch : volumeProvider.avgPitch;
+            totalMinPitch += volumeProvider.minPitch;
             totalPitchVarance += volumeProvider.CalculatePitchVariance;
             totalVolumeVarance += volumeProvider.CalculatedVolumeVariance;
         }
 
-        public override void Exit()
+        protected override void FinishTesting()
         {
             data.ExhaleVolumeThreshold = totalVolume / counter + data.ExhaleVolumeOffset;
             data.ExhalePitchLowBound = totalMinPitch / counter;

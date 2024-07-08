@@ -43,6 +43,7 @@ namespace Breathing3
 
         [Header("other settings")]
         [SerializeField] private float testTimer;
+        [SerializeField] private int amountOfTest;
         public InhaleDataSO  presetInhaleData;
         public ExhaleDataSO presetExhaleData;
         public SilentDataSO PresetSilenceData;
@@ -71,6 +72,7 @@ namespace Breathing3
         public float ExhaleVolumeVaranceThreshold {get => exhaleLoudnessVaranceThreshold; set => exhaleLoudnessVaranceThreshold = value; }
         public float ExhalePitchVaranceThreshold { get => exhalePitchVaranceThreshold; set => exhalePitchVaranceThreshold = value; }
         public float SilenceVolumeOffset { get => silenceVolumeOffset; set => silenceVolumeOffset =value; }
+        public int AmountOfTest { get => amountOfTest; set => amountOfTest = value; }
         #endregion
 
         FSM fsm;
@@ -87,14 +89,22 @@ namespace Breathing3
             }
             else
             {
-                fsm.Add(new SilentState(fsm, (int)BreathingStates.SILENT, audioProvider, this, this, this));
-                fsm.Add(new InhaleState(fsm, (int)BreathingStates.INHALE, audioProvider, this, this, this));
-                fsm.Add(new ExhaleState(fsm, (int)BreathingStates.EXHALE, audioProvider, this, this, this));
+                //old
+                //fsm.Add(new SilentState(fsm, (int)BreathingStates.SILENT, audioProvider, this, this, this));
+                //fsm.Add(new InhaleState(fsm, (int)BreathingStates.INHALE, audioProvider, this, this, this));
+                //fsm.Add(new ExhaleState(fsm, (int)BreathingStates.EXHALE, audioProvider, this, this, this));
+
+                fsm.Add(new SilentStateNew(fsm, (int)BreathingStates.SILENT, audioProvider, this, this, this));
+                fsm.Add(new InhaleStateNew(fsm, (int)BreathingStates.INHALE, audioProvider, this, this, this));
+                fsm.Add(new ExhaleStateNew(fsm, (int)BreathingStates.EXHALE, audioProvider, this, this, this));
+                fsm.Add(new WaitForExhaleState(fsm, (int)BreathingStates.WAIT_FOR_BREATH, audioProvider, this, this, this));
             }
+            //old testing
             //fsm.Add(new TestSilentState(fsm, (int)BreathingStates.SILENT_TESTING, audioProvider, testTimer, this));
             //fsm.Add(new TestInhaleState(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this));
-            fsm.Add(new TestInhaleStateNew(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this, this));
-            fsm.Add(new TestExhaleState(fsm, (int)BreathingStates.EXHALE_TESTING, audioProvider, testTimer, this));
+
+            fsm.Add(new TestInhaleStateNew(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this, amountOfTest, this));
+            fsm.Add(new TestExhaleState(fsm, (int)BreathingStates.EXHALE_TESTING, audioProvider, testTimer, this, amountOfTest));
 
             if (usedPresetData)
             {
@@ -127,6 +137,14 @@ namespace Breathing3
         [ContextMenu("Testing new")]
         public void Testing2()
         {
+            SilenceData curDataS = (SilenceData)this;
+            ExhaleData curDataE = (ExhaleData)this;
+            InhaleData curDataI = (InhaleData)this;
+
+            curDataS.EmptyData();
+            curDataE.EmptyData();
+            curDataI.EmptyData();
+
             fsm.SetCurrentState((int)(BreathingStates.INHALE_TESTING));
         }
 
@@ -173,6 +191,14 @@ namespace Breathing3
             toData.SilenceVolumeThreshold = SilenceVolumeThreshold;
             toData.SilencePitchVaranceThreshold = SilencePitchVaranceThreshold;
         }
+
+        public void EmptyData()
+        {
+            SilenceVolumeThreshold = 0f;
+            SilencePitchLowBound = 0f;
+            SilencePitchUpperBound = 0f;
+            SilencePitchVaranceThreshold = 0f;
+        }
     }
 
     public interface ExhaleData
@@ -185,7 +211,6 @@ namespace Breathing3
         public float ExhalePitchOffset { get;  }
         public float ExhaleVolumeOffset { get; }
 
-
         public void CopyData(ExhaleData toData)
         {
             toData.ExhaleVolumeThreshold = ExhaleVolumeThreshold;
@@ -194,6 +219,16 @@ namespace Breathing3
             toData.ExhaleVolumeVaranceThreshold = ExhaleVolumeVaranceThreshold;
             toData.ExhalePitchVaranceThreshold = ExhalePitchVaranceThreshold;
         }
+
+        public void EmptyData()
+        {
+            ExhaleVolumeThreshold = 0f;
+            ExhalePitchLowBound = 0f;
+            ExhalePitchUpperBound = 0f;
+            ExhaleVolumeVaranceThreshold = 0f;
+            ExhalePitchVaranceThreshold = 0f ;
+        }
+
     }
 
     public interface InhaleData
@@ -213,6 +248,15 @@ namespace Breathing3
             toData.InhalePitchUpperBound = InhalePitchUpperBound;
             toData.InhaleLoudnessVarance = InhaleLoudnessVarance;
         }
+
+        public void EmptyData()
+        {
+            InhaleVolumeThreshold = 0f;
+            InhalePitchLowBound = 0f;
+            InhalePitchUpperBound = 0f;
+            InhaleLoudnessVarance = 0f;
+        }
+
     }
 
     public interface OutputBreath

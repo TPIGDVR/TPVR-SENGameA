@@ -1292,14 +1292,14 @@ MonoBehaviour:
   _audioSource: {fileID: 1830706060}
   _pitchRecordTime: 5
   _volumeRecordTime: 5
-  _datalength: 1024
+  _datalength: 8192
   mute: 1
   loudnessMultiplier: 100
   highPassCutoff: 10000
   LowPassCutoff: 100
   pitchDebugger: 0
-  pitchCalculationMethod: 3
-  volumeCalculationMethod: 3
+  pitchCalculationMethod: 1
+  volumeCalculationMethod: 1
 --- !u!4 &1830706058
 Transform:
   m_ObjectHideFlags: 0
@@ -1331,21 +1331,23 @@ MonoBehaviour:
   silencePitchUpperBound: 0
   silencePitchLowerBound: 0
   silencePitchVaranceThreshold: 0.2
+  silenceVolumeOffset: 0.19
   inhaleVolumeThreshold: 0
   inhalePitchUpperBound: 0
   inhalePitchLowerBound: 0
-  inhalePitchOffset: 100
+  inhalePitchOffset: 0
   inhaleLoudnessVaranceThreshold: 0
-  inhaleVolumeOffset: 0.11
+  inhaleVolumeOffset: 0
   exhaleVolumethreshold: 0
   exhalePitchUpperBound: 0
   exhalePitchLowerBound: 0
-  exhalePitchOffset: 100
-  exhaleVolumeOffset: 0.3
+  exhalePitchOffset: 0
+  exhaleVolumeOffset: 0
   exhaleLoudnessVaranceThreshold: 0
   exhalePitchVaranceThreshold: 0
   stateText: {fileID: 199935898}
-  testTimer: 3
+  testTimer: 2
+  amountOfTest: 2
   presetInhaleData: {fileID: 11400000, guid: f67dbaf0115da1d4d951de9e5d5d6b31, type: 2}
   presetExhaleData: {fileID: 11400000, guid: e89b5fd5836b39c48b81c76f9f1d41e2, type: 2}
   PresetSilenceData: {fileID: 11400000, guid: df41c0e455ec4614e9a836b54298ba68, type: 2}
