@@ -75,6 +75,7 @@ public class AutomatonBehaviour : MonoBehaviour
 
     void EvaluateState()
     {
+        //AAAAA.AAAAAA.O.MMM.MMMMMMMM.AAAAAAAAA?
         int nxtState = (int)_state + 1;
         if(nxtState == 3)
         {
