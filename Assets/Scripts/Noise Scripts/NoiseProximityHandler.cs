@@ -27,7 +27,6 @@ public class NoiseProximityHandler : MonoBehaviour
     private void Update()
     {
         _totalNoiseValue = CalculateNoiseBasedOnListener();
-        print($"noise Value {TotalNoiseValue}");
     }
 
     float CalculateNoiseLevelBasedOffDistance()
