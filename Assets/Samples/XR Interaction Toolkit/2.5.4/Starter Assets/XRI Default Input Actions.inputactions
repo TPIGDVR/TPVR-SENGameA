@@ -401,9 +401,9 @@
                 },
                 {
                     "name": "Pinch Position",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "cac52a91-5970-4ad2-8c86-a8c0e91a1837",
-                    "expectedControlType": "Vector3",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -595,7 +595,7 @@
                     "path": "<XRHandDevice>{LeftHand}/pinchPosition",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Generic XR Controller",
+                    "groups": "Continuous Move;Generic XR Controller;Noncontinuous Move",
                     "action": "Pinch Position",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -799,6 +799,17 @@
                     "name": "",
                     "id": "73325635-d9e5-481a-9279-ae7be089422d",
                     "path": "<MetaAimHand>{LeftHand}/indexPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Continuous Move;Generic XR Controller",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1bbee86f-0c81-4662-9154-9f784f809317",
+                    "path": "<HandInteraction>{LeftHand}/pinchPose/isTracked",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
