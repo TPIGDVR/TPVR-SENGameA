@@ -30,6 +30,14 @@ public class DialogueBasic : MonoBehaviour
         StartCoroutine(PrintDialogue());
     }
 
+    public void PreviousDialogue()
+    {
+        dialogueText.text = string.Empty;
+        dialogueSpeaker.text = string.Empty;
+        index -= 1;
+        StartCoroutine(PrintDialogue());
+    }
+
     IEnumerator PrintDialogue()
     {
         foreach (char c in Lines[index].Line.ToCharArray())
