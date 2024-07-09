@@ -299,13 +299,13 @@ MonoBehaviour:
   silencePitchUpperBound: 0
   silencePitchLowerBound: 0
   silencePitchVaranceThreshold: 0
-  silenceVolumeOffset: 0.11
+  silenceVolumeOffset: 0
   inhaleVolumeThreshold: 0
   inhalePitchUpperBound: 0
   inhalePitchLowerBound: 0
-  inhalePitchOffset: 24.7
+  inhalePitchOffset: 0
   inhaleLoudnessVaranceThreshold: 0
-  inhaleVolumeOffset: -0.08
+  inhaleVolumeOffset: 0
   exhaleVolumethreshold: 0
   exhalePitchUpperBound: 0
   exhalePitchLowerBound: 0
@@ -315,11 +315,11 @@ MonoBehaviour:
   exhalePitchVaranceThreshold: 0
   stateText: {fileID: 0}
   testTimer: 3
-  amountOfTest: 0
+  amountOfTest: 3
   presetInhaleData: {fileID: 11400000, guid: f67dbaf0115da1d4d951de9e5d5d6b31, type: 2}
   presetExhaleData: {fileID: 11400000, guid: e89b5fd5836b39c48b81c76f9f1d41e2, type: 2}
   PresetSilenceData: {fileID: 11400000, guid: df41c0e455ec4614e9a836b54298ba68, type: 2}
-  usedPresetData: 0
+  usedPresetData: 1
 --- !u!114 &3363771738648521405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,8 +342,9 @@ MonoBehaviour:
   highPassCutoff: 10000
   LowPassCutoff: 100
   pitchDebugger: 0
-  pitchCalculationMethod: 3
+  pitchCalculationMethod: 1
   volumeCalculationMethod: 1
+  _micphoneName: 
 --- !u!82 &4922885582734676676
 AudioSource:
   m_ObjectHideFlags: 0
@@ -474,6 +475,7 @@ GameObject:
   - component: {fileID: 9017025590146145832}
   - component: {fileID: 4484415049153758927}
   - component: {fileID: 637809519791114823}
+  - component: {fileID: 4071211639929508173}
   m_Layer: 9
   m_Name: Right Controller
   m_TagString: Untagged
@@ -769,7 +771,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
-    m_Bits: 4294967295
+    m_Bits: 2
   m_AttachTransform: {fileID: 0}
   m_KeepSelectedTargetValid: 1
   m_DisableVisualsWhenBlockedInGroup: 1
@@ -818,9 +820,9 @@ MonoBehaviour:
   m_PlayAudioClipOnHoverCanceled: 0
   m_AudioClipForOnHoverCanceled: {fileID: 0}
   m_AllowHoverAudioWhileSelecting: 1
-  m_PlayHapticsOnSelectEntered: 0
-  m_HapticSelectEnterIntensity: 0
-  m_HapticSelectEnterDuration: 0
+  m_PlayHapticsOnSelectEntered: 1
+  m_HapticSelectEnterIntensity: 1
+  m_HapticSelectEnterDuration: 10
   m_PlayHapticsOnSelectExited: 0
   m_HapticSelectExitIntensity: 0
   m_HapticSelectExitDuration: 0
@@ -861,8 +863,35 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.15
+  m_Radius: 0.2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &4071211639929508173
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5126761220235464359}
+  serializedVersion: 4
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 2
 --- !u!1 &5486102315922451408
 GameObject:
   m_ObjectHideFlags: 0
@@ -1260,7 +1289,7 @@ MonoBehaviour:
   m_OriginBaseGameObject: {fileID: 8057827893444444551}
   m_CameraFloorOffsetObject: {fileID: 8003230768665569261}
   m_RequestedTrackingOriginMode: 1
-  m_CameraYOffset: 28.48
+  m_CameraYOffset: 1.5
 --- !u!114 &2613063746416240123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1426,6 +1455,7 @@ GameObject:
   - component: {fileID: 7825989654310098806}
   - component: {fileID: 3706859589225437379}
   - component: {fileID: 8452832505375231970}
+  - component: {fileID: 6600875852864108426}
   m_Layer: 9
   m_Name: Left Controller
   m_TagString: Untagged
@@ -1721,7 +1751,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
-    m_Bits: 4294967295
+    m_Bits: 2
   m_AttachTransform: {fileID: 0}
   m_KeepSelectedTargetValid: 1
   m_DisableVisualsWhenBlockedInGroup: 1
@@ -1753,7 +1783,7 @@ MonoBehaviour:
   m_OnSelectExited:
     m_PersistentCalls:
       m_Calls: []
-  m_SelectActionTrigger: 1
+  m_SelectActionTrigger: 0
   m_HideControllerOnSelect: 0
   m_AllowHoveredActivate: 0
   m_TargetPriorityMode: 0
@@ -1813,5 +1843,32 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.15
+  m_Radius: 0.2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &6600875852864108426
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8600856853840788890}
+  serializedVersion: 4
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 2

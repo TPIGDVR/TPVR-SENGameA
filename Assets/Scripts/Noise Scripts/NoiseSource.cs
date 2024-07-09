@@ -9,7 +9,7 @@ public class NoiseSource : MonoBehaviour
 
     private void Start()
     {
-        
         noiseIndicator.localScale = new Vector3(NoiseValue, 0, NoiseValue) / transform.lossyScale.x;
+        GetComponent<AudioSource>().maxDistance = NoiseValue;
     }
 }
