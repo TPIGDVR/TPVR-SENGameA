@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.ProBuilder;
 
 public class HandsScanning : MonoBehaviour
 {
 
-
-    private void OnTriggerEnter(Collider collider)
+    public void Scanning()
     {
-        if (collider.CompareTag("Scannable"))
-        {
-            Debug.Log("AAA.AAA.AAA.AAAAAA.AAAA.AAA");
-        }
+        Debug.Log("WOOF WOOF WORK");
     }
 
 
