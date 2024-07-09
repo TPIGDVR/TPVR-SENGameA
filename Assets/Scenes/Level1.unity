@@ -10463,7 +10463,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 2
   m_DistanceCalculationMode: 1
   m_SelectMode: 0
   m_FocusMode: 1
@@ -12463,7 +12463,7 @@ PrefabInstance:
     - target: {fileID: 3532454228741617432, guid: 40d03cfad4c9a5245b8c4c6a7dd5ff41,
         type: 3}
       propertyPath: m_Convex
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5758412120670283323, guid: 40d03cfad4c9a5245b8c4c6a7dd5ff41,
         type: 3}
@@ -13122,6 +13122,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6684931544625833588, guid: 4d61e4b17cc5ab040bda93930dfa4469,
+        type: 3}
+      propertyPath: m_CameraYOffset
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8315486121519606727, guid: 4d61e4b17cc5ab040bda93930dfa4469,
         type: 3}
