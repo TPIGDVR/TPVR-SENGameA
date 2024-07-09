@@ -43,19 +43,25 @@ public class AutomatonBehaviour : MonoBehaviour
                     break;
                 case AutomatonStates.WALK:
                     Debug.Log("walking...");
+
                     _wayPointIndex++;
                     if(_wayPointIndex >= _wayPoints.Length)
                         _wayPointIndex = 0;
+
                     Vector3 pos = _wayPoints[_wayPointIndex].position;
                     SetDestination(pos);
+
                     yield return new WaitForSeconds(0.1f);
                     yield return new WaitUntil(() => _agent.remainingDistance <= _travelCompleteThreshold);
                     _ani.SetFloat("Spd", 0f);
                     break;
                 case AutomatonStates.SCAN:
                     Debug.Log("I talk");
+
                     int index = Random.Range(0, _dataInterfaceT.Length);
-                    SetDestination(_dataInterfaceT[index].position);
+                    if (_dataInterfaceT[index] != null)      
+                        SetDestination(_dataInterfaceT[index].position);
+
                     yield return new WaitForSeconds(0.1f);
                     yield return new WaitUntil(() => _agent.remainingDistance <= _travelCompleteThreshold);
                     _ani.SetFloat("Spd", 0f);
