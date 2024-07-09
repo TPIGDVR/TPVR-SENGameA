@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(SphereCollider))]
 public class HandsScanning : MonoBehaviour
 {
-    [SerializeField]private InputActionReference inputActionReference;
-    [SerializeField]private SphereCollider sphereCollider;
 
 
-    private void OnEnable()
+    private void OnTriggerEnter(Collider collider)
     {
-        inputActionReference.action.performed += OnActionPerformed;
-        inputActionReference.action.canceled += OnActionCanceled;
-
+        if (collider.CompareTag("Scannable"))
+        {
+            Debug.Log("AAA.AAA.AAA.AAAAAA.AAAA.AAA");
+        }
     }
 
-    private void OnActionPerformed(InputAction.CallbackContext obj) => sphereCollider.enabled = true;
 
-    private void OnActionCanceled(InputAction.CallbackContext obj) => sphereCollider.enabled = false;
+
 }
+
