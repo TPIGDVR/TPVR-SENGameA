@@ -34,11 +34,13 @@ namespace Breathing3
 
         [SerializeField] private CalculationMethod pitchCalculationMethod = CalculationMethod.MIN;
         [SerializeField] private CalculationMethod volumeCalculationMethod = CalculationMethod.AVG;
-        private string _micphoneName;
+        [SerializeField] private string _micphoneName;
         private bool isMicrophoneReady;
 
         private float prevVolume =0f;
         private float prevPitch = 0f;
+
+        private const float refVal = 0.1f;
 
         enum CalculationMethod
         {
@@ -217,7 +219,14 @@ namespace Breathing3
                 {
                     sum += Mathf.Pow(_dataContainer[i], 2);//Mathf.Abs(dataContainer[i]);
                 }
-                volume = Mathf.Sqrt(sum / _datalength) * loudnessMultiplier;
+                //volume = Mathf.Sqrt(sum / _datalength) * loudnessMultiplier;
+                if(sum == 0)
+                {
+                    volume = 0;
+                    return;
+                }
+                volume = 20 * Mathf.Log10(Mathf.Sqrt(sum / _datalength) / refVal);
+                //print($"{volume} , {sum}");
             }
             void CalculateMaxMinAverageVolume()
             {
@@ -263,9 +272,9 @@ namespace Breathing3
             {
                 int startingCheckingFrequencyIndex = 0;
                 int endingCheckingFrequencyIndex = _dataContainer.Length;
-                float pitchIncrementor = 24000 / _datalength;
-                startingCheckingFrequencyIndex = Mathf.FloorToInt(LowPassCutoff / pitchIncrementor);
-                endingCheckingFrequencyIndex = Mathf.FloorToInt( highPassCutoff / pitchIncrementor);
+                float pitchIncrementor = 24000f / _datalength;
+                startingCheckingFrequencyIndex = (int)(LowPassCutoff / pitchIncrementor);
+                endingCheckingFrequencyIndex = (int) (highPassCutoff / pitchIncrementor);
                 float maxV = 0;
                 int maxN = 0;
 
@@ -287,10 +296,14 @@ namespace Breathing3
                 // frequency resolution * index of the sample would give the pitch as a result.
                 //pitch = HighPassFilter(freqN * pitchIncrementor, highPassCutoff);
                 pitch = freqN * pitchIncrementor;
+                //print(pitch);
                 if (pitchDebugger)
                 {
-                    print($"Pitch values {pitch} , freqN {freqN}, max N {maxV}");
-                    PrintArray(_dataContainer);
+                    print($"Pitch values {pitch} , freqN {freqN}, max N {maxV} " +
+                        $"pitch incredmental {pitchIncrementor} " +
+                        $"starting Index: {startingCheckingFrequencyIndex}" +
+                        $"Ending index: {endingCheckingFrequencyIndex}");
+                    //PrintArray(_dataContainer);
 
                 }
             }
