@@ -83,9 +83,10 @@ namespace Breathing3
             fsm = new FSM();
             if (usedPresetData)
             {
-                fsm.Add(new SilentState(fsm, (int)BreathingStates.SILENT, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
-                fsm.Add(new InhaleState(fsm, (int)BreathingStates.INHALE, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
-                fsm.Add(new ExhaleState(fsm, (int)BreathingStates.EXHALE, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
+                fsm.Add(new SilentStateNew(fsm, (int)BreathingStates.SILENT, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
+                fsm.Add(new InhaleStateNew(fsm, (int)BreathingStates.INHALE, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
+                fsm.Add(new ExhaleStateNew(fsm, (int)BreathingStates.EXHALE, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
+                fsm.Add(new WaitForExhaleState(fsm, (int)BreathingStates.WAIT_FOR_BREATH, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
             }
             else
             {
