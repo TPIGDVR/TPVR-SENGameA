@@ -1402,6 +1402,21 @@
 }
 
 {
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "1ce5e916bdd14517a37c3db928c59241",
+    "m_Id": -207167188,
+    "m_DisplayName": "Intersection Depth",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_Intersection_Depth",
+    "m_StageCapability": 2,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
     "m_SGVersion": 1,
     "m_Type": "UnityEditor.ShaderGraph.CustomFunctionNode",
     "m_ObjectId": "1e85e8985db544829281814f051e472f",
@@ -4324,6 +4339,9 @@
     },
     "m_Slots": [
         {
+            "m_Id": "1ce5e916bdd14517a37c3db928c59241"
+        },
+        {
             "m_Id": "7efb9f6cf0544e68b541b78964d3be06"
         }
     ],
@@ -4336,8 +4354,12 @@
         "m_SerializableColors": []
     },
     "m_SerializedSubGraph": "{\n    \"subGraph\": {\n        \"fileID\": -5475051401550479605,\n        \"guid\": \"13d8053829bd1e945a06a38db3428456\",\n        \"type\": 3\n    }\n}",
-    "m_PropertyGuids": [],
-    "m_PropertyIds": [],
+    "m_PropertyGuids": [
+        "83636a9a-e751-4d98-a4da-cfd443b692e9"
+    ],
+    "m_PropertyIds": [
+        -207167188
+    ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
 }
