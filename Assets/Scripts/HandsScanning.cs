@@ -2,22 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.ProBuilder;
 
-[RequireComponent(typeof(SphereCollider))]
 public class HandsScanning : MonoBehaviour
 {
-    [SerializeField]private InputActionReference inputActionReference;
-    [SerializeField]private SphereCollider sphereCollider;
 
-
-    private void OnEnable()
+    public void Scanning()
     {
-        inputActionReference.action.performed += OnActionPerformed;
-        inputActionReference.action.canceled += OnActionCanceled;
-
+        Debug.Log("WOOF WOOF WORK");
     }
 
-    private void OnActionPerformed(InputAction.CallbackContext obj) => sphereCollider.enabled = true;
 
-    private void OnActionCanceled(InputAction.CallbackContext obj) => sphereCollider.enabled = false;
+
 }
+
