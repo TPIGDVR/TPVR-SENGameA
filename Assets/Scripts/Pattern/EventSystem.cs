@@ -12,7 +12,8 @@ public static class EventSystem
 public enum GameEvents
 {
     LOSE,
-    WIN
+    WIN,
+    ENTER_NEW_SCENE
 }
 
 public enum PlayerEvents
