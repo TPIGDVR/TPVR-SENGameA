@@ -1,6 +1,7 @@
 using Microsoft.Unity.VisualStudio.Editor;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class FadeScreen : MonoBehaviour
@@ -11,6 +12,7 @@ public class FadeScreen : MonoBehaviour
     public AnimationCurve fadeCurve;
     public string colorPropertyName = "_Color";
     private Renderer rend;
+    
 
     [SerializeField]
     Image fadeOverlay;

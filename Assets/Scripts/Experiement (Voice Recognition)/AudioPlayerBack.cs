@@ -1,12 +1,8 @@
-using Caress;
-using Caress.Examples;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Breathing3
 {
+    using Caress.Examples;
+    using UnityEngine;
     public class AudioPlayerBack : MonoBehaviour
     {
         [SerializeField] private MicrophoneRecorder _microphoneRecorder = default;

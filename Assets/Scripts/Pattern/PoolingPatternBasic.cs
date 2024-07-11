@@ -32,19 +32,26 @@ namespace Assets.Scripts.pattern
             }
         }
 
-        public void Add()
+        public void InitWithParent(int numberOfItems, Transform parent, bool isGameObjectActive)
+        {
+            for (int i = 0; i < numberOfItems; i++)
+            {
+                Add(parent , isGameObjectActive);
+            }
+        }
+
+        public void Add(bool activeState = false)
         {
             GameObject initObject = GameObject.Instantiate(prefab);
-            initObject.SetActive(false);
+            initObject.SetActive(activeState);
             queue.Enqueue(initObject.GetComponent<T>());
         }
 
-        public void Add(Transform parent)
+        public void Add(Transform parent , bool activeState = false)
         {
             GameObject initObject = GameObject.Instantiate(prefab, parent);
-            initObject.SetActive(false);
+            initObject.SetActive(activeState);
             queue.Enqueue(initObject.GetComponent<T>());
-
         }
 
         public T Get()

@@ -1,15 +1,11 @@
 using Assets.Scripts.pattern;
+using System;
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 public class PulseScriptTrail : MonoBehaviour
 {
-    //task
-    /// <summary>
-    /// 1. Bound the trail to a certain width
-    /// </summary>
-    /// 
     TrailRenderer currentTrail;
     Transform trailTransform => currentTrail.transform;
     [Header("trail details")]
@@ -51,17 +47,25 @@ public class PulseScriptTrail : MonoBehaviour
     
     Vector3 trailNewPosition;
     Vector3 originalPos => new Vector3(-halfBoundBox, 0, 0);
-    
+
+    [SerializeField] int numberOfWave = 1;
+    private bool hasActivatedEmit = false;
     private void Start()
     {
         trails = new(trailPrefab.gameObject);
-        trails.InitWithParent(numberOfTrail, transform);
+        trails.InitWithParent(numberOfTrail, transform, true);
         phase = 0;
         currentTrail = trails.Get();
+        currentTrail.emitting = false;
     }
 
     private void Update()
     {
+        if(!hasActivatedEmit)
+        {
+            currentTrail.emitting = true;
+            hasActivatedEmit = true;
+        }
         trailNewPosition = trailTransform.localPosition;
         trailNewPosition.x += speed * Time.deltaTime;
 
@@ -69,7 +73,7 @@ public class PulseScriptTrail : MonoBehaviour
         if (trailNewPosition.x > halfBoundBox)
         {
             ChangeCurrentTrail();
-            trailNewPosition.x = -WidthBoundingBox;
+            trailNewPosition.x = -halfBoundBox;
         }
 
         DeterminePhase(trailNewPosition.x);
@@ -81,14 +85,14 @@ public class PulseScriptTrail : MonoBehaviour
 
     void ChangeCurrentTrail()
     {
-        currentTrail.gameObject.SetActive(false);
-        trailTransform.localPosition = originalPos;
+        currentTrail.emitting = false;
 
         trails.Retrieve(currentTrail);
         currentTrail = trails.Get();
+        trailTransform.localPosition = originalPos;
         currentTrail.time = originalEmittingTime - Mathf.Min(maxReductionEmittingTIme, emittingReduction * speed);
-        currentTrail.gameObject.SetActive(true);
 
+        hasActivatedEmit = false;
 
         //calculate the currentBPM
         float anxiety = em.TriggerEvent<float>(PlayerEvents.HEART_BEAT);
@@ -98,20 +102,25 @@ public class PulseScriptTrail : MonoBehaviour
     #region sin wave related
     float ArcTooth(float degrees)
     {
-
         return Mathf.Atan(Mathf.Tan(degrees / 2 * Mathf.Deg2Rad));
     }
 
-    float PulseWave(float degrees)
+    float PulseWave(float degree)
     {
-        degrees = Mathf.Abs(degrees) % 360;
-        if (degrees < zeroOffsetAngle || degrees > (360 - zeroOffsetAngle))
+        float maxdegree = 360 / numberOfWave;
+        degree %= maxdegree;
+        return HeartBeatPulse( NormaliseAngle(0, maxdegree, degree));
+    }
+
+    float HeartBeatPulse(float degree)
+    {
+        if (degree < zeroOffsetAngle || degree > (360 - zeroOffsetAngle))
         {
             //we want the pulse to be zero by then
             return 0;
         }
 
-        return ArcTooth(frequency*NormaliseAngle(zeroOffsetAngle, 360 - zeroOffsetAngle, degrees));
+        return ArcTooth(frequency * NormaliseAngle(zeroOffsetAngle, 360 - zeroOffsetAngle, degree));
     }
 
     float NormaliseAngle(float minAngle, float maxAngle, float currentAngle)
@@ -120,6 +129,7 @@ public class PulseScriptTrail : MonoBehaviour
         currentAngle -= minAngle;
         return Mathf.InverseLerp(0, maxAngle, currentAngle) * 360;
     }
+
     void DeterminePhase(float x)
     {
         float width = halfBoundBox;
@@ -146,19 +156,19 @@ public class PulseScriptTrail : MonoBehaviour
             maxAmp, 
             Mathf.InverseLerp(minHeartBeat, maxHeartBeat, numberOfBeatPerMin));
 
-        calAmp += Random.Range(-randAmpRange, randAmpRange);
+        calAmp += UnityEngine.Random.Range(-randAmpRange, randAmpRange);
         amp = calAmp;
     }
 
     public void CalculateFrequency()
     {
-        frequency = Random.Range(minFreq, maxFreq);
+        frequency = UnityEngine.Random.Range(minFreq, maxFreq);
     }
 
     void CalBeat(float anxiety)
     {
         float currBPM = Mathf.Lerp(restingBPM, maxBPM, anxiety);
-        currBPM += Random.Range(-heartBeatRand, heartBeatRand);
+        currBPM += UnityEngine.Random.Range(-heartBeatRand, heartBeatRand);
 
         CalculateSpeed(currBPM);
         CalculateAmp(currBPM, restingBPM, maxBPM);

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : MonoBehaviour
 {
-    public FadeScreen fadeScreen;
+    //public FadeScreen fadeScreen;
     public static SceneTransitionManager singleton;
 
     private void Awake()
@@ -18,37 +18,39 @@ public class SceneTransitionManager : MonoBehaviour
 
     public void GoToScene(int sceneIndex)
     {
-        StartCoroutine(GoToSceneRoutine(sceneIndex));
-    }
-
-    IEnumerator GoToSceneRoutine(int sceneIndex)
-    {
-        fadeScreen.FadeOut();
-        yield return new WaitForSeconds(fadeScreen.fadeDuration);
-
-        //Launch the new scene
         SceneManager.LoadScene(sceneIndex);
+
+        //StartCoroutine(GoToSceneRoutine(sceneIndex));
     }
 
-    public void GoToSceneAsync(int sceneIndex)
-    {
-        StartCoroutine(GoToSceneAsyncRoutine(sceneIndex));
-    }
+    //IEnumerator GoToSceneRoutine(int sceneIndex)
+    //{
+    //    fadeScreen.FadeOut();
+    //    yield return new WaitForSeconds(fadeScreen.fadeDuration);
 
-    IEnumerator GoToSceneAsyncRoutine(int sceneIndex)
-    {
-        fadeScreen.FadeOut();
-        //Launch the new scene
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
-        operation.allowSceneActivation = false;
+    //    //Launch the new scene
+    //    SceneManager.LoadScene(sceneIndex);
+    //}
 
-        float timer = 0;
-        while(timer <= fadeScreen.fadeDuration && !operation.isDone)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
+    //public void GoToSceneAsync(int sceneIndex)
+    //{
+    //    StartCoroutine(GoToSceneAsyncRoutine(sceneIndex));
+    //}
 
-        operation.allowSceneActivation = true;
-    }
+    //IEnumerator GoToSceneAsyncRoutine(int sceneIndex)
+    //{
+    //    fadeScreen.FadeOut();
+    //    //Launch the new scene
+    //    AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
+    //    operation.allowSceneActivation = false;
+
+    //    float timer = 0;
+    //    while(timer <= fadeScreen.fadeDuration && !operation.isDone)
+    //    {
+    //        timer += Time.deltaTime;
+    //        yield return null;
+    //    }
+
+    //    operation.allowSceneActivation = true;
+    //}
 }
