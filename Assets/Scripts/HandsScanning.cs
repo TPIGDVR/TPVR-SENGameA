@@ -15,10 +15,13 @@ public class HandsScanning : MonoBehaviour
     private GameObject canvas;
     [SerializeField]
     private float timeMultiplier;
+    [SerializeField]
+    private AudioSource completeSound;
 
 
 
     private bool scanCompleted;
+    private bool playSongOnce;
     public bool scanStarted = false;
 
     public bool ScanCompleted {  get { return scanCompleted; } }
@@ -32,23 +35,40 @@ public class HandsScanning : MonoBehaviour
 
     private void Update()
     {
-        if (scanUI.fillAmount == 1)
+        if (scanCompleted)
         {
-            scanCompleted = true;
-        }
-        else if (scanUI.fillAmount == 0)
-        {
-            canvas.SetActive(false);
-        }
-        
 
-        if (scanStarted == true)
-        {
-            scanUI.fillAmount += Time.fixedDeltaTime / 100;
+            if (!playSongOnce)
+            {
+                completeSound.Play();
+                playSongOnce = true;
+            }
+
+            Debug.Log("Scan complete!!!");
+
+
         }
-        else if (scanStarted != true)
+        else
         {
-            scanUI.fillAmount -= Time.fixedDeltaTime / 100;
+            if (scanUI.fillAmount == 1)
+            {
+                scanCompleted = true;
+            }
+
+
+            if (scanStarted == true)
+            {
+                scanUI.fillAmount += Time.fixedDeltaTime / 100;
+            }
+            else if (scanStarted != true)
+            {
+                scanUI.fillAmount -= Time.fixedDeltaTime / 100;
+            }
+
+            if (scanUI.fillAmount == 0)
+            {
+                canvas.SetActive(false);
+            }
         }
     }
 
