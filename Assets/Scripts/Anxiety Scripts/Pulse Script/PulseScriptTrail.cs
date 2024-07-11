@@ -48,7 +48,7 @@ public class PulseScriptTrail : MonoBehaviour
     Vector3 trailNewPosition;
     Vector3 originalPos => new Vector3(-halfBoundBox, 0, 0);
 
-    int numberOfWave = 1;
+    [SerializeField] int numberOfWave = 1;
 
     private void Start()
     {
@@ -80,18 +80,6 @@ public class PulseScriptTrail : MonoBehaviour
         trailTransform.localPosition = trailNewPosition;
     }
 
-    Func<float,float> DetermineWave(float bpm)
-    {
-        if(bpm > 120)
-        {
-            return PulseWave;
-        }
-        else
-        {
-
-        }
-    }
-
     void ChangeCurrentTrail()
     {
         currentTrail.gameObject.SetActive(false);
@@ -114,16 +102,22 @@ public class PulseScriptTrail : MonoBehaviour
         return Mathf.Atan(Mathf.Tan(degrees / 2 * Mathf.Deg2Rad));
     }
 
-    float PulseWave(float degrees)
+    float PulseWave(float degree)
     {
-        degrees = Mathf.Abs(degrees) % 360;
-        if (degrees < zeroOffsetAngle || degrees > (360 - zeroOffsetAngle))
+        float maxdegree = 360 / numberOfWave;
+        degree %= maxdegree;
+        return HeartBeatPulse(NormaliseAngle(0, maxdegree, degree));
+    }
+
+    float HeartBeatPulse(float degree)
+    {
+        if (degree < zeroOffsetAngle || degree > (360 - zeroOffsetAngle))
         {
             //we want the pulse to be zero by then
             return 0;
         }
 
-        return ArcTooth(frequency*NormaliseAngle(zeroOffsetAngle, 360 - zeroOffsetAngle, degrees));
+        return ArcTooth(frequency * NormaliseAngle(zeroOffsetAngle, 360 - zeroOffsetAngle, degree));
     }
 
     float NormaliseAngle(float minAngle, float maxAngle, float currentAngle)
@@ -131,13 +125,6 @@ public class PulseScriptTrail : MonoBehaviour
         maxAngle -= minAngle;
         currentAngle -= minAngle;
         return Mathf.InverseLerp(0, maxAngle, currentAngle) * 360;
-    }
-
-    float SplitePhase(int section, float angle)
-    {
-        int maxSplitAngle = 360 / section;
-        angle %= maxSplitAngle;
-        return angle;
     }
 
     void DeterminePhase(float x)
