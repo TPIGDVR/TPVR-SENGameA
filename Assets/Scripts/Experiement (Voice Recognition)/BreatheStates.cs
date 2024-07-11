@@ -1,8 +1,5 @@
 ﻿using PGGE.Patterns;
-using System.Collections;
-using System.Data;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor.VersionControl;
+
 using UnityEngine;
 
 namespace Breathing3
