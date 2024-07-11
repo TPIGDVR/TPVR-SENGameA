@@ -379,7 +379,7 @@ MonoBehaviour:
   scanUI: {fileID: 2342628507304120673}
   canvas: {fileID: 8202896868472824492}
   timeMultiplier: 0
-  completeSound: {fileID: 0}
+  completeSound: {fileID: 8280844510400201950}
   scanStarted: 0
 --- !u!82 &8280844510400201950
 AudioSource:
@@ -401,7 +401,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 2.4160633
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -437,7 +437,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -681,7 +681,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8c04c5b917ae5c24a95d5b167f1884a1,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.95
+      value: 17.81
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8c04c5b917ae5c24a95d5b167f1884a1,
         type: 3}

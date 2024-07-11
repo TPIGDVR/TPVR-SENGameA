@@ -11,6 +11,7 @@ public class HandsScanning : MonoBehaviour
 
     [SerializeField]
     private Image scanUI;
+   
     [SerializeField]
     private GameObject canvas;
     [SerializeField]
