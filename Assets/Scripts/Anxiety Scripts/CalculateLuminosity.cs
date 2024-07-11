@@ -6,19 +6,19 @@ using UnityEngine.Rendering;
 public class CalculateLuminosity : MonoBehaviour
 {
     Texture2D lumTex2D;
-    EventManager<Event> em = EventSystem.em;
+    EventManager<PlayerEvents> em = EventSystem.player;
     [SerializeField,Range(0,1)]float lT;
 
     private void Start()
     {
-        em.AddListener(Event.ANXIETY_UPDATE,ProcessTexture);
+        em.AddListener(PlayerEvents.ANXIETY_UPDATE,ProcessTexture);
     }
 
     void ProcessTexture()
     {
         try
         {
-            RenderTexture rt = EventSystem.em.TriggerEvent<RTHandle>(Event.REQUEST_LUMTEXTURE).rt;
+            RenderTexture rt = EventSystem.player.TriggerEvent<RTHandle>(PlayerEvents.REQUEST_LUMTEXTURE).rt;
             lumTex2D = new(rt.width, rt.height);
             RenderTexture.active = rt;
             lumTex2D.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
@@ -37,7 +37,7 @@ public class CalculateLuminosity : MonoBehaviour
                 totalBrightness = 0;
             rt.Release();
             //Debug.Log(totalBrightness);
-            em.TriggerEvent<float>(Event.GLARE_UPDATE, totalBrightness);
+            em.TriggerEvent<float>(PlayerEvents.GLARE_UPDATE, totalBrightness);
         }
         catch { }
     }

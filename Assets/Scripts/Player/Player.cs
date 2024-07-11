@@ -5,12 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     bool isWearingSunglasses;
-    EventManager<PostProcessEvents> ppem = EventSystem.postProcess;
+    EventManager<PlayerEvents> em_p = EventSystem.player;
 
     void WearSunglasses()
     {
         isWearingSunglasses = true;
-        ppem.TriggerEvent<float>(PostProcessEvents.SUNGLASSES_ON, 1f);
+        em_p.TriggerEvent<float>(PlayerEvents.SUNGLASSES_ON, 1f);
     }
 
     void TakeOffSunglasses()

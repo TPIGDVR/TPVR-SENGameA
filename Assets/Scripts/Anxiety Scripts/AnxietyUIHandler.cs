@@ -13,11 +13,11 @@ public class AnxietyUIHandler : MonoBehaviour
     [SerializeField]
     Sprite[] _anxietySpriteLogos = new Sprite[4];
 
-    EventManager<Event> em = EventSystem.em;
+    EventManager<PlayerEvents> em = EventSystem.player;
 
     private void Start()
     {
-        em.AddListener<float>(Event.ANXIETY_UPDATE, UpdateAnxietyUI);
+        em.AddListener<float>(PlayerEvents.ANXIETY_UPDATE, UpdateAnxietyUI);
     }
 
     void UpdateAnxietyUI(float anxiety)

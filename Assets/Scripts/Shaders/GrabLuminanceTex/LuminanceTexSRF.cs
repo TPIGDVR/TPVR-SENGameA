@@ -27,7 +27,7 @@ internal class LuminanceTexSRF : ScriptableRendererFeature
         if (pass == null)
             pass = new();
 
-        EventSystem.em.AddListener(Event.REQUEST_LUMTEXTURE,RetrieveData);
+        EventSystem.player.AddListener(PlayerEvents.REQUEST_LUMTEXTURE,RetrieveData);
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)

@@ -30,7 +30,7 @@ public class PostProcessing : MonoBehaviour
 
     bool IsFainting = false;
 
-    EventManager<Event> em = EventSystem.em;
+    EventManager<PlayerEvents> em = EventSystem.player;
 
     void Start()
     {
@@ -52,7 +52,7 @@ public class PostProcessing : MonoBehaviour
         //test
         _pp.distance.value = 0;
 
-        em.AddListener<float>((int)Event.ANXIETY_UPDATE, UpdatePostProcess);
+        em.AddListener<float>((int)PlayerEvents.ANXIETY_UPDATE, UpdatePostProcess);
     }
 
 

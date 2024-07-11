@@ -14,14 +14,14 @@ public class GlobalPostProcessHandler : MonoBehaviour
     [SerializeField]Bloom bloom;
 
     //event
-    EventManager<PostProcessEvents> ppem = EventSystem.postProcess;
+    EventManager<PlayerEvents> em_p = EventSystem.player;
     private void Start()
     {
         globalVolume = GetComponent<Volume>();
         globalVolume.profile.TryGet(out bloom);
 
-        ppem.AddListener<float>(PostProcessEvents.SUNGLASSES_ON,ReduceBloomIntensity);
-        ppem.AddListener(PostProcessEvents.SUNGLASSES_OFF, ResetBloomIntensity);
+        em_p.AddListener<float>(PlayerEvents.SUNGLASSES_ON,ReduceBloomIntensity);
+        em_p.AddListener(PlayerEvents.SUNGLASSES_OFF, ResetBloomIntensity);
     }
 
     void ReduceBloomIntensity(float reducePercentage)

@@ -24,7 +24,7 @@ public class AnxietyHandler : MonoBehaviour
     
 
 
-    EventManager<Event> em = EventSystem.em;
+    EventManager<PlayerEvents> em = EventSystem.player;
     float curAnxiety => _anxietyLevel / _maxAnxietyLevel;
 
     [Header("reduction anxiety")]
@@ -34,9 +34,9 @@ public class AnxietyHandler : MonoBehaviour
     private void Start()
     {
         _noiseProximityHandler = GetComponent<NoiseProximityHandler>();
-        em.AddListener<float>(Event.ANXIETY_BREATHE, Breath);
-        em.AddListener<float>(Event.GLARE_UPDATE, Glare);
-        em.AddListener<float>(Event.HEART_BEAT, () => curAnxiety);
+        em.AddListener<float>(PlayerEvents.ANXIETY_BREATHE, Breath);
+        em.AddListener<float>(PlayerEvents.GLARE_UPDATE, Glare);
+        em.AddListener<float>(PlayerEvents.HEART_BEAT, () => curAnxiety);
     }
 
     private void Update()
@@ -62,8 +62,8 @@ public class AnxietyHandler : MonoBehaviour
         _anxietyLevel = Mathf.Clamp(_anxietyLevel,0, _maxAnxietyLevel);
 
         //trigger the event after calculating the anxiety level
-        em.TriggerEvent(Event.ANXIETY_UPDATE);
-        em.TriggerEvent<float>(Event.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
+        em.TriggerEvent(PlayerEvents.ANXIETY_UPDATE);
+        em.TriggerEvent<float>(PlayerEvents.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
     }
 
     float CalculateAnxietyScaleBasedOffNoiseLevel()

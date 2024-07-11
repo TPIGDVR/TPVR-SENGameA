@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 public class Test : MonoBehaviour
 {
     Texture2D lumTex2D;
-    EventManager<Event> em = EventSystem.em;
+    EventManager<PlayerEvents> em = EventSystem.player;
     void TestMethod()
     {
        // Material mat = new();
@@ -22,7 +22,7 @@ public class Test : MonoBehaviour
     {
         try
         {
-            RenderTexture rt = EventSystem.em.TriggerEvent<RTHandle>(Event.REQUEST_LUMTEXTURE).rt;
+            RenderTexture rt = EventSystem.player.TriggerEvent<RTHandle>(PlayerEvents.REQUEST_LUMTEXTURE).rt;
             lumTex2D = new(rt.width, rt.height);
             RenderTexture.active = rt;
             lumTex2D.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
@@ -39,7 +39,7 @@ public class Test : MonoBehaviour
             totalBrightness /= lumArray.Length;
             rt.Release();
             Debug.Log(totalBrightness);
-            em.TriggerEvent<float>(Event.GLARE_UPDATE, totalBrightness);
+            em.TriggerEvent<float>(PlayerEvents.GLARE_UPDATE, totalBrightness);
         }
         catch { }
     }

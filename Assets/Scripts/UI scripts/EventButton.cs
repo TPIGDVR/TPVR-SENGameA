@@ -9,7 +9,7 @@ namespace Assets.Scripts.UI_scripts
     {
         //can only trigger event without any values
         [Header("event")]
-        [SerializeField] Event eventToCall;
+        [SerializeField] PlayerEvents eventToCall;
 
         private void OnEnable()
         {

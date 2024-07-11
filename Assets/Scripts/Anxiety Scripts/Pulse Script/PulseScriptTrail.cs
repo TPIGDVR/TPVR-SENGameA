@@ -39,7 +39,7 @@ public class PulseScriptTrail : MonoBehaviour
     [SerializeField] float maxBPM = 200;
     [SerializeField] int heartBeatRand = 2;
     [SerializeField] TMP_Text bpmText;
-    EventManager<Event> em = EventSystem.em;
+    EventManager<PlayerEvents> em = EventSystem.player;
 
     float halfBoundBox => WidthBoundingBox / 2;
 
@@ -91,7 +91,7 @@ public class PulseScriptTrail : MonoBehaviour
 
 
         //calculate the currentBPM
-        float anxiety = em.TriggerEvent<float>(Event.HEART_BEAT);
+        float anxiety = em.TriggerEvent<float>(PlayerEvents.HEART_BEAT);
         CalBeat(anxiety);
 
     }

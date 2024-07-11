@@ -31,7 +31,7 @@ namespace Assets.Scripts.Experiement__Voice_Recognition_
 
         [SerializeField]float inhaleElapseTime = 0f;
         [SerializeField]float exhaleElapseTime = 0f;
-        EventManager<Event> em = EventSystem.em;
+        EventManager<PlayerEvents> em = EventSystem.player;
 
         private void Start()
         {
@@ -109,7 +109,7 @@ namespace Assets.Scripts.Experiement__Voice_Recognition_
                 inhaleElapseTime / maximumInhaleTimer +
                 exhaleElapseTime / maximumExhaleTimer); 
 
-            em.TriggerEvent<float>(Event.ANXIETY_BREATHE, percentageAchieve);
+            em.TriggerEvent<float>(PlayerEvents.ANXIETY_BREATHE, percentageAchieve);
 
             //reset the elapse Time to be called again.
             inhaleElapseTime = 0f;
