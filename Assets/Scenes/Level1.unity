@@ -13068,6 +13068,66 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1753159877}
     m_Modifications:
+    - target: {fileID: 5465217021006205553, guid: 1ddc5d8ea83df1e458356e4300596bff,
+        type: 3}
+      propertyPath: m_HoverExited.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465217021006205553, guid: 1ddc5d8ea83df1e458356e4300596bff,
+        type: 3}
+      propertyPath: m_HoverEntered.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465217021006205553, guid: 1ddc5d8ea83df1e458356e4300596bff,
+        type: 3}
+      propertyPath: m_HoverExited.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465217021006205553, guid: 1ddc5d8ea83df1e458356e4300596bff,
+        type: 3}
+      propertyPath: m_HoverEntered.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465217021006205553, guid: 1ddc5d8ea83df1e458356e4300596bff,
+        type: 3}
+      propertyPath: m_HoverExited.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4051137075670646441}
+    - target: {fileID: 5465217021006205553, guid: 1ddc5d8ea83df1e458356e4300596bff,
+        type: 3}
+      propertyPath: m_HoverExited.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465217021006205553, guid: 1ddc5d8ea83df1e458356e4300596bff,
+        type: 3}
+      propertyPath: m_HoverEntered.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465217021006205553, guid: 1ddc5d8ea83df1e458356e4300596bff,
+        type: 3}
+      propertyPath: m_HoverExited.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ScanStop
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465217021006205553, guid: 1ddc5d8ea83df1e458356e4300596bff,
+        type: 3}
+      propertyPath: m_HoverEntered.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ScanStart
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465217021006205553, guid: 1ddc5d8ea83df1e458356e4300596bff,
+        type: 3}
+      propertyPath: m_HoverExited.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HandsScanning, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465217021006205553, guid: 1ddc5d8ea83df1e458356e4300596bff,
+        type: 3}
+      propertyPath: m_HoverEntered.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: HandsScanning, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465217021006205553, guid: 1ddc5d8ea83df1e458356e4300596bff,
+        type: 3}
+      propertyPath: m_HoverExited.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6017110846715296818, guid: 1ddc5d8ea83df1e458356e4300596bff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13123,11 +13183,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: Electronic Kiosk Scannable
       objectReference: {fileID: 0}
+    - target: {fileID: 9134773853623991025, guid: 1ddc5d8ea83df1e458356e4300596bff,
+        type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 4051137075670646440}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ddc5d8ea83df1e458356e4300596bff, type: 3}
+--- !u!1 &4051137075670646440 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8202896868472824492, guid: 1ddc5d8ea83df1e458356e4300596bff,
+    type: 3}
+  m_PrefabInstance: {fileID: 4051137075670646439}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4051137075670646441 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9134773853623991025, guid: 1ddc5d8ea83df1e458356e4300596bff,
+    type: 3}
+  m_PrefabInstance: {fileID: 4051137075670646439}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4588949a6be56594693962ce70819bde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
