@@ -2,9 +2,9 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
-
 namespace Caress.Examples
 {
+    
     public class NoiseReducerControl : MonoBehaviour
     {
         [Header("UI")] [SerializeField] private Button _playmodeButton = default;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class FadeScreen : MonoBehaviour
@@ -10,6 +11,7 @@ public class FadeScreen : MonoBehaviour
     public AnimationCurve fadeCurve;
     public string colorPropertyName = "_Color";
     private Renderer rend;
+    
 
     // Start is called before the first frame update
     void Start()

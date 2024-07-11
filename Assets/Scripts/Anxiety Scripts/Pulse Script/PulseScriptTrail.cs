@@ -49,19 +49,23 @@ public class PulseScriptTrail : MonoBehaviour
     Vector3 originalPos => new Vector3(-halfBoundBox, 0, 0);
 
     [SerializeField] int numberOfWave = 1;
-
+    private bool hasActivatedEmit = false;
     private void Start()
     {
         trails = new(trailPrefab.gameObject);
-        trails.InitWithParent(numberOfTrail, transform);
+        trails.InitWithParent(numberOfTrail, transform, true);
         phase = 0;
         currentTrail = trails.Get();
-
-
+        currentTrail.emitting = false;
     }
 
     private void Update()
     {
+        if(!hasActivatedEmit)
+        {
+            currentTrail.emitting = true;
+            hasActivatedEmit = true;
+        }
         trailNewPosition = trailTransform.localPosition;
         trailNewPosition.x += speed * Time.deltaTime;
 
@@ -69,8 +73,7 @@ public class PulseScriptTrail : MonoBehaviour
         if (trailNewPosition.x > halfBoundBox)
         {
             ChangeCurrentTrail();
-            trailNewPosition.x = -WidthBoundingBox;
-
+            trailNewPosition.x = -halfBoundBox;
         }
 
         DeterminePhase(trailNewPosition.x);
@@ -82,13 +85,14 @@ public class PulseScriptTrail : MonoBehaviour
 
     void ChangeCurrentTrail()
     {
-        currentTrail.gameObject.SetActive(false);
-        trailTransform.localPosition = originalPos;
+        currentTrail.emitting = false;
 
         trails.Retrieve(currentTrail);
         currentTrail = trails.Get();
+        trailTransform.localPosition = originalPos;
         currentTrail.time = originalEmittingTime - Mathf.Min(maxReductionEmittingTIme, emittingReduction * speed);
-        currentTrail.gameObject.SetActive(true);
+
+        hasActivatedEmit = false;
 
         //calculate the currentBPM
         float anxiety = em.TriggerEvent<float>(Event.HEART_BEAT);
@@ -98,7 +102,6 @@ public class PulseScriptTrail : MonoBehaviour
     #region sin wave related
     float ArcTooth(float degrees)
     {
-
         return Mathf.Atan(Mathf.Tan(degrees / 2 * Mathf.Deg2Rad));
     }
 
@@ -106,7 +109,7 @@ public class PulseScriptTrail : MonoBehaviour
     {
         float maxdegree = 360 / numberOfWave;
         degree %= maxdegree;
-        return HeartBeatPulse(NormaliseAngle(0, maxdegree, degree));
+        return HeartBeatPulse( NormaliseAngle(0, maxdegree, degree));
     }
 
     float HeartBeatPulse(float degree)
