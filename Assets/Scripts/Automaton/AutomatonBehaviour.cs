@@ -20,6 +20,9 @@ public class AutomatonBehaviour : MonoBehaviour
     [SerializeField]
     Transform[] _dataInterfaceT;
 
+    [SerializeField]
+    bool _isStationary;
+
     private void Start()
     {
         _ani = GetComponent<Animator>();
@@ -82,6 +85,12 @@ public class AutomatonBehaviour : MonoBehaviour
     void EvaluateState()
     {
         //AAAAA.AAAAAA.O.MMM.MMMMMMMM.AAAAAAAAA?
+        if (_isStationary)
+        {
+            _state = AutomatonStates.IDLE;
+            return;
+        }
+
         int nxtState = (int)_state + 1;
         if(nxtState == 3)
         {
