@@ -1,6 +1,5 @@
 using Breathing3;
 using Caress;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,7 +8,8 @@ using UnityEngine.Audio;
 public class NewMicController : MonoBehaviour , VolumeProvider
 {
     [SerializeField] TextMeshProUGUI text;
-    [SerializeField] AudioSource _audioSource;
+    [SerializeField] AudioSource _audioSourceOrignal;
+    [SerializeField] AudioSource _audioSourceReducer;
     private AudioMixer aMixer;
 
     private float[] _dataContainer;
@@ -28,16 +28,16 @@ public class NewMicController : MonoBehaviour , VolumeProvider
     [SerializeField] NoiseReducer noiseReducerComponent;
 
     [Header("Other settings")]
-    [SerializeField] private float loudnessMultiplier = 100f; //Multiply loudness with this number
     [SerializeField] private float highPassCutoff = 10000;
     [SerializeField] private float LowPassCutoff = 100;
     [SerializeField] private bool pitchDebugger = false;
+    [SerializeField] bool usedNoiseReducer = false;
 
     [SerializeField] private CalculationMethod pitchCalculationMethod = CalculationMethod.MIN;
     [SerializeField] private CalculationMethod volumeCalculationMethod = CalculationMethod.AVG;
     [SerializeField] private string _micphoneName;
     private bool isMicrophoneReady;
-
+    
     private float prevVolume = 0f;
     private float prevPitch = 0f;
 
@@ -132,7 +132,14 @@ public class NewMicController : MonoBehaviour , VolumeProvider
     }
     void CalculateVolume()
     {
-        _audioSource.GetOutputData(_dataContainer, 0);
+        if (usedNoiseReducer)
+        {
+            _audioSourceReducer.GetOutputData(_dataContainer, 0);
+        }
+        else
+        {
+            _audioSourceOrignal.GetOutputData(_dataContainer, 0);
+        }
         CalculateNormalVolume();
         CalculateMaxMinAverageVolume();
         CalculateVolumeVariance();
@@ -195,7 +202,14 @@ public class NewMicController : MonoBehaviour , VolumeProvider
 
     void CalculatePitch()
     {
-        _audioSource.GetSpectrumData(_dataContainer, 0, FFTWindow.BlackmanHarris);
+        if (usedNoiseReducer)
+        {
+            _audioSourceReducer.GetSpectrumData(_dataContainer, 0, FFTWindow.BlackmanHarris);
+        }
+        else
+        {
+            _audioSourceOrignal.GetSpectrumData(_dataContainer, 0, FFTWindow.BlackmanHarris);
+        }
         CalculateNormalPitch();
         CalculateMinMaxAveragePitch();
         CalculationPitchVarance();

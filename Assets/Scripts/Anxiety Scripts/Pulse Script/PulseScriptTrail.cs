@@ -1,15 +1,11 @@
 using Assets.Scripts.pattern;
+using System;
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 public class PulseScriptTrail : MonoBehaviour
 {
-    //task
-    /// <summary>
-    /// 1. Bound the trail to a certain width
-    /// </summary>
-    /// 
     TrailRenderer currentTrail;
     Transform trailTransform => currentTrail.transform;
     [Header("trail details")]
@@ -51,13 +47,17 @@ public class PulseScriptTrail : MonoBehaviour
     
     Vector3 trailNewPosition;
     Vector3 originalPos => new Vector3(-halfBoundBox, 0, 0);
-    
+
+    int numberOfWave = 1;
+
     private void Start()
     {
         trails = new(trailPrefab.gameObject);
         trails.InitWithParent(numberOfTrail, transform);
         phase = 0;
         currentTrail = trails.Get();
+
+
     }
 
     private void Update()
@@ -70,6 +70,7 @@ public class PulseScriptTrail : MonoBehaviour
         {
             ChangeCurrentTrail();
             trailNewPosition.x = -WidthBoundingBox;
+
         }
 
         DeterminePhase(trailNewPosition.x);
@@ -77,6 +78,18 @@ public class PulseScriptTrail : MonoBehaviour
         trailNewPosition.y = yOffset;
 
         trailTransform.localPosition = trailNewPosition;
+    }
+
+    Func<float,float> DetermineWave(float bpm)
+    {
+        if(bpm > 120)
+        {
+            return PulseWave;
+        }
+        else
+        {
+
+        }
     }
 
     void ChangeCurrentTrail()
@@ -88,7 +101,6 @@ public class PulseScriptTrail : MonoBehaviour
         currentTrail = trails.Get();
         currentTrail.time = originalEmittingTime - Mathf.Min(maxReductionEmittingTIme, emittingReduction * speed);
         currentTrail.gameObject.SetActive(true);
-
 
         //calculate the currentBPM
         float anxiety = em.TriggerEvent<float>(Event.HEART_BEAT);
@@ -120,6 +132,14 @@ public class PulseScriptTrail : MonoBehaviour
         currentAngle -= minAngle;
         return Mathf.InverseLerp(0, maxAngle, currentAngle) * 360;
     }
+
+    float SplitePhase(int section, float angle)
+    {
+        int maxSplitAngle = 360 / section;
+        angle %= maxSplitAngle;
+        return angle;
+    }
+
     void DeterminePhase(float x)
     {
         float width = halfBoundBox;
@@ -146,19 +166,19 @@ public class PulseScriptTrail : MonoBehaviour
             maxAmp, 
             Mathf.InverseLerp(minHeartBeat, maxHeartBeat, numberOfBeatPerMin));
 
-        calAmp += Random.Range(-randAmpRange, randAmpRange);
+        calAmp += UnityEngine.Random.Range(-randAmpRange, randAmpRange);
         amp = calAmp;
     }
 
     public void CalculateFrequency()
     {
-        frequency = Random.Range(minFreq, maxFreq);
+        frequency = UnityEngine.Random.Range(minFreq, maxFreq);
     }
 
     void CalBeat(float anxiety)
     {
         float currBPM = Mathf.Lerp(restingBPM, maxBPM, anxiety);
-        currBPM += Random.Range(-heartBeatRand, heartBeatRand);
+        currBPM += UnityEngine.Random.Range(-heartBeatRand, heartBeatRand);
 
         CalculateSpeed(currBPM);
         CalculateAmp(currBPM, restingBPM, maxBPM);
