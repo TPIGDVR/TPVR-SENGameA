@@ -26,6 +26,10 @@ namespace Breathing3
         private int minFrequency = 0;
         public bool mute = true;
 
+        [Header("Noise Reduction")]
+        [SerializeField] float attuniation = 10f;
+
+
         [Header("Other settings")]
         [SerializeField] private float loudnessMultiplier = 100f; //Multiply loudness with this number
         [SerializeField] private float highPassCutoff = 10000;
@@ -147,7 +151,6 @@ namespace Breathing3
             _volumeContainer = new();
         }
 
-
         private void Update()
         {
             CalculateVolume();
@@ -260,7 +263,6 @@ namespace Breathing3
             }
         }
 
-
         void CalculatePitch()
         {
             _audioSource.GetSpectrumData(_dataContainer, 0, FFTWindow.BlackmanHarris);
@@ -350,18 +352,6 @@ namespace Breathing3
                 prevPitch = CalculatedPitch;
             }
         }
-
-        //float HighPassFilter(float pitch, float cutOff)
-        //{
-        //    if (pitch > cutOff)
-        //    {
-        //        return prevPitch;
-        //    }
-        //    else
-        //    {
-        //        return pitch;
-        //    }
-        //}
 
         void PrintArray(float[] array)
         {
