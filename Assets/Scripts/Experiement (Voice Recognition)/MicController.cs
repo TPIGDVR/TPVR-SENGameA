@@ -108,6 +108,8 @@ namespace Breathing3
         public float CalculatedVolumeVariance { get; set; }
 
         public float CalculatePitchVariance { get; set; }
+        public float PitchNoiseCorrelation { get ; set; }
+        public float VolumeNoiseCorrelation { get; set ; }
         #endregion
 
         IEnumerator Start()
@@ -375,10 +377,12 @@ namespace Breathing3
         float minVolume { get; set; }
         float maxPitch { get; set; }
         float minPitch { get; set; }
-
         float CalculatedPitch { get; }
         float CalculatedVolume { get; }
         float CalculatedVolumeVariance { get; set; }
         float CalculatePitchVariance { get; set; }
+
+        float PitchNoiseCorrelation { get; set; }
+        float VolumeNoiseCorrelation { get; set; }
     }
 }

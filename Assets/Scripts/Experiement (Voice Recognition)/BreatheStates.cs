@@ -216,7 +216,7 @@ namespace Breathing3
         }
 
 
-    }
+    } 
 
     public class InhaleStateNew : BreatheStateNew
     {
@@ -312,6 +312,8 @@ namespace Breathing3
         protected float totalMaxPitch;
         protected float totalVolumeVarance;
         protected float totalPitchVarance;
+        protected float totalPitchNoiseCorrelation;
+        protected float totalVolumeNoiseCorrelation;
         protected int counter;
         protected int nextState;
         protected int prevState;
@@ -406,30 +408,18 @@ namespace Breathing3
             totalMaxPitch += volumeProvider.maxPitch;
             totalMinPitch += volumeProvider.minPitch;
             totalVolumeVarance += volumeProvider.CalculatedVolumeVariance;
-        }
-
-        public override void Exit()
-        {
-            //data.InhaleVolumeThreshold += totalVolume / counter + data.InhaleVolumeOffset;
-            //data.InhalePitchLowBound += totalMinPitch / counter;
-            //data.InhalePitchUpperBound += totalMaxPitch / counter;
-            //data.InhaleLoudnessVarance += totalVolumeVarance / counter;
-            //data.InhalePitchLowBound -= data.InhalePitchOffset;
-            //data.InhalePitchUpperBound += data.InhalePitchOffset;
+            totalVolumeNoiseCorrelation += volumeProvider.VolumeNoiseCorrelation;
+            totalPitchNoiseCorrelation += volumeProvider.PitchNoiseCorrelation;
         }
 
         protected override void FinishTesting()
         {
-            //data.InhaleVolumeThreshold /= amountToTest;
-            //data.InhalePitchLowBound /= amountToTest;
-            //data.InhalePitchUpperBound /= amountToTest;
-            //data.InhaleLoudnessVarance /= amountToTest;
-
             data.InhaleVolumeThreshold = totalVolume / counter + data.InhaleVolumeOffset;
             data.InhalePitchLowBound = totalMinPitch / counter;
-            data.InhalePitchUpperBound+= totalMaxPitch / counter;
+            data.InhalePitchUpperBound = totalMaxPitch / counter;
             data.InhaleLoudnessVarance = totalVolumeVarance / counter;
-
+            data.InhalePitchNoiseCorrelation = totalPitchNoiseCorrelation / counter;
+            data.InhaleVolumeNoiseCorrelation = totalVolumeNoiseCorrelation / counter;
             data.InhalePitchLowBound -= data.InhalePitchOffset;
             data.InhalePitchUpperBound += data.InhalePitchOffset;
 
@@ -516,6 +506,8 @@ namespace Breathing3
             totalMinPitch += volumeProvider.minPitch;
             totalPitchVarance += volumeProvider.CalculatePitchVariance;
             totalVolumeVarance += volumeProvider.CalculatedVolumeVariance;
+            totalPitchNoiseCorrelation += volumeProvider.PitchNoiseCorrelation;
+            totalVolumeNoiseCorrelation += volumeProvider.VolumeNoiseCorrelation;
         }
 
         protected override void FinishTesting()
@@ -525,6 +517,10 @@ namespace Breathing3
             data.ExhalePitchUpperBound = totalMaxPitch / counter;
             data.ExhalePitchVaranceThreshold = totalPitchVarance / counter;
             data.ExhaleVolumeVaranceThreshold = totalVolumeVarance / counter;
+
+            data.ExhalePitchNoiseCorrelation = totalPitchNoiseCorrelation / counter;
+            data.ExhaleVolumeNoiseCorrelation = totalVolumeNoiseCorrelation / counter;
+
             data.ExhalePitchLowBound -= data.ExhalePitchOffset;
             data.ExhalePitchUpperBound += data.ExhalePitchOffset;
         }

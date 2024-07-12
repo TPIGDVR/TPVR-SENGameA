@@ -13,6 +13,7 @@ public class NewMicController : MonoBehaviour , VolumeProvider
     private AudioMixer aMixer;
 
     private float[] _dataContainer;
+    private float[] _dataContainer2;
     private List<float> _pitchContainer;
     private List<float> _volumeContainer;
     [SerializeField] int _pitchRecordTime = 5;
@@ -35,12 +36,10 @@ public class NewMicController : MonoBehaviour , VolumeProvider
 
     [SerializeField] private CalculationMethod pitchCalculationMethod = CalculationMethod.MIN;
     [SerializeField] private CalculationMethod volumeCalculationMethod = CalculationMethod.AVG;
-    [SerializeField] private string _micphoneName;
     private bool isMicrophoneReady;
     
     private float prevVolume = 0f;
     private float prevPitch = 0f;
-
     private const float refVal = 0.1f;
 
     enum CalculationMethod
@@ -104,11 +103,14 @@ public class NewMicController : MonoBehaviour , VolumeProvider
     public float CalculatedVolumeVariance { get; set; }
 
     public float CalculatePitchVariance { get; set; }
+    public float PitchNoiseCorrelation { get; set; }
+    public float VolumeNoiseCorrelation { get; set; }
     #endregion
 
     private void Start()
     {
         _dataContainer = new float[_datalength];
+        _dataContainer2 = new float[_datalength];
         _pitchContainer = new();
         _volumeContainer = new();
 
@@ -128,21 +130,30 @@ public class NewMicController : MonoBehaviour , VolumeProvider
             $"Max pitch: {maxPitch} \n" +
             $"Avg pitch: {avgPitch}\n" +
             $"Cal pitch: {CalculatedPitch}\n" +
-            $"Cal vol: {CalculatedVolume}";
+            $"Cal vol: {CalculatedVolume}\n" +
+            $"Pitch correlation {PitchNoiseCorrelation}\n" +
+            $"volume correlation {VolumeNoiseCorrelation}\n";
     }
     void CalculateVolume()
     {
-        if (usedNoiseReducer)
-        {
-            _audioSourceReducer.GetOutputData(_dataContainer, 0);
-        }
-        else
-        {
-            _audioSourceOrignal.GetOutputData(_dataContainer, 0);
-        }
+        _audioSourceOrignal.GetOutputData(_dataContainer, 0);
+
+        CalculateVolumeCorrelation();
         CalculateNormalVolume();
         CalculateMaxMinAverageVolume();
         CalculateVolumeVariance();
+
+        void CalculateVolumeCorrelation()
+        {
+            float value = 0f;
+            _audioSourceReducer.GetOutputData(_dataContainer2, 0);
+            for (int i = 0; i < _dataContainer.Length; i++)
+            {
+                value = _dataContainer[i] - _dataContainer2[i];
+            }
+
+            VolumeNoiseCorrelation = value;
+        }
 
         void CalculateVolumeVariance()
         {
@@ -202,17 +213,25 @@ public class NewMicController : MonoBehaviour , VolumeProvider
 
     void CalculatePitch()
     {
-        if (usedNoiseReducer)
-        {
-            _audioSourceReducer.GetSpectrumData(_dataContainer, 0, FFTWindow.BlackmanHarris);
-        }
-        else
-        {
-            _audioSourceOrignal.GetSpectrumData(_dataContainer, 0, FFTWindow.BlackmanHarris);
-        }
+        _audioSourceOrignal.GetSpectrumData(_dataContainer, 0, FFTWindow.BlackmanHarris);
+
+        CalculatePitchCorrelation();
         CalculateNormalPitch();
         CalculateMinMaxAveragePitch();
         CalculationPitchVarance();
+
+        void CalculatePitchCorrelation()
+        {
+            float value = 0f;
+            _audioSourceReducer.GetSpectrumData(_dataContainer2, 0, FFTWindow.BlackmanHarris);
+            for(int i =0;  i < _dataContainer.Length; i++)
+            {
+
+                value = _dataContainer[i] - _dataContainer2[i];
+            }
+
+            PitchNoiseCorrelation = Mathf.Abs(value);
+        }
 
         void CalculateNormalPitch()
         {
