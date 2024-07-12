@@ -2357,6 +2357,29 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 376382133219145260}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &310214308 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1716271290012459973, guid: 4d61e4b17cc5ab040bda93930dfa4469,
+    type: 3}
+  m_PrefabInstance: {fileID: 335601316}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &310214312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310214308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2483b9bd782f9449a5972b61b7d51a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CameraFloorOffsetObject: {fileID: 0}
+  m_RequestedTrackingMode: 0
+  m_TrackingOriginMode: 1
+  m_TrackingSpace: 0
+  m_CameraYOffset: 6
 --- !u!1001 &320887671
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2679,7 +2702,7 @@ PrefabInstance:
     - target: {fileID: 996217206887412442, guid: 4d61e4b17cc5ab040bda93930dfa4469,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.95
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 996217206887412442, guid: 4d61e4b17cc5ab040bda93930dfa4469,
         type: 3}
@@ -2714,6 +2737,11 @@ PrefabInstance:
     - target: {fileID: 1366082603706732144, guid: 4d61e4b17cc5ab040bda93930dfa4469,
         type: 3}
       propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2180938711668659218, guid: 4d61e4b17cc5ab040bda93930dfa4469,
+        type: 3}
+      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3363771738648521405, guid: 4d61e4b17cc5ab040bda93930dfa4469,
@@ -2801,6 +2829,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7887398271720494728, guid: 4d61e4b17cc5ab040bda93930dfa4469,
+        type: 3}
+      propertyPath: m_CameraYOffset
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8315486121519606727, guid: 4d61e4b17cc5ab040bda93930dfa4469,
         type: 3}
       propertyPath: stateText
@@ -2824,7 +2857,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1716271290012459973, guid: 4d61e4b17cc5ab040bda93930dfa4469,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 310214312}
   m_SourcePrefab: {fileID: 100100000, guid: 4d61e4b17cc5ab040bda93930dfa4469, type: 3}
 --- !u!1001 &343654624
 PrefabInstance:
