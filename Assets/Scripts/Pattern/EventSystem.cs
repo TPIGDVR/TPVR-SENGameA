@@ -6,7 +6,7 @@ public static class EventSystem
 {
     public static EventManager<PlayerEvents> player = new();
     public static EventManager<GameEvents> game = new();
-
+    public static EventManager<LevelEvents> level = new();
 }
 
 public enum GameEvents
@@ -26,4 +26,10 @@ public enum PlayerEvents
     HEART_BEAT,
     SUNGLASSES_ON,
     SUNGLASSES_OFF,
+}
+
+public enum LevelEvents
+{
+    KIOSK_CLEARED,
+    LEVEL_CLEARED,
 }

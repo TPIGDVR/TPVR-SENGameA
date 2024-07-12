@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BlinkingLights : MonoBehaviour
 {
-    Light _light;
-    [SerializeField] Color[] _colors;
+    MeshRenderer _renderer;
+    [SerializeField] Material[] _mats;
     [SerializeField] float minRandInterval_WAIT;
     [SerializeField] float maxRandInterval_WAIT;
     [SerializeField] float minRandInterval_DELAY;
@@ -15,8 +15,15 @@ public class BlinkingLights : MonoBehaviour
 
     private void Start()
     {
-        _light = GetComponent<Light>();
-        _light.color = _colors[Random.Range(0,_colors.Length)];
+        int index = Random.Range(0, _mats.Length);
+        if(index == 0)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
+        _renderer = GetComponent<MeshRenderer>();
+        _renderer.material = _mats[index];
         StartCoroutine(BlinkLights());
     }
 
@@ -29,14 +36,16 @@ public class BlinkingLights : MonoBehaviour
             
             if (rV > randChance)
             {
-                _light.enabled = false;
+                _renderer.enabled = false;
+                //_light.enabled = false;
             }
 
             float rW = Random.Range(minRandInterval_DELAY,maxRandInterval_DELAY);
 
             yield return new WaitForSeconds(rW);
 
-            _light.enabled = true;
+            _renderer.enabled = true;
+            //_light.enabled = true;
 
             yield return new WaitForSeconds(randInterval);
         }
