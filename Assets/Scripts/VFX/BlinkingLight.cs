@@ -5,7 +5,7 @@ using UnityEngine;
 public class BlinkingLights : MonoBehaviour
 {
     Light _light;
-    [SerializeField]Color _color;
+    [SerializeField] Color[] _colors;
     [SerializeField] float minRandInterval_WAIT;
     [SerializeField] float maxRandInterval_WAIT;
     [SerializeField] float minRandInterval_DELAY;
@@ -16,7 +16,7 @@ public class BlinkingLights : MonoBehaviour
     private void Start()
     {
         _light = GetComponent<Light>();
-        _light.color = _color;
+        _light.color = _colors[Random.Range(0,_colors.Length)];
         StartCoroutine(BlinkLights());
     }
 
