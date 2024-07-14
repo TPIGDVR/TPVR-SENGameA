@@ -88,8 +88,13 @@ namespace Breathing3
         private void Start()
         {
             audioProvider = GetComponent<VolumeProvider>();
-
             fsm = new FSM();
+            //SetUpStateV2();
+            SetUpStateV3();
+        }
+
+        private void SetUpStatesV1()
+        {
             if (usedPresetData)
             {
                 fsm.Add(new SilentStateNew(fsm, (int)BreathingStates.SILENT, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
@@ -126,6 +131,38 @@ namespace Breathing3
             }
         }
 
+        private void SetUpStateV2()
+        {
+            
+
+            fsm.Add(new WaitForInhaleV3(fsm, (int)BreathingStates.SILENT, audioProvider, this, this, this));
+            fsm.Add(new InhaleStateV3(fsm, (int)BreathingStates.INHALE, audioProvider, this, this, this));
+            fsm.Add(new ExhaleStateV3(fsm, (int)BreathingStates.EXHALE, audioProvider, this, this, this));
+            fsm.Add(new WaitForExhaleV3(fsm, (int)BreathingStates.WAIT_FOR_BREATH, audioProvider, this, this, this));
+            fsm.Add(new UnregisterStateV3(fsm, (int)BreathingStates.UNREGISTERED, audioProvider, this, this, this));
+
+            fsm.Add(new TestInhaleStateNew(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this, amountOfTest, this));
+            fsm.Add(new TestExhaleState(fsm, (int)BreathingStates.EXHALE_TESTING, audioProvider, testTimer, this, amountOfTest));
+
+            
+            fsm.SetCurrentState((int)BreathingStates.INHALE_TESTING);
+            
+        }
+
+        private void SetUpStateV3()
+        {
+            fsm.Add(new TestInhaleStateNew(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this, amountOfTest, this));
+            fsm.Add(new TestExhaleState(fsm, 
+                (int)BreathingStates.EXHALE_TESTING, 
+                audioProvider, testTimer, this, amountOfTest).SetNextState(BreathingStates.WAIT_FOR_BREATH));
+
+
+            fsm.Add(new WaitForBreatheV4(fsm, (int)BreathingStates.WAIT_FOR_BREATH, audioProvider, this));
+            fsm.Add(new ExhaleStateV4(fsm, (int)BreathingStates.EXHALE, audioProvider, this));
+
+            fsm.SetCurrentState((int)BreathingStates.INHALE_TESTING);
+
+        }
         private void Update()
         {
             stateText.text = ((BreathingStates)fsm.GetCurrentState().ID).ToString();
@@ -137,11 +174,11 @@ namespace Breathing3
             fsm.FixedUpdate();
         }
 
-        [ContextMenu("Testing")]
-        public void Testing()
-        {
-            fsm.SetCurrentState((int)(BreathingStates.SILENT_TESTING));
-        }
+        //[ContextMenu("Testing")]
+        //public void Testing()
+        //{
+        //    fsm.SetCurrentState((int)(BreathingStates.SILENT_TESTING));
+        //}
 
 
         [ContextMenu("Testing new")]

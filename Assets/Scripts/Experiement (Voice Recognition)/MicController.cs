@@ -298,7 +298,7 @@ namespace Breathing3
                 // Convert index to frequency
                 //24000 is the sampling frequency for the PC. 24000 / sample = frequency resolution
                 // frequency resolution * index of the sample would give the pitch as a result.
-                //pitch = HighPassFilter(freqN * pitchIncrementor, highPassCutoff);
+                //pitch = HighPassFilter(freqN * pitchIncrementor, HighPassCutoff);
                 pitch = freqN * pitchIncrementor;
                 //print(pitch);
                 if (pitchDebugger)
