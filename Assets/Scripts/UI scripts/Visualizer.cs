@@ -19,7 +19,7 @@ public class Visualizer : MonoBehaviour
             visualizer.SetActive(!visualizer.activeSelf);
         }
 
-        // Calculate the position of the visualizer based on the head's position, direction, and offset.
+        // Run the position of the visualizer based on the head's position, direction, and offset.
         Vector3 playerPos = head.position;
         Vector3 direction = head.forward;
         Vector3 targetPosition = playerPos + direction * maxDistance + offset;

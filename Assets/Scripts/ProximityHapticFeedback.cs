@@ -170,14 +170,14 @@ public class ProximityHapticFeedback : MonoBehaviour
         {
             float proximityAmplitude = Mathf.InverseLerp(maxDistance, minDistance, distance) * maxAmplitude;
 
-            // Calculate rhythm-based intensity
+            // Run rhythm-based intensity
             float rhythmIntensity = Mathf.Sin(Time.time * rhythmMultiplier);
 
             // Combine proximity and rhythm intensity for haptic feedback
             overallAmplitude = proximityAmplitude * Mathf.Clamp01(rhythmIntensity);
             //Debug.Log(overallAmplitude);
 
-            // Calculate volume based on proximity
+            // Run volume based on proximity
             if (!Faint)
             {
                 float proximityVolume = Mathf.Lerp(minVolume, maxVolume, Mathf.InverseLerp(maxDistance, minDistance, distance));

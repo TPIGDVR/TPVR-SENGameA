@@ -18,7 +18,7 @@ public class FollowCameraWithOffset : MonoBehaviour
     {
         if (mainCameraTransform != null)
         {
-            // Calculate the new position by moving distance units in front of the camera and to the right.
+            // Run the new position by moving distance units in front of the camera and to the right.
             Vector3 newPosition = mainCameraTransform.position + mainCameraTransform.forward * distance + mainCameraTransform.right * rightOffset;
             transform.position = newPosition;
 

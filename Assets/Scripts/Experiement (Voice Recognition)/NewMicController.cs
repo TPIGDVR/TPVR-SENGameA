@@ -223,11 +223,11 @@ public class NewMicController : MonoBehaviour , VolumeProvider
         //void CalculatePitchCorrelation()
         //{
         //    float value = 0f;
-        //    _audioSourceReducer.GetSpectrumData(_dataContainer2, 0, FFTWindow.BlackmanHarris);
-        //    for(int i =0;  i < _dataContainer.Length; i++)
+        //    _audioSourceReducer.GetSpectrumData(_dataOutputContainer, 0, FFTWindow.BlackmanHarris);
+        //    for(int i =0;  i < _dataSpectrumContainer.Length; i++)
         //    {
 
-        //        value = _dataContainer[i] - _dataContainer2[i];
+        //        value = _dataSpectrumContainer[i] - _dataOutputContainer[i];
         //    }
 
         //    PitchNoiseCorrelation = Mathf.Abs(value);
@@ -273,7 +273,7 @@ public class NewMicController : MonoBehaviour , VolumeProvider
             //        $"pitch incredmental {pitchIncrementor} " +
             //        $"starting Index: {startingCheckingFrequencyIndex}" +
             //        $"Ending index: {endingCheckingFrequencyIndex}");
-            //    //PrintArray(_dataContainer);
+            //    //PrintArray(_dataSpectrumContainer);
             //}
         }
 

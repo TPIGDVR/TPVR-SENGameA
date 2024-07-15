@@ -14,7 +14,7 @@ namespace Breathing3
         [SerializeField] private MicrophoneRecorder _microphoneRecorder = default;
         [SerializeField] private NoiseReducerHandler _noiseReducerHandler = default;
         [SerializeField] private AudioPlayer _audioPlayer = default;
-
+        [SerializeField] bool useReducer;
 
         private void OnEnable() => _microphoneRecorder.OnAudioReady += OnRecorded;
 
@@ -23,11 +23,17 @@ namespace Breathing3
         private void OnRecorded(float[] pcm)
         {
             var original = new float[pcm.Length];
-            Array.Copy(pcm, original, pcm.Length);
             //make sure to not destroy the original PCM.
-
-            _noiseReducerHandler.ProcessPcm(original);
-            _audioPlayer.ProcessBuffer(original, original.Length);
+            if (useReducer)
+            {
+                Array.Copy(pcm, original, pcm.Length);
+                _noiseReducerHandler.ProcessPcm(original);
+                _audioPlayer.ProcessBuffer(original, original.Length);
+            }
+            else
+            {
+                _audioPlayer.ProcessBuffer(pcm, original.Length);
+            }
             
         }
 

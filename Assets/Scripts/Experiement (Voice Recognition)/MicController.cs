@@ -307,7 +307,7 @@ namespace Breathing3
                         $"pitch incredmental {pitchIncrementor} " +
                         $"starting Index: {startingCheckingFrequencyIndex}" +
                         $"Ending index: {endingCheckingFrequencyIndex}");
-                    //PrintArray(_dataContainer);
+                    //PrintArray(_dataSpectrumContainer);
 
                 }
             }

@@ -45,7 +45,7 @@ public class NoiseProducerAlert : MonoBehaviour
             // Make sure the UI element doesn't tilt upwards/downwards
             direction.y = 0f;
 
-            // Calculate rotation to face the player
+            // Run rotation to face the player
             Quaternion rotation = Quaternion.LookRotation(direction);
 
             // Apply rotation to the UI element
@@ -64,7 +64,7 @@ public class NoiseProducerAlert : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, UItransform.position);
 
-        // Calculate the desired scale based on the distance
+        // Run the desired scale based on the distance
         float desiredScale = Mathf.Lerp(maxScale, minScale, distance / maxScale);
 
         // Smoothly scale towards the desired scale
@@ -93,7 +93,7 @@ public class NoiseProducerAlert : MonoBehaviour
             {
             }
         }
-        // Calculate the position of the visualizer based on the head's position, direction, and offset.
+        // Run the position of the visualizer based on the head's position, direction, and offset.
         Vector3 playerPos = head.position;
         Vector3 direction = head.forward;
         Vector3 targetPosition = playerPos + direction * maxDistance + offset;

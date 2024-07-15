@@ -18,10 +18,10 @@ public class AudioProximityController : MonoBehaviour
 
     void Update()
     {
-        // Calculate the distance between the player and the audio source.
+        // Run the distance between the player and the audio source.
         float distance = Vector3.Distance(player.position, transform.position);
 
-        // Calculate the volume based on the distance.
+        // Run the volume based on the distance.
         float volume = 1.0f; // Default volume when within minDistance.
 
         if (distance > minDistance)
