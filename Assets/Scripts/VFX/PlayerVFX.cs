@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class PlayerVFX : MonoBehaviour
 {
-    [SerializeField]
-    Volume _ppVol;
 
     #region FADE VARIABLES
     Vignette _vig;
@@ -23,14 +21,12 @@ public class PlayerVFX : MonoBehaviour
     EventManager<GameEvents> em = EventSystem.game;
     private void Start()
     {
-        _ppVol = GetComponentInChildren<Volume>();
-        _ppVol.profile.TryGet(out _vig);
 
         em.AddListener(GameEvents.LOSE,BeginFadeScreen);
         em.AddListener(GameEvents.ENTER_NEW_SCENE,BeginUnfadeScreen);
 
         //test
-        BeginFadeScreen();
+        //BeginFadeScreen();
     }
 
 

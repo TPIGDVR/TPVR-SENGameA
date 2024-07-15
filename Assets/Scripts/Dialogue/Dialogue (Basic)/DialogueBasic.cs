@@ -6,6 +6,8 @@ using TMPro;
 public class DialogueBasic : MonoBehaviour
 {
     [SerializeField]
+    GameObject dialogueBox;
+    [SerializeField]
     TextMeshProUGUI dialogueText;
     [SerializeField]
     TextMeshProUGUI dialogueSpeaker;
@@ -14,6 +16,7 @@ public class DialogueBasic : MonoBehaviour
     [SerializeField]
     float textSpeed;
     int index;
+    bool isTriggered;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +34,7 @@ public class DialogueBasic : MonoBehaviour
 
         if (index >= Lines.Length)
         {
-            this.gameObject.SetActive(false);
+            dialogueBox.SetActive(false);
         }
 
 
@@ -53,6 +56,15 @@ public class DialogueBasic : MonoBehaviour
             dialogueSpeaker.text = Lines[index].Speaker.ToString();
             dialogueText.text += c;
             yield return new WaitForSeconds(textSpeed);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!isTriggered)
+        {
+            dialogueBox.SetActive(true);
+            isTriggered = true;
         }
     }
 }

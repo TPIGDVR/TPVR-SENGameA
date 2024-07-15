@@ -656,7 +656,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 5
+  MaxDistance: 2.5
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -762,7 +762,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noiseIndicator: {fileID: 0}
-  NoiseValue: 7
+  NoiseValue: 2
 --- !u!136 &2553735085579286181
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1492,8 +1492,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 6.5, y: 6.5, z: 6.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7848510754824359366}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

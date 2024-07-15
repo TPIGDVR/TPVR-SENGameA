@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Mathematics;
+using UnityEngine.InputSystem.Processors;
 
 public class AnxietyHandler : MonoBehaviour
 {
@@ -14,9 +15,14 @@ public class AnxietyHandler : MonoBehaviour
     float _minAnxietyIncreaseScale = 0;
     [SerializeField]
     float _maxAnxietyIncreaseScale = 3;
+    [SerializeField]
+    float _deathTime;
     float _anxietyIncreaseScale = 0;
     float _maxGlareValue = 1;
     float glareValue;
+    [SerializeField]
+    float deathTimer;
+    bool isDead;
 
     
     [Range(0,1)]
@@ -24,7 +30,8 @@ public class AnxietyHandler : MonoBehaviour
     
 
 
-    EventManager<PlayerEvents> em = EventSystem.player;
+    EventManager<PlayerEvents> em_p = EventSystem.player;
+    EventManager<GameEvents> em_g = EventSystem.game;
     float curAnxiety => _anxietyLevel / _maxAnxietyLevel;
 
     [Header("reduction anxiety")]
@@ -34,13 +41,30 @@ public class AnxietyHandler : MonoBehaviour
     private void Start()
     {
         _noiseProximityHandler = GetComponent<NoiseProximityHandler>();
-        em.AddListener<float>(PlayerEvents.ANXIETY_BREATHE, Breath);
-        em.AddListener<float>(PlayerEvents.GLARE_UPDATE, Glare);
-        em.AddListener<float>(PlayerEvents.HEART_BEAT, () => curAnxiety);
+        em_p.AddListener<float>(PlayerEvents.ANXIETY_BREATHE, Breath);
+        em_p.AddListener<float>(PlayerEvents.GLARE_UPDATE, Glare);
+        em_p.AddListener<float>(PlayerEvents.HEART_BEAT, () => curAnxiety);
     }
 
     private void Update()
     {
+        if (_anxietyLevel >= _maxAnxietyLevel)
+        {
+            deathTimer += Time.deltaTime;
+        }
+        else
+        {
+            deathTimer -= Time.deltaTime;
+        }
+        deathTimer = Mathf.Clamp(deathTimer, 0, _deathTime);
+
+        if (deathTimer >= _deathTime && !isDead)
+        {
+            isDead = true;
+            em_g.TriggerEvent(GameEvents.LOSE);
+        }
+
+
         //CalculateAnxietyScaleBasedOffNoiseLevel();
         _anxietyIncreaseScale = 0f;
         _anxietyIncreaseScale += CalculateAnxietyScaleBasedOffGlareLevel();
@@ -61,9 +85,12 @@ public class AnxietyHandler : MonoBehaviour
         }
         _anxietyLevel = Mathf.Clamp(_anxietyLevel,0, _maxAnxietyLevel);
 
+
+
+
         //trigger the event after calculating the anxiety level
-        em.TriggerEvent(PlayerEvents.ANXIETY_UPDATE);
-        em.TriggerEvent<float>(PlayerEvents.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
+        em_p.TriggerEvent(PlayerEvents.ANXIETY_UPDATE);
+        em_p.TriggerEvent<float>(PlayerEvents.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
     }
 
     float CalculateAnxietyScaleBasedOffNoiseLevel()
