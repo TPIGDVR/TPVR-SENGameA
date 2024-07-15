@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Assets.HelpfulScripts;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class DialogueBasic : MonoBehaviour
 {
@@ -17,6 +20,8 @@ public class DialogueBasic : MonoBehaviour
     float textSpeed;
     int index;
     bool isTriggered;
+
+    [SerializeField]ControllerManager controllerManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,8 +31,9 @@ public class DialogueBasic : MonoBehaviour
     }
 
 
-    public void DoDialogue()
+    public void DoDialogue(InputAction.CallbackContext context)
     {
+        print("Dialog");
         dialogueText.text = string.Empty;
         dialogueSpeaker.text = string.Empty;
         index += 1;
@@ -35,13 +41,15 @@ public class DialogueBasic : MonoBehaviour
         if (index >= Lines.Length)
         {
             dialogueBox.SetActive(false);
+            controllerManager.dict[Controls.AButton].started -= DoDialogue;
+            controllerManager.dict[Controls.BButton].started -= PreviousDialogue;
         }
 
 
         StartCoroutine(PrintDialogue());
     }
 
-    public void PreviousDialogue()
+    public void PreviousDialogue(InputAction.CallbackContext context)
     {
         dialogueText.text = string.Empty;
         dialogueSpeaker.text = string.Empty;
@@ -65,6 +73,8 @@ public class DialogueBasic : MonoBehaviour
         {
             dialogueBox.SetActive(true);
             isTriggered = true;
+            controllerManager.dict[Controls.AButton].started += DoDialogue;
+            controllerManager.dict[Controls.BButton].started += PreviousDialogue;
         }
     }
 }

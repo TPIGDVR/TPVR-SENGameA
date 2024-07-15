@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Patterns;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,14 +8,14 @@ using UnityEngine.InputSystem;
 
 namespace Assets.HelpfulScripts
 {
-    public class ControllerManager : MonoBehaviour
+    public class ControllerManager : Singleton<ControllerManager>
     {
         [Header("Mapping")]
         //currently referencing the quest 3 controller
         [SerializeField] private Mapping[] mapping;
         [Header("Actions")]
-        [SerializeField] private ActionsMap[] actionMap;
-        Dictionary<Controls, InputAction> dict;
+        [SerializeField] public ActionsMap[] actionMap;
+        public Dictionary<Controls, InputAction> dict;
         private void Awake()
         {
             dict = new Dictionary<Controls , InputAction>();
@@ -59,24 +60,6 @@ namespace Assets.HelpfulScripts
             }
         }
 
-        public enum Controls
-        {
-            //left controls
-            LeftJoyStick,
-            YButton,
-            XButton,
-            LeftTrigger,
-            LeftGrab,
-
-            //right controls
-            RightJoyStick,
-            BButton,
-            AButton,
-            RightTrigger,
-            RightGrab,
-
-            //if u want to add additional controls. add from here onwards :)
-        }
         [Serializable]
         public class Mapping
         {
@@ -123,4 +106,24 @@ namespace Assets.HelpfulScripts
             print("button on release");
         }
     }
+
+    public enum Controls
+    {
+        //left controls
+        LeftJoyStick,
+        YButton,
+        XButton,
+        LeftTrigger,
+        LeftGrab,
+
+        //right controls
+        RightJoyStick,
+        BButton,
+        AButton,
+        RightTrigger,
+        RightGrab,
+
+        //if u want to add additional controls. add from here onwards :)
+    }
+
 }
