@@ -237,8 +237,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.54, z: 1}
+  m_Center: {x: 0, y: 0.15, z: 0}
 --- !u!114 &8027455713298895819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +379,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scanUI: {fileID: 8468125848567224715}
   canvas: {fileID: 7305595124298415834}
-  timeMultiplier: 1
+  timeMultiplier: 100
+  minTimeMultiplier: 5
+  maxTimeMultiplier: 10
   completeSound: {fileID: 1506208368185244635}
   scanStarted: 0
 --- !u!82 &1506208368185244635

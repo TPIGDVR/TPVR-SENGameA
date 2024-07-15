@@ -17,6 +17,8 @@ public class HandsScanning : MonoBehaviour
     [SerializeField]
     private float timeMultiplier;
     [SerializeField]
+    float minTimeMultiplier,maxTimeMultiplier;
+    [SerializeField]
     private AudioSource completeSound;
 
 
@@ -31,7 +33,7 @@ public class HandsScanning : MonoBehaviour
     private void Start()
     {
         scanUI.fillAmount = 0f;
-        
+        timeMultiplier = Random.Range(minTimeMultiplier,maxTimeMultiplier);
     }
 
 

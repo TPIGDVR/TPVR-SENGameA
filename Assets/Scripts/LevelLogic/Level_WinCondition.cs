@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Level_WinCondition : MonoBehaviour
 {
-    int numKioskCleared = 0;
+    public int numKioskCleared = 0;
 
     [SerializeField]
     int numKioskNeededToClear;
@@ -17,15 +17,17 @@ public class Level_WinCondition : MonoBehaviour
 
     void Update()
     {
-        if (CheckWinConditions())
-        {
-            Debug.Log("WE WIN THOSE");
-        }   
+           
     }
 
     void IncrementNumOfKioskCleared()
     {
         numKioskCleared++;
+
+        if (CheckWinConditions())
+        {
+            em_l.TriggerEvent(LevelEvents.LEVEL_CLEARED);
+        }
     }
 
     bool CheckWinConditions()
