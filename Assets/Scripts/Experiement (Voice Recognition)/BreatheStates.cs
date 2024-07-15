@@ -550,7 +550,8 @@ namespace Breathing3
 
         public bool CanMaintainExhale
         {
-            get => provider.PitchNoiseCorrelation < 0 && provider.CalculatedVolume > exhaleData.ExhaleVolumeThreshold;
+            get => provider.PitchNoiseCorrelation < exhaleData.ExhalePitchNoiseCorrelation 
+                && provider.CalculatedVolume > exhaleData.ExhaleVolumeThreshold;
         }
     }
 
