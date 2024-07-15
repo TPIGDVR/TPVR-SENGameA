@@ -2461,12 +2461,12 @@ PrefabInstance:
     - target: {fileID: 4046656777809105543, guid: 4d61e4b17cc5ab040bda93930dfa4469,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5160114700968364497, guid: 4d61e4b17cc5ab040bda93930dfa4469,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5486102315922451408, guid: 4d61e4b17cc5ab040bda93930dfa4469,
         type: 3}
@@ -5753,7 +5753,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1484654646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6407,7 +6407,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1710160731
 Transform:
   m_ObjectHideFlags: 0
@@ -7216,7 +7216,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1922244747
 Transform:
   m_ObjectHideFlags: 0
@@ -9033,7 +9033,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03355ef05c79cce4581efc22c1ebdf65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attuniation: 2
+  attuniation: 0
   _microphoneRecorder: {fileID: 1484654646}
   _noiseReducerHandler: {fileID: 2101976877}
   _audioPlayer: {fileID: 2101976872}

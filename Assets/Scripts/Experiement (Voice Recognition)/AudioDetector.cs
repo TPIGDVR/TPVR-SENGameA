@@ -89,8 +89,9 @@ namespace Breathing3
         {
             audioProvider = GetComponent<VolumeProvider>();
             fsm = new FSM();
+            SetUpStatesV1();
             //SetUpStateV2();
-            SetUpStateV3();
+            //SetUpStateV3();
         }
 
         private void SetUpStatesV1()
