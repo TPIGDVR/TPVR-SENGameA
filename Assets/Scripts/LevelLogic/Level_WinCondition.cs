@@ -19,7 +19,7 @@ public class Level_WinCondition : MonoBehaviour
     {
         if (CheckWinConditions())
         {
-            //unlock door at end to win?
+            Debug.Log("WE WIN THOSE");
         }   
     }
 

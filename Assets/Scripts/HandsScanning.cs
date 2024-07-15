@@ -22,8 +22,9 @@ public class HandsScanning : MonoBehaviour
 
 
     private bool scanCompleted;
-    private bool playSongOnce;
+    private bool completed;
     public bool scanStarted = false;
+    EventManager<LevelEvents> em_l = EventSystem.level;
 
     public bool ScanCompleted {  get { return scanCompleted; } }
 
@@ -39,10 +40,11 @@ public class HandsScanning : MonoBehaviour
         if (scanCompleted)
         {
 
-            if (!playSongOnce)
+            if (!completed)
             {
                 completeSound.Play();
-                playSongOnce = true;
+                completed = true;
+                em_l.TriggerEvent(LevelEvents.KIOSK_CLEARED);
             }
 
             Debug.Log("Scan complete!!!");
@@ -59,11 +61,11 @@ public class HandsScanning : MonoBehaviour
 
             if (scanStarted == true)
             {
-                scanUI.fillAmount += Time.fixedDeltaTime / 100;
+                scanUI.fillAmount += Time.fixedDeltaTime * timeMultiplier / 100;
             }
             else if (scanStarted != true)
             {
-                scanUI.fillAmount -= Time.fixedDeltaTime / 100;
+                scanUI.fillAmount -= Time.fixedDeltaTime * timeMultiplier / 100;
             }
 
             if (scanUI.fillAmount == 0)

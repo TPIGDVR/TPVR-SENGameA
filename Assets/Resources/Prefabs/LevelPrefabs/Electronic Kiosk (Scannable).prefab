@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 968314647158769651}
   - component: {fileID: 328188814739694034}
   - component: {fileID: 8468125848567224715}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Image (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,7 +379,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scanUI: {fileID: 8468125848567224715}
   canvas: {fileID: 7305595124298415834}
-  timeMultiplier: 0
+  timeMultiplier: 1
   completeSound: {fileID: 1506208368185244635}
   scanStarted: 0
 --- !u!82 &1506208368185244635
@@ -487,7 +487,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 239952488906774548}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Electronic Kiosk (Scannable)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -502,7 +502,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4137086397621037758}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 86.71, y: 0, z: -92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -522,7 +522,7 @@ GameObject:
   - component: {fileID: 7116519743696664618}
   - component: {fileID: 7037133341620093879}
   - component: {fileID: 2111433170567310435}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -598,7 +598,7 @@ GameObject:
   - component: {fileID: 3289222456634361381}
   - component: {fileID: 8646219307722948710}
   - component: {fileID: 1622745433598400068}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
