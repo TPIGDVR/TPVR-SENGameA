@@ -22,11 +22,19 @@ public class DialogueBasic : MonoBehaviour
         index = -1;
     }
 
+
     public void DoDialogue()
     {
         dialogueText.text = string.Empty;
         dialogueSpeaker.text = string.Empty;
         index += 1;
+
+        if (index >= Lines.Length)
+        {
+            this.gameObject.SetActive(false);
+        }
+
+
         StartCoroutine(PrintDialogue());
     }
 
