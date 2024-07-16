@@ -5,11 +5,14 @@ using UnityEngine;
 public class NoiseSource : MonoBehaviour
 {
     [SerializeField] Transform noiseIndicator;
-    public float NoiseValue = 10 ;
-
+    //[SerializeField] Material noiseIndicatorMaterial;
+    public float NoiseValue = 10;
+    AudioSource audio;
     private void Start()
     {
-        //noiseIndicator.localScale = new Vector3(NoiseValue, NoiseValue, NoiseValue);
-        GetComponent<AudioSource>().maxDistance = NoiseValue;
+        audio = GetComponent<AudioSource>();
+        noiseIndicator.localScale = new Vector3(NoiseValue, NoiseValue, NoiseValue);
+        audio.maxDistance = NoiseValue * LevelConstants.Scale;
+        audio.minDistance = 0;
     }
 }
