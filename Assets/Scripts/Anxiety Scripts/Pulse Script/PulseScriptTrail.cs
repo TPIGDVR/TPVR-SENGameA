@@ -164,6 +164,11 @@ public class PulseScriptTrail : MonoBehaviour
         numberOfWave = (int)(numberOfBeatPerMin / 60f);
     }
 
+    public void CalculateWidthBounding(float numberOfBeatPerMin)
+    {
+        WidthBoundingBox = numberOfBeatPerMin / 60f;
+    }
+
     public void CalculateFrequency()
     {
         frequency = UnityEngine.Random.Range(minFreq, maxFreq);
@@ -173,6 +178,7 @@ public class PulseScriptTrail : MonoBehaviour
     {
         float currBPM = Mathf.Lerp(restingBPM, maxBPM, anxiety);
         CalculateWave(currBPM);
+        CalculateWidthBounding(currBPM);
         currBPM += UnityEngine.Random.Range(-heartBeatRand, heartBeatRand);
 
         CalculateSpeed(currBPM);
