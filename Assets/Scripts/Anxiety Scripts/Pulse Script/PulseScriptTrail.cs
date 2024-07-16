@@ -25,6 +25,7 @@ public class PulseScriptTrail : MonoBehaviour
     [SerializeField] float minAmp = 0.5f;
     [SerializeField] float maxAmp = 1f;
     [SerializeField] float randAmpRange = 0.3f;
+    [SerializeField] float ampOffset;
 
     [Header("Frequency")]
     [SerializeField] float minFreq = 1f;
@@ -157,7 +158,7 @@ public class PulseScriptTrail : MonoBehaviour
             Mathf.InverseLerp(minHeartBeat, maxHeartBeat, numberOfBeatPerMin));
 
         calAmp += UnityEngine.Random.Range(-randAmpRange, randAmpRange);
-        amp = calAmp;
+        amp = calAmp * ampOffset;
     }
     public void CalculateWave(float numberOfBeatPerMin)
     {
