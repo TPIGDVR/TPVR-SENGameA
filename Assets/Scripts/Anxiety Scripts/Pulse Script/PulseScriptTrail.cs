@@ -147,7 +147,7 @@ public class PulseScriptTrail : MonoBehaviour
     public void CalculateSpeed(float numberOfBeatPerMin)
     {
         float timeToCompleteOneBeat = 60 / numberOfBeatPerMin;
-        speed = WidthBoundingBox / timeToCompleteOneBeat;
+        speed = WidthBoundingBox / timeToCompleteOneBeat / numberOfWave;
     }
 
     public void CalculateAmp(float numberOfBeatPerMin, float minHeartBeat ,float maxHeartBeat) 
