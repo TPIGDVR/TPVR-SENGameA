@@ -8,6 +8,8 @@ using UnityEngine.InputSystem;
 
 public class DialogueBasic : MonoBehaviour
 {
+    EventManager<LevelEvents> em_l = EventSystem.level;
+
     [SerializeField]
     GameObject dialogueBox;
     [SerializeField]
@@ -18,50 +20,63 @@ public class DialogueBasic : MonoBehaviour
     DialogueLine[] Lines;
     [SerializeField]
     float textSpeed;
+
     int index;
     bool isTriggered;
+    string currentLine;
 
     [SerializeField]ControllerManager controllerManager;
-    // Start is called before the first frame update
+
     void Start()
     {
         dialogueText.text = string.Empty;
         dialogueSpeaker.text = string.Empty;
-        index = -1;
+        index = 0;
+        currentLine = Lines[index].Line;
     }
 
-
-    public void DoDialogue(InputAction.CallbackContext context)
+    void InitializeDialogue()
     {
-        print("Dialog");
-        dialogueText.text = string.Empty;
-        dialogueSpeaker.text = string.Empty;
-        index += 1;
+        dialogueBox.SetActive(true);
+        isTriggered = true;
+        PrintCurrentDialogueLine();
+    }
 
-        if (index >= Lines.Length)
+    public void NextDialogue()
+    {
+        //prevent exceeding array contents
+        if(index + 1 >= Lines.Length)
         {
             dialogueBox.SetActive(false);
-            controllerManager.dict[Controls.AButton].started -= DoDialogue;
-            controllerManager.dict[Controls.BButton].started -= PreviousDialogue;
+            return;
+        }
+        index += 1;
+        currentLine = Lines[index].Line;
+    }
+
+    public void PreviousDialogue()
+    {
+        //prevent exceeding array contents
+        if (index - 1 < 0)
+        {
+            return;
         }
 
-
-        StartCoroutine(PrintDialogue());
-    }
-
-    public void PreviousDialogue(InputAction.CallbackContext context)
-    {
-        dialogueText.text = string.Empty;
-        dialogueSpeaker.text = string.Empty;
         index -= 1;
-        StartCoroutine(PrintDialogue());
+        currentLine = Lines[index].Line;
     }
 
-    IEnumerator PrintDialogue()
+    public void PrintCurrentDialogueLine() 
     {
-        foreach (char c in Lines[index].Line.ToCharArray())
+        StopAllCoroutines();
+        StartCoroutine(PrintLine());
+    }
+
+    IEnumerator PrintLine()
+    {
+        dialogueSpeaker.text = Lines[index].Speaker.ToString();
+        foreach (char c in currentLine.ToCharArray())
         {
-            dialogueSpeaker.text = Lines[index].Speaker.ToString();
             dialogueText.text += c;
             yield return new WaitForSeconds(textSpeed);
         }
@@ -71,10 +86,13 @@ public class DialogueBasic : MonoBehaviour
     {
         if (!isTriggered)
         {
-            dialogueBox.SetActive(true);
-            isTriggered = true;
-            controllerManager.dict[Controls.AButton].started += DoDialogue;
-            controllerManager.dict[Controls.BButton].started += PreviousDialogue;
+            //dialogueBox.SetActive(true);
+            //isTriggered = true;
+            //controllerManager.dict[Controls.AButton].started += DoDialogue;
+            //controllerManager.dict[Controls.BButton].started += PreviousDialogue;
+            Debug.Log($"Entered Dialogue Trigger : {gameObject.name}");
+            em_l.TriggerEvent<DialogueBasic>(LevelEvents.ENTER_DIALOGUE_TRIGGER,this);
+            InitializeDialogue();
         }
     }
 }
