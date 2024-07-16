@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 namespace Assets.HelpfulScripts
 {
-    public class ControllerManager : Singleton<ControllerManager>
+    public class ControllerManager : MonoBehaviour
     {
         [Header("Mapping")]
         //currently referencing the quest 3 controller

@@ -1734,6 +1734,7 @@ MonoBehaviour:
   Lines:
   - {fileID: 11400000, guid: 94ae2566416c9bc42bb9fb2aba937006, type: 2}
   textSpeed: 0.005
+  controllerManager: {fileID: 1448619057}
 --- !u!65 &237242886
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2809,7 +2810,7 @@ PrefabInstance:
     - target: {fileID: 1406701354946958728, guid: 4d61e4b17cc5ab040bda93930dfa4469,
         type: 3}
       propertyPath: m_MoveSpeed
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2128902438651423345, guid: 4d61e4b17cc5ab040bda93930dfa4469,
         type: 3}
@@ -2918,6 +2919,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5310930882697996678, guid: 4d61e4b17cc5ab040bda93930dfa4469,
         type: 3}
+      propertyPath: actionMap.Array.data[0].OnPress.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5310930882697996678, guid: 4d61e4b17cc5ab040bda93930dfa4469,
+        type: 3}
+      propertyPath: actionMap.Array.data[1].OnPress.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5310930882697996678, guid: 4d61e4b17cc5ab040bda93930dfa4469,
+        type: 3}
       propertyPath: actionMap.Array.data[0].OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 237242885}
@@ -3015,7 +3026,7 @@ PrefabInstance:
     - target: {fileID: 7887398271720494728, guid: 4d61e4b17cc5ab040bda93930dfa4469,
         type: 3}
       propertyPath: m_CameraYOffset
-      value: 0.3
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 8053241120766701796, guid: 4d61e4b17cc5ab040bda93930dfa4469,
         type: 3}
@@ -9212,6 +9223,7 @@ MonoBehaviour:
   Lines:
   - {fileID: 11400000, guid: da43bbfce66787c4a844ad92b6650305, type: 2}
   textSpeed: 0.005
+  controllerManager: {fileID: 1448619057}
 --- !u!65 &1319497975
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10276,6 +10288,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1443664391}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1448619057 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5310930882697996678, guid: 4d61e4b17cc5ab040bda93930dfa4469,
+    type: 3}
+  m_PrefabInstance: {fileID: 335601316}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b29f442005c434d44837c3136ded20a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1460672023
 GameObject:
   m_ObjectHideFlags: 0
@@ -10327,6 +10351,7 @@ MonoBehaviour:
   Lines:
   - {fileID: 11400000, guid: 5aba678c7645f3942b05f55625d2e6fb, type: 2}
   textSpeed: 0.005
+  controllerManager: {fileID: 1448619057}
 --- !u!65 &1460672026
 BoxCollider:
   m_ObjectHideFlags: 0
