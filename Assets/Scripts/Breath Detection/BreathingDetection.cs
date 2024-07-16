@@ -26,6 +26,10 @@ namespace BreathDetection
         [SerializeField]
         InhaleData calculateExhaleSpectrumData;
 
+
+        [Header("safe file")]
+        [SerializeField] BreathSafeFile safeFile;
+
         IBreathResult inhaleDetection;
         IBreathResult exhaleDetection;
         IBreathResult exhaleSpectrumDetection;
@@ -36,7 +40,7 @@ namespace BreathDetection
         [SerializeField] bool usePresetData;
 
         [Header("collection Data")]
-        [SerializeField] bool isTesting = true;
+        bool isTesting;
         [SerializeField] int amountToTest = 2;
         [SerializeField] float amountOfTimeToSample = 2f;
         int amountTested = 0;
@@ -53,15 +57,28 @@ namespace BreathDetection
         private void Start()
         {
             //do the initializing here
-            inhaleTester = new SpectrumMinMaxTester(micProvider, _inhaleDataTemplate);
-            exhaleSpectrumTester = new SpectrumMinMaxTester(micProvider, _exhaleDataSpectrumTemplate);
-            exhaleLoudnessTester = new ExhaleTester(_exhaleDataTemplate, micProvider);
+
+            if (!usePresetData)
+            {
+                inhaleTester = new SpectrumMinMaxTester(micProvider, _inhaleDataTemplate);
+                exhaleSpectrumTester = new SpectrumMinMaxTester(micProvider, _exhaleDataSpectrumTemplate);
+                exhaleLoudnessTester = new ExhaleTester(_exhaleDataTemplate, micProvider);
+                isTesting = true;
+            }
+            else
+            {
+                inhaleDetection = new InhalingDetector(micProvider, safeFile.inhaleCalculatedData);
+                exhaleDetection = new ExhalingDetector(micProvider, safeFile.exhaleLoudnessData);
+                exhaleSpectrumDetection = new InhalingDetector(micProvider, safeFile.exhaleCalculatedData);
+                isTesting = false;
+            }
 
             //Microphone.GetDeviceCaps(Microphone.devices[0],
             //    out int minFrequency,
             //    out int maxFrequency);
             //print($"{Microphone.devices[0]} min frequency {minFrequency} max frequency {maxFrequency}");
         }
+
         void CalculateData()
         {
             print($"Elapse time {elapseTime}. has finish inhale {hasTestedInhale}");
@@ -168,6 +185,17 @@ namespace BreathDetection
             inhaleDetection = new InhalingDetector(micProvider , calculatedInhaleData);
             exhaleDetection = new ExhalingDetector(micProvider, calculatedExhaleData);
             exhaleSpectrumDetection = new InhalingDetector(micProvider, calculateExhaleSpectrumData);
+        }
+
+        [ContextMenu("safe Data")]
+        public void SafeValue()
+        {
+            if(safeFile != null)
+            {
+                safeFile.inhaleCalculatedData = calculatedInhaleData;
+                safeFile.exhaleLoudnessData = calculatedExhaleData;
+                safeFile.exhaleCalculatedData = calculateExhaleSpectrumData;
+            }
         }
     }
 }

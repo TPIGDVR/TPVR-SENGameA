@@ -46,7 +46,7 @@ namespace Breathing3
             {
                 return provider.CalculatedVolume > inhaleData.InhaleVolumeThreshold &&
                 //provider.CalculatedPitch > inhaleData.InhalePitchLowBound;
-                //provider.CalculatedVolume < exhaleData.ExhaleVolumeThreshold &&
+                //provider.CalculatedVolume < exhaleLoudnessData.ExhaleVolumeThreshold &&
                 //provider.CalculatedVolumeVariance < inhaleData.InhaleLoudnessVarance &&
                 //(inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
                 provider.CalculatedPitch < inhaleData.InhalePitchUpperBound;
@@ -60,11 +60,11 @@ namespace Breathing3
             get
             {
                 return provider.CalculatedVolume > exhaleData.ExhaleVolumeThreshold;
-                //provider.CalculatedVolumeVariance > exhaleData.ExhaleVolumeVaranceThreshold;
-                //provider.CalculatePitchVariance > exhaleData.ExhalePitchVaranceThreshold;
-                //provider.CalculatedPitch > exhaleData.ExhalePitchLowBound;
-                //(exhaleData.ExhalePitchLowBound < provider.CalculatedPitch &&
-                //provider.CalculatedPitch < exhaleData.ExhalePitchUpperBound
+                //provider.CalculatedVolumeVariance > exhaleLoudnessData.ExhaleVolumeVaranceThreshold;
+                //provider.CalculatePitchVariance > exhaleLoudnessData.ExhalePitchVaranceThreshold;
+                //provider.CalculatedPitch > exhaleLoudnessData.ExhalePitchLowBound;
+                //(exhaleLoudnessData.ExhalePitchLowBound < provider.CalculatedPitch &&
+                //provider.CalculatedPitch < exhaleLoudnessData.ExhalePitchUpperBound
                 //);
             }
         }
@@ -176,7 +176,7 @@ namespace Breathing3
             {
                 return provider.CalculatedVolume > inhaleData.InhaleVolumeThreshold &&
                 //provider.CalculatedPitch > inhaleData.InhalePitchLowBound;
-                //provider.CalculatedVolume < exhaleData.ExhaleVolumeThreshold &&
+                //provider.CalculatedVolume < exhaleLoudnessData.ExhaleVolumeThreshold &&
                 //provider.CalculatedVolumeVariance > inhaleData.InhaleLoudnessVarance &&
                 //(inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
                 //inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
@@ -197,11 +197,11 @@ namespace Breathing3
             get
             {
                 return provider.CalculatedVolume > exhaleData.ExhaleVolumeThreshold;
-                //provider.CalculatedVolumeVariance > exhaleData.ExhaleVolumeVaranceThreshold;
-                //provider.CalculatePitchVariance > exhaleData.ExhalePitchVaranceThreshold;
-                //provider.CalculatedPitch > exhaleData.ExhalePitchLowBound;
-                //(exhaleData.ExhalePitchLowBound < provider.CalculatedPitch &&
-                //provider.CalculatedPitch < exhaleData.ExhalePitchUpperBound
+                //provider.CalculatedVolumeVariance > exhaleLoudnessData.ExhaleVolumeVaranceThreshold;
+                //provider.CalculatePitchVariance > exhaleLoudnessData.ExhalePitchVaranceThreshold;
+                //provider.CalculatedPitch > exhaleLoudnessData.ExhalePitchLowBound;
+                //(exhaleLoudnessData.ExhalePitchLowBound < provider.CalculatedPitch &&
+                //provider.CalculatedPitch < exhaleLoudnessData.ExhalePitchUpperBound
                 //);
             }
         }
@@ -351,7 +351,7 @@ namespace Breathing3
             {
                 return provider.CalculatedVolume > inhaleData.InhaleVolumeThreshold &&
                 //provider.CalculatedPitch > inhaleData.InhalePitchLowBound;
-                //provider.CalculatedVolume < exhaleData.ExhaleVolumeThreshold &&
+                //provider.CalculatedVolume < exhaleLoudnessData.ExhaleVolumeThreshold &&
                 //provider.CalculatedVolumeVariance > inhaleData.InhaleLoudnessVarance &&
                 //(inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
                 inhaleData.InhalePitchLowBound < provider.CalculatedPitch &&
@@ -372,11 +372,11 @@ namespace Breathing3
             get
             {
                 return provider.CalculatedVolume > exhaleData.ExhaleVolumeThreshold &&
-                //provider.CalculatedVolumeVariance > exhaleData.ExhaleVolumeVaranceThreshold;
-                //provider.CalculatePitchVariance > exhaleData.ExhalePitchVaranceThreshold 
+                //provider.CalculatedVolumeVariance > exhaleLoudnessData.ExhaleVolumeVaranceThreshold;
+                //provider.CalculatePitchVariance > exhaleLoudnessData.ExhalePitchVaranceThreshold 
                 provider.CalculatedPitch > exhaleData.ExhalePitchLowBound &&
                 exhaleData.ExhalePitchLowBound < provider.CalculatedPitch;
-                //provider.CalculatedPitch < exhaleData.ExhalePitchUpperBound
+                //provider.CalculatedPitch < exhaleLoudnessData.ExhalePitchUpperBound
                 //);
             }
         }
@@ -537,13 +537,13 @@ namespace Breathing3
             get
             {
                 return provider.CalculatedVolume > exhaleData.ExhaleVolumeThreshold &&
-                //provider.CalculatedVolumeVariance > exhaleData.ExhaleVolumeVaranceThreshold;
-                //provider.CalculatePitchVariance > exhaleData.ExhalePitchVaranceThreshold 
+                //provider.CalculatedVolumeVariance > exhaleLoudnessData.ExhaleVolumeVaranceThreshold;
+                //provider.CalculatePitchVariance > exhaleLoudnessData.ExhalePitchVaranceThreshold 
                 provider.CalculatedPitch > exhaleData.ExhalePitchLowBound &&
-                //provider.CalculatedPitch < exhaleData.ExhalePitchUpperBound &&
+                //provider.CalculatedPitch < exhaleLoudnessData.ExhalePitchUpperBound &&
                 provider.PitchNoiseCorrelation < 0;
-                //exhaleData.ExhalePitchLowBound < provider.CalculatedPitch;
-                //provider.CalculatedPitch < exhaleData.ExhalePitchUpperBound
+                //exhaleLoudnessData.ExhalePitchLowBound < provider.CalculatedPitch;
+                //provider.CalculatedPitch < exhaleLoudnessData.ExhalePitchUpperBound
                 //);
             }
         }

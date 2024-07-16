@@ -4462,8 +4462,9 @@ MonoBehaviour:
     minAmplitude: 0.0002
     maxAmplitude: 0.00056
     maxDBThreshold: 0
-    inhaleCounterThreshold: 6
+    inhaleCounterThreshold: 4
     reductionOfMinCounter: 2
+    numberOfPointsToStop: 12
   _exhaleDataSpectrumTemplate:
     lowPassFilter: 0
     highPassFilter: 2300
@@ -4474,6 +4475,7 @@ MonoBehaviour:
     maxDBThreshold: 0
     inhaleCounterThreshold: 6
     reductionOfMinCounter: 6
+    numberOfPointsToStop: 12
   calculatedExhaleData:
     lowPassFilter: 0
     highPassFilter: 0
@@ -4490,6 +4492,7 @@ MonoBehaviour:
     maxDBThreshold: 0
     inhaleCounterThreshold: 0
     reductionOfMinCounter: 0
+    numberOfPointsToStop: 0
   calculateExhaleSpectrumData:
     lowPassFilter: 0
     highPassFilter: 0
@@ -4500,9 +4503,10 @@ MonoBehaviour:
     maxDBThreshold: 0
     inhaleCounterThreshold: 0
     reductionOfMinCounter: 0
+    numberOfPointsToStop: 0
+  safeFile: {fileID: 11400000, guid: f8b53eea26809f34cb998648ec4c1bbb, type: 2}
   usePresetData: 0
-  isTesting: 1
-  amountToTest: 2
+  amountToTest: 4
   amountOfTimeToSample: 2
   text: {fileID: 274951900}
   useVolPitchExhale: 0
