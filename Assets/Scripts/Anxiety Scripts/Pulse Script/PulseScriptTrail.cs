@@ -159,6 +159,10 @@ public class PulseScriptTrail : MonoBehaviour
         calAmp += UnityEngine.Random.Range(-randAmpRange, randAmpRange);
         amp = calAmp;
     }
+    public void CalculateWave(float numberOfBeatPerMin)
+    {
+        numberOfWave = (int)(numberOfBeatPerMin / 60f);
+    }
 
     public void CalculateFrequency()
     {
@@ -168,11 +172,13 @@ public class PulseScriptTrail : MonoBehaviour
     void CalBeat(float anxiety)
     {
         float currBPM = Mathf.Lerp(restingBPM, maxBPM, anxiety);
+        CalculateWave(currBPM);
         currBPM += UnityEngine.Random.Range(-heartBeatRand, heartBeatRand);
 
         CalculateSpeed(currBPM);
         CalculateAmp(currBPM, restingBPM, maxBPM);
         CalculateFrequency();
+        
 
 
         bpmText.text = $"{Mathf.CeilToInt(currBPM)} BPM"; ;
