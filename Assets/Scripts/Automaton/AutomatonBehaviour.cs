@@ -41,12 +41,9 @@ public class AutomatonBehaviour : MonoBehaviour
             switch (_state)
             {
                 case AutomatonStates.IDLE:
-                    Debug.Log("idling...");
                     yield return new WaitForSeconds(waitTime);
                     break;
                 case AutomatonStates.WALK:
-                    Debug.Log("walking...");
-
                     _wayPointIndex++;
                     if(_wayPointIndex >= _wayPoints.Length)
                         _wayPointIndex = 0;
@@ -59,8 +56,6 @@ public class AutomatonBehaviour : MonoBehaviour
                     _ani.SetFloat("Spd", 0f);
                     break;
                 case AutomatonStates.SCAN:
-                    Debug.Log("I talk");
-
                     int index = Random.Range(0, _dataInterfaceT.Length);
                     if (_dataInterfaceT[index] != null)      
                         SetDestination(_dataInterfaceT[index].position);

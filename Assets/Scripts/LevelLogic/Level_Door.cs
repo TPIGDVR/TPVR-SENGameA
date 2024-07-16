@@ -19,7 +19,6 @@ public class Level_Door : MonoBehaviour
         door_L_OP = door_L.localPosition;
         door_R_OP = door_R.localPosition;
         em_l.AddListener(LevelEvents.LEVEL_CLEARED, LevelCleared);
-        //StartCoroutine(OpenDoor());
     }
 
     void LevelCleared()

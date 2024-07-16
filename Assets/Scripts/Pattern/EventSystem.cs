@@ -32,4 +32,5 @@ public enum LevelEvents
 {
     KIOSK_CLEARED,
     LEVEL_CLEARED,
+    ENTER_DIALOGUE_TRIGGER
 }
