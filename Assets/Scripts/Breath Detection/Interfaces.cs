@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace BreathDetection
 {
@@ -7,7 +8,13 @@ namespace BreathDetection
         public bool Result();
     }
 
-    
+    public interface ITestable<DataType>
+    {
+        public void Run();
+        public void Reset(DataType templateData);
+        public DataType Calculate();
+
+    }
 
     [Serializable]
     public struct InhaleData
@@ -21,7 +28,11 @@ namespace BreathDetection
         public float maxDBThreshold;
         public int inhaleCounterThreshold;
         //reduce the minnumber of commonpoint when it detects inhaling
-        public int reductionOfMinCounter; 
+        public int reductionOfMinCounter;
+
+        //for experiemental;
+        [Range(1, 15)]
+        public int numberOfPointsToStop;
     }
 
     [Serializable]

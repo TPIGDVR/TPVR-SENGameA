@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+using static UnityEditor.Rendering.FilterWindow;
 
 namespace BreathDetection
 {
@@ -37,7 +40,7 @@ namespace BreathDetection
 
             if (counter > minValue &&
                 counter < _data.maxNumberOfCommonPoint &&
-                micProvider.CalculatedVolume < _data.maxDBThreshold
+                micProvider.CalculatedVolume > _data.maxDBThreshold
                 )
             {
                 if(inhaleCounter < _data.inhaleCounterThreshold)
@@ -73,13 +76,13 @@ namespace BreathDetection
         }
     }
 
-    public struct InhaleTester
+    public struct SpectrumTester : ITestable<InhaleData>
     {
         MicProvider micProvider;
         InhaleData _data;
         int counter;
 
-        public InhaleTester(MicProvider micProvider , InhaleData template)
+        public SpectrumTester(MicProvider micProvider , InhaleData template)
         {
             counter = 0;
             this.micProvider = micProvider;
@@ -91,7 +94,8 @@ namespace BreathDetection
         public void Run()
         {
             counter++;
-            _data.maxDBThreshold += micProvider.avgVolume;
+            _data.maxDBThreshold += micProvider.maxVolume;
+
 
             var spectrumData = micProvider._dataSpectrumContainer;
             int lowCutOff = (int)(_data.lowPassFilter / micProvider.pitchIncrementor);
@@ -107,6 +111,8 @@ namespace BreathDetection
                     pointCounter++;
                 }
             }
+
+            Debug.Log($"Common point {pointCounter}");
 
             if(pointCounter > _data.maxNumberOfCommonPoint)
             {
@@ -130,7 +136,81 @@ namespace BreathDetection
         }
     }
 
-    public struct ExhaleTester
+    public struct SpectrumMinMaxTester : ITestable<InhaleData>
+    {
+        public InhaleData _data;
+        private MicProvider micProvider;
+        float maxAmp;
+        float avgAmp;
+        int counter;
+        public SpectrumMinMaxTester(MicProvider micProvider, InhaleData data)
+        {
+            _data = data;
+            this.micProvider = micProvider;
+            maxAmp = 0;
+            avgAmp = 0;
+            counter = 0;
+        }
+
+        public InhaleData Calculate()
+        {
+            _data.maxAmplitude = maxAmp/ counter;
+            _data.minAmplitude = avgAmp/ counter;
+            return _data;
+        }
+
+        public void Reset(InhaleData templateData)
+        {
+            counter = 0;
+            maxAmp = 0;
+            avgAmp = 0;
+        }
+
+        public void Run()
+        {
+            var spectrumData = micProvider._dataSpectrumContainer;
+            int lowCutOff = (int)(_data.lowPassFilter / micProvider.pitchIncrementor);
+            int highCutOff = (int)(_data.highPassFilter / micProvider.pitchIncrementor);
+
+            float curMaxFloat = 0;
+            List<float> maxBuffer = new();
+
+            for (int i = lowCutOff; i < highCutOff; i++)
+            {
+                var amp = spectrumData[i];
+                if(maxBuffer.Count == 0) maxBuffer.Add(amp);
+                else
+                {
+                    bool hasInsert = false;
+                    for(int j = 0; j < maxBuffer.Count; j++)
+                    {
+                        if (amp > maxBuffer[j] )
+                        {
+                            maxBuffer.Insert(j, amp);
+                            hasInsert = true;
+                            break;
+                        }
+                    }
+                    if (!hasInsert && maxBuffer.Count < _data.numberOfPointsToStop)
+                    {
+                        maxBuffer.Add(amp);
+                    }
+                    //remove the last buffer if it overflow
+                    if(maxBuffer.Count > _data.numberOfPointsToStop)
+                    {
+                        maxBuffer.RemoveAt(maxBuffer.Count - 1);
+                    }
+                }
+
+            }
+
+            maxAmp += maxBuffer[0];
+            avgAmp += maxBuffer[maxBuffer.Count - 1];
+            counter++;
+        }
+    }
+
+    public struct ExhaleTester : ITestable<ExhaleData>
     {
         ExhaleData _data;
         MicProvider micProvider;

@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace BreathDetection
@@ -27,9 +28,10 @@ namespace BreathDetection
 
         IBreathResult inhaleDetection;
         IBreathResult exhaleDetection;
+        IBreathResult exhaleSpectrumDetection;
 
         bool _IsInhaling => inhaleDetection.Result();
-        bool _IsExhaling => exhaleDetection.Result();
+        bool _IsExhaling => useVolPitchExhale ? exhaleDetection.Result() : exhaleSpectrumDetection.Result();
 
         [SerializeField] bool usePresetData;
 
@@ -42,20 +44,24 @@ namespace BreathDetection
 
         float elapseTime = 0;
 
-        InhaleTester inhaleTester;
-        ExhaleTester exhaleTester;
-        InhaleTester exhaleSpectrumTester;
-
+        ITestable<InhaleData> inhaleTester;
+        ITestable<InhaleData> exhaleSpectrumTester;
+        ITestable<ExhaleData> exhaleLoudnessTester;
         [Header("debugging")]
         [SerializeField] TextMeshProUGUI text;
+        [SerializeField] bool useVolPitchExhale;
         private void Start()
         {
             //do the initializing here
-            inhaleTester = new InhaleTester(micProvider, _inhaleDataTemplate);
-            exhaleSpectrumTester = new InhaleTester(micProvider, _exhaleDataSpectrumTemplate);
-            //exhaleTester = new ExhaleTester(_exhaleDataTemplate, micProvider);
-        }
+            inhaleTester = new SpectrumMinMaxTester(micProvider, _inhaleDataTemplate);
+            exhaleSpectrumTester = new SpectrumMinMaxTester(micProvider, _exhaleDataSpectrumTemplate);
+            exhaleLoudnessTester = new ExhaleTester(_exhaleDataTemplate, micProvider);
 
+            //Microphone.GetDeviceCaps(Microphone.devices[0],
+            //    out int minFrequency,
+            //    out int maxFrequency);
+            //print($"{Microphone.devices[0]} min frequency {minFrequency} max frequency {maxFrequency}");
+        }
         void CalculateData()
         {
             print($"Elapse time {elapseTime}. has finish inhale {hasTestedInhale}");
@@ -68,14 +74,25 @@ namespace BreathDetection
                 }
                 else
                 {//run the exhale here
+                    exhaleLoudnessTester.Run();
                     exhaleSpectrumTester.Run();
                     text.text = "Please exhale";
                 }
                 elapseTime += Time.deltaTime;
             }
+
             else
-            {
-                if (hasTestedInhale) amountTested++;
+            {//when the thing is done
+                if (hasTestedInhale)
+                {
+                    amountTested++;
+
+                    if(amountTested == amountToTest / 2)
+                    {
+                        inhaleTester = new SpectrumTester(micProvider, inhaleTester.Calculate());
+                        exhaleSpectrumTester = new SpectrumTester(micProvider, exhaleSpectrumTester.Calculate());
+                    }
+                }
 
                 if(amountTested < amountToTest)
                 {
@@ -97,10 +114,11 @@ namespace BreathDetection
         {
             calculatedInhaleData = inhaleTester.Calculate();
             calculateExhaleSpectrumData = exhaleSpectrumTester.Calculate();
+            calculatedExhaleData = exhaleLoudnessTester.Calculate();
 
             inhaleDetection = new InhalingDetector(micProvider, calculatedInhaleData);
-            exhaleDetection = new InhalingDetector(micProvider, calculateExhaleSpectrumData);
-
+            exhaleSpectrumDetection = new InhalingDetector(micProvider, calculateExhaleSpectrumData);
+            exhaleDetection = new ExhalingDetector(micProvider, calculatedExhaleData);
         }
 
         private void Update()
@@ -114,17 +132,15 @@ namespace BreathDetection
                 bool isInhaling = this._IsInhaling;
                 bool isExhaling = this._IsExhaling;
 
-                if(isInhaling && isExhaling) 
+                print($"Is Inhaling {isInhaling}. Is exhaling {isExhaling}");
+                
+                if(isExhaling)
                 {
-                    text.text = "unknown";
+                    text.text = "exhaling";
                 }
                 else if (isInhaling)
                 {
                     text.text = "inhaling";
-                }
-                else if(isExhaling)
-                {
-                    text.text = "exhaling";
                 }
                 else
                 {
@@ -136,12 +152,13 @@ namespace BreathDetection
         [ContextMenu("testing")]
         public void ResetTesting()
         {
-            isTesting = false;
+            isTesting = true;
             hasTestedInhale = false;
+            elapseTime = 0;
             amountTested = 0;
-            inhaleTester = new InhaleTester(micProvider, _inhaleDataTemplate);
-            exhaleTester = new ExhaleTester( _exhaleDataTemplate , micProvider);
-            exhaleSpectrumTester = new InhaleTester(micProvider, _exhaleDataSpectrumTemplate);
+            inhaleTester = new SpectrumMinMaxTester(micProvider, _inhaleDataTemplate);
+            exhaleLoudnessTester = new ExhaleTester( _exhaleDataTemplate , micProvider);
+            exhaleSpectrumTester = new SpectrumMinMaxTester(micProvider, _exhaleDataSpectrumTemplate);
         }
 
         [ContextMenu("Update values")]
@@ -149,11 +166,8 @@ namespace BreathDetection
         {
             //do changes this later since this is kinda effy way to do it.
             inhaleDetection = new InhalingDetector(micProvider , calculatedInhaleData);
-            //exhaleDetection = new ExhalingDetector(micProvider , calculatedExhaleData);
-            exhaleDetection = new InhalingDetector(micProvider, calculateExhaleSpectrumData);
+            exhaleDetection = new ExhalingDetector(micProvider, calculatedExhaleData);
+            exhaleSpectrumDetection = new InhalingDetector(micProvider, calculateExhaleSpectrumData);
         }
     }
-
-
-
 }
