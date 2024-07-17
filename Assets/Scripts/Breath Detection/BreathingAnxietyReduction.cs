@@ -53,14 +53,19 @@ namespace BreathDetection
         {
             currentOutput = DetermineBreathingState();
             _mfsm.Update();
-            print($"current State: {(States)_mfsm.GetCurrentState().ID}" +
-                $"currentOutput {currentOutput}");
+            string message = $"current State: {(States)_mfsm.GetCurrentState().ID}" +
+                $"currentOutput {currentOutput}";
+            print(message);
+            displayText.text = message;
+
         }
 
         private BreathingOutPut DetermineBreathingState()
         {
             sample.Enqueue(detector.breathingOutPut);
-            if(sample.Count > numberOfSample ) sample.Dequeue(); 
+
+            while(sample.Count > numberOfSample ) sample.Dequeue(); 
+
             var data = sample.ToArray();
             int inhaleCounter = 0;
             int exhaleCounter = 0;
