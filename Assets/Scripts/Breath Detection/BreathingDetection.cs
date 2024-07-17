@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace BreathDetection
@@ -54,6 +53,8 @@ namespace BreathDetection
         [Header("debugging")]
         [SerializeField] TextMeshProUGUI text;
         [SerializeField] bool useVolPitchExhale;
+        public BreathingOutPut breathingOutPut { get; private set; }
+
         private void Start()
         {
             //do the initializing here
@@ -148,24 +149,25 @@ namespace BreathDetection
             {
                 bool isInhaling = this._IsInhaling;
                 bool isExhaling = this._IsExhaling;
-
-                print($"Is Inhaling {isInhaling}. Is exhaling {isExhaling}");
-                
-                if(isExhaling)
+                if (isExhaling)
                 {
-                    text.text = "exhaling";
+                    breathingOutPut = BreathingOutPut.EXHALE;
                 }
-                else if (isInhaling)
+                else if (isInhaling) 
                 {
-                    text.text = "inhaling";
+                    breathingOutPut = BreathingOutPut.INHALE;
                 }
                 else
                 {
-                    text.text = "nothing";
+                    breathingOutPut = BreathingOutPut.SILENCE;
                 }
+                print($"_ Is Inhaling {isInhaling}, Is Exhaling {isExhaling}");
             }
         }
 
+
+
+        #region debugging
         [ContextMenu("testing")]
         public void ResetTesting()
         {
@@ -197,5 +199,13 @@ namespace BreathDetection
                 safeFile.exhaleCalculatedData = calculateExhaleSpectrumData;
             }
         }
+        #endregion
+    }
+
+    public enum BreathingOutPut
+    {
+        SILENCE,
+        INHALE,
+        EXHALE,
     }
 }

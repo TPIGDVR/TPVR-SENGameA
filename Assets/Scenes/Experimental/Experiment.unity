@@ -4404,6 +4404,7 @@ GameObject:
   - component: {fileID: 1054245174}
   - component: {fileID: 1054245173}
   - component: {fileID: 1054245176}
+  - component: {fileID: 1054245177}
   m_Layer: 0
   m_Name: V2 breath detection
   m_TagString: Untagged
@@ -4473,9 +4474,9 @@ MonoBehaviour:
     minAmplitude: 0.0005
     maxAmplitude: 0.002
     maxDBThreshold: 0
-    inhaleCounterThreshold: 6
-    reductionOfMinCounter: 6
-    numberOfPointsToStop: 12
+    inhaleCounterThreshold: 7
+    reductionOfMinCounter: 3
+    numberOfPointsToStop: 13
   calculatedExhaleData:
     lowPassFilter: 0
     highPassFilter: 0
@@ -4505,7 +4506,7 @@ MonoBehaviour:
     reductionOfMinCounter: 0
     numberOfPointsToStop: 0
   safeFile: {fileID: 11400000, guid: f8b53eea26809f34cb998648ec4c1bbb, type: 2}
-  usePresetData: 0
+  usePresetData: 1
   amountToTest: 4
   amountOfTimeToSample: 2
   text: {fileID: 274951900}
@@ -4537,6 +4538,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a916a64f1ce2749338e78e1a9be72aaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1054245177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054245172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed639974cf8556a4cad0b52ad60bf421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detector: {fileID: 1054245174}
+  minAnxietyReduction: 0.2
+  maxAnxietyReduction: 0.8
+  maximumInhaleTimer: 3
+  maximumExhaleTimer: 3
+  displayText: {fileID: 274951900}
+  inhaleElapseTime: 0
+  exhaleElapseTime: 0
+  numberOfSample: 100
+  stateName: 
 --- !u!1 &1070857785
 GameObject:
   m_ObjectHideFlags: 0
