@@ -24,32 +24,35 @@ namespace Assets.Scripts.pattern
             }
         }
 
-        public void InitWithParent(int numberOfItems, Transform parent)
+        public void InitWithParent(int numberOfItems, Transform parent, Vector3 worldPosition = new Vector3())
         {
             for (int i = 0; i < numberOfItems; i++)
             {
-                Add(parent);
+                Add(parent,worldPosition);
             }
         }
 
-        public void InitWithParent(int numberOfItems, Transform parent, bool isGameObjectActive)
+        public void InitWithParent(int numberOfItems, Transform parent, 
+            bool isGameObjectActive, Vector3 worldPosition = new Vector3())
         {
             for (int i = 0; i < numberOfItems; i++)
             {
-                Add(parent , isGameObjectActive);
+                Add(parent , isGameObjectActive,worldPosition);
             }
         }
 
-        public void Add(bool activeState = false)
+        public void Add(bool activeState = false, Vector3 worldposition = new Vector3())
         {
             GameObject initObject = GameObject.Instantiate(prefab);
+            initObject.transform.position = worldposition;
             initObject.SetActive(activeState);
             queue.Enqueue(initObject.GetComponent<T>());
         }
 
-        public void Add(Transform parent , bool activeState = false)
+        public void Add(Transform parent , bool activeState = false, Vector3 worldposition = new Vector3())
         {
             GameObject initObject = GameObject.Instantiate(prefab, parent);
+            initObject.transform.position = worldposition;
             initObject.SetActive(activeState);
             queue.Enqueue(initObject.GetComponent<T>());
         }

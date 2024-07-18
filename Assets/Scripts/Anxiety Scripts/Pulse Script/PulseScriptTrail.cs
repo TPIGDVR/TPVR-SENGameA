@@ -54,6 +54,7 @@ public class PulseScriptTrail : MonoBehaviour
     private void Start()
     {
         trails = new(trailPrefab.gameObject);
+        //add the color
         trails.InitWithParent(numberOfTrail, transform, true);
         phase = 0;
         currentTrail = trails.Get();
@@ -67,6 +68,8 @@ public class PulseScriptTrail : MonoBehaviour
             currentTrail.emitting = true;
             hasActivatedEmit = true;
         }
+
+        //change this such that it does not move in an absolute value.
         trailNewPosition = trailTransform.localPosition;
         trailNewPosition.x += speed * Time.deltaTime;
 
