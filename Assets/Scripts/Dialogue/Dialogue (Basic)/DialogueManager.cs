@@ -71,7 +71,6 @@ namespace Dialog
                 {
                     yield return null;
                 }
-                print("finish");
                 dialogueBox.SetActive(false);
                 dialogueText.text = string.Empty;
                 dialogueSpeaker.text = string.Empty;
@@ -178,7 +177,6 @@ namespace Dialog
             }
             else
             {
-                print("ending dialog");
                 currentDialog = null;
                 HideDialogueBox();
             }
