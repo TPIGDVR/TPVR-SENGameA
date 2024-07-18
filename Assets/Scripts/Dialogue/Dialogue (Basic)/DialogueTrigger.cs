@@ -3,58 +3,18 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 
-public class DialogueTrigger : MonoBehaviour
+namespace Dialog
 {
-    EventManager<LevelEvents> em_l = EventSystem.level;
-
-    [SerializeField]
-    DialogueLines lines;
-    int lineCount;
-    Line currentLine;
-
-    int index;
-    bool isTriggered;
-
-    void Start()
+    public class DialogueTrigger : MonoBehaviour
     {
-        index = 0;
-        lineCount = lines.Lines.Length;
-        currentLine = lines.Lines[index];
-    }
+        EventManager<DialogEvents> em_l = EventSystem.dialog;
 
-    public bool NextDialogue()
-    {
-        //prevent exceeding array contents
-        if (index + 1 >= lineCount)
+        [SerializeField]
+        DialogueLines lines;
+
+        private void OnTriggerEnter(Collider other)
         {
-            return true;
-        }
-        index += 1;
-        currentLine = lines.Lines[index];
-        return false;
-    }
-
-    public void PreviousDialogue()
-    {
-        //prevent exceeding array contents
-        if (index - 1 < 0)
-        {
-            return;
-        }
-
-        index -= 1;
-        currentLine = lines.Lines[index];
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!isTriggered && other.CompareTag("Player"))
-        {
-            Debug.Log($"Entered Dialogue Trigger : {gameObject.name}");
-            em_l.TriggerEvent<DialogueTrigger>(LevelEvents.ENTER_DIALOGUE_TRIGGER, this);
-            isTriggered = true;
+            em_l.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, lines);
         }
     }
-
-    public Line CurrentLine => currentLine;
 }
