@@ -10,88 +10,97 @@ public class HandsScanning : MonoBehaviour
 {
 
     [SerializeField]
-    private Image scanUI;
-   
+    Image progressUI;
     [SerializeField]
-    private GameObject canvas;
+    GameObject progress_GO;
     [SerializeField]
-    private float timeMultiplier;
+    AudioSource completeSound;
     [SerializeField]
-    float minTimeMultiplier,maxTimeMultiplier;
-    [SerializeField]
-    private AudioSource completeSound;
+    Animator loadAnimator;
 
+    [SerializeField]
+    float minSpeedMultiplier, maxSpeedMultiplier;
+    float speedMultiplier;
+    [SerializeField]float progress = 0;
+    [SerializeField]
+    Color lowColor, medColor, hiColor;
 
-
-    private bool scanCompleted;
-    private bool completed;
-    public bool scanStarted = false;
+    [SerializeField]
+    bool scanCompleted;
+    bool scanning = false;
+    bool authenticate = false;
     EventManager<LevelEvents> em_l = EventSystem.level;
 
     public bool ScanCompleted {  get { return scanCompleted; } }
 
     private void Start()
     {
-        scanUI.fillAmount = 0f;
-        timeMultiplier = Random.Range(minTimeMultiplier,maxTimeMultiplier);
+        progressUI.fillAmount = 0f;
+        speedMultiplier = Random.Range(minSpeedMultiplier,maxSpeedMultiplier);
+        progress_GO.SetActive(true);
     }
 
 
     private void Update()
     {
-        if (scanCompleted)
+        if (scanning && !scanCompleted)
         {
+            progress += Time.fixedDeltaTime / 100 * speedMultiplier;
+        }
+        else if(!scanning &&  !scanCompleted)
+        {
+            progress -= Time.fixedDeltaTime / 200 * speedMultiplier;
 
-            if (!completed)
+            if (progress <= 0 && !authenticate)
             {
-                completeSound.Play();
-                completed = true;
-                em_l.TriggerEvent(LevelEvents.KIOSK_CLEARED);
+                loadAnimator.SetBool("Hand_Detected", false);
+                progress_GO.SetActive(false);
             }
+        }
+        progress = Mathf.Clamp01(progress);
 
-            Debug.Log("Scan complete!!!");
+        UpdateProgressUI();
 
+        if (progress >= 1 && !scanCompleted)
+        {
+            scanCompleted = true;
+            completeSound.Play();
+            em_l.TriggerEvent(LevelEvents.KIOSK_CLEARED);
 
+        }
+    }
+
+    void UpdateProgressUI()
+    {
+        progressUI.fillAmount = progress;
+
+        if(progress < 0.5) 
+        {
+            progressUI.color = Color.Lerp(lowColor, medColor, progress * 0.5f);
         }
         else
         {
-            if (scanUI.fillAmount == 1)
-            {
-                scanCompleted = true;
-            }
-
-
-            if (scanStarted == true)
-            {
-                scanUI.fillAmount += Time.fixedDeltaTime * timeMultiplier / 100;
-            }
-            else if (scanStarted != true)
-            {
-                scanUI.fillAmount -= Time.fixedDeltaTime * timeMultiplier / 100;
-            }
-
-            if (scanUI.fillAmount == 0)
-            {
-                canvas.SetActive(false);
-            }
+            progressUI.color = Color.Lerp(medColor, hiColor, progress * 0.5f);
         }
     }
 
     public void ScanStart()
     {
-        canvas.SetActive(true);
-        scanStarted = true;
-        
+        loadAnimator.SetBool("Hand_Detected",true);
+        authenticate = true;
     }
 
 
     public void ScanStop()
     {
-        scanStarted = false;
+        scanning = false;
+        authenticate = false;
     }
 
-
-
+    void StartScan()
+    {
+        scanning = true;
+    }
 }
 
 
