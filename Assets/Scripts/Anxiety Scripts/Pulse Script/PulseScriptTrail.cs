@@ -17,9 +17,7 @@ public class PulseScriptTrail : MonoBehaviour
 
     [Header("trail details")]
     [SerializeField] TrailRenderer trailPrefab;
-    //[SerializeField] float originalEmittingTime = 0.3f;
-    //[SerializeField] float emittingReduction = 0.2f;
-    //[SerializeField] float maxReductionEmittingTIme = 0.1f;
+    [SerializeField] float emissionReduction = 0.2f;
 
     [SerializeField] float lengthOfTrail = 4;
     [SerializeField] float speed = 1;
@@ -80,13 +78,14 @@ public class PulseScriptTrail : MonoBehaviour
 
         //after calculating the speed,frequency and waves then we can plot it down;
         TrailRenderer renderer = trails.Get();
-        renderer.emitting = true;  
         Transform renderTransform = renderer.transform;
         renderTransform.localPosition = Vector3.zero;
+        yield return null;
+        renderer.emitting = true;
+        renderer.time = CalculateEmissionTime(speed);
 
         bool hasSendOutNextTrail = false;
 
-        yield return null;
 
 
         while (renderTransform.localPosition.x < lengthOfTrail)
@@ -113,66 +112,14 @@ public class PulseScriptTrail : MonoBehaviour
             StartCoroutine(StartHeartBeatTrail());
         }
         //keep the trail;
-        StartCoroutine(KeepHeartBeatTrail(renderer));
-    }
-
-
-    IEnumerator KeepHeartBeatTrail(TrailRenderer trail)
-    {
-        trail.emitting = false;
-        yield return new WaitForSeconds(1f);
-        trail.transform.localPosition = Vector3.zero;
-        trails.Retrieve(trail);
-
+        renderer.emitting = false;
+        trails.Retrieve(renderer);
     }
     float DeterminePhase(float x)
     {
         x = Mathf.Clamp(x,0, lengthOfTrail);
         return x / lengthOfTrail * 360;
     }
-
-    //private void Update()
-    //{
-    //    if(!hasActivatedEmit)
-    //    {
-    //        currentTrail.emitting = true;
-    //        hasActivatedEmit = true;
-    //    }
-
-    //    //change this such that it does not move in an absolute value.
-    //    trailNewPosition = trailTransform.localPosition;
-    //    trailNewPosition.x += speed * Time.deltaTime;
-
-    //    //clamp the new position value
-    //    if (trailNewPosition.x > halfBoundBox)
-    //    {
-    //        ChangeCurrentTrail();
-    //        trailNewPosition.x = -halfBoundBox;
-    //    }
-
-    //    //DeterminePhase(trailNewPosition.x);
-    //    float yOffset = amp * PulseWave(phase);
-    //    trailNewPosition.y = yOffset;
-
-    //    trailTransform.localPosition = trailNewPosition;
-    //}
-
-    //void ChangeCurrentTrail()
-    //{
-    //    currentTrail.emitting = false;
-
-    //    trails.Retrieve(currentTrail);
-    //    currentTrail = trails.Get();
-    //    trailTransform.localPosition = originalPos;
-    //    currentTrail.time = originalEmittingTime - Mathf.Min(maxReductionEmittingTIme, emittingReduction * speed);
-
-    //    hasActivatedEmit = false;
-
-    //    //calculate the currentBPM
-    //    float anxiety = em.TriggerEvent<float>(PlayerEvents.HEART_BEAT);
-    //    CalBeat(anxiety);
-
-    //}
 
 
 
@@ -220,6 +167,13 @@ public class PulseScriptTrail : MonoBehaviour
         return weightOfSpeed * speed;
     }
 
+    public float CalculateEmissionTime(float speed)
+    {
+        float estTimeToComplete = lengthOfTrail / speed;
+        estTimeToComplete -= emissionReduction / speed;
+        return Math.Max(estTimeToComplete, 0.1f);
+    }
+
     public float CalculateAmp(float numberOfBeatPerMin)
     {
         float calAmp = Mathf.Lerp(minAmp,
@@ -238,20 +192,5 @@ public class PulseScriptTrail : MonoBehaviour
     {
         return UnityEngine.Random.Range(minFreq, maxFreq);
     }
-
-    void CalBeat(float anxiety)
-    {
-        float currBPM = Mathf.Lerp(restingBPM, maxBPM, anxiety);
-        CalculateWave(currBPM);
-        //CalculateWidthBounding(currBPM);
-        currBPM += UnityEngine.Random.Range(-heartBeatRand, heartBeatRand);
-
-        //CalculateSpeed(currBPM);
-        //CalculateAmp(currBPM, restingBPM, maxBPM);
-        //CalculateFrequency();
-
-
-
-        bpmText.text = $"{Mathf.CeilToInt(currBPM)} BPM";
-    }
+    
 }
