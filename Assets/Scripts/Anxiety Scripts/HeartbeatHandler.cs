@@ -5,7 +5,7 @@ using TMPro;
 
 public class HeartbeatHandler : MonoBehaviour
 {
-    //[SerializeField] PulseScriptTrail pulse;
+    //[SerializeField] PulseScriptTrailNew pulse;
     //[SerializeField] TMP_Text bpmText;
     //[SerializeField] int heartBeatRand = 2;
     //float restingBPM = 60;
