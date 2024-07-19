@@ -49,15 +49,16 @@ public class HandsScanning : MonoBehaviour
         }
         else if(!scanning &&  !scanCompleted)
         {
+            //make the progress decay slightly slower than the gain speed
             progress -= Time.fixedDeltaTime / 200 * speedMultiplier;
 
-            if (progress <= 0 && !authenticate)
+            if (progress <= 0 && !authenticate) //check if there is progress and hand is still on the kiosk
             {
                 loadAnimator.SetBool("Hand_Detected", false);
                 progress_GO.SetActive(false);
             }
         }
-        progress = Mathf.Clamp01(progress);
+        progress = Mathf.Clamp01(progress); //make sure we maintain the 0-1 values
 
         UpdateProgressUI();
 
@@ -74,6 +75,8 @@ public class HandsScanning : MonoBehaviour
     {
         progressUI.fillAmount = progress;
 
+
+        //slowly changes color as it progresses
         if(progress < 0.5) 
         {
             progressUI.color = Color.Lerp(lowColor, medColor, progress * 0.5f);
@@ -84,19 +87,21 @@ public class HandsScanning : MonoBehaviour
         }
     }
 
+    //called by xr simple interactor
     public void ScanStart()
     {
         loadAnimator.SetBool("Hand_Detected",true);
         authenticate = true;
     }
 
-
+    //called by xr simple interactor
     public void ScanStop()
     {
         scanning = false;
         authenticate = false;
     }
 
+    //called as a animation event for DigitalCircle_Authenticated
     void StartScan()
     {
         scanning = true;
