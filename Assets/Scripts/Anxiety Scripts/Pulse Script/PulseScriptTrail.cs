@@ -69,7 +69,7 @@ public class PulseScriptTrail : MonoBehaviour
         float anxiety = em.TriggerEvent<float>(PlayerEvents.HEART_BEAT);
         float currBPM = Mathf.Lerp(restingBPM, maxBPM, anxiety);
         currBPM += UnityEngine.Random.Range(-heartBeatRand, heartBeatRand);
-        print(currBPM);
+        //print(currBPM);
         int numberOfWaves = CalculateWave(currBPM);
         float speed = CalculateSpeed(currBPM);
         float frequency = CalculateFrequency();
