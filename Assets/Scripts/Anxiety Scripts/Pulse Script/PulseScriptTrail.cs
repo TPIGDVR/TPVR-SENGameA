@@ -6,16 +6,26 @@ using Unity.VisualScripting;
 using UnityEngine;
 public class PulseScriptTrail : MonoBehaviour
 {
-    TrailRenderer currentTrail;
-    Transform trailTransform => currentTrail.transform;
+    //TrailRenderer currentTrail;
+    
+    /// <summary>
+    /// emission time determine how long the trail will last.
+    /// NextPhaseRelease is the next pulse after the first pulse reach
+    /// a certain phase
+    /// Speed determine how fast the trail should be.
+    /// </summary>
+
     [Header("trail details")]
     [SerializeField] TrailRenderer trailPrefab;
-    [SerializeField] float originalEmittingTime = 0.3f;
-    [SerializeField] float emittingReduction = 0.2f;
-    [SerializeField] float maxReductionEmittingTIme = 0.1f;
+    [SerializeField] float emissionReduction = 0.2f;
+
+    [SerializeField] float lengthOfTrail = 4;
+    [SerializeField] float speed = 1;
+    [Range(0, 360)]
+    [SerializeField] float phaseReachBeforeNextTrail = 280;
+
     [SerializeField] int numberOfTrail;
     PoolingPattern<TrailRenderer> trails;
-
 
     [Header("Properties")]
     [SerializeField] float zeroOffsetAngle = 130f;
@@ -38,85 +48,95 @@ public class PulseScriptTrail : MonoBehaviour
     [SerializeField] TMP_Text bpmText;
     EventManager<PlayerEvents> em = EventSystem.player;
 
-    float halfBoundBox => WidthBoundingBox / 2;
-
     [Header("Pulse debugging")]
-    [SerializeField] float speed;
-    [SerializeField] private float phase;
-    [SerializeField] float frequency = 1f;
-    [SerializeField] float amp;
-    
-    Vector3 trailNewPosition;
-    Vector3 originalPos => new Vector3(-halfBoundBox, 0, 0);
-
-    [SerializeField] int numberOfWave = 1;
+    //[SerializeField] private float phase;
+    //[SerializeField] float frequency = 1f;
+    //[SerializeField] float amp;
+    //[SerializeField] int numberOfWave = 1;
     private bool hasActivatedEmit = false;
     private void Start()
     {
         trails = new(trailPrefab.gameObject);
         //add the color
-        trails.InitWithParent(numberOfTrail, transform, true);
-        phase = 0;
-        currentTrail = trails.Get();
-        currentTrail.emitting = false;
+        trails.InitWithParent(numberOfTrail, transform, true, transform.position);
+        //currentTrail = trails.Get();
+        //currentTrail.emitting = false;
+        StartCoroutine(StartHeartBeatTrail());
     }
 
-    private void Update()
+    IEnumerator StartHeartBeatTrail()
     {
-        if(!hasActivatedEmit)
-        {
-            currentTrail.emitting = true;
-            hasActivatedEmit = true;
-        }
-
-        //change this such that it does not move in an absolute value.
-        trailNewPosition = trailTransform.localPosition;
-        trailNewPosition.x += speed * Time.deltaTime;
-
-        //clamp the new position value
-        if (trailNewPosition.x > halfBoundBox)
-        {
-            ChangeCurrentTrail();
-            trailNewPosition.x = -halfBoundBox;
-        }
-
-        DeterminePhase(trailNewPosition.x);
-        float yOffset = amp * PulseWave(phase);
-        trailNewPosition.y = yOffset;
-
-        trailTransform.localPosition = trailNewPosition;
-    }
-
-    void ChangeCurrentTrail()
-    {
-        currentTrail.emitting = false;
-
-        trails.Retrieve(currentTrail);
-        currentTrail = trails.Get();
-        trailTransform.localPosition = originalPos;
-        currentTrail.time = originalEmittingTime - Mathf.Min(maxReductionEmittingTIme, emittingReduction * speed);
-
-        hasActivatedEmit = false;
-
-        //calculate the currentBPM
         float anxiety = em.TriggerEvent<float>(PlayerEvents.HEART_BEAT);
-        CalBeat(anxiety);
+        float currBPM = Mathf.Lerp(restingBPM, maxBPM, anxiety);
+        currBPM += UnityEngine.Random.Range(-heartBeatRand, heartBeatRand);
+        print(currBPM);
+        int numberOfWaves = CalculateWave(currBPM);
+        float speed = CalculateSpeed(currBPM);
+        float frequency = CalculateFrequency();
+        float amp = CalculateAmp(currBPM);
+        bpmText.text = $"{Mathf.CeilToInt(currBPM)} BPM";
 
+        //after calculating the speed,frequency and waves then we can plot it down;
+        TrailRenderer renderer = trails.Get();
+        Transform renderTransform = renderer.transform;
+        renderTransform.localPosition = Vector3.zero;
+        yield return null;
+        renderer.emitting = true;
+        renderer.time = CalculateEmissionTime(speed);
+
+        bool hasSendOutNextTrail = false;
+
+
+
+        while (renderTransform.localPosition.x < lengthOfTrail)
+        {
+            float phase = DeterminePhase(renderTransform.localPosition.x);
+
+            if(phase > phaseReachBeforeNextTrail && !hasSendOutNextTrail)
+            {
+                hasSendOutNextTrail = true;
+                StartCoroutine(StartHeartBeatTrail());
+            }
+
+
+            renderTransform.localPosition = new Vector3(
+                renderTransform.localPosition.x + speed * Time.deltaTime,
+                PulseWave(phase,numberOfWaves,frequency),
+                0
+                );
+                
+            yield return null;
+        }
+        if (!hasSendOutNextTrail)
+        {
+            StartCoroutine(StartHeartBeatTrail());
+        }
+        //keep the trail;
+        renderer.emitting = false;
+        trails.Retrieve(renderer);
     }
+    float DeterminePhase(float x)
+    {
+        x = Mathf.Clamp(x,0, lengthOfTrail);
+        return x / lengthOfTrail * 360;
+    }
+
+
+
     #region sin wave related
     float ArcTooth(float degrees)
     {
         return Mathf.Atan(Mathf.Tan(degrees / 2 * Mathf.Deg2Rad));
     }
 
-    float PulseWave(float degree)
+    float PulseWave(float degree , int numberOfWave , float frequency)
     {
         float maxdegree = 360 / numberOfWave;
         degree %= maxdegree;
-        return HeartBeatPulse( NormaliseAngle(0, maxdegree, degree));
+        return HeartBeatPulse( NormaliseAngle(0, maxdegree, degree) , frequency);
     }
 
-    float HeartBeatPulse(float degree)
+    float HeartBeatPulse(float degree, float frequency)
     {
         if (degree < zeroOffsetAngle || degree > (360 - zeroOffsetAngle))
         {
@@ -134,63 +154,43 @@ public class PulseScriptTrail : MonoBehaviour
         return Mathf.InverseLerp(0, maxAngle, currentAngle) * 360;
     }
 
-    void DeterminePhase(float x)
-    {
-        float width = halfBoundBox;
 
-        phase = 360 *
-            Mathf.InverseLerp(-width, width,
-            Mathf.Clamp(x, -width, width));
-    }
     #endregion
 
     /// <summary>
     /// calculate the speed based on 
     /// </summary>
     /// <param name="numberOfBeatPerMin"></param>
-    public void CalculateSpeed(float numberOfBeatPerMin)
+    public float CalculateSpeed(float numberOfBeatPerMin)
     {
-        float timeToCompleteOneBeat = 60 / numberOfBeatPerMin;
-        speed = WidthBoundingBox / timeToCompleteOneBeat / numberOfWave;
+        float weightOfSpeed = numberOfBeatPerMin / maxBPM;
+        return weightOfSpeed * speed;
     }
 
-    public void CalculateAmp(float numberOfBeatPerMin, float minHeartBeat ,float maxHeartBeat) 
+    public float CalculateEmissionTime(float speed)
+    {
+        float estTimeToComplete = lengthOfTrail / speed;
+        estTimeToComplete -= emissionReduction / speed;
+        return Math.Max(estTimeToComplete, 0.1f);
+    }
+
+    public float CalculateAmp(float numberOfBeatPerMin)
     {
         float calAmp = Mathf.Lerp(minAmp,
-            maxAmp, 
-            Mathf.InverseLerp(minHeartBeat, maxHeartBeat, numberOfBeatPerMin));
+            maxAmp,
+            Mathf.InverseLerp(restingBPM, maxBPM, numberOfBeatPerMin));
 
         calAmp *= UnityEngine.Random.Range(0.5f, randAmpRange);
-        amp = calAmp * ampOffset;
+        return calAmp * ampOffset;
     }
-    public void CalculateWave(float numberOfBeatPerMin)
+    public int CalculateWave(float numberOfBeatPerMin)
     {
-        numberOfWave = (int)(numberOfBeatPerMin / 60f);
+         return Math.Clamp((int)(numberOfBeatPerMin / 60f) , 1 ,3 );
     }
 
-    public void CalculateWidthBounding(float numberOfBeatPerMin)
+    public float CalculateFrequency()
     {
-        WidthBoundingBox = numberOfBeatPerMin / 60f;
+        return UnityEngine.Random.Range(minFreq, maxFreq);
     }
-
-    public void CalculateFrequency()
-    {
-        frequency = UnityEngine.Random.Range(minFreq, maxFreq);
-    }
-
-    void CalBeat(float anxiety)
-    {
-        float currBPM = Mathf.Lerp(restingBPM, maxBPM, anxiety);
-        CalculateWave(currBPM);
-        //CalculateWidthBounding(currBPM);
-        currBPM += UnityEngine.Random.Range(-heartBeatRand, heartBeatRand);
-
-        CalculateSpeed(currBPM);
-        CalculateAmp(currBPM, restingBPM, maxBPM);
-        CalculateFrequency();
-        
-
-
-        bpmText.text = $"{Mathf.CeilToInt(currBPM)} BPM"; ;
-    }
+    
 }

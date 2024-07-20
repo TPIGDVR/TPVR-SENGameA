@@ -9,6 +9,10 @@ namespace Assets.Scripts.pattern
     {
         private GameObject prefab;
         private Queue<T> queue;
+        private Transform targetParent;
+        bool setActiveState = false;
+        private Vector3 defaultPosition;
+
 
         public PoolingPattern(GameObject prefab)
         {
@@ -26,36 +30,42 @@ namespace Assets.Scripts.pattern
 
         public void InitWithParent(int numberOfItems, Transform parent, Vector3 worldPosition = new Vector3())
         {
+            this.targetParent = parent;
+            defaultPosition = worldPosition;
             for (int i = 0; i < numberOfItems; i++)
             {
-                Add(parent,worldPosition);
+                Add();
             }
         }
 
         public void InitWithParent(int numberOfItems, Transform parent, 
             bool isGameObjectActive, Vector3 worldPosition = new Vector3())
         {
+            this.targetParent = parent;
+            setActiveState = isGameObjectActive;
+            defaultPosition = worldPosition;
             for (int i = 0; i < numberOfItems; i++)
             {
-                Add(parent , isGameObjectActive,worldPosition);
+                Add();
             }
         }
 
-        public void Add(bool activeState = false, Vector3 worldposition = new Vector3())
+        public void Add()
         {
-            GameObject initObject = GameObject.Instantiate(prefab);
-            initObject.transform.position = worldposition;
-            initObject.SetActive(activeState);
+            GameObject initObject;
+            if (targetParent != null)
+            {
+                initObject = GameObject.Instantiate(prefab, targetParent);
+            }
+            else
+            {
+                initObject = GameObject.Instantiate(prefab);
+            }
+            initObject.transform.position = defaultPosition;
+            initObject.SetActive(setActiveState);
             queue.Enqueue(initObject.GetComponent<T>());
         }
 
-        public void Add(Transform parent , bool activeState = false, Vector3 worldposition = new Vector3())
-        {
-            GameObject initObject = GameObject.Instantiate(prefab, parent);
-            initObject.transform.position = worldposition;
-            initObject.SetActive(activeState);
-            queue.Enqueue(initObject.GetComponent<T>());
-        }
 
         public T Get()
         {

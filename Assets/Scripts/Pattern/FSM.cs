@@ -12,7 +12,7 @@ namespace PGGE
 			protected FSM mFsm;
 			protected int mId;
 			/* The constructor of the FSMState class
-             * will require the parent FSM.
+             * will require the targetParent FSM.
              * So we create a constructor 
              * with an Instance of the FSM
              */
