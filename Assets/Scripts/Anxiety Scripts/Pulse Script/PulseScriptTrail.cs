@@ -86,8 +86,6 @@ public class PulseScriptTrail : MonoBehaviour
 
         bool hasSendOutNextTrail = false;
 
-
-
         while (renderTransform.localPosition.x < lengthOfTrail)
         {
             float phase = DeterminePhase(renderTransform.localPosition.x);
