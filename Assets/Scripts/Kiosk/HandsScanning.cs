@@ -19,9 +19,20 @@ public class HandsScanning : MonoBehaviour
     [SerializeField]
     AudioSource audioSource;
     [SerializeField]
+    AudioSource audioSource2;
+    [SerializeField]
     AudioClip[] audioClips;
     [SerializeField]
     Animator animator;
+
+    /// <summary>
+    /// 0. When the panel is touch when it has not been downloaded
+    /// 1. when the panel have finish downloading
+    /// 2. texting
+    /// 3. image transition
+    /// 4. when the panel is close
+    /// 5. downloading
+    /// </summary>
 
     [SerializeField]
     float minSpeedMultiplier, maxSpeedMultiplier;
@@ -34,6 +45,7 @@ public class HandsScanning : MonoBehaviour
     bool scanCompleted;
     bool scanning = false;
     bool authenticate = false;
+    bool hasPlayedAuthenticationSFX = false;
     EventManager<LevelEvents> em_l = EventSystem.level;
 
     [Header("Kiosk Dialog")]
@@ -80,6 +92,10 @@ public class HandsScanning : MonoBehaviour
 
         if (progress >= 1 && !scanCompleted)
         {
+            //stop audiosource 2 from playing
+            audioSource2.Stop();
+            audioSource2.loop = false;
+
             scanCompleted = true;
             audioSource.PlayOneShot(audioClips[1]);
             em_l.TriggerEvent(LevelEvents.KIOSK_CLEARED);
@@ -111,7 +127,13 @@ public class HandsScanning : MonoBehaviour
 
         if(!scanCompleted)
             audioSource.PlayOneShot(audioClips[0]);
-
+        if(!scanCompleted && !hasPlayedAuthenticationSFX)
+        {
+            hasPlayedAuthenticationSFX = true;
+            audioSource2.loop = true;
+            audioSource2.clip = audioClips[5];
+            audioSource2.Play();
+        }
     }
 
     //called by xr simple interactor
@@ -119,6 +141,12 @@ public class HandsScanning : MonoBehaviour
     {
         scanning = false;
         authenticate = false;
+        if (!scanCompleted && hasPlayedAuthenticationSFX)
+        {
+            hasPlayedAuthenticationSFX = false;
+            audioSource2.Stop();
+            audioSource2.loop = false;
+        }
     }
 
     //called as a animation event for DigitalCircle_Authenticated
@@ -140,6 +168,7 @@ public class HandsScanning : MonoBehaviour
             image.sprite = line.image;
             imageSizer.cellSize = line.preferredDimension;
             animator.SetBool(canShowImageHash, true);
+            audioSource2.PlayOneShot(audioClips[3]);
         }
 
         StartCoroutine(WaitTimer(line.duration));
@@ -153,12 +182,12 @@ public class HandsScanning : MonoBehaviour
 
     public void StartDialog()
     {
-        
         var line = kioskData.Lines[indexDialog];
         StartCoroutine(TypeNextSentence());
-
+        
         if (line.image)
         {
+            audioSource2.PlayOneShot(audioClips[3]);
             image.sprite = line.image;
             imageSizer.cellSize = line.preferredDimension;
             animator.SetBool(canShowImageHash, true);
@@ -172,6 +201,7 @@ public class HandsScanning : MonoBehaviour
         yield return new WaitForSeconds(second);
         if (animator.GetBool(canShowImageHash))
         {
+            audioSource2.PlayOneShot(audioClips[4]);
             animator.SetBool(canShowImageHash, false);
         }
 
@@ -179,6 +209,7 @@ public class HandsScanning : MonoBehaviour
 
         if(indexDialog >= kioskData.Lines.Length)
         {
+            audioSource.PlayOneShot(audioClips[4]);
             animator.SetTrigger(hidePanelHash);
         }
         else
@@ -192,12 +223,16 @@ public class HandsScanning : MonoBehaviour
     {
         dialogText.text = "";
         string text = kioskData.Lines[indexDialog].Text;
+        audioSource.clip = audioClips[2];
+        audioSource.loop = true;
+        audioSource.Play();
         foreach (char c in text.ToCharArray())
         {
             dialogText.text += c;
             yield return new WaitForSeconds(0.5f / textSpeed);
         }
-
+        audioSource.loop = false;
+        audioSource.Stop();
     }
 
 
