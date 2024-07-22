@@ -14,7 +14,7 @@ public class AutomatonBehaviour : MonoBehaviour
     [SerializeField]
     AudioClip[] _footStepClips;
     [SerializeField]
-    Transform[] _wayPoints;
+    Waypoint[] _wayPoints;
     int _wayPointIndex = 0;
 
     [SerializeField]
@@ -48,7 +48,8 @@ public class AutomatonBehaviour : MonoBehaviour
                     if(_wayPointIndex >= _wayPoints.Length)
                         _wayPointIndex = 0;
 
-                    Vector3 pos = _wayPoints[_wayPointIndex].position;
+                    Vector3 pos = _wayPoints[_wayPointIndex].Position;
+                    yield return new WaitForSeconds(_wayPoints[_wayPointIndex].Delay);
                     SetDestination(pos);
 
                     yield return new WaitForSeconds(0.1f);
@@ -56,6 +57,8 @@ public class AutomatonBehaviour : MonoBehaviour
                     _ani.SetFloat("Spd", 0f);
                     break;
                 case AutomatonStates.SCAN:
+                    if (_dataInterfaceT.Length <= 0)
+                        break;
                     int index = Random.Range(0, _dataInterfaceT.Length);
                     if (_dataInterfaceT[index] != null)      
                         SetDestination(_dataInterfaceT[index].position);
