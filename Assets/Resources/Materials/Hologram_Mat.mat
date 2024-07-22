@@ -53,7 +53,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Mask:
-        m_Texture: {fileID: 2800000, guid: f3dbfaaf43468204c8d1c3687289a915, type: 3}
+        m_Texture: {fileID: 2800000, guid: ee39ee87184fe394baeff18b1f42943d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -65,7 +65,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Outline_Mask:
-        m_Texture: {fileID: 2800000, guid: 9efb511d0030c8c4896ea727e038b2e9, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
@@ -82,6 +82,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture:
+        m_Texture: {fileID: 2800000, guid: c869c2c998494ab478a9efb3ba9bf2b9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2D:
@@ -108,7 +112,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _Alpha_Clip: 0.15
+    - _Alpha_Clip: 0.1
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -129,8 +133,8 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-    - _Noise_Scale: 1000
-    - _Noise_Strength: 0.5
+    - _Noise_Scale: 5000
+    - _Noise_Strength: 0.15
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
@@ -147,14 +151,14 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Base_Colour: {r: 0, g: 0.45839047, b: 1, a: 0}
+    - _Base_Colour: {r: 0, g: 0.6142526, b: 0.90188676, a: 0}
     - _Color: {r: 0, g: 0.75265026, b: 1, a: 1}
     - _Color_1: {r: 0, g: 1, b: 0.95092154, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Emission_Colour: {r: 0, g: 0.6180997, b: 1, a: 0}
-    - _Noise_Tile: {r: 1, g: 5, b: 0, a: 0}
-    - _Outline_Colour: {r: 0, g: 0.81584024, b: 1, a: 0}
-    - _Scan_Size: {r: 1, g: 2, b: 0, a: 0}
+    - _Noise_Tile: {r: 1, g: 1, b: 0, a: 0}
+    - _Outline_Colour: {r: 0.01952076, g: 0, b: 1, a: 0}
+    - _Scan_Size: {r: 5, g: 5, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Vector2: {r: 1, g: 5, b: 0, a: 0}
   m_BuildTextureStacks: []
