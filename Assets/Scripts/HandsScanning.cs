@@ -14,7 +14,9 @@ public class HandsScanning : MonoBehaviour
     [SerializeField]
     GameObject progress_GO;
     [SerializeField]
-    AudioSource completeSound;
+    AudioSource audioSource;
+    [SerializeField]
+    AudioClip[] audioClips;
     [SerializeField]
     Animator loadAnimator;
 
@@ -44,7 +46,9 @@ public class HandsScanning : MonoBehaviour
     private void Update()
     {
         if (authenticate && progress > 0)
+        {
             scanning = true;
+        }
 
         if (scanning && !scanCompleted)
         {
@@ -68,7 +72,7 @@ public class HandsScanning : MonoBehaviour
         if (progress >= 1 && !scanCompleted)
         {
             scanCompleted = true;
-            completeSound.Play();
+            audioSource.PlayOneShot(audioClips[1]);
             em_l.TriggerEvent(LevelEvents.KIOSK_CLEARED);
             loadAnimator.SetBool("Completed",true);
         }
@@ -95,6 +99,11 @@ public class HandsScanning : MonoBehaviour
     {
         loadAnimator.SetBool("Hand_Detected",true);
         authenticate = true;
+
+        if(!scanCompleted)
+            audioSource.PlayOneShot(audioClips[0]);
+
+        Debug.Log("HANDS : IN");
     }
 
     //called by xr simple interactor
@@ -102,12 +111,15 @@ public class HandsScanning : MonoBehaviour
     {
         scanning = false;
         authenticate = false;
+
+        Debug.Log("HANDS : OUT");
     }
 
     //called as a animation event for DigitalCircle_Authenticated
     void StartScan()
     {
-        scanning = true;
+        if(authenticate)
+            scanning = true;
     }
 }
 

@@ -308,40 +308,40 @@ MonoBehaviour:
   m_AllowGazeAssistance: 0
   m_FirstHoverEntered:
     m_PersistentCalls:
-      m_Calls: []
-  m_LastHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_HoverEntered:
-    m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6254549213977676829}
-        m_TargetAssemblyTypeName: HandsScanning, Assembly-CSharp
+        m_TargetAssemblyTypeName: 
         m_MethodName: ScanStart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_HoverExited:
+  m_LastHoverExited:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6254549213977676829}
-        m_TargetAssemblyTypeName: HandsScanning, Assembly-CSharp
+        m_TargetAssemblyTypeName: 
         m_MethodName: ScanStop
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
   m_FirstSelectEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -416,7 +416,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   progressUI: {fileID: 4614447275027929986}
   progress_GO: {fileID: 5184496907866623758}
-  completeSound: {fileID: 1506208368185244635}
+  audioSource: {fileID: 1506208368185244635}
+  audioClips:
+  - {fileID: 8300000, guid: d3db26f47d996ee4f93434c394f9e6cc, type: 3}
+  - {fileID: 8300000, guid: 377a000be63189f4c873a8a0e85ae710, type: 3}
   loadAnimator: {fileID: 8684481500337133844}
   minSpeedMultiplier: 15
   maxSpeedMultiplier: 20
@@ -435,7 +438,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: dea2481dad842cc418b763ee9b3ebdeb, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
