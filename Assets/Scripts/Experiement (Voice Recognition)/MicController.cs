@@ -108,6 +108,8 @@ namespace Breathing3
         public float CalculatedVolumeVariance { get; set; }
 
         public float CalculatePitchVariance { get; set; }
+        public float PitchNoiseCorrelation { get ; set; }
+        public float VolumeNoiseCorrelation { get; set ; }
         #endregion
 
         IEnumerator Start()
@@ -296,7 +298,7 @@ namespace Breathing3
                 // Convert index to frequency
                 //24000 is the sampling frequency for the PC. 24000 / sample = frequency resolution
                 // frequency resolution * index of the sample would give the pitch as a result.
-                //pitch = HighPassFilter(freqN * pitchIncrementor, highPassCutoff);
+                //pitch = HighPassFilter(freqN * pitchIncrementor, HighPassCutoff);
                 pitch = freqN * pitchIncrementor;
                 //print(pitch);
                 if (pitchDebugger)
@@ -305,7 +307,7 @@ namespace Breathing3
                         $"pitch incredmental {pitchIncrementor} " +
                         $"starting Index: {startingCheckingFrequencyIndex}" +
                         $"Ending index: {endingCheckingFrequencyIndex}");
-                    //PrintArray(_dataContainer);
+                    //PrintArray(_dataSpectrumContainer);
 
                 }
             }
@@ -375,10 +377,12 @@ namespace Breathing3
         float minVolume { get; set; }
         float maxPitch { get; set; }
         float minPitch { get; set; }
-
         float CalculatedPitch { get; }
         float CalculatedVolume { get; }
         float CalculatedVolumeVariance { get; set; }
         float CalculatePitchVariance { get; set; }
+
+        float PitchNoiseCorrelation { get; set; }
+        float VolumeNoiseCorrelation { get; set; }
     }
 }

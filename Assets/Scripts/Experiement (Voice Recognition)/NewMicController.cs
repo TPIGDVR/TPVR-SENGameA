@@ -13,6 +13,7 @@ public class NewMicController : MonoBehaviour , VolumeProvider
     private AudioMixer aMixer;
 
     private float[] _dataContainer;
+    private float[] _dataContainer2;
     private List<float> _pitchContainer;
     private List<float> _volumeContainer;
     [SerializeField] int _pitchRecordTime = 5;
@@ -28,19 +29,17 @@ public class NewMicController : MonoBehaviour , VolumeProvider
     [SerializeField] NoiseReducer noiseReducerComponent;
 
     [Header("Other settings")]
-    [SerializeField] private float highPassCutoff = 10000;
+    [SerializeField] private float HighPassCutoff = 10000;
     [SerializeField] private float LowPassCutoff = 100;
     [SerializeField] private bool pitchDebugger = false;
     [SerializeField] bool usedNoiseReducer = false;
 
     [SerializeField] private CalculationMethod pitchCalculationMethod = CalculationMethod.MIN;
     [SerializeField] private CalculationMethod volumeCalculationMethod = CalculationMethod.AVG;
-    [SerializeField] private string _micphoneName;
     private bool isMicrophoneReady;
     
     private float prevVolume = 0f;
     private float prevPitch = 0f;
-
     private const float refVal = 0.1f;
 
     enum CalculationMethod
@@ -104,11 +103,14 @@ public class NewMicController : MonoBehaviour , VolumeProvider
     public float CalculatedVolumeVariance { get; set; }
 
     public float CalculatePitchVariance { get; set; }
+    public float PitchNoiseCorrelation { get; set; }
+    public float VolumeNoiseCorrelation { get; set; }
     #endregion
 
     private void Start()
     {
         _dataContainer = new float[_datalength];
+        _dataContainer2 = new float[_datalength];
         _pitchContainer = new();
         _volumeContainer = new();
 
@@ -128,21 +130,30 @@ public class NewMicController : MonoBehaviour , VolumeProvider
             $"Max pitch: {maxPitch} \n" +
             $"Avg pitch: {avgPitch}\n" +
             $"Cal pitch: {CalculatedPitch}\n" +
-            $"Cal vol: {CalculatedVolume}";
+            $"Cal vol: {CalculatedVolume}\n" +
+            $"Pitch correlation {PitchNoiseCorrelation}\n" +
+            $"volume correlation {VolumeNoiseCorrelation}\n";
     }
     void CalculateVolume()
     {
-        if (usedNoiseReducer)
-        {
-            _audioSourceReducer.GetOutputData(_dataContainer, 0);
-        }
-        else
-        {
-            _audioSourceOrignal.GetOutputData(_dataContainer, 0);
-        }
+        _audioSourceOrignal.GetOutputData(_dataContainer, 0);
+
+        CalculateVolumeCorrelation();
         CalculateNormalVolume();
         CalculateMaxMinAverageVolume();
         CalculateVolumeVariance();
+
+        void CalculateVolumeCorrelation()
+        {
+            float value = 0f;
+            _audioSourceReducer.GetOutputData(_dataContainer2, 0);
+            for (int i = 0; i < _dataContainer.Length; i++)
+            {
+                value = _dataContainer[i] - _dataContainer2[i];
+            }
+
+            VolumeNoiseCorrelation = Mathf.Abs(value);
+        }
 
         void CalculateVolumeVariance()
         {
@@ -202,56 +213,68 @@ public class NewMicController : MonoBehaviour , VolumeProvider
 
     void CalculatePitch()
     {
-        if (usedNoiseReducer)
-        {
-            _audioSourceReducer.GetSpectrumData(_dataContainer, 0, FFTWindow.BlackmanHarris);
-        }
-        else
-        {
-            _audioSourceOrignal.GetSpectrumData(_dataContainer, 0, FFTWindow.BlackmanHarris);
-        }
+        _audioSourceOrignal.GetSpectrumData(_dataContainer, 0, FFTWindow.BlackmanHarris);
+        _audioSourceReducer.GetSpectrumData(_dataContainer2, 0, FFTWindow.BlackmanHarris);
+        //CalculatePitchCorrelation();
         CalculateNormalPitch();
         CalculateMinMaxAveragePitch();
         CalculationPitchVarance();
 
+        //void CalculatePitchCorrelation()
+        //{
+        //    float value = 0f;
+        //    _audioSourceReducer.GetSpectrumData(_dataOutputContainer, 0, FFTWindow.BlackmanHarris);
+        //    for(int i =0;  i < _dataSpectrumContainer.Length; i++)
+        //    {
+
+        //        value = _dataSpectrumContainer[i] - _dataOutputContainer[i];
+        //    }
+
+        //    PitchNoiseCorrelation = Mathf.Abs(value);
+        //}
+
         void CalculateNormalPitch()
         {
-            int startingCheckingFrequencyIndex = 0;
-            int endingCheckingFrequencyIndex = _dataContainer.Length;
-            float pitchIncrementor = 24000f / _datalength;
-            startingCheckingFrequencyIndex = (int)(LowPassCutoff / pitchIncrementor);
-            endingCheckingFrequencyIndex = (int)(highPassCutoff / pitchIncrementor);
-            float maxV = 0;
-            int maxN = 0;
-
-            // Find the highest sample.
-            for (int i = startingCheckingFrequencyIndex; i < endingCheckingFrequencyIndex; i++)
+            pitch = ReturnCommonFreq(_dataContainer, LowPassCutoff,HighPassCutoff);
+            PitchNoiseCorrelation = ReturnCommonFreq(_dataContainer2, 0 , 10000) - pitch;
+            
+            float ReturnCommonFreq(float[] container, float lowPassFilter, float highPassFilter)
             {
-                if (_dataContainer[i] > maxV)
+                int startingCheckingFrequencyIndex = 0;
+                int endingCheckingFrequencyIndex = _dataContainer.Length;
+                float pitchIncrementor = 24000f / _datalength;
+                startingCheckingFrequencyIndex = (int)(lowPassFilter / pitchIncrementor);
+                endingCheckingFrequencyIndex = (int)(highPassFilter / pitchIncrementor);
+                float maxV = 0;
+                int maxN = 0;
+
+                // Find the highest sample.
+                for (int i = startingCheckingFrequencyIndex; i < endingCheckingFrequencyIndex; i++)
                 {
-                    maxV = _dataContainer[i];
-                    maxN = i; // maxN is the index of max
+                    if (_dataContainer[i] > maxV)
+                    {
+                        maxV = container[i];
+                        maxN = i; // maxN is the index of max
+                    }
                 }
+                // Convert index to frequency
+                //24000 is the sampling frequency for the PC. 24000 / sample = frequency resolution
+                // frequency resolution * index of the sample would give the pitch as a result.
+                // Pass the index to a float variable
+                return (float)maxN * pitchIncrementor;
+                
             }
 
-            // Pass the index to a float variable
-            float freqN = maxN;
 
-            // Convert index to frequency
-            //24000 is the sampling frequency for the PC. 24000 / sample = frequency resolution
-            // frequency resolution * index of the sample would give the pitch as a result.
-            //pitch = HighPassFilter(freqN * pitchIncrementor, highPassCutoff);
-            pitch = freqN * pitchIncrementor;
-            //print(pitch);
-            if (pitchDebugger)
-            {
-                print($"Pitch values {pitch} , freqN {freqN}, max N {maxV} " +
-                    $"pitch incredmental {pitchIncrementor} " +
-                    $"starting Index: {startingCheckingFrequencyIndex}" +
-                    $"Ending index: {endingCheckingFrequencyIndex}");
-                //PrintArray(_dataContainer);
-
-            }
+            ////print(pitch);
+            //if (pitchDebugger)
+            //{
+            //    print($"Pitch values {pitch} , freqN {freqN}, max N {maxV} " +
+            //        $"pitch incredmental {pitchIncrementor} " +
+            //        $"starting Index: {startingCheckingFrequencyIndex}" +
+            //        $"Ending index: {endingCheckingFrequencyIndex}");
+            //    //PrintArray(_dataSpectrumContainer);
+            //}
         }
 
         void CalculateMinMaxAveragePitch()

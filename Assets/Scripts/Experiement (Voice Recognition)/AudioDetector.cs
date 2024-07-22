@@ -29,6 +29,8 @@ namespace Breathing3
         [SerializeField] float inhalePitchOffset;
         [SerializeField] float inhaleLoudnessVaranceThreshold;
         [SerializeField] float inhaleVolumeOffset;
+        [SerializeField] float inhalePitchNoiseCorrelation;
+        [SerializeField] float inhaleVolumeNoiseCorrelation;
         [Header("Exhale")]
         [SerializeField] float exhaleVolumethreshold;
         [SerializeField] float exhalePitchUpperBound;
@@ -37,6 +39,8 @@ namespace Breathing3
         [SerializeField] float exhaleVolumeOffset;
         [SerializeField] float exhaleLoudnessVaranceThreshold;
         [SerializeField] float exhalePitchVaranceThreshold;
+        [SerializeField] float exhaleVolumeNoiseCorrelation;
+        [SerializeField] float exhalePitchNoiseCorrelation;
 
         [Header("Data Text")]
         public TextMeshProUGUI stateText;
@@ -73,14 +77,25 @@ namespace Breathing3
         public float ExhalePitchVaranceThreshold { get => exhalePitchVaranceThreshold; set => exhalePitchVaranceThreshold = value; }
         public float SilenceVolumeOffset { get => silenceVolumeOffset; set => silenceVolumeOffset =value; }
         public int AmountOfTest { get => amountOfTest; set => amountOfTest = value; }
+
+        public float ExhalePitchNoiseCorrelation { get => exhalePitchNoiseCorrelation; set => exhalePitchNoiseCorrelation = value; }
+        public float ExhaleVolumeNoiseCorrelation { get => exhaleVolumeNoiseCorrelation; set => exhaleVolumeNoiseCorrelation = value; }
+        public float InhalePitchNoiseCorrelation { get => inhalePitchNoiseCorrelation; set => inhalePitchNoiseCorrelation = value; }
+        public float InhaleVolumeNoiseCorrelation { get => inhaleVolumeNoiseCorrelation; set => inhaleVolumeNoiseCorrelation = value; }
         #endregion
 
         FSM fsm;
         private void Start()
         {
             audioProvider = GetComponent<VolumeProvider>();
-
             fsm = new FSM();
+            SetUpStatesV1();
+            //SetUpStateV2();
+            //SetUpStateV3();
+        }
+
+        private void SetUpStatesV1()
+        {
             if (usedPresetData)
             {
                 fsm.Add(new SilentStateNew(fsm, (int)BreathingStates.SILENT, audioProvider, presetInhaleData, presetExhaleData, PresetSilenceData));
@@ -117,6 +132,38 @@ namespace Breathing3
             }
         }
 
+        private void SetUpStateV2()
+        {
+            
+
+            fsm.Add(new WaitForInhaleV3(fsm, (int)BreathingStates.SILENT, audioProvider, this, this, this));
+            fsm.Add(new InhaleStateV3(fsm, (int)BreathingStates.INHALE, audioProvider, this, this, this));
+            fsm.Add(new ExhaleStateV3(fsm, (int)BreathingStates.EXHALE, audioProvider, this, this, this));
+            fsm.Add(new WaitForExhaleV3(fsm, (int)BreathingStates.WAIT_FOR_BREATH, audioProvider, this, this, this));
+            fsm.Add(new UnregisterStateV3(fsm, (int)BreathingStates.UNREGISTERED, audioProvider, this, this, this));
+
+            fsm.Add(new TestInhaleStateNew(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this, amountOfTest, this));
+            fsm.Add(new TestExhaleState(fsm, (int)BreathingStates.EXHALE_TESTING, audioProvider, testTimer, this, amountOfTest));
+
+            
+            fsm.SetCurrentState((int)BreathingStates.INHALE_TESTING);
+            
+        }
+
+        private void SetUpStateV3()
+        {
+            fsm.Add(new TestInhaleStateNew(fsm, (int)BreathingStates.INHALE_TESTING, audioProvider, testTimer, this, amountOfTest, this));
+            fsm.Add(new TestExhaleState(fsm, 
+                (int)BreathingStates.EXHALE_TESTING, 
+                audioProvider, testTimer, this, amountOfTest).SetNextState(BreathingStates.WAIT_FOR_BREATH));
+
+
+            fsm.Add(new WaitForBreatheV4(fsm, (int)BreathingStates.WAIT_FOR_BREATH, audioProvider, this));
+            fsm.Add(new ExhaleStateV4(fsm, (int)BreathingStates.EXHALE, audioProvider, this));
+
+            fsm.SetCurrentState((int)BreathingStates.INHALE_TESTING);
+
+        }
         private void Update()
         {
             stateText.text = ((BreathingStates)fsm.GetCurrentState().ID).ToString();
@@ -128,11 +175,11 @@ namespace Breathing3
             fsm.FixedUpdate();
         }
 
-        [ContextMenu("Testing")]
-        public void Testing()
-        {
-            fsm.SetCurrentState((int)(BreathingStates.SILENT_TESTING));
-        }
+        //[ContextMenu("Testing")]
+        //public void Testing()
+        //{
+        //    fsm.SetCurrentState((int)(BreathingStates.SILENT_TESTING));
+        //}
 
 
         [ContextMenu("Testing new")]
@@ -209,6 +256,8 @@ namespace Breathing3
         public float ExhalePitchUpperBound { get; set; }
         public float ExhaleVolumeVaranceThreshold { get; set; }
         public float ExhalePitchVaranceThreshold { get; set; }
+        public float ExhalePitchNoiseCorrelation { get; set; }
+        public float ExhaleVolumeNoiseCorrelation { get; set; }
         public float ExhalePitchOffset { get;  }
         public float ExhaleVolumeOffset { get; }
 
@@ -219,6 +268,8 @@ namespace Breathing3
             toData.ExhalePitchUpperBound = ExhalePitchUpperBound;
             toData.ExhaleVolumeVaranceThreshold = ExhaleVolumeVaranceThreshold;
             toData.ExhalePitchVaranceThreshold = ExhalePitchVaranceThreshold;
+            toData.ExhalePitchNoiseCorrelation = ExhalePitchNoiseCorrelation;
+            toData.ExhaleVolumeNoiseCorrelation = ExhaleVolumeNoiseCorrelation;
         }
 
         public void EmptyData()
@@ -228,6 +279,8 @@ namespace Breathing3
             ExhalePitchUpperBound = 0f;
             ExhaleVolumeVaranceThreshold = 0f;
             ExhalePitchVaranceThreshold = 0f ;
+            ExhalePitchNoiseCorrelation = 0f;
+            ExhaleVolumeNoiseCorrelation = 0f;
         }
 
     }
@@ -238,8 +291,9 @@ namespace Breathing3
         public float InhalePitchLowBound { get; set; }
         public float InhalePitchUpperBound { get; set; }
         public float InhaleLoudnessVarance { get; set; }
+        public float InhalePitchNoiseCorrelation { get; set; }
+        public float InhaleVolumeNoiseCorrelation { get; set; }
         public float InhalePitchOffset { get; }
-
         public float InhaleVolumeOffset { get; }
 
         public void CopyData(InhaleData toData)
@@ -248,6 +302,8 @@ namespace Breathing3
             toData.InhalePitchLowBound = InhalePitchLowBound;
             toData.InhalePitchUpperBound = InhalePitchUpperBound;
             toData.InhaleLoudnessVarance = InhaleLoudnessVarance;
+            toData.InhalePitchNoiseCorrelation = InhalePitchNoiseCorrelation;
+            toData.InhaleVolumeNoiseCorrelation = InhaleVolumeNoiseCorrelation;
         }
 
         public void EmptyData()
@@ -256,6 +312,8 @@ namespace Breathing3
             InhalePitchLowBound = 0f;
             InhalePitchUpperBound = 0f;
             InhaleLoudnessVarance = 0f;
+            InhalePitchNoiseCorrelation = 0f;
+            InhaleVolumeNoiseCorrelation = 0f;
         }
 
     }
