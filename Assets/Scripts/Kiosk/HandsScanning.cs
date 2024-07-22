@@ -1,6 +1,9 @@
+using Dialog;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder;
@@ -16,7 +19,7 @@ public class HandsScanning : MonoBehaviour
     [SerializeField]
     AudioSource completeSound;
     [SerializeField]
-    Animator loadAnimator;
+    Animator animator;
 
     [SerializeField]
     float minSpeedMultiplier, maxSpeedMultiplier;
@@ -31,7 +34,14 @@ public class HandsScanning : MonoBehaviour
     bool authenticate = false;
     EventManager<LevelEvents> em_l = EventSystem.level;
 
+    [Header("Kiosk Dialog")]
+    [SerializeField] KisokLines kioskData;
+    [SerializeField] TextMeshProUGUI dialogText;
+    [SerializeField] Image image;
+    [SerializeField] GridLayoutGroup imageSizer; // using the cell size to increase the width and heigh of it.1
     public bool ScanCompleted {  get { return scanCompleted; } }
+    [SerializeField, Range(1, 30)]
+    float textSpeed = 20;
 
     private void Start()
     {
@@ -39,7 +49,6 @@ public class HandsScanning : MonoBehaviour
         speedMultiplier = Random.Range(minSpeedMultiplier,maxSpeedMultiplier);
         progress_GO.SetActive(true);
     }
-
 
     private void Update()
     {
@@ -57,7 +66,7 @@ public class HandsScanning : MonoBehaviour
 
             if (progress <= 0 && !authenticate) //check if there is progress and hand is still on the kiosk
             {
-                loadAnimator.SetBool("Hand_Detected", false);
+                animator.SetBool("Hand_Detected", false);
                 progress_GO.SetActive(false);
             }
         }
@@ -70,7 +79,7 @@ public class HandsScanning : MonoBehaviour
             scanCompleted = true;
             completeSound.Play();
             em_l.TriggerEvent(LevelEvents.KIOSK_CLEARED);
-            loadAnimator.SetBool("Completed",true);
+            animator.SetBool("Completed",true);
         }
     }
 
@@ -93,7 +102,7 @@ public class HandsScanning : MonoBehaviour
     //called by xr simple interactor
     public void ScanStart()
     {
-        loadAnimator.SetBool("Hand_Detected",true);
+        animator.SetBool("Hand_Detected",true);
         authenticate = true;
     }
 
@@ -109,6 +118,80 @@ public class HandsScanning : MonoBehaviour
     {
         scanning = true;
     }
+
+    int indexDialog = 0;
+    int canShowImageHash = Animator.StringToHash("CanShowImage");
+    int changeTextHash = Animator.StringToHash("ShowText");
+    int hidePanelHash = Animator.StringToHash("HidePanel");
+    public void DecidePanel()
+    {
+        var line = kioskData.Lines[indexDialog];
+        if (line.image)
+        {
+            image.sprite = line.image;
+            imageSizer.cellSize = line.preferredDimension;
+            animator.SetBool(canShowImageHash, true);
+        }
+
+        StartCoroutine(WaitTimer(line.duration));
+    }
+
+    public void ChangeNewText()
+    {
+        StopAllCoroutines();
+        StartCoroutine(TypeNextSentence());
+    }
+
+    public void StartDialog()
+    {
+        
+        var line = kioskData.Lines[indexDialog];
+        StartCoroutine(TypeNextSentence());
+
+        if (line.image)
+        {
+            image.sprite = line.image;
+            imageSizer.cellSize = line.preferredDimension;
+            animator.SetBool(canShowImageHash, true);
+        }
+
+        StartCoroutine(WaitTimer(line.duration));
+    }
+
+    private IEnumerator WaitTimer(float second)
+    {
+        yield return new WaitForSeconds(second);
+        if (animator.GetBool(canShowImageHash))
+        {
+            animator.SetBool(canShowImageHash, false);
+        }
+
+        indexDialog++;
+
+        if(indexDialog >= kioskData.Lines.Length)
+        {
+            animator.SetTrigger(hidePanelHash);
+        }
+        else
+        {
+            animator.SetTrigger(changeTextHash);
+        }
+        //animator.SetTrigger()
+    }
+
+    private IEnumerator TypeNextSentence()
+    {
+        dialogText.text = "";
+        string text = kioskData.Lines[indexDialog].Text;
+        foreach (char c in text.ToCharArray())
+        {
+            dialogText.text += c;
+            yield return new WaitForSeconds(0.5f / textSpeed);
+        }
+
+    }
+
+
 }
 
 

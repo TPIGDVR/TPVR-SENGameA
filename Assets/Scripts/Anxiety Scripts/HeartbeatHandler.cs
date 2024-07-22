@@ -32,7 +32,7 @@ public class HeartbeatHandler : MonoBehaviour
 
     //void UpdateUI()
     //{
-    //    bpmText.text = $"{Mathf.CeilToInt(currBPM)} BPM";
+    //    bpmText.dialogText = $"{Mathf.CeilToInt(currBPM)} BPM";
     //    //pulse.changeHeartBeat = HeartBeatChange;
     //}
 

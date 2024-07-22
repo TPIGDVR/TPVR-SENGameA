@@ -1371,26 +1371,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trailPrefab: {fileID: 1374397333522384562, guid: 4a85835752875cc4ca00dabb43cc434d,
     type: 3}
-  originalEmittingTime: 0.3
-  emittingReduction: 0.2
-  maxReductionEmittingTIme: 0.1
+  emissionReduction: 0.2
+  lengthOfTrail: 4
+  speed: 1
+  phaseReachBeforeNextTrail: 280
   numberOfTrail: 4
   zeroOffsetAngle: 130
   WidthBoundingBox: 1
   minAmp: 0.5
   maxAmp: 1
   randAmpRange: 0.3
+  ampOffset: 0
   minFreq: 1
   maxFreq: 1.2
   restingBPM: 60
   maxBPM: 200
   heartBeatRand: 2
   bpmText: {fileID: 1620850914}
-  speed: 1
-  phase: 0
-  frequency: 1
-  amp: 1
-  numberOfWave: 1
 --- !u!4 &413328496
 Transform:
   m_ObjectHideFlags: 0
@@ -5117,7 +5114,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1182887229
 Transform:
   m_ObjectHideFlags: 0

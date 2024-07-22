@@ -178,7 +178,7 @@ namespace Breathing3
                 _micphoneName = Microphone.devices[0];
                 Microphone.GetDeviceCaps(_micphoneName, out minFrequency, out maxFrequency);
                 if (maxFrequency == 0)
-                {//These 2 lines of code are mainly for windows computers
+                {//These 2 kioskData of code are mainly for windows computers
                     maxFrequency = 44100;
                 }
                 if (_audioSource.clip == null)
