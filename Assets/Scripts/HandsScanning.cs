@@ -103,7 +103,6 @@ public class HandsScanning : MonoBehaviour
         if(!scanCompleted)
             audioSource.PlayOneShot(audioClips[0]);
 
-        Debug.Log("HANDS : IN");
     }
 
     //called by xr simple interactor
@@ -111,8 +110,6 @@ public class HandsScanning : MonoBehaviour
     {
         scanning = false;
         authenticate = false;
-
-        Debug.Log("HANDS : OUT");
     }
 
     //called as a animation event for DigitalCircle_Authenticated
