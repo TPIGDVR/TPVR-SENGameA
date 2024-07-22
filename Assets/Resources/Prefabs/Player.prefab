@@ -426,7 +426,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 580836706295129705}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.0050577316, y: -0.14499407, z: -0.03449228, w: 0.9888182}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -442,8 +442,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4.99, y: 2.75}
-  m_SizeDelta: {x: 5, y: 3}
+  m_AnchoredPosition: {x: -5.23, y: -1.34}
+  m_SizeDelta: {x: 8, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &710299138479246612
 GameObject:
@@ -1589,7 +1589,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.5
-  far clip plane: 10
+  far clip plane: 20
   field of view: 111.83
   orthographic: 0
   orthographic size: 5
@@ -1698,9 +1698,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trailPrefab: {fileID: 1374397333522384562, guid: 95bde4197eee01f498b627fa02a5d552,
     type: 3}
-  originalEmittingTime: 0.3
-  emittingReduction: 0.2
-  maxReductionEmittingTIme: 0.1
+  emissionReduction: 0.2
+  lengthOfTrail: 4
+  speed: 10
+  phaseReachBeforeNextTrail: 280
   numberOfTrail: 4
   zeroOffsetAngle: 130
   WidthBoundingBox: 28
@@ -1714,11 +1715,6 @@ MonoBehaviour:
   maxBPM: 200
   heartBeatRand: 2
   bpmText: {fileID: 8000843278541638592}
-  speed: 10
-  phase: 0
-  frequency: 1
-  amp: 12
-  numberOfWave: 1
 --- !u!1 &2746423765147369252
 GameObject:
   m_ObjectHideFlags: 0
@@ -2393,9 +2389,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trailPrefab: {fileID: 1374397333522384562, guid: 4a85835752875cc4ca00dabb43cc434d,
     type: 3}
-  originalEmittingTime: 0.5
-  emittingReduction: -0.07
-  maxReductionEmittingTIme: 0.1
+  emissionReduction: 0.2
+  lengthOfTrail: 4
+  speed: 1
+  phaseReachBeforeNextTrail: 280
   numberOfTrail: 4
   zeroOffsetAngle: 141.6
   WidthBoundingBox: 5.5
@@ -2409,11 +2406,6 @@ MonoBehaviour:
   maxBPM: 200
   heartBeatRand: 2
   bpmText: {fileID: 8000843278541638592}
-  speed: 1
-  phase: 1
-  frequency: 1
-  amp: 1
-  numberOfWave: 1
 --- !u!1 &4207503360237042081
 GameObject:
   m_ObjectHideFlags: 0
@@ -2813,7 +2805,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6630688195000303390}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 9}
+  m_LocalPosition: {x: 0, y: 0, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -17,5 +17,12 @@ public class NoiseSource : MonoBehaviour
         NoiseRangeScaled = (NoiseRange + c.radius) * LevelConstants.Scale;
         audio.maxDistance = NoiseRangeScaled;
         audio.minDistance = 0;
+        audio.PlayDelayed(Random.Range(0, 3));
+
+    }
+
+    IEnumerator PlaySound()
+    {
+        yield return new WaitForSeconds(Random.Range(0, 3));
     }
 }
