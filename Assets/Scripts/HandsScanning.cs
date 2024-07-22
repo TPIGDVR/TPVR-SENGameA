@@ -43,6 +43,9 @@ public class HandsScanning : MonoBehaviour
 
     private void Update()
     {
+        if (authenticate && progress > 0)
+            scanning = true;
+
         if (scanning && !scanCompleted)
         {
             progress += Time.fixedDeltaTime / 100 * speedMultiplier;
@@ -67,7 +70,7 @@ public class HandsScanning : MonoBehaviour
             scanCompleted = true;
             completeSound.Play();
             em_l.TriggerEvent(LevelEvents.KIOSK_CLEARED);
-
+            loadAnimator.SetBool("Completed",true);
         }
     }
 
