@@ -1,3 +1,4 @@
+using SoundRelated;
 using UnityEngine;
 using UnityEngine.Video;
 
@@ -37,6 +38,7 @@ namespace Dialog
         }
 
         public Speakers Speaker;
+        [TextArea(5,5)]
         public string Text;
     }
 
@@ -47,7 +49,7 @@ namespace Dialog
         public Sprite image;
         public Vector2 preferredDimension;
         [Header("Others")]
-        public VideoClip clip;
+        public AudioClip clip;
         public float duration = 3f;
     }
 }

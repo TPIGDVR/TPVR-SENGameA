@@ -16,10 +16,14 @@ public class HandsScanning : MonoBehaviour
     Image progressUI;
     [SerializeField]
     GameObject progress_GO;
+    // first and second audio source is for SFX
     [SerializeField]
     AudioSource audioSource;
     [SerializeField]
     AudioSource audioSource2;
+    [SerializeField]
+    AudioSource speechSource;
+
     [SerializeField]
     AudioClip[] audioClips;
     [SerializeField]
@@ -127,6 +131,7 @@ public class HandsScanning : MonoBehaviour
 
         if(!scanCompleted)
             audioSource.PlayOneShot(audioClips[0]);
+
         if(!scanCompleted && !hasPlayedAuthenticationSFX)
         {
             hasPlayedAuthenticationSFX = true;
@@ -223,9 +228,15 @@ public class HandsScanning : MonoBehaviour
     {
         dialogText.text = "";
         string text = kioskData.Lines[indexDialog].Text;
+
+        //start playing audio clip to play the typing sfx
         audioSource.clip = audioClips[2];
         audioSource.loop = true;
         audioSource.Play();
+
+        //play the audio clip forspeech
+        speechSource.PlayOneShot(kioskData.Lines[indexDialog].clip);
+
         foreach (char c in text.ToCharArray())
         {
             dialogText.text += c;
