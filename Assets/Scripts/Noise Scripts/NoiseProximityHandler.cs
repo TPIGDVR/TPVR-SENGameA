@@ -29,9 +29,6 @@ public class NoiseProximityHandler : MonoBehaviour
         {
             float dist = Vector3.Distance(camTrans.position,source.transform.position);
 
-            //if (dist > source.NoiseRangeScaled || source.CheckIfBlocked())
-            //    continue;
-
             if (source.CheckIfBlockedOrOutOfRange())
                 continue;
 
