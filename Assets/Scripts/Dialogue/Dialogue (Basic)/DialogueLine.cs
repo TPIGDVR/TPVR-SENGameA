@@ -33,6 +33,7 @@ namespace Dialog
     {
         public enum Speakers
         {
+            EVE,
             Markiplier,
             HIM
         }
