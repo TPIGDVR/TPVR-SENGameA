@@ -162,53 +162,39 @@ public class HandsScanning : MonoBehaviour
     }
 
     int indexDialog = 0;
-    int canShowImageHash = Animator.StringToHash("CanShowImage");
-    int changeTextHash = Animator.StringToHash("ShowText");
+    int changePanel = Animator.StringToHash("ShowImage");
     int hidePanelHash = Animator.StringToHash("HidePanel");
-    public void DecidePanel()
-    {
-        var line = kioskData.Lines[indexDialog];
-        if (line.image)
-        {
-            image.sprite = line.image;
-            imageSizer.cellSize = line.preferredDimension;
-            animator.SetBool(canShowImageHash, true);
-            audioSource2.PlayOneShot(audioClips[3]);
-        }
 
-        StartCoroutine(WaitTimer(line.duration));
+    public void StartKioskDialog()
+    {
+        ChangeImage();
+        StartTyping();
     }
 
-    public void ChangeNewText()
+    public void ChangeImagePanel()
+    {
+        ChangeImage();
+        dialogText.text = "";
+
+    }
+
+    public void StartTyping()
     {
         StopAllCoroutines();
-        StartCoroutine(TypeNextSentence());
+        StartCoroutine(WaitTimer(kioskData.Lines[indexDialog].duration));
     }
 
-    public void StartDialog()
+    void ChangeImage()
     {
         var line = kioskData.Lines[indexDialog];
-        StartCoroutine(TypeNextSentence());
-        
-        if (line.image)
-        {
-            audioSource2.PlayOneShot(audioClips[3]);
-            image.sprite = line.image;
-            imageSizer.cellSize = line.preferredDimension;
-            animator.SetBool(canShowImageHash, true);
-        }
-
-        StartCoroutine(WaitTimer(line.duration));
+        image.sprite = line.image;
+        imageSizer.cellSize = line.preferredDimension;
     }
 
     private IEnumerator WaitTimer(float second)
     {
+        StartCoroutine(TypeNextSentence());
         yield return new WaitForSeconds(second);
-        if (animator.GetBool(canShowImageHash))
-        {
-            audioSource2.PlayOneShot(audioClips[4]);
-            animator.SetBool(canShowImageHash, false);
-        }
 
         indexDialog++;
 
@@ -219,7 +205,8 @@ public class HandsScanning : MonoBehaviour
         }
         else
         {
-            animator.SetTrigger(changeTextHash);
+            audioSource.PlayOneShot(audioClips[3]);
+            animator.SetTrigger(changePanel);
         }
         //animator.SetTrigger()
     }
