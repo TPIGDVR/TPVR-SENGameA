@@ -43,8 +43,9 @@ public class Tutorial_Kiosk : MonoBehaviour
     bool scanning = false;
     bool authenticate = false;
 
+    [SerializeField] Transform targetDestination;
+
     [Header("Event")]
-    EventManager<LevelEvents> em_l = EventSystem.level;
     EventManager<TutorialEvents> em_t = EventSystem.tutorial;
     [SerializeField]
     TutorialEvents t_event;
@@ -92,8 +93,11 @@ public class Tutorial_Kiosk : MonoBehaviour
 
             StopSFX();
             audioSource.PlayOneShot(audioClips[1]);
-            em_l.TriggerEvent(LevelEvents.KIOSK_CLEARED);
             em_t.TriggerEvent(t_event);
+            if(TutorialLevelScript.kioskDownload == 1)
+            {
+                em_t.TriggerEvent<Transform>(TutorialEvents.FIRST_KIOSK,targetDestination);
+            }
             animator.SetBool("Completed", true);       
         }
     }
@@ -152,4 +156,5 @@ public class Tutorial_Kiosk : MonoBehaviour
         audioSource.Stop();
         audioSource.loop = false;
     }
+
 }

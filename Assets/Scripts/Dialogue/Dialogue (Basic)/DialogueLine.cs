@@ -12,7 +12,6 @@ namespace Dialog
     public class DialogueLines : ScriptableObject
     {
         public Line[] Lines;
-        public DialogEvents dialogEndTrigger = DialogEvents.NONE;
     }
 
     [CreateAssetMenu(menuName = "Dialogue/kiosk lines")]
@@ -32,6 +31,8 @@ namespace Dialog
         public Speakers Speaker;
         [TextArea(5,5)]
         public string Text;
+        public bool hasBeenTriggered { get; set; }
+        public DialogEvents dialogEndTrigger = DialogEvents.NONE;
     }
 
     [System.Serializable]

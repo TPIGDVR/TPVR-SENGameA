@@ -67,6 +67,8 @@ public class AutomatonBehaviour : MonoBehaviour
                     yield return new WaitUntil(() => _agent.remainingDistance <= _travelCompleteThreshold);
                     _ani.SetFloat("Spd", 0f);
                     break;
+                case AutomatonStates.WALK_TO_TARGET:
+
                 default:
                     Debug.Log("Automaton : Unable to get a state...");
                     break;
@@ -74,7 +76,7 @@ public class AutomatonBehaviour : MonoBehaviour
         }
     }
 
-    void SetDestination(Vector3 pos)
+    public void SetDestination(Vector3 pos)
     {
         _agent.SetDestination(pos);
         _ani.SetFloat("Spd", 0.5f);
@@ -104,10 +106,14 @@ public class AutomatonBehaviour : MonoBehaviour
         _audio.PlayOneShot(_footStepClips[index], vol);
     }
 
+    
+
     enum AutomatonStates
     {
         IDLE,
         WALK,
-        SCAN
+        SCAN,
+        WALK_TO_TARGET,
+
     }
 }

@@ -35,9 +35,8 @@ public enum TutorialEvents
 {
     NONE,
     INIT_TUTORIAL,
-    ACTIVATE_KIOSK_1,
-    ACTIVATE_KIOSK_3,
-    ACTIVATE_KIOSK_4,
+    ACTIVATE_KIOSK,
+    FIRST_KIOSK,
 }
 
 public enum LevelEvents

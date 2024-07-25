@@ -21,7 +21,7 @@ public class Level_Door : MonoBehaviour
         em_l.AddListener(LevelEvents.LEVEL_CLEARED, LevelCleared);
     }
 
-    void LevelCleared()
+    public void LevelCleared()
     {
         StartCoroutine(OpenDoor());
     }

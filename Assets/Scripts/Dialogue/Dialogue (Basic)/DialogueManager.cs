@@ -143,6 +143,10 @@ namespace Dialog
 
         public void NextLine()
         {
+            //DialogEvents events = currentDialog.dialogEndTrigger;
+            //EventSystem.dialog.TriggerEvent(events);
+
+
             if (currentDialog == null) return;
             currentIndex++;
             if (currentIndex >= currentDialog.Lines.Length)
@@ -152,6 +156,13 @@ namespace Dialog
             }
             else
             {
+                var line = currentDialog.Lines[currentIndex];
+                if (!line.hasBeenTriggered)
+                {
+                    DialogEvents events = line.dialogEndTrigger;
+                    EventSystem.dialog.TriggerEvent(events);
+                    line.hasBeenTriggered = true;
+                }
                 PrintCurrentDialogueLine();
             }
         }
@@ -170,9 +181,6 @@ namespace Dialog
 
         void EndDialog()
         {
-            DialogEvents events = currentDialog.dialogEndTrigger;
-            EventSystem.dialog.TriggerEvent(events);
-
             if (_queueDialog.Count > 0)
             {
                 currentDialog = _queueDialog.Dequeue();
