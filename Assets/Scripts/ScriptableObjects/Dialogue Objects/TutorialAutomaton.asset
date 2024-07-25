@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - Speaker: 0
-    Text: Don't stay near the automatons too long!
-  endDialogEvents:
-    m_PersistentCalls:
-      m_Calls: []
+    Text: "Ah, watch out. That\u2019s an automaton."
+  - Speaker: 0
+    Text: "Please try to keep a distance. I\u2019ll visualize the distance you should
+      keep from them."
+  dialogEndTrigger: 0
