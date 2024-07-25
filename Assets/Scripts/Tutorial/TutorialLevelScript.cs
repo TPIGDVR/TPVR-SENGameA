@@ -10,7 +10,7 @@ public class TutorialLevelScript : MonoBehaviour
 {
     [SerializeField] Level_Door door;
     public static int kioskDownload = 0;
-    [SerializeField] int numberOfDoorToOpenDoor = 4;
+    [SerializeField] int numberOfKioskToOpenDoor = 4;
 
     [Header("dialog")]
     [SerializeField] DialogueLines[] lines;
@@ -50,6 +50,7 @@ public class TutorialLevelScript : MonoBehaviour
     void InitializeTutorial()
     {
         EM_Tut.TriggerEvent(TutorialEvents.INIT_TUTORIAL);
+        EM_P.TriggerEvent<string>(PlayerEvents.OBJECTIVE_UPDATED, $"Kiosk Completed : {kioskDownload}/{numberOfKioskToOpenDoor}");
 
         //instantiate all dialogue scriptable object
         foreach (var l in lines)
@@ -62,14 +63,14 @@ public class TutorialLevelScript : MonoBehaviour
     {
         EM_Dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, (DialogueLines)RetrieveRuntimeScriptableObject(lines[kioskDownload]));
         kioskDownload++;
-        if(kioskDownload >= numberOfDoorToOpenDoor)
+        if(kioskDownload >= numberOfKioskToOpenDoor)
         {
             Debug.Log("Tutorial Cleared");
             door.LevelCleared();
         }
 
         //update objective ui
-
+        EM_P.TriggerEvent<string>(PlayerEvents.OBJECTIVE_UPDATED, $"Kiosk Completed : {kioskDownload}/{numberOfKioskToOpenDoor}");
     }
 
     void CallClosestAutomatonToDestination(Transform kiosk)

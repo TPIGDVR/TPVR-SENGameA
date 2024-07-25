@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class PlayerObjectiveHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    TMP_Text ObjectiveText;
+
+    EventManager<PlayerEvents> em_p = EventSystem.player;
+
+    private void Start()
     {
-        
+        em_p.AddListener<string>(PlayerEvents.OBJECTIVE_UPDATED,UpdateObjectiveText);
     }
 
-    // Update is called once per frame
-    void Update()
+    void UpdateObjectiveText(string text)
     {
-        
+        ObjectiveText.text = text;
     }
+
 }
