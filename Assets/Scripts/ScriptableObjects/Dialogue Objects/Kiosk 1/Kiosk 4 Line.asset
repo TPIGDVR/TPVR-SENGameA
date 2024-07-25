@@ -10,11 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c21d49d04dc36745ac1a58cdf35f67b, type: 3}
-  m_Name: Kiosk 1 Line
+  m_Name: Kiosk 4 Line
   m_EditorClassIdentifier: 
   Lines:
   - Speaker: 0
-    Text: Data Transfer Complete.
-  endDialogEvents:
-    m_PersistentCalls:
-      m_Calls: []
+    Text: "There. You\u2019ve got four sets of data already."
+  - Speaker: 0
+    Text: "Remember though, you\u2019re here to get as much data as possible. There
+      are specific ones that you need."
+  - Speaker: 0
+    Text: "I\u2019ll look for those specific panels. When you\u2019re in range of
+      them, I\u2019ll notify you of their locations."
+  dialogEndTrigger: 0
