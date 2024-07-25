@@ -31,7 +31,7 @@ namespace Dialog
         public Speakers Speaker;
         [TextArea(5,5)]
         public string Text;
-        public bool hasBeenTriggered { get; set; }
+        public bool hasBeenTriggered = false;
         public DialogEvents dialogEndTrigger = DialogEvents.NONE;
     }
 

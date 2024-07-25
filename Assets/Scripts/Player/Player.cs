@@ -10,10 +10,14 @@ public class Player : MonoBehaviour
     EventManager<DialogEvents> em_d = EventSystem.dialog;
     AnxietyHandler anxietyHandler;
     NoiseProximityHandler noiseProximityHandler;
+
+    //references to ui
+    [SerializeField]
+    GameObject Heart,Objective;
+    
     private void Start()
     {
         em_t.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
-        em_d.AddListener(DialogEvents.ACTIVATE_NOISE_INDICATOR, ActivateNoiseRangeMechanic);
         em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
         em_d.AddListener(DialogEvents.ACTIVATE_OBJECTIVE, ActivateObjectiveMechanic);
         anxietyHandler = GetComponent<AnxietyHandler>();
@@ -35,19 +39,16 @@ public class Player : MonoBehaviour
     //Noise Range Indicator
     //Heartrate
     //Level objective
-    void ActivateNoiseRangeMechanic()
-    {
-
-    }
 
     void ActivateHeartRateMechanic()
     {
         anxietyHandler.IsActive = true;
+        Heart.SetActive(true);
     }
 
     void ActivateObjectiveMechanic()
     {
-
+        Objective.SetActive(true);
     }
 
     void DeactivateAllMechanic()
@@ -56,5 +57,7 @@ public class Player : MonoBehaviour
         //disable noise range indicator
         //disable objective indicator
         anxietyHandler.IsActive = false;
+        Heart.SetActive(false);
+        Objective.SetActive(false);
     }
 }

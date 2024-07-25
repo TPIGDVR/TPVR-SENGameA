@@ -19,8 +19,8 @@ namespace Dialog
         Queue<DialogueLines> _queueDialog = new();
         List<DialogueLines> listOfFinishDialog = new(); 
         DialogueLines currentDialog;
+        Line currentLine;
         int currentIndex;
-
 
         [Header("Dialog Component")]
         [SerializeField]
@@ -33,6 +33,8 @@ namespace Dialog
         Animator dialogAnimator;
         [SerializeField, Range(1, 20)]
         float textSpeed;
+
+        Coroutine printingCoroutine = null;
 
         private void OnEnable()
         {
@@ -51,6 +53,7 @@ namespace Dialog
 
         }
 
+        #region opening/closing the dialogue box
         void OpenDialogueBox()
         {
             SoundManager.Instance.PlayAudio(SoundRelated.SFXClip.START_DIALOG);
@@ -76,25 +79,7 @@ namespace Dialog
                 dialogueSpeaker.text = string.Empty;
             }
         }
-
-        //public void NextDialogueLine()
-        //{
-        //    if (_currentD.NextDialogue())
-        //    {
-        //        dialogueBox.SetActive(false);
-        //        return;
-        //    }
-        //    _currentLine = _currentD.CurrentLine;
-
-        //    PrintCurrentDialogueLine();
-        //}
-
-        //public void PreviousDialogueLine()
-        //{
-        //    _currentD.PreviousDialogue();
-        //    _currentLine = _currentD.CurrentLine;
-        //    PrintCurrentDialogueLine();
-        //}
+        #endregion
 
         #region printing
         public void PrintCurrentDialogueLine()
@@ -103,32 +88,46 @@ namespace Dialog
             //em_l.TriggerEvent(DialogEvents.NEXT_LINE);
             SoundManager.Instance.PlayAudio(SoundRelated.SFXClip.NEXT_LINE);
 
-            StartCoroutine(PrintLine());
+            printingCoroutine = StartCoroutine(PrintLine(currentLine));
         }
 
-        IEnumerator PrintLine()
+        void InstantPrintLine(Line l)
         {
-            var line = currentDialog.Lines[currentIndex];
             dialogueText.text = string.Empty;
-            dialogueSpeaker.text = line.Speaker.ToString();
-            foreach (char c in line.Text.ToCharArray())
+            dialogueText.text = l.Text;
+            dialogueSpeaker.text = l.Speaker.ToString();
+            TriggerDialogueEvents(l);
+        }
+
+        IEnumerator PrintLine(Line l)
+        {
+            dialogueText.text = string.Empty;
+            dialogueSpeaker.text = l.Speaker.ToString();
+            foreach (char c in l.Text.ToCharArray())
             {
                 dialogueText.text += c;
                 yield return new WaitForSeconds(0.5f / textSpeed);
             }
+
+            TriggerDialogueEvents(l);
+            printingCoroutine = null;
         }
         #endregion
 
         void AddDialog(DialogueLines line)
         {
+            //if dialogue encountered alrdy, dont show agn
             if (listOfFinishDialog.Contains(line)) return;
 
+            //add to list of encountered dialogues
             listOfFinishDialog.Add(line);
+            //set it into queue to be displayed
             _queueDialog.Enqueue(line);
+
+            //if currently no dialogue
             if (currentDialog == null)
             {
                 currentDialog = _queueDialog.Dequeue();
-                //em_l.TriggerEvent(DialogEvents.START_DIALOG);
                 OpenDialog();
             }
         }
@@ -136,40 +135,56 @@ namespace Dialog
         void OpenDialog()
         {
             if (currentDialog == null) throw new Exception("Cant have empty dialog!!!");
+
+            //open up the dialogue box ui
             OpenDialogueBox();
+
+            //get the first line of text
             currentIndex = 0;
+            currentLine = currentDialog.Lines[currentIndex];
+
+            //print it
             PrintCurrentDialogueLine();
         }
 
-        public void NextLine()
+        //called by controller button
+        public void EvaluateAction_BtnA()
         {
-            //DialogEvents events = currentDialog.dialogEndTrigger;
-            //EventSystem.dialog.TriggerEvent(events);
-
-
+            //check if theres valid dialogue
             if (currentDialog == null) return;
-            currentIndex++;
-            if (currentIndex >= currentDialog.Lines.Length)
+
+            //complete print dialogue before advancing to the next
+            if(printingCoroutine != null)
             {
-                //end the Dialog;
-                EndDialog();
+                StopCoroutine(printingCoroutine);
+                //set as null
+                printingCoroutine = null;
+
+                InstantPrintLine(currentLine);
             }
-            else
+            else //not currently printing anymore
             {
-                var line = currentDialog.Lines[currentIndex];
-                if (!line.hasBeenTriggered)
+                //proceed to next line
+                currentIndex++;
+
+                //check if the line is the end
+                if (currentIndex >= currentDialog.Lines.Length)
                 {
-                    DialogEvents events = line.dialogEndTrigger;
-                    EventSystem.dialog.TriggerEvent(events);
-                    line.hasBeenTriggered = true;
+                    EndDialog();
                 }
-                PrintCurrentDialogueLine();
+                else
+                {
+                    currentLine = currentDialog.Lines[currentIndex];
+                    PrintCurrentDialogueLine();
+                }
             }
+
         }
 
         public void PreviousLine()
         {
             if (currentDialog == null) return;
+
             currentIndex--;
             if (currentIndex < 0)
             {
@@ -193,5 +208,16 @@ namespace Dialog
             }
         }
 
+        void TriggerDialogueEvents(Line line)
+        {
+            if (!line.hasBeenTriggered)
+            {
+                DialogEvents evnt = line.dialogEndTrigger;
+                EventSystem.dialog.TriggerEvent(evnt);
+                line.hasBeenTriggered = true;
+
+                Debug.Log($"Triggered Event : {evnt}");
+            }
+        }
     }
 }

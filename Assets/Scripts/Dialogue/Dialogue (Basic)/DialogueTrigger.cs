@@ -12,9 +12,16 @@ namespace Dialog
         [SerializeField]
         DialogueLines lines;
 
+        DialogueLines runtime_Lines;
+
+        private void Start()
+        {
+            runtime_Lines = ScriptableObject.Instantiate(lines);
+        }
+
         private void OnTriggerEnter(Collider other)
         {
-            em_l.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, lines);
+            em_l.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, runtime_Lines);
         }
     }
 }

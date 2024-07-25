@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace Assets.Scripts.Automaton
 {
-    public class AutomationBehaviourTutorial : MonoBehaviour
+    public class Tutorial_AutomatonBehaviour : MonoBehaviour
     {
         AutomatonStates _state;
         Animator _ani;

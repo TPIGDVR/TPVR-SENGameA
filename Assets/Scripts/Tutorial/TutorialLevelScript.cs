@@ -14,22 +14,36 @@ public class TutorialLevelScript : MonoBehaviour
     [SerializeField] DialogueLines[] lines;
 
     [Header("Automaton")]
-    [SerializeField] AutomationBehaviourTutorial[] automatons;
+    [SerializeField] Tutorial_AutomatonBehaviour[] automatons;
 
     EventManager<DialogEvents> EM_Dialog = EventSystem.dialog;
+    EventManager<TutorialEvents> EM_Tut = EventSystem.tutorial;
+
+    [Header("Dialogue Triggers")]
+    [SerializeField]
+    Transform automaton_DialogueTrigger;
 
     private void OnEnable()
     {
-        EventSystem.tutorial.AddListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
-        EventSystem.tutorial.AddListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
-
+        EM_Tut.AddListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
+        EM_Tut.AddListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
     }
 
     private void OnDisable()
     {
-        EventSystem.tutorial.RemoveListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
-        EventSystem.tutorial.RemoveListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
+        EM_Tut.RemoveListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
+        EM_Tut.RemoveListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
 
+    }
+
+    private void Start()
+    {
+        InitializeTutorial();
+    }
+
+    void InitializeTutorial()
+    {
+        EM_Tut.TriggerEvent(TutorialEvents.INIT_TUTORIAL);
     }
 
     void IncrementKioskDownload()
@@ -40,15 +54,11 @@ public class TutorialLevelScript : MonoBehaviour
         {
             door.LevelCleared();
         }
-        else if(kioskDownload == 1)
-        {
-
-        }
     }
 
     void CallClosestAutomatonToDestination(Transform kiosk)
     {
-        AutomationBehaviourTutorial closestA = null;
+        Tutorial_AutomatonBehaviour closestA = null;
         float closestDist = float.MaxValue;
         foreach (var a in automatons)
         {
@@ -62,6 +72,10 @@ public class TutorialLevelScript : MonoBehaviour
 
         closestA.targetDestination = kiosk.position;
         closestA.SwitchToTarget();
+
+        //attach the dialogue trigger to this automaton
+        automaton_DialogueTrigger.SetParent(closestA.transform);
+        automaton_DialogueTrigger.localPosition = new(0, 0, 0);
     }
 
 }
