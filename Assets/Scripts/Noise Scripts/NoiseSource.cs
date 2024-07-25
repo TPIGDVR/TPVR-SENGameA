@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
+using static Unity.VisualScripting.Member;
 
 public class NoiseSource : MonoBehaviour
 {
@@ -10,6 +12,8 @@ public class NoiseSource : MonoBehaviour
     public float NoiseValue = 5;
     public float NoiseRangeScaled;
     AudioSource audio;
+    AudioHighPassFilter highPassFilter;
+    AudioLowPassFilter lowPassFilter;
     private void Start()
     {
         audio = GetComponent<AudioSource>();
@@ -18,7 +22,37 @@ public class NoiseSource : MonoBehaviour
         audio.maxDistance = NoiseRangeScaled;
         audio.minDistance = 0;
         audio.PlayDelayed(Random.Range(0, 3));
+        Debug.Log(audio.outputAudioMixerGroup + " " + transform.name);
+        highPassFilter = GetComponent<AudioHighPassFilter>();
+        lowPassFilter = GetComponent<AudioLowPassFilter>();
+    }
 
+    public bool CheckIfBlockedOrOutOfRange()
+    {
+        Transform camTrans = Camera.main.transform;
+        Vector3 rayDir = camTrans.position - transform.position;
+        Ray toPlayer = new(transform.position, rayDir);
+        bool hasHit = Physics.Raycast(toPlayer, out RaycastHit hitInfo, NoiseRangeScaled);
+        float dist = Vector3.Distance(camTrans.position, transform.position);
+
+        if (hasHit)
+        {
+            if (!hitInfo.transform.CompareTag("Player"))
+            {
+                highPassFilter.cutoffFrequency = 1000;
+                lowPassFilter.cutoffFrequency = 300;
+            }
+            else
+            {
+                highPassFilter.cutoffFrequency = 0;
+                lowPassFilter.cutoffFrequency = 22000;
+            }
+
+            return !hitInfo.transform.CompareTag("Player") || dist > NoiseRangeScaled;
+        }
+
+        //out of range
+        return true;
     }
 
     IEnumerator PlaySound()

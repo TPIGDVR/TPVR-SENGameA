@@ -1463,6 +1463,8 @@ GameObject:
   - component: {fileID: 5563421559733217971}
   - component: {fileID: 4741728508559608879}
   - component: {fileID: 3790567143759614900}
+  - component: {fileID: 6654512603931151353}
+  - component: {fileID: 8861750677662958148}
   m_Layer: 0
   m_Name: NoiseSphere
   m_TagString: Untagged
@@ -1565,7 +1567,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 75952cb006c26e648b9c741fe22bee8f, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: 1
+  m_Pitch: -0.45
   Loop: 1
   Mute: 0
   Spatialize: 0
@@ -1657,6 +1659,41 @@ AudioSource:
     - serializedVersion: 3
       time: 0
       value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!165 &6654512603931151353
+AudioHighPassFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5631302893827148146}
+  m_Enabled: 1
+  m_CutoffFrequency: 22000
+  m_HighpassResonanceQ: 1
+--- !u!169 &8861750677662958148
+AudioLowPassFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5631302893827148146}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_LowpassResonanceQ: 1
+  lowpassLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.22727273
       inSlope: 0
       outSlope: 0
       tangentMode: 0

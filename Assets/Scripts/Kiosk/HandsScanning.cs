@@ -40,7 +40,6 @@ public class HandsScanning : MonoBehaviour
     /// </summary>
 
     [SerializeField]
-    float minSpeedMultiplier, maxSpeedMultiplier;
     float speedMultiplier;
     [SerializeField]float progress = 0;
     [SerializeField]
@@ -69,7 +68,6 @@ public class HandsScanning : MonoBehaviour
     private void Start()
     {
         progressUI.fillAmount = 0f;
-        speedMultiplier = Random.Range(minSpeedMultiplier,maxSpeedMultiplier);
         progress_GO.SetActive(true);
     }
 
