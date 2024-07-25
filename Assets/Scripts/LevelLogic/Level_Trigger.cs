@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class Level_Triggers : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public enum EventType //add more if we have more in EventSystem
     {
-        
+        GAME,
+        PLAYER,
+        LEVEL,
+        DIALOGUE,
+        TUTORIAL,
     }
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField]
+    EventType Type;
+    
+    void DetermineEventType()
     {
-        
+
     }
 }

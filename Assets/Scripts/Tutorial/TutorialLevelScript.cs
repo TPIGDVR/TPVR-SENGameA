@@ -3,6 +3,7 @@ using Dialog;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using static ScriptableObjectManager;
 
 public class TutorialLevelScript : MonoBehaviour
@@ -19,10 +20,14 @@ public class TutorialLevelScript : MonoBehaviour
 
     EventManager<DialogEvents> EM_Dialog = EventSystem.dialog;
     EventManager<TutorialEvents> EM_Tut = EventSystem.tutorial;
+    EventManager<PlayerEvents> EM_P = EventSystem.player;
 
     [Header("Dialogue Triggers")]
     [SerializeField]
     Transform automaton_DialogueTrigger;
+
+    [SerializeField]
+    TMP_Text ObjectiveText;
 
     private void OnEnable()
     {
@@ -62,6 +67,9 @@ public class TutorialLevelScript : MonoBehaviour
             Debug.Log("Tutorial Cleared");
             door.LevelCleared();
         }
+
+        //update objective ui
+
     }
 
     void CallClosestAutomatonToDestination(Transform kiosk)
