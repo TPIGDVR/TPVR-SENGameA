@@ -6,6 +6,19 @@ public class Player : MonoBehaviour
 {
     bool isWearingSunglasses;
     EventManager<PlayerEvents> em_p = EventSystem.player;
+    EventManager<TutorialEvents> em_t = EventSystem.tutorial;
+    EventManager<DialogEvents> em_d = EventSystem.dialog;
+    AnxietyHandler anxietyHandler;
+    NoiseProximityHandler noiseProximityHandler;
+    private void Start()
+    {
+        em_t.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
+        em_d.AddListener(DialogEvents.ACTIVATE_NOISE_INDICATOR, ActivateNoiseRangeMechanic);
+        em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
+        em_d.AddListener(DialogEvents.ACTIVATE_OBJECTIVE, ActivateObjectiveMechanic);
+        anxietyHandler = GetComponent<AnxietyHandler>();
+        noiseProximityHandler = GetComponent<NoiseProximityHandler>();
+    }
 
     void WearSunglasses()
     {
@@ -18,9 +31,30 @@ public class Player : MonoBehaviour
         isWearingSunglasses = false;
     }
 
-    private void Start()
+    //Mechanics :
+    //Noise Range Indicator
+    //Heartrate
+    //Level objective
+    void ActivateNoiseRangeMechanic()
     {
+
     }
 
+    void ActivateHeartRateMechanic()
+    {
+        anxietyHandler.IsActive = true;
+    }
 
+    void ActivateObjectiveMechanic()
+    {
+
+    }
+
+    void DeactivateAllMechanic()
+    {
+        //heart rate: deactivate the ui + anxiety build up
+        //disable noise range indicator
+        //disable objective indicator
+        anxietyHandler.IsActive = false;
+    }
 }

@@ -8,12 +8,12 @@ public static class EventSystem
     public static EventManager<GameEvents> game = new();
     public static EventManager<LevelEvents> level = new();
     public static EventManager<DialogEvents> dialog = new();
+    public static EventManager<TutorialEvents> tutorial = new();
 }
 
 public enum GameEvents
 {
     NONE,
-    FINISH_SCANNING_FIRST_KIOSK,
     LOSE,
     WIN,
     ENTER_NEW_SCENE
@@ -31,6 +31,15 @@ public enum PlayerEvents
     SUNGLASSES_OFF,
 }
 
+public enum TutorialEvents
+{
+    NONE,
+    INIT_TUTORIAL,
+    ACTIVATE_KIOSK_1,
+    ACTIVATE_KIOSK_3,
+    ACTIVATE_KIOSK_4,
+}
+
 public enum LevelEvents
 {
     KIOSK_CLEARED,
@@ -40,8 +49,14 @@ public enum LevelEvents
 
 public enum DialogEvents
 {
+    NONE,
     ADD_DIALOG,
     START_DIALOG,
     END_DIALOG,
     NEXT_LINE,
+
+    //tutorial dialogue events
+    ACTIVATE_NOISE_INDICATOR,
+    ACTIVATE_HEARTRATE,
+    ACTIVATE_OBJECTIVE
 }

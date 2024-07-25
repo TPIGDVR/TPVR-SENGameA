@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder;
 using UnityEngine.UI;
 
-public class HandsScanning : MonoBehaviour
+public class Kiosk : MonoBehaviour
 {
 
     [SerializeField]
@@ -53,7 +53,7 @@ public class HandsScanning : MonoBehaviour
     EventManager<LevelEvents> em_l = EventSystem.level;
     [SerializeField] PopUp popup;
     [Header("Kiosk Dialog")]
-    [SerializeField] KisokLines kioskData;
+    [SerializeField] KioskLines kioskData;
     [SerializeField] TextMeshProUGUI dialogText;
     [SerializeField] Image image;
     [SerializeField] GridLayoutGroup imageSizer; // using the cell size to increase the width and heigh of it.1
@@ -61,14 +61,19 @@ public class HandsScanning : MonoBehaviour
     [Header("Dialog related")]
     [SerializeField] DialogueLines dialogueLines;
     [SerializeField] GameObject hologramPanel;
-    public bool ScanCompleted {  get { return scanCompleted; } }
+
     [SerializeField, Range(1, 30)]
     float textSpeed = 20;
+
+    [SerializeField]
+    bool hasHologramPanels;
 
     private void Start()
     {
         progressUI.fillAmount = 0f;
         progress_GO.SetActive(true);
+
+        animator.SetBool("HasHolograms",hasHologramPanels);
     }
 
     private void Update()
@@ -244,8 +249,6 @@ public class HandsScanning : MonoBehaviour
         audioSource.loop = false;
         audioSource.Stop();
     }
-
-
 }
 
 
