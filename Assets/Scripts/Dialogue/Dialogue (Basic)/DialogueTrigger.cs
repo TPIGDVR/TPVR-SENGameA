@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
-
+using static ScriptableObjectManager;
 namespace Dialog
 {
     public class DialogueTrigger : MonoBehaviour
@@ -12,16 +12,15 @@ namespace Dialog
         [SerializeField]
         DialogueLines lines;
 
-        DialogueLines runtime_Lines;
-
         private void Start()
         {
-            runtime_Lines = ScriptableObject.Instantiate(lines);
+            //create instance of the dialogue scriptable object
+            AddIntoSOCollection(lines);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            em_l.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, runtime_Lines);
+            em_l.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, (DialogueLines)RetrieveRuntimeScriptableObject(lines));
         }
     }
 }

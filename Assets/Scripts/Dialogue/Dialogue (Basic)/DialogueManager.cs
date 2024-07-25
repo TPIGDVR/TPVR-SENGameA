@@ -191,6 +191,7 @@ namespace Dialog
                 currentIndex = 0;
                 return;
             }
+            currentLine = currentDialog.Lines[currentIndex];
             PrintCurrentDialogueLine();
         }
 

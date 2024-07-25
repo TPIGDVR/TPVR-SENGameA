@@ -3,6 +3,7 @@ using Dialog;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ScriptableObjectManager;
 
 public class TutorialLevelScript : MonoBehaviour
 {
@@ -44,14 +45,21 @@ public class TutorialLevelScript : MonoBehaviour
     void InitializeTutorial()
     {
         EM_Tut.TriggerEvent(TutorialEvents.INIT_TUTORIAL);
+
+        //instantiate all dialogue scriptable object
+        foreach (var l in lines)
+        {
+            AddIntoSOCollection(l);
+        }
     }
 
     void IncrementKioskDownload()
     {
-        EM_Dialog.TriggerEvent(DialogEvents.ADD_DIALOG, lines[kioskDownload]);
+        EM_Dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, (DialogueLines)RetrieveRuntimeScriptableObject(lines[kioskDownload]));
         kioskDownload++;
         if(kioskDownload >= numberOfDoorToOpenDoor)
         {
+            Debug.Log("Tutorial Cleared");
             door.LevelCleared();
         }
     }
