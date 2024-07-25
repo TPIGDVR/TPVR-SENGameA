@@ -22,7 +22,7 @@ public class NoiseSource : MonoBehaviour
         audio.maxDistance = NoiseRangeScaled;
         audio.minDistance = 0;
         audio.PlayDelayed(Random.Range(0, 3));
-        Debug.Log(audio.outputAudioMixerGroup + " " + transform.name);
+        //Debug.Log(audio.outputAudioMixerGroup + " " + transform.name);
         highPassFilter = GetComponent<AudioHighPassFilter>();
         lowPassFilter = GetComponent<AudioLowPassFilter>();
     }
