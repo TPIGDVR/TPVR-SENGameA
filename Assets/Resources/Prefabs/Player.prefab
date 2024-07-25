@@ -625,7 +625,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2417221455252518156}
   - component: {fileID: 2764694943007220788}
-  - component: {fileID: 5756985352213523739}
+  - component: {fileID: 8889865333775719377}
   m_Layer: 8
   m_Name: Heart
   m_TagString: Untagged
@@ -680,7 +680,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5756985352213523739
+--- !u!114 &8889865333775719377
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -689,9 +689,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 580836706295129705}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d760c8eb30ca944eba85e3cfc3a9113, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ef9c9dac5e9d0b45b28cad97cbccf19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 2764694943007220788}
+  text: {fileID: 8000843278541638592}
+  minHeartBeat: 60
+  maxHeartBeat: 180
+  heartBeatRand: 1
 --- !u!1 &710299138479246612
 GameObject:
   m_ObjectHideFlags: 0
@@ -3413,9 +3418,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Needed: 0/0
-
-    Total: 0/0'
+  m_text: 'Needed: 0/0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3724,6 +3727,7 @@ GameObject:
   - component: {fileID: 1994269205712988721}
   - component: {fileID: 2826238604131347488}
   - component: {fileID: 2704872705432405080}
+  - component: {fileID: 7323095858247193114}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -3829,6 +3833,19 @@ MonoBehaviour:
   _fadeImg: {fileID: 4574281046047679150}
   fadeTime: 2
   fadeTimer: 0
+--- !u!114 &7323095858247193114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6322408247784915127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8d1ea0d666fe64448dd0ab06058e18b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectiveText: {fileID: 2195042684905657729}
 --- !u!1 &6630688195000303390
 GameObject:
   m_ObjectHideFlags: 0
