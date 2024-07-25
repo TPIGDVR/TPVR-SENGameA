@@ -9106,6 +9106,29 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 647164192}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &648073162 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 580836706295129705, guid: 81d1945791c944e438a9df52c37ddb0c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1376120851}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &648073165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648073162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ef9c9dac5e9d0b45b28cad97cbccf19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  text: {fileID: 0}
+  minHeartBeat: 60
+  maxHeartBeat: 180
+  heartBeatRand: 1
 --- !u!1001 &648933181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20849,15 +20872,15 @@ PrefabInstance:
       propertyPath: actionMap.Array.data[1].OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 83591980}
-    - target: {fileID: 8216588566784586350, guid: 81d1945791c944e438a9df52c37ddb0c,
-        type: 3}
-      propertyPath: actionMap.Array.data[0].OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: EvaluateAction_BtnA
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5756985352213523739, guid: 81d1945791c944e438a9df52c37ddb0c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 580836706295129705, guid: 81d1945791c944e438a9df52c37ddb0c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 648073165}
   m_SourcePrefab: {fileID: 100100000, guid: 81d1945791c944e438a9df52c37ddb0c, type: 3}
 --- !u!1 &1377639995
 GameObject:
@@ -21534,6 +21557,55 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1435175497}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1448494805
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1448494806}
+  - component: {fileID: 1448494807}
+  m_Layer: 0
+  m_Name: PopupManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1448494806
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448494805}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2074166996}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1448494807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448494805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15856141ad5c3f84e9e222e0fcf7113e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popUpPrefabs: {fileID: 659815619934119987, guid: cfee0a31238345847a1c8b2571625636,
+    type: 3}
+  _PlayerPosition: {fileID: 1818788868}
+  maxDistance: 5
+  minDistance: 0
 --- !u!1001 &1451163742
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26031,6 +26103,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1810271447}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1818788868 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2224142548037433946, guid: 81d1945791c944e438a9df52c37ddb0c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1376120851}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1822065149
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30113,6 +30191,7 @@ Transform:
   - {fileID: 83591979}
   - {fileID: 1043461247}
   - {fileID: 1605574522}
+  - {fileID: 1448494806}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2112715165
