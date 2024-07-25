@@ -1,5 +1,8 @@
 using SoundRelated;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Video;
 
 namespace Dialog
@@ -8,18 +11,8 @@ namespace Dialog
     [CreateAssetMenu(menuName = "Dialogue/Lines")]
     public class DialogueLines : ScriptableObject
     {
-        //public enum Speakers
-        //{
-        //    Markiplier,
-        //    HIM
-        //}
-
-        //public Speakers Speaker;
-
-        //public string Line;
         public Line[] Lines;
-
-    
+        public GameEvents dialogEndTrigger = GameEvents.NONE;
     }
 
     [CreateAssetMenu(menuName = "Dialogue/kisok lines")]

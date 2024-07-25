@@ -12,6 +12,8 @@ public static class EventSystem
 
 public enum GameEvents
 {
+    NONE,
+    FINISH_SCANNING_FIRST_KIOSK,
     LOSE,
     WIN,
     ENTER_NEW_SCENE

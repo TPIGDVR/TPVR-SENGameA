@@ -170,6 +170,9 @@ namespace Dialog
 
         void EndDialog()
         {
+            GameEvents events = currentDialog.dialogEndTrigger;
+            EventSystem.game.TriggerEvent(events);
+
             if (_queueDialog.Count > 0)
             {
                 currentDialog = _queueDialog.Dequeue();

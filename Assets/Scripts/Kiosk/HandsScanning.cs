@@ -1,4 +1,5 @@
 using Dialog;
+using PopUpAssistance;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
@@ -51,12 +52,16 @@ public class HandsScanning : MonoBehaviour
     bool authenticate = false;
     bool hasPlayedAuthenticationSFX = false;
     EventManager<LevelEvents> em_l = EventSystem.level;
-
+    [SerializeField] PopUp popup;
     [Header("Kiosk Dialog")]
     [SerializeField] KisokLines kioskData;
     [SerializeField] TextMeshProUGUI dialogText;
     [SerializeField] Image image;
     [SerializeField] GridLayoutGroup imageSizer; // using the cell size to increase the width and heigh of it.1
+
+    [Header("Dialog related")]
+    [SerializeField] DialogueLines dialogueLines;
+    [SerializeField] GameObject hologramPanel;
     public bool ScanCompleted {  get { return scanCompleted; } }
     [SerializeField, Range(1, 30)]
     float textSpeed = 20;
@@ -96,6 +101,7 @@ public class HandsScanning : MonoBehaviour
 
         if (progress >= 1 && !scanCompleted)
         {
+            popup.CanPopUp = false;
             //stop audiosource 2 from playing
             audioSource2.Stop();
             audioSource2.loop = false;
@@ -167,8 +173,16 @@ public class HandsScanning : MonoBehaviour
 
     public void StartKioskDialog()
     {
-        ChangeImage();
-        StartTyping();
+        if (dialogueLines)
+        {
+            hologramPanel.SetActive(false);
+            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogueLines);
+        }
+        else
+        {
+            ChangeImage();
+            StartTyping();
+        }
     }
 
     public void ChangeImagePanel()
