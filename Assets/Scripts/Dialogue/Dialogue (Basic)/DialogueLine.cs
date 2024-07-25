@@ -12,11 +12,11 @@ namespace Dialog
     public class DialogueLines : ScriptableObject
     {
         public Line[] Lines;
-        public GameEvents dialogEndTrigger = GameEvents.NONE;
+        public DialogEvents dialogEndTrigger = DialogEvents.NONE;
     }
 
-    [CreateAssetMenu(menuName = "Dialogue/kisok lines")]
-    public class KisokLines : ScriptableObject
+    [CreateAssetMenu(menuName = "Dialogue/kiosk lines")]
+    public class KioskLines : ScriptableObject
     {
         public KLine[] Lines;
     }

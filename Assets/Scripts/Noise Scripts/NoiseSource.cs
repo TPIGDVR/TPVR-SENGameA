@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
-using static Unity.VisualScripting.Member;
 
 public class NoiseSource : MonoBehaviour
 {
@@ -14,17 +12,21 @@ public class NoiseSource : MonoBehaviour
     AudioSource audio;
     AudioHighPassFilter highPassFilter;
     AudioLowPassFilter lowPassFilter;
+    MeshRenderer meshRenderer;
     private void Start()
     {
+        meshRenderer = GetComponent<MeshRenderer>();
         audio = GetComponent<AudioSource>();
         noiseIndicator.localScale = new Vector3(NoiseRange, NoiseRange, NoiseRange);
         NoiseRangeScaled = (NoiseRange + c.radius) * LevelConstants.Scale;
         audio.maxDistance = NoiseRangeScaled;
         audio.minDistance = 0;
         audio.PlayDelayed(Random.Range(0, 3));
-        Debug.Log(audio.outputAudioMixerGroup + " " + transform.name);
         highPassFilter = GetComponent<AudioHighPassFilter>();
         lowPassFilter = GetComponent<AudioLowPassFilter>();
+
+        EventSystem.dialog.AddListener(DialogEvents.ACTIVATE_NOISE_INDICATOR, ActivateNoiseRangeIndicator);
+        EventSystem.tutorial.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateNoiseRangeIndicator);
     }
 
     public bool CheckIfBlockedOrOutOfRange()
@@ -54,9 +56,14 @@ public class NoiseSource : MonoBehaviour
         //out of range
         return true;
     }
-
-    IEnumerator PlaySound()
+    
+    void ActivateNoiseRangeIndicator()
     {
-        yield return new WaitForSeconds(Random.Range(0, 3));
+        meshRenderer.enabled = true;
+    }
+
+    void DeactivateNoiseRangeIndicator()
+    {
+        meshRenderer.enabled = false;
     }
 }

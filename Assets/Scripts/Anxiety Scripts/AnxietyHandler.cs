@@ -38,6 +38,9 @@ public class AnxietyHandler : MonoBehaviour
     [SerializeField] float maxTimeReduction;
     [SerializeField] float anxietyReduction;
     float reduceElapseTime = 0f;
+
+    public bool IsActive;
+
     private void Start()
     {
         _noiseProximityHandler = GetComponent<NoiseProximityHandler>();
@@ -48,6 +51,9 @@ public class AnxietyHandler : MonoBehaviour
 
     private void Update()
     {
+        if (!IsActive)
+            return;
+
         if (_anxietyLevel >= _maxAnxietyLevel)
         {
             deathTimer += Time.deltaTime;
