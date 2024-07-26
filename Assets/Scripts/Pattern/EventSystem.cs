@@ -29,7 +29,9 @@ public enum PlayerEvents
     HEART_BEAT,
     SUNGLASSES_ON,
     SUNGLASSES_OFF,
+    //objective related,
     OBJECTIVE_UPDATED,
+
 }
 
 public enum TutorialEvents

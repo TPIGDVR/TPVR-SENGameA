@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     GameObject Heart,Objective;
     
-    private void Start()
+    private void Awake()
     {
         em_t.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
         em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);

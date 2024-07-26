@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HeartBeatScript : MonoBehaviour
 {
     [SerializeField] Animator animator;
     [SerializeField] TextMeshProUGUI text;
+    [SerializeField] Image heartBeatImage;
     EventManager<PlayerEvents> em = EventSystem.player;
     float anxiety => em.TriggerEvent<float>(PlayerEvents.HEART_BEAT);
 
@@ -14,14 +16,18 @@ public class HeartBeatScript : MonoBehaviour
     [SerializeField] float minHeartBeat = 60;
     [SerializeField] float maxHeartBeat = 180;
     [SerializeField] int heartBeatRand = 1;
+    [SerializeField] Gradient colorGradient;
 
     public void ChangeHeartBeat()
     {
-        int currBPM = (int) Mathf.Lerp(minHeartBeat, maxHeartBeat, anxiety);
+        float curAnxiety = anxiety;
+        int currBPM = (int) Mathf.Lerp(minHeartBeat, maxHeartBeat, curAnxiety);
         currBPM += UnityEngine.Random.Range(-heartBeatRand, heartBeatRand);
         print($"CurrBPM {currBPM}");
         float speed = currBPM / minHeartBeat;
         animator.speed = speed;
         text.text = $"{currBPM} BPM";
+        heartBeatImage.color = colorGradient.Evaluate(curAnxiety);
+
     }
 }

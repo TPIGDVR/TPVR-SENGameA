@@ -31,7 +31,15 @@ namespace PopUpAssistance
         {
             foreach(var popUp in existingPopUp)
             {
-                if(!popUp.CanPopUp) continue;
+                if (!popUp.CanPopUp)
+                {
+                    if (popUp.hasDisplay)
+                    {
+                        RetrieveDisplay(popUp);
+                    }
+                    continue;
+
+                }
 
                 float distanceFromPopupToPlayer = Vector3.SqrMagnitude(popUp.transform.position - _PlayerPosition.transform.position);
                 if ( distanceFromPopupToPlayer < maxSqrDistance && 
@@ -49,12 +57,17 @@ namespace PopUpAssistance
                 {
                     if (popUp.hasDisplay)
                     {
-                        var display = popUp.Display;
-                        poolPopDisplays.Retrieve(display);
-                        popUp.Display = null;
+                        RetrieveDisplay(popUp);
                     }
                     //else ignore already
                 }
+            }
+
+            void RetrieveDisplay(PopUp popUp)
+            {
+                var display = popUp.Display;
+                poolPopDisplays.Retrieve(display);
+                popUp.Display = null;
             }
         }
 
