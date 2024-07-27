@@ -23,9 +23,10 @@ public class HeartBeatScript : MonoBehaviour
         float curAnxiety = anxiety;
         int currBPM = (int) Mathf.Lerp(minHeartBeat, maxHeartBeat, curAnxiety);
         currBPM += UnityEngine.Random.Range(-heartBeatRand, heartBeatRand);
-        print($"CurrBPM {currBPM}");
         float speed = currBPM / minHeartBeat;
         animator.speed = speed;
+
+        //set ui component
         text.text = $"{currBPM} BPM";
         heartBeatImage.color = colorGradient.Evaluate(curAnxiety);
 

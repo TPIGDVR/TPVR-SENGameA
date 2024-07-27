@@ -32,7 +32,7 @@ public class NoiseProximityHandler : MonoBehaviour
             if (source.CheckIfBlockedOrOutOfRange())
                 continue;
 
-            float noiseLevel = Mathf.Lerp(source.NoiseValue, 0,dist/source.NoiseRangeScaled);
+            float noiseLevel = Mathf.Lerp(source.NoiseValue, 0, dist/source.NoiseRangeScaled);
             totalNoiseLevel += noiseLevel;          
         }
 
