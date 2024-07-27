@@ -60,7 +60,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             //_noiseProximityHandler = GetComponent<NoiseProximityHandler>();
             em_p.AddListener<float>(PlayerEvents.ANXIETY_BREATHE, Breath);
             //em_p.AddListener<float>(PlayerEvents.GLARE_UPDATE, CalculateGlare);
-            //em_p.AddListener<float>(PlayerEvents.HEART_BEAT, () => curAnxiety);
+            em_p.AddListener<float>(PlayerEvents.HEART_BEAT, () => curAnxiety);
             _noiseSources = FindObjectsOfType<NoiseSource>();
 
 

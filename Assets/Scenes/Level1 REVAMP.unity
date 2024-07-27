@@ -834,7 +834,7 @@ MonoBehaviour:
   lT: 0.2
   maxTimeReduction: 3
   anxietyReduction: 10
-  CanRun: 0
+  CanRun: 1
 --- !u!1 &83591978
 GameObject:
   m_ObjectHideFlags: 0
@@ -21031,10 +21031,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1121420423576268488, guid: 81d1945791c944e438a9df52c37ddb0c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1140177489856726363, guid: 81d1945791c944e438a9df52c37ddb0c,
         type: 3}
       propertyPath: m_margin.w
       value: 50.707382
+      objectReference: {fileID: 0}
+    - target: {fileID: 1561325291197132013, guid: 81d1945791c944e438a9df52c37ddb0c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1994269205712988721, guid: 81d1945791c944e438a9df52c37ddb0c,
         type: 3}

@@ -35,8 +35,17 @@ public class NoiseSource : MonoBehaviour
         Transform camTrans = Camera.main.transform;
         Vector3 rayDir = camTrans.position - transform.position;
         Ray toPlayer = new(transform.position, rayDir);
+
         bool hasHit = Physics.Raycast(toPlayer, out RaycastHit hitInfo, NoiseRangeScaled);
         float dist = Vector3.Distance(camTrans.position, transform.position);
+        
+        //for debugging
+        //if(dist <= NoiseRangeScaled)
+        //{
+        //    Debug.DrawLine(camTrans.position, transform.position,Color.red);
+        //    print($"Has hit, {hasHit} Gameobject {hitInfo.transform.name}");
+        //}
+
 
         if (hasHit)
         {
