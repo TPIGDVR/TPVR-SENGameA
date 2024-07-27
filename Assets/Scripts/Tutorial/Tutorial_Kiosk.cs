@@ -1,5 +1,7 @@
+using Caress.Examples;
 using Dialog;
 using PopUpAssistance;
+using SoundRelated;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -54,10 +56,13 @@ public class Tutorial_Kiosk : MonoBehaviour
     [SerializeField] 
     PopUp popup;
 
+    SoundManager audioPlayer;
+
     private void Start()
     {
         progressUI.fillAmount = 0f;
         progress_GO.SetActive(true);
+        audioPlayer = SoundManager.Instance;
     }
 
     private void Update()
@@ -91,12 +96,16 @@ public class Tutorial_Kiosk : MonoBehaviour
             popup.CanPopUp = false;
             scanCompleted = true;
 
-            StopSFX();
-            audioSource.PlayOneShot(audioClips[1]);
+            //StopSFX();
+            //audioSource.PlayOneShot(audioClips[1]);
+            audioPlayer.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
+            audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
+
+
             em_t.TriggerEvent(t_event);
             if(TutorialLevelScript.kioskDownload == 1)
             {
-                em_t.TriggerEvent<Transform>(TutorialEvents.FIRST_KIOSK,targetDestination);
+                em_t.TriggerEvent<Transform>(TutorialEvents.FIRST_KIOSK, targetDestination);
             }
             animator.SetBool("Completed", true);       
         }
@@ -124,7 +133,8 @@ public class Tutorial_Kiosk : MonoBehaviour
         authenticate = true;
 
         if (!scanCompleted)
-            audioSource.PlayOneShot(audioClips[0]);
+            //audioSource.PlayOneShot(audioClips[0]);
+            audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.KIOSK_AUTHETICATED,transform.position);
     }
 
     //called by xr simple interactor
@@ -135,7 +145,8 @@ public class Tutorial_Kiosk : MonoBehaviour
 
         if (!scanCompleted)
         {
-            StopSFX();
+            //StopSFX();
+            audioPlayer.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
         }
     }
 
@@ -145,9 +156,10 @@ public class Tutorial_Kiosk : MonoBehaviour
         if (authenticate)
         {
             scanning = true;
-            audioSource.loop = true;
-            audioSource.clip = audioClips[5];
-            audioSource.Play();
+            //audioSource.loop = true;
+            //audioSource.clip = audioClips[5];
+            //audioSource.Play();
+            audioPlayer.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING , transform.position);
         }
     }
 

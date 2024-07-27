@@ -21,7 +21,8 @@ public class NoiseSource : MonoBehaviour
         NoiseRangeScaled = (NoiseRange + c.radius) * LevelConstants.Scale;
         audio.maxDistance = NoiseRangeScaled;
         audio.minDistance = 0;
-        audio.PlayDelayed(Random.Range(0, 3));
+        //audio.PlayDelayed(Random.Range(0, 3));
+        audio.Play();
         highPassFilter = GetComponent<AudioHighPassFilter>();
         lowPassFilter = GetComponent<AudioLowPassFilter>();
 

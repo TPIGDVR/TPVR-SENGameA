@@ -11,6 +11,14 @@ namespace SoundRelated
         NEXT_LINE,
         START_DIALOG,
         END_DIALOG,
+
+        //kiosk related
+        KIOSK_AUTHETICATED,
+        SCAN_SUCCESS,
+        TEXT_TYPING,
+        IMAGE_KIOSK_OPEN,
+        HOLOGRAM_CLOSE,
+        DATA_DOWNLOADING,
     }
 
     [Serializable]
@@ -19,7 +27,6 @@ namespace SoundRelated
     {
         public SFXClip sfx;
         public AudioClip clip;
-        [HideInInspector] public AudioSource source;
         [Range(0, 1)]
         public float volume;
         [Range(-3, 3)]
@@ -32,15 +39,5 @@ namespace SoundRelated
         //put more here
     }
 
-    [Serializable]
-    public struct AmbientMusicClip
-    {
-        public AmbientClip ambientSFX;
-        public AudioClip clip;
-        [HideInInspector] public AudioSource source;
-        [Range(0, 1)]
-        public float volume;
-        [Range(-3, 3)]
-        public float pitch;
-    }
+
 }

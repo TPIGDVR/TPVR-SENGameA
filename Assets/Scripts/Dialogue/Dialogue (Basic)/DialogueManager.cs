@@ -56,13 +56,13 @@ namespace Dialog
         #region opening/closing the dialogue box
         void OpenDialogueBox()
         {
-            SoundManager.Instance.PlayAudio(SoundRelated.SFXClip.START_DIALOG);
+            SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.START_DIALOG);
             dialogueBox.SetActive(true);
         }
         void HideDialogueBox()
         {
             dialogAnimator.SetTrigger("Close");
-            SoundManager.Instance.PlayAudio(SoundRelated.SFXClip.END_DIALOG);
+            SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.END_DIALOG);
             StopAllCoroutines();
             StartCoroutine(closeDialog());
 
@@ -86,7 +86,7 @@ namespace Dialog
         {
             StopAllCoroutines();
             //em_l.TriggerEvent(DialogEvents.NEXT_LINE);
-            SoundManager.Instance.PlayAudio(SoundRelated.SFXClip.NEXT_LINE);
+            SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.NEXT_LINE);
 
             printingCoroutine = StartCoroutine(PrintLine(currentLine));
         }
