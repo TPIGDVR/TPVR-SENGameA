@@ -15,13 +15,12 @@ public class Tutorial_Kiosk : MonoBehaviour
     [SerializeField]
     GameObject progress_GO;
     // first and second audio source is for SFX
-    [SerializeField]
-    AudioSource audioSource;
-    [SerializeField]
-    AudioSource speechSource;
 
-    [SerializeField]
-    AudioClip[] audioClips;
+    //[SerializeField]
+    //AudioSource audioSource;
+    //[SerializeField]
+    //AudioSource speechSource;
+
     [SerializeField]
     Animator animator;
 
@@ -163,10 +162,10 @@ public class Tutorial_Kiosk : MonoBehaviour
         }
     }
 
-    void StopSFX()
-    {
-        audioSource.Stop();
-        audioSource.loop = false;
-    }
+    //void StopSFX()
+    //{
+    //    audioSource.Stop();
+    //    audioSource.loop = false;
+    //}
 
 }
