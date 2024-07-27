@@ -95,4 +95,12 @@ public class TutorialLevelScript : MonoBehaviour
         automaton_DialogueTrigger.localPosition = new(0, 0, 0);
     }
 
+    [ContextMenu("finish tutorial")]
+    public void CompleteTutorial()
+    {
+        var em = EventSystem.dialog;
+        em.TriggerEvent(DialogEvents.ACTIVATE_HEARTRATE);
+        em.TriggerEvent(DialogEvents.ACTIVATE_NOISE_INDICATOR);
+        em.TriggerEvent(DialogEvents.ACTIVATE_OBJECTIVE);
+    }
 }

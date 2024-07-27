@@ -13,7 +13,7 @@ public class NoiseSource : MonoBehaviour
     AudioHighPassFilter highPassFilter;
     AudioLowPassFilter lowPassFilter;
     MeshRenderer meshRenderer;
-    private void Awake()
+    private void Start()
     {
         meshRenderer = GetComponent<MeshRenderer>();
         audio = GetComponent<AudioSource>();

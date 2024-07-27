@@ -75,7 +75,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             DetermineDeathTimer();
 
             //trigger the event after calculating the anxiety level
-            em_p.TriggerEvent(PlayerEvents.ANXIETY_UPDATE);
+            //em_p.TriggerEvent(PlayerEvents.ANXIETY_UPDATE);
             em_p.TriggerEvent<float>(PlayerEvents.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
         }
 
