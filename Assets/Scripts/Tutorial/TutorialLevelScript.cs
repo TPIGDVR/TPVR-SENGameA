@@ -51,10 +51,11 @@ public class TutorialLevelScript : MonoBehaviour
     {
         EM_Tut.TriggerEvent(TutorialEvents.INIT_TUTORIAL);
         EM_P.TriggerEvent<string>(PlayerEvents.OBJECTIVE_UPDATED, $"Kiosk Completed : {kioskDownload}/{numberOfKioskToOpenDoor}");
-
+        print("RUnning this scipt");
         //instantiate all dialogue scriptable object
         foreach (var l in lines)
         {
+            print("adding lines");
             AddIntoSOCollection(l);
         }
     }
