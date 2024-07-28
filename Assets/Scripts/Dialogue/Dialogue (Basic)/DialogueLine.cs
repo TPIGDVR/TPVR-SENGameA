@@ -33,6 +33,8 @@ namespace Dialog
         public string Text;
         public bool hasBeenTriggered = false;
         public DialogEvents dialogEndTrigger = DialogEvents.NONE;
+
+        public MusicClip audioClip;
     }
 
     [System.Serializable]

@@ -56,9 +56,7 @@ namespace SoundRelated
                 {
                     AudioSource audioSource = pooledGlobalAudioSource.Get();
                     //set up all the audio source setting
-                    audioSource.volume = musicClip.volume;
-                    audioSource.clip = musicClip.clip;
-                    audioSource.pitch = musicClip.pitch;
+                    SetUpAudioSource(musicClip, audioSource);
                     audioSource.loop = false;
 
                     audioSource.Play();
@@ -70,6 +68,7 @@ namespace SoundRelated
             Debug.LogError("no clips");
         }
 
+
         public void PlayAudioOneShot(SFXClip clip, Vector3 globalPosition)
         {
             foreach (var musicClip in musicClips)
@@ -79,9 +78,7 @@ namespace SoundRelated
                 {
                     AudioSource audioSource = pooled3DAudioSource.Get();
                     //set up all the audio source setting
-                    audioSource.volume = musicClip.volume;
-                    audioSource.clip = musicClip.clip;
-                    audioSource.pitch = musicClip.pitch;
+                    SetUpAudioSource(musicClip, audioSource);
                     audioSource.transform.position = globalPosition;
                     audioSource.loop = false;
 
@@ -106,6 +103,7 @@ namespace SoundRelated
         }
         #endregion
 
+        #region playing continuous music
         //this will need to have another method to stop this
         public void PlayAudioContinuous(SFXClip clip)
         {
@@ -115,9 +113,7 @@ namespace SoundRelated
                 if (musicClip.sfx == clip)
                 {
                     AudioSource audioSource = pooledGlobalAudioSource.Get();
-                    audioSource.volume = musicClip.volume;
-                    audioSource.clip = musicClip.clip;
-                    audioSource.pitch = musicClip.pitch;
+                    SetUpAudioSource(musicClip, audioSource);
                     audioSource.loop = true;
 
                     audioSource.Play();
@@ -138,10 +134,8 @@ namespace SoundRelated
                 if (musicClip.sfx == clip)
                 {
                     AudioSource audioSource = pooledGlobalAudioSource.Get();
+                    SetUpAudioSource(musicClip,audioSource);
                     audioSource.transform.position = globalPosition;
-                    audioSource.volume = musicClip.volume;
-                    audioSource.clip = musicClip.clip;
-                    audioSource.pitch = musicClip.pitch;
                     audioSource.loop = true;
 
                     audioSource.Play();
@@ -159,22 +153,54 @@ namespace SoundRelated
         {
             if(loopedAudioSources.TryGetValue(clip, out var audioSource))
             {
-                audioSource.Stop();
-                if(audioSource.transform.parent == containerForGlobalAudioSource)
-                {
-                    pooledGlobalAudioSource.Retrieve(audioSource);
-                }
-                else
-                {
-                    pooled3DAudioSource.Retrieve(audioSource);
-                }
+                RetrieveAudioSource(audioSource);
 
                 loopedAudioSources.Remove(clip);
             }
             Debug.LogError("no clips to stop playing");
 
         }
+        #endregion
+        
+        public AudioSource PlayMusicClip(MusicClip clip)
+        {
+            var source = pooledGlobalAudioSource.Get();
+            SetUpAudioSource(clip, source);
+            source.loop = false;
 
+            source.Play();
+            return source;  
+        }
+
+        public AudioSource PlayMusicClip(MusicClip clip, Vector3 globalPosition)
+        {
+            var source = pooled3DAudioSource.Get();
+            SetUpAudioSource(clip, source);
+            source.loop = false;
+            source.transform.position = globalPosition;
+            source.Play();
+            return source;
+        } 
+
+        private void SetUpAudioSource(MusicClip musicClip, AudioSource audioSource)
+        {
+            audioSource.volume = musicClip.volume;
+            audioSource.clip = musicClip.clip;
+            audioSource.pitch = musicClip.pitch;
+        }
+
+        public void RetrieveAudioSource(AudioSource audioSource)
+        {
+            audioSource.Stop();
+            if (audioSource.transform.parent == containerForGlobalAudioSource)
+            {
+                pooledGlobalAudioSource.Retrieve(audioSource);
+            }
+            else
+            {
+                pooled3DAudioSource.Retrieve(audioSource);
+            }
+        }
 
         #region Ambient related code
         //private void InitAmbientClip()

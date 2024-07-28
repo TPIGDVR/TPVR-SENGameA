@@ -35,7 +35,7 @@ namespace Dialog
         float textSpeed;
 
         Coroutine printingCoroutine = null;
-
+        AudioSource CurrentAudioSource = null;
         private void OnEnable()
         {
             em_l.AddListener<DialogueLines>(DialogEvents.ADD_DIALOG, AddDialog);
@@ -93,7 +93,6 @@ namespace Dialog
 
         void InstantPrintLine(Line l)
         {
-            dialogueText.text = string.Empty;
             dialogueText.text = l.Text;
             dialogueSpeaker.text = l.Speaker.ToString();
             TriggerDialogueEvents(l);
@@ -101,6 +100,11 @@ namespace Dialog
 
         IEnumerator PrintLine(Line l)
         {
+            if(l.audioClip.clip != null)
+            {//check if there is a valid clip to play.
+                CurrentAudioSource = SoundManager.Instance.PlayMusicClip(l.audioClip);
+            }
+
             dialogueText.text = string.Empty;
             dialogueSpeaker.text = l.Speaker.ToString();
             foreach (char c in l.Text.ToCharArray())
@@ -153,14 +157,19 @@ namespace Dialog
             //check if theres valid dialogue
             if (currentDialog == null) return;
 
+            //Retrieve the audiosource that was playing
+            if (CurrentAudioSource != null) SoundManager.Instance.RetrieveAudioSource(CurrentAudioSource);
+
             //complete print dialogue before advancing to the next
-            if(printingCoroutine != null)
+            if (printingCoroutine != null)
             {
                 StopCoroutine(printingCoroutine);
                 //set as null
                 printingCoroutine = null;
 
                 InstantPrintLine(currentLine);
+
+                
             }
             else //not currently printing anymore
             {

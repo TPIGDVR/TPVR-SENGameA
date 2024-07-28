@@ -1,3 +1,4 @@
+using Assets.Scripts.Player.Anxiety_Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,8 @@ public class Player : MonoBehaviour
     EventManager<PlayerEvents> em_p = EventSystem.player;
     EventManager<TutorialEvents> em_t = EventSystem.tutorial;
     EventManager<DialogEvents> em_d = EventSystem.dialog;
-    AnxietyHandler anxietyHandler;
+    //AnxietyHandler anxietyHandler;
+    PlayerAnxietyHandler anxietyHandler;
     NoiseProximityHandler noiseProximityHandler;
 
     //references to ui
@@ -20,8 +22,9 @@ public class Player : MonoBehaviour
         em_t.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
         em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
         em_d.AddListener(DialogEvents.ACTIVATE_OBJECTIVE, ActivateObjectiveMechanic);
-        anxietyHandler = GetComponent<AnxietyHandler>();
+        anxietyHandler = GetComponent<PlayerAnxietyHandler>();
         noiseProximityHandler = GetComponent<NoiseProximityHandler>();
+
     }
 
     void WearSunglasses()
@@ -42,7 +45,7 @@ public class Player : MonoBehaviour
 
     void ActivateHeartRateMechanic()
     {
-        anxietyHandler.IsActive = true;
+        anxietyHandler.CanRun = true;
         Heart.SetActive(true);
     }
 
@@ -56,7 +59,7 @@ public class Player : MonoBehaviour
         //heart rate: deactivate the ui + anxiety build up
         //disable noise range indicator
         //disable objective indicator
-        anxietyHandler.IsActive = false;
+        anxietyHandler.CanRun = false;
         Heart.SetActive(false);
         Objective.SetActive(false);
     }
