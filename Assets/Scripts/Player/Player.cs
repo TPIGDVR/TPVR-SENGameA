@@ -16,7 +16,11 @@ public class Player : MonoBehaviour
     //references to ui
     [SerializeField]
     GameObject Heart,Objective;
-    
+
+    //room / objective variables
+    Room currentRoom;
+
+
     private void Awake()
     {
         em_t.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
@@ -27,6 +31,7 @@ public class Player : MonoBehaviour
 
     }
 
+    #region UNUSED FOR NOW
     void WearSunglasses()
     {
         isWearingSunglasses = true;
@@ -37,7 +42,7 @@ public class Player : MonoBehaviour
     {
         isWearingSunglasses = false;
     }
-
+    #endregion
     //Mechanics :
     //Noise Range Indicator
     //Heartrate
@@ -62,5 +67,10 @@ public class Player : MonoBehaviour
         anxietyHandler.CanRun = false;
         Heart.SetActive(false);
         Objective.SetActive(false);
+    }
+
+    void CompleteObjective()
+    {
+
     }
 }
