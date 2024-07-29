@@ -23,6 +23,10 @@ public class AutomatonBehaviour : MonoBehaviour
     [SerializeField]
     bool _isStationary;
 
+    [Header("Movement")]
+    [SerializeField]float oringinalMovement = 5f;
+    [SerializeField] float acceptableDegree = 15f;
+    [SerializeField] float rotationSpeed = 3f;
     private void Start()
     {
         _ani = GetComponent<Animator>();
@@ -53,7 +57,7 @@ public class AutomatonBehaviour : MonoBehaviour
                     SetDestination(pos);
 
                     yield return new WaitForSeconds(0.1f);
-                    yield return new WaitUntil(() => _agent.remainingDistance <= _travelCompleteThreshold);
+                    yield return MovementCoroutine();
                     _ani.SetFloat("Spd", 0f);
                     break;
                 case AutomatonStates.SCAN:
@@ -76,10 +80,63 @@ public class AutomatonBehaviour : MonoBehaviour
         }
     }
 
+    IEnumerator MovementCoroutine()
+    {
+        print("running the movement Script");
+        Vector3 previousPosition = transform.position;
+        while(_agent.remainingDistance >= _travelCompleteThreshold)
+        {
+            //check 
+            Vector3 nxtDirection = _agent.nextPosition - previousPosition;
+            
+            float degreeOfRotation = Vector3.SignedAngle(transform.forward, nxtDirection , transform.up);
+            if(!(degreeOfRotation < acceptableDegree && 
+                degreeOfRotation > -acceptableDegree))
+                //if not within acceptable degree.
+            {
+                yield return RotateKyle(degreeOfRotation, nxtDirection, transform.forward);
+            }
+            else
+            {
+                _ani.SetFloat("Spd", 0.5f);
+                _agent.speed = oringinalMovement;
+                
+            }
+            //print($"rotation;{degreeOfRotation}, forward {transform.forward}, nxtDirection {nxtDirection} \n" +
+            //    $"agent nxt Position {_agent.nextPosition}, transform position {transform.position}");
+            previousPosition = transform.position;
+            yield return null;
+        }
+    }
+
+    IEnumerator RotateKyle(float degree, Vector3 targetDirection, Vector3 currentDirection)
+    {
+        _agent.speed = 0;
+        float strength = degree / 180;
+        
+        _ani.SetFloat("RotationStrength", strength);
+        _ani.SetFloat("Spd", 0f);
+
+        _ani.SetTrigger("Rotate");
+        targetDirection.Normalize();
+        currentDirection.Normalize();
+        yield return new WaitUntil(() => _ani.GetCurrentAnimatorStateInfo(0).IsName("Rotation blend tree"));
+
+        while (_ani.GetCurrentAnimatorStateInfo(0).IsName("Rotation blend tree"))
+        {
+            Debug.DrawRay(transform.position, targetDirection * 50, Color.blue);
+            float normalizeTime = _ani.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            transform.forward = Vector3.Slerp(currentDirection, targetDirection, normalizeTime);
+            yield return null;
+        }
+    }
+
     public void SetDestination(Vector3 pos)
     {
         _agent.SetDestination(pos);
-        _ani.SetFloat("Spd", 0.5f);
+        _agent.speed = 0;
+
+        //_ani.SetFloat("Spd", 0.5f);
     }
 
     void EvaluateState()
