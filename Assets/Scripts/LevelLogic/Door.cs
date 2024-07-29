@@ -26,6 +26,11 @@ public abstract class Door : MonoBehaviour
         StartCoroutine(OpenDoor_Cor());
     }
 
+    public void LevelCleared()
+    {
+        StartCoroutine(OpenDoor_Cor());
+    }
+
     IEnumerator OpenDoor_Cor()
     {
         float timer = 0;

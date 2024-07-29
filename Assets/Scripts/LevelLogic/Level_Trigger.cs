@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level_Triggers : MonoBehaviour
+public class Level_Trigger : MonoBehaviour
 {
     public enum EventType //add more if we have more in EventSystem
     {
@@ -15,9 +15,5 @@ public class Level_Triggers : MonoBehaviour
 
     [SerializeField]
     EventType Type;
-    
-    void DetermineEventType()
-    {
 
-    }
 }
