@@ -19,7 +19,7 @@ public class PlayerVFX : MonoBehaviour
     #endregion
 
     EventManager<GameEvents> em = EventSystem.game;
-    private void Start()
+    private void Awake()
     {
 
         em.AddListener(GameEvents.LOSE,BeginFadeScreen);
