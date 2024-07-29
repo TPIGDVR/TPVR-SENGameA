@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static ScriptableObjectManager;
+
 public class Room : MonoBehaviour
 {
     [SerializeField]
@@ -10,13 +11,15 @@ public class Room : MonoBehaviour
 
     AutomatonBehaviour[] automatons;
     Kiosk[] kiosks;
+    Room_Door[] doors;
     bool isCompleted;
 
     #region ROOM INITIALIZATION
-    void InitializeRoom()
+    public void InitializeRoom()
     {
         RetrieveAutomatonsInRoom();
         RetrieveKiosksInRoom();
+        RetrieveDoorsInRoom();
         InstantiateScriptableObject();
         isCompleted = false;
     }
@@ -29,6 +32,15 @@ public class Room : MonoBehaviour
     void RetrieveKiosksInRoom()
     {
         kiosks = GetComponentsInChildren<Kiosk>();
+    }
+
+    void RetrieveDoorsInRoom()
+    {
+        doors = GetComponentsInChildren<Room_Door>();
+        foreach (var door in doors)
+        {
+            door.InitializeDoor();
+        }
     }
 
     void InstantiateScriptableObject()
@@ -57,13 +69,39 @@ public class Room : MonoBehaviour
         }
     }
 
-    void ObjectiveComplete(ObjectiveName objName)
+    public void ProgressObjective(ObjectiveName objName)
     {
         foreach (var obj in roomObj_rt)
         {
-            if (obj.Name == objName)
+            //check if completed
+            if (obj.Name == objName && !obj.IsComplete) 
+            {
                 obj.Completed += 1;
+
+                //check if the objective is completed
+                if (obj.IsComplete)
+                {
+                    //go through each door to check
+                    foreach(var door in doors)
+                    {
+                        if(door.doorTag == obj.doorToOpen)
+                        {
+                            door.OpenDoor();
+                        }
+                    }
+                }
+            }
         }
-        
+    }
+
+    bool isObjectiveComplete()
+    {
+        bool completed = false;
+        foreach (var obj in roomObj_rt)
+        {
+            completed &= obj.IsComplete;
+        }
+
+        return completed;
     }
 }

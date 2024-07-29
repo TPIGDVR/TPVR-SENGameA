@@ -6,9 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     bool isWearingSunglasses;
-    EventManager<PlayerEvents> em_p = EventSystem.player;
-    EventManager<TutorialEvents> em_t = EventSystem.tutorial;
-    EventManager<DialogEvents> em_d = EventSystem.dialog;
+
     //AnxietyHandler anxietyHandler;
     PlayerAnxietyHandler anxietyHandler;
     NoiseProximityHandler noiseProximityHandler;
@@ -20,16 +18,46 @@ public class Player : MonoBehaviour
     //room / objective variables
     Room currentRoom;
 
-
     private void Awake()
+    {
+        InitializePlayer();
+    }
+
+    #region Initialization
+    EventManager<PlayerEvents> em_p = EventSystem.player;
+    EventManager<TutorialEvents> em_t = EventSystem.tutorial;
+    EventManager<DialogEvents> em_d = EventSystem.dialog;
+    EventManager<LevelEvents> em_l = EventSystem.level;
+
+    void InitializePlayer()
+    {
+        EventSubscribing();
+        GetReferenceToComponents();
+    }
+
+    void EventSubscribing()
     {
         em_t.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
         em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
         em_d.AddListener(DialogEvents.ACTIVATE_OBJECTIVE, ActivateObjectiveMechanic);
+        em_l.AddListener<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ProgressObjective);
+    }
+
+    void EventUnsubscribing()
+    {
+        em_t.RemoveListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
+        em_d.RemoveListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
+        em_d.RemoveListener(DialogEvents.ACTIVATE_OBJECTIVE, ActivateObjectiveMechanic);
+        em_l.RemoveListener<ObjectiveName>(LevelEvents.OBJECTIVE_COMPLETE, ProgressObjective);
+    }
+
+    void GetReferenceToComponents()
+    {
         anxietyHandler = GetComponent<PlayerAnxietyHandler>();
         noiseProximityHandler = GetComponent<NoiseProximityHandler>();
-
     }
+
+    #endregion
 
     #region UNUSED FOR NOW
     void WearSunglasses()
@@ -69,8 +97,8 @@ public class Player : MonoBehaviour
         Objective.SetActive(false);
     }
 
-    void CompleteObjective()
+    void ProgressObjective(ObjectiveName name)
     {
-
+        currentRoom.ProgressObjective(name);
     }
 }

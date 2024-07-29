@@ -118,7 +118,7 @@ public class Kiosk : MonoBehaviour
 
         scanCompleted = true;
         audioSource.PlayOneShot(audioClips[1]);
-        em_l.TriggerEvent(LevelEvents.KIOSK_CLEARED);
+        em_l.TriggerEvent(LevelEvents.OBJECTIVE_PROGRESSED,ObjectiveName.KIOSK);
         animator.SetBool("Completed", true);
     }
 

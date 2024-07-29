@@ -44,9 +44,13 @@ public enum TutorialEvents
 
 public enum LevelEvents
 {
+    INIT_LEVEL,
+    INIT_ROOM,
     KIOSK_CLEARED,
     LEVEL_CLEARED,
-    ENTER_DIALOGUE_TRIGGER 
+    ENTER_DIALOGUE_TRIGGER,
+    OBJECTIVE_PROGRESSED,
+    OBJECTIVE_COMPLETE     
 }
 
 public enum DialogEvents
