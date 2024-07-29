@@ -1,3 +1,4 @@
+using SoundRelated;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -29,6 +30,7 @@ public class HeartBeatScript : MonoBehaviour
         //set ui component
         text.text = $"{currBPM} BPM";
         heartBeatImage.color = colorGradient.Evaluate(curAnxiety);
-
+        print("heart beat");
+        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HEART_BEAT);
     }
 }

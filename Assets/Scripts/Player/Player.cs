@@ -1,4 +1,5 @@
 using Assets.Scripts.Player.Anxiety_Scripts;
+using SoundRelated;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,12 +46,14 @@ public class Player : MonoBehaviour
 
     void ActivateHeartRateMechanic()
     {
+        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.FUTURISTIC_PANEL_OPEN);
         anxietyHandler.CanRun = true;
         Heart.SetActive(true);
     }
 
     void ActivateObjectiveMechanic()
     {
+        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.FUTURISTIC_PANEL_OPEN);
         Objective.SetActive(true);
     }
 

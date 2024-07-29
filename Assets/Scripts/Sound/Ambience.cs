@@ -19,6 +19,12 @@ namespace SoundRelated
         IMAGE_KIOSK_OPEN,
         HOLOGRAM_CLOSE,
         DATA_DOWNLOADING,
+
+        //heart beat
+        HEART_BEAT,
+
+        //OBJECTIVE PANEL
+        FUTURISTIC_PANEL_OPEN,
     }
 
     [Serializable]

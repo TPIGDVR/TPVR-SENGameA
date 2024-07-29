@@ -55,7 +55,6 @@ public class TutorialLevelScript : MonoBehaviour
         //instantiate all dialogue scriptable object
         foreach (var l in lines)
         {
-            print("adding lines");
             AddIntoSOCollection(l);
         }
     }

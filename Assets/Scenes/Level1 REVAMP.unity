@@ -7422,6 +7422,33 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 532246148}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &535830842 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5998300796106860043, guid: 81d1945791c944e438a9df52c37ddb0c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1376120851}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &535830846
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535830842}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bd8d524dab4779a4aaa7c49a9d1263aa, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &538483978
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16340,6 +16367,14 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: ff1a45ed1367e5347ae072ad16cc7ee2, type: 3}
     volume: 0.526
     pitch: 1
+  - sfx: 9
+    clip: {fileID: 8300000, guid: 1759bb46b20569c43a9e59e22e622e25, type: 3}
+    volume: 0.526
+    pitch: 1
+  - sfx: 10
+    clip: {fileID: 8300000, guid: 4b28a21bd63dad649bb9597894816368, type: 3}
+    volume: 0.526
+    pitch: 1
   initPoolSize3D: 10
   prefabFor3DAudioSource: {fileID: 1058073537701646820, guid: d5e31f525b3533742b2e029fabad06ba,
     type: 3}
@@ -21048,6 +21083,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4566481768762889832, guid: 81d1945791c944e438a9df52c37ddb0c,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6322408247784915127, guid: 81d1945791c944e438a9df52c37ddb0c,
         type: 3}
       propertyPath: m_Name
@@ -21121,7 +21161,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5998300796106860043, guid: 81d1945791c944e438a9df52c37ddb0c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 535830846}
   m_SourcePrefab: {fileID: 100100000, guid: 81d1945791c944e438a9df52c37ddb0c, type: 3}
 --- !u!1 &1377639995
 GameObject:
