@@ -3175,53 +3175,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 238446661}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &238966421
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 238966423}
-  - component: {fileID: 238966422}
-  m_Layer: 0
-  m_Name: TestTrigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &238966422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 238966421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2e6eb74a2044684aa4bbea2091007ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  roomA: {fileID: 0}
-  roomB: {fileID: 0}
---- !u!4 &238966423
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 238966421}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.2850852, y: 0.31190395, z: -0.6049493}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &255917085
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31688,4 +31641,3 @@ SceneRoots:
   - {fileID: 1405660205}
   - {fileID: 1376120851}
   - {fileID: 2074166996}
-  - {fileID: 238966423}
