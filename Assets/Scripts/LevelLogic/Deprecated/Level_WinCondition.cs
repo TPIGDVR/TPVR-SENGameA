@@ -12,7 +12,7 @@ public class Level_WinCondition : MonoBehaviour
 
     void Start()
     {
-        em_l.AddListener(LevelEvents.KIOSK_CLEARED,IncrementNumOfKioskCleared);
+        //em_l.AddListener(LevelEvents.KIOSK_CLEARED,IncrementNumOfKioskCleared);
     }
 
     void Update()

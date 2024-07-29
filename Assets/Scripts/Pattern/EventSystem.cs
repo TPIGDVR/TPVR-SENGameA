@@ -46,7 +46,12 @@ public enum LevelEvents
 {
     KIOSK_CLEARED,
     LEVEL_CLEARED,
-    ENTER_DIALOGUE_TRIGGER 
+    ENTER_DIALOGUE_TRIGGER,
+
+    //objective system
+    ENTER_NEW_ROOM,
+    OBJECTIVE_PROGRESSED,
+    OBJECTIVE_COMPLETE     
 }
 
 public enum DialogEvents

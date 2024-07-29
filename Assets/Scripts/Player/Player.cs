@@ -7,9 +7,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     bool isWearingSunglasses;
-    EventManager<PlayerEvents> em_p = EventSystem.player;
-    EventManager<TutorialEvents> em_t = EventSystem.tutorial;
-    EventManager<DialogEvents> em_d = EventSystem.dialog;
+
     //AnxietyHandler anxietyHandler;
     PlayerAnxietyHandler anxietyHandler;
     NoiseProximityHandler noiseProximityHandler;
@@ -17,17 +15,57 @@ public class Player : MonoBehaviour
     //references to ui
     [SerializeField]
     GameObject Heart,Objective;
-    
+
+    //room / objective variables
+    Room currentRoom;
+
     private void Awake()
     {
-        em_t.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
-        em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
-        em_d.AddListener(DialogEvents.ACTIVATE_OBJECTIVE, ActivateObjectiveMechanic);
-        anxietyHandler = GetComponent<PlayerAnxietyHandler>();
-        noiseProximityHandler = GetComponent<NoiseProximityHandler>();
-
+        InitializePlayer();
     }
 
+    #region Initialization
+    EventManager<PlayerEvents> em_p = EventSystem.player;
+    EventManager<TutorialEvents> em_t = EventSystem.tutorial;
+    EventManager<DialogEvents> em_d = EventSystem.dialog;
+    EventManager<LevelEvents> em_l = EventSystem.level;
+
+    void InitializePlayer()
+    {
+        EventSubscribing();
+        GetReferenceToComponents();
+    }
+
+    void EventSubscribing()
+    {
+        em_t.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
+
+        //dialogue events
+        em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
+        em_d.AddListener(DialogEvents.ACTIVATE_OBJECTIVE, ActivateObjectiveMechanic);
+
+        //level events
+        em_l.AddListener<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ProgressObjective);
+        em_l.AddListener<Room>(LevelEvents.ENTER_NEW_ROOM, SwitchCurrentRoom);
+    }
+
+    void EventUnsubscribing()
+    {
+        em_t.RemoveListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
+        em_d.RemoveListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
+        em_d.RemoveListener(DialogEvents.ACTIVATE_OBJECTIVE, ActivateObjectiveMechanic);
+        em_l.RemoveListener<ObjectiveName>(LevelEvents.OBJECTIVE_COMPLETE, ProgressObjective);
+    }
+
+    void GetReferenceToComponents()
+    {
+        anxietyHandler = GetComponent<PlayerAnxietyHandler>();
+        noiseProximityHandler = GetComponent<NoiseProximityHandler>();
+    }
+
+    #endregion
+
+    #region UNUSED FOR NOW
     void WearSunglasses()
     {
         isWearingSunglasses = true;
@@ -38,7 +76,7 @@ public class Player : MonoBehaviour
     {
         isWearingSunglasses = false;
     }
-
+    #endregion
     //Mechanics :
     //Noise Range Indicator
     //Heartrate
@@ -65,5 +103,17 @@ public class Player : MonoBehaviour
         anxietyHandler.CanRun = false;
         Heart.SetActive(false);
         Objective.SetActive(false);
+    }
+
+    void ProgressObjective(ObjectiveName name)
+    {
+        currentRoom.ProgressObjective(name);
+    }
+
+    void SwitchCurrentRoom(Room newRoom)
+    {
+        if (newRoom == null) throw new System.Exception("THE NEW ROOM IS NULL");
+
+        currentRoom = newRoom;
     }
 }
