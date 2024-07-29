@@ -38,9 +38,14 @@ public class Player : MonoBehaviour
     void EventSubscribing()
     {
         em_t.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
+
+        //dialogue events
         em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
         em_d.AddListener(DialogEvents.ACTIVATE_OBJECTIVE, ActivateObjectiveMechanic);
+
+        //level events
         em_l.AddListener<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ProgressObjective);
+        em_l.AddListener<Room>(LevelEvents.ENTER_NEW_ROOM, SwitchCurrentRoom);
     }
 
     void EventUnsubscribing()
@@ -100,5 +105,12 @@ public class Player : MonoBehaviour
     void ProgressObjective(ObjectiveName name)
     {
         currentRoom.ProgressObjective(name);
+    }
+
+    void SwitchCurrentRoom(Room newRoom)
+    {
+        if (newRoom == null) throw new System.Exception("THE NEW ROOM IS NULL");
+
+        currentRoom = newRoom;
     }
 }
