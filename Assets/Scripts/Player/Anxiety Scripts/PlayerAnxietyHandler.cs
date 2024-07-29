@@ -68,9 +68,13 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 
         private void Update()
         {
-            if (!CanRun || isDead)
-                return;
+            
             DetermineAnxietyScale();
+            if (!CanRun || isDead)
+            {
+                _anxietyIncreaseScale = 0f;
+            }
+
             DetermineAnxietyLevel();
             DetermineDeathTimer();
 
