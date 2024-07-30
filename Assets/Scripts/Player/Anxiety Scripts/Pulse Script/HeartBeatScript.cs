@@ -22,7 +22,6 @@ public class HeartBeatScript : MonoBehaviour
 
     public void ChangeHeartBeat()
     {
-        Debug.Log(anxiety);
         float curAnxiety = anxiety;
         int currBPM = (int) Mathf.Lerp(minHeartBeat, maxHeartBeat, curAnxiety);
         currBPM += UnityEngine.Random.Range(-heartBeatRand, heartBeatRand);
