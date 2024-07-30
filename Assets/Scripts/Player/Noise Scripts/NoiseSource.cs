@@ -13,7 +13,7 @@ public class NoiseSource : MonoBehaviour
     AudioHighPassFilter highPassFilter;
     AudioLowPassFilter lowPassFilter;
     MeshRenderer meshRenderer;
-    private void Start()
+    private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
         audioSource = GetComponent<AudioSource>();
@@ -69,6 +69,7 @@ public class NoiseSource : MonoBehaviour
     
     void ActivateNoiseRangeIndicator()
     {
+
         Debug.Log("ACTIVATE INDICATOR");
         meshRenderer.enabled = true;
     }

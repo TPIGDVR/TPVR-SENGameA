@@ -72,6 +72,8 @@ public class Tutorial_Kiosk : MonoBehaviour
     [SerializeField]
     bool hasHologramPanels;
 
+    public Transform TargetDestination { get => targetDestination; }
+
     private void Start()
     {
         progressUI.fillAmount = 0f;
