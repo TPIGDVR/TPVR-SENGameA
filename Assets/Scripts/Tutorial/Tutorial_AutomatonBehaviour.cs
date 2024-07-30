@@ -20,19 +20,22 @@ namespace Assets.Scripts.Automaton
 
         public NavMeshAgent Agent { get => _agent; }
 
+        Vector3 originalPosition;
+
         private void Start()
         {
             _ani = GetComponent<Animator>();
             _agent = GetComponent<NavMeshAgent>();
             _audio = GetComponent<AudioSource>();
             StartCoroutine(Behaviour());
+            originalPosition = transform.position;  
         }
 
         IEnumerator Behaviour()
         {
             while (true)
             {
-                print($"{transform.parent.name} is at {_state}");
+                //print($"{transform.parent.name} is at {_state}");
                 switch (_state)
                 {
                     case AutomatonStates.IDLE:
@@ -65,7 +68,7 @@ namespace Assets.Scripts.Automaton
             }
         }
 
-        void SwitchToIdle()
+        public void SwitchToIdle()
         {
             _state = AutomatonStates.IDLE;
         }
@@ -97,6 +100,15 @@ namespace Assets.Scripts.Automaton
         {
             Agent.speed = speed;
         }
+
+        public void ResetOriginalPostion()
+        {
+            _agent.Stop();
+            transform.position = originalPosition;
+            SwitchToIdle() ;
+
+        }
+
 
         enum AutomatonStates
         {

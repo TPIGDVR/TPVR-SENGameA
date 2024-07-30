@@ -203,9 +203,9 @@ public class TutorialLevelScript : MonoBehaviour
             a.SetAgentSpeed(originalRobotsSpeed);
         }
         print($"reseting scene {originalAutomatonPosition}");
-        movedAutomaton.transform.position = originalAutomatonPosition;
-        movedAutomaton.Agent.Stop();
-        finalKioskTrigger.transform.position = originalTriggerPosition;
+        movedAutomaton.ResetOriginalPostion();
+        //movedAutomaton.transform.position = originalAutomatonPosition;
+        //finalKioskTrigger.transform.position = originalTriggerPosition;
 
     }
 
