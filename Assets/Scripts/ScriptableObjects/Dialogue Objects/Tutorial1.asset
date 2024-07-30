@@ -14,8 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - Speaker: 0
-    Text: "Now remember, you\u2019re here for some important data. Try to find a
-      server that has a panel."
+    Text: Welcome back to VioletCell Virtual Assistance. I am Eve, your guide for
+      the Nirvana Tower.
+    hasBeenTriggered: 0
+    dialogEndTrigger: 0
+    audioClip:
+      sfx: 0
+      clip: {fileID: 8300000, guid: 577db80e1e7e4124ba9e7cc3999d276e, type: 3}
+      volume: 1
+      pitch: 1
+  - Speaker: 0
+    Text: "The Nirvana Tower is not friendly towards humans. I\u2019ll share with
+      you more as we go along."
+    hasBeenTriggered: 0
+    dialogEndTrigger: 0
+    audioClip:
+      sfx: 0
+      clip: {fileID: 8300000, guid: 577db80e1e7e4124ba9e7cc3999d276e, type: 3}
+      volume: 1
+      pitch: 1
+  - Speaker: 0
+    Text: First, we should gather basic data. Find a panel to download important
+      data.
     hasBeenTriggered: 0
     dialogEndTrigger: 0
     audioClip:

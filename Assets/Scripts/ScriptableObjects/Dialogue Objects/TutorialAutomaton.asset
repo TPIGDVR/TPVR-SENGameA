@@ -14,11 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - Speaker: 0
-    Text: "Ah, watch out. That\u2019s an automaton."
+    Text: "Ah, watch out. That\u2019s an automaton. "
     hasBeenTriggered: 0
     dialogEndTrigger: 0
+    audioClip:
+      sfx: 0
+      clip: {fileID: 0}
+      volume: 0
+      pitch: 0
   - Speaker: 0
     Text: "Please try to keep a distance. I\u2019ll visualize the distance you should
       keep from them."
     hasBeenTriggered: 0
     dialogEndTrigger: 5
+    audioClip:
+      sfx: 0
+      clip: {fileID: 0}
+      volume: 0
+      pitch: 0

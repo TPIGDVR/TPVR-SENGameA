@@ -14,12 +14,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - Speaker: 0
-    Text: "Good, just one to go. I\u2019ve also initialized a heart rate tracker
-      for you to track your heartbeat."
+    Text: To help you, I have initialized your heart rate tracker.
     hasBeenTriggered: 0
     dialogEndTrigger: 6
+    audioClip:
+      sfx: 0
+      clip: {fileID: 0}
+      volume: 0
+      pitch: 0
   - Speaker: 0
-    Text: "Being near automatons for too long might overwhelm you, so it\u2019s good
-      to have a visual guide."
+    Text: Being near automatons for too long might overwhelm you, so make use of
+      the soundwave visual indicators to stay clear of them.
     hasBeenTriggered: 0
     dialogEndTrigger: 0
+    audioClip:
+      sfx: 0
+      clip: {fileID: 0}
+      volume: 0
+      pitch: 0
+  - Speaker: 0
+    Text: "Let\u2019s go to the last panel."
+    hasBeenTriggered: 0
+    dialogEndTrigger: 0
+    audioClip:
+      sfx: 0
+      clip: {fileID: 0}
+      volume: 0
+      pitch: 0
