@@ -9,20 +9,20 @@ public class NoiseSource : MonoBehaviour
     public float NoiseRange = 10;
     public float NoiseValue = 5;
     public float NoiseRangeScaled;
-    AudioSource audio;
+    AudioSource audioSource;
     AudioHighPassFilter highPassFilter;
     AudioLowPassFilter lowPassFilter;
     MeshRenderer meshRenderer;
     private void Start()
     {
         meshRenderer = GetComponent<MeshRenderer>();
-        audio = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
         noiseIndicator.localScale = new Vector3(NoiseRange, NoiseRange, NoiseRange);
         NoiseRangeScaled = (NoiseRange + c.radius) * LevelConstants.Scale;
-        audio.maxDistance = NoiseRangeScaled;
-        audio.minDistance = 0;
+        audioSource.maxDistance = NoiseRangeScaled;
+        audioSource.minDistance = 0;
         //audio.PlayDelayed(Random.Range(0, 3));
-        audio.Play();
+        audioSource.Play();
         highPassFilter = GetComponent<AudioHighPassFilter>();
         lowPassFilter = GetComponent<AudioLowPassFilter>();
 

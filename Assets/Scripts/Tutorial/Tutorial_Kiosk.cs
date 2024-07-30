@@ -57,6 +57,21 @@ public class Tutorial_Kiosk : MonoBehaviour
 
     SoundManager audioPlayer;
 
+    [Header("Kiosk Dialog")]
+    [SerializeField] KioskLines kioskData;
+    [SerializeField] TextMeshProUGUI dialogText;
+    [SerializeField] Image image;
+    [SerializeField] GridLayoutGroup imageSizer; // using the cell size to increase the width and heigh of it.1
+    [SerializeField, Range(1, 30)]
+    float textSpeed = 20;
+    int indexDialog = 0;
+    int changePanel = Animator.StringToHash("ShowImage");
+    int hidePanelHash = Animator.StringToHash("HidePanel");
+
+
+    [SerializeField]
+    bool hasHologramPanels;
+
     private void Start()
     {
         progressUI.fillAmount = 0f;
@@ -162,10 +177,65 @@ public class Tutorial_Kiosk : MonoBehaviour
         }
     }
 
-    //void StopSFX()
-    //{
-    //    audioSource.Stop();
-    //    audioSource.loop = false;
-    //}
+    public void ChangeImagePanel()
+    {
+        ChangeImage();
+        dialogText.text = "";
+    }
+
+    public void StartTyping()
+    {
+        StopAllCoroutines();
+        StartCoroutine(WaitTimer(kioskData.Lines[indexDialog].duration));
+    }
+
+    void ChangeImage()
+    {
+        var line = kioskData.Lines[indexDialog];
+        image.sprite = line.image;
+        imageSizer.cellSize = line.preferredDimension;
+    }
+
+    private IEnumerator WaitTimer(float second)
+    {
+        StartCoroutine(TypeNextSentence());
+        yield return new WaitForSeconds(second);
+
+        indexDialog++;
+
+        if (indexDialog >= kioskData.Lines.Length)
+        {
+            //audioSource.PlayOneShot(audioClips[4]);
+            animator.SetTrigger(hidePanelHash);
+        }
+        else
+        {
+            //audioSource.PlayOneShot(audioClips[3]);
+            animator.SetTrigger(changePanel);
+        }
+        //animator.SetTrigger()
+    }
+
+    private IEnumerator TypeNextSentence()
+    {
+        dialogText.text = "";
+        string text = kioskData.Lines[indexDialog].Text;
+
+        //start playing audio clip to play the typing sfx
+        //audioSource.clip = audioClips[2];
+        //audioSource.loop = true;
+        //audioSource.Play();
+
+        //play the audio clip forspeech
+        //speechSource.PlayOneShot(kioskData.Lines[indexDialog].clip);
+
+        foreach (char c in text.ToCharArray())
+        {
+            dialogText.text += c;
+            yield return new WaitForSeconds(0.5f / textSpeed);
+        }
+        //audioSource.loop = false;
+        //audioSource.Stop();
+    }
 
 }

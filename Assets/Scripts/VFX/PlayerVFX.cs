@@ -7,35 +7,21 @@ using UnityEngine.UI;
 
 public class PlayerVFX : MonoBehaviour
 {
-
-    #region FADE VARIABLES
-    Vignette _vig;
     [SerializeField]
     Image _fadeImg;
 
     [SerializeField]
     float fadeTime;
     public float fadeTimer;
-    #endregion
 
-    EventManager<GameEvents> em = EventSystem.game;
-    private void Awake()
-    {
+    public bool isFaded = false;
 
-        em.AddListener(GameEvents.LOSE,BeginFadeScreen);
-        em.AddListener(GameEvents.ENTER_NEW_SCENE,BeginUnfadeScreen);
-
-        //test
-        //BeginFadeScreen();
-    }
-
-
-    void BeginFadeScreen()
+    public void BeginFadeScreen()
     {
         StartCoroutine(FadeScreen());
     }
 
-    void BeginUnfadeScreen()
+    public void BeginUnfadeScreen()
     {
         StartCoroutine(UnfadeScreen());
     }
@@ -49,9 +35,9 @@ public class PlayerVFX : MonoBehaviour
             yield return new WaitForSeconds(interval);
             fadeTimer += interval;
             _fadeImg.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0, 0, 0, 1), fadeTimer / fadeTime);
-            //_vig.intensity.value = Mathf.Lerp(0, 5, fadeTimer/fadeTime);
         }
 
+        isFaded = true;
     }
 
     IEnumerator UnfadeScreen()
@@ -63,8 +49,8 @@ public class PlayerVFX : MonoBehaviour
             yield return new WaitForSeconds(interval);
             fadeTimer += interval;
             _fadeImg.color = Color.Lerp(new Color(0, 0, 0, 1), new Color(0, 0, 0, 0), fadeTimer / fadeTime);
-            //_vig.intensity.value = Mathf.Lerp(0, 5, fadeTimer/fadeTime);
         }
 
+        isFaded = false;
     }
 }

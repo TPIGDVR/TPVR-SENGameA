@@ -16,9 +16,26 @@ public static class ScriptableObjectManager //make singleton
         scriptableObjectCollection.Add(original, ScriptableObject.Instantiate(original));
     }
     
+    public static void AddIntoSOCollection(ScriptableObject[] originals)
+    {
+        foreach (var item in originals)
+        {
+            AddIntoSOCollection(item);
+        }
+    }
+
     public static void RemoveFromSOCollection(ScriptableObject original)
     {
+        if (scriptableObjectCollection[original] == null) throw new System.Exception($"Scriptable Object Manager : Item does not exist in dictionary!");
         scriptableObjectCollection.Remove(original);
+    }
+
+    public static void RemoveFromSOCollection(ScriptableObject[] originals)
+    {
+        foreach (var item in originals)
+        {
+            RemoveFromSOCollection(item);
+        }
     }
 
     /// <summary>
@@ -29,6 +46,21 @@ public static class ScriptableObjectManager //make singleton
     /// <returns>Returns the instantiated runtime scriptable object</returns>
     public static ScriptableObject RetrieveRuntimeScriptableObject(ScriptableObject original)
     {
+        if (scriptableObjectCollection[original] == null) throw new System.Exception($"Scriptable Object Manager : Item does not exist in dictionary!");
         return scriptableObjectCollection[original];
     } 
+
+    public static ScriptableObject[] RetrieveRuntimeScriptableObject(ScriptableObject[] originals)
+    {
+        ScriptableObject[] objs = new ScriptableObject[originals.Length];
+        int index = 0;
+
+        foreach (var item in originals)
+        {
+            objs[index] = RetrieveRuntimeScriptableObject(item);
+            index++;
+        }
+
+        return objs;
+    }
 }

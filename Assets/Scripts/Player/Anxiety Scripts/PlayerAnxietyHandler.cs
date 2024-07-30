@@ -8,7 +8,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
     {
 
         public float _anxietyLevel = 0;
-        //NoiseProximityHandler _noiseProximityHandler;
 
         [Header("Anxiety Related")]
         [SerializeField]
@@ -46,6 +45,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 
         EventManager<PlayerEvents> em_p = EventSystem.player;
         EventManager<GameEvents> em_g = EventSystem.game;
+        EventManager<TutorialEvents> em_t = EventSystem.tutorial;
 
         [Header("reduction anxiety")]
         [SerializeField] float maxTimeReduction;
@@ -55,78 +55,28 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         public bool CanRun;
         float curAnxiety => _anxietyLevel / _maxAnxietyLevel;
 
-        private void Start()
+        public void InitializePlayerAnxiety()
         {
-            //_noiseProximityHandler = GetComponent<NoiseProximityHandler>();
             em_p.AddListener<float>(PlayerEvents.ANXIETY_BREATHE, Breath);
-            //em_p.AddListener<float>(PlayerEvents.GLARE_UPDATE, CalculateGlare);
             em_p.AddListener<float>(PlayerEvents.HEART_BEAT, () => curAnxiety);
             _noiseSources = FindObjectsOfType<NoiseSource>();
+        }       
 
-
-        }
-
-        private void Update()
+        public void CalculateAnxiety()
         {
-            if (!CanRun || isDead)
-                return;
+            Debug.Log("calculating anxiety...");
+
             DetermineAnxietyScale();
+            if (!CanRun || isDead)
+            {
+                _anxietyIncreaseScale = 0f;
+            }
+
             DetermineAnxietyLevel();
             DetermineDeathTimer();
-
-            //trigger the event after calculating the anxiety level
-            //em_p.TriggerEvent(PlayerEvents.ANXIETY_UPDATE);
-            em_p.TriggerEvent<float>(PlayerEvents.ANXIETY_UPDATE, _anxietyLevel / _maxAnxietyLevel);
         }
 
-        #region update related
-        private void DetermineAnxietyLevel()
-        {
-            if (_anxietyIncreaseScale < 0.01f)
-            {
-                reduceElapseTime += Time.deltaTime;
-                if (reduceElapseTime > maxTimeReduction)
-                {
-                    ReduceAnxietyLevel();
-                }
-            }
-            else
-            {
-                reduceElapseTime = 0;
-                IncrementAnxietyLevel();
-            }
-            _anxietyLevel = Mathf.Clamp(_anxietyLevel, 0, _maxAnxietyLevel);
-        }
-
-        private void DetermineAnxietyScale()
-        {
-            _anxietyIncreaseScale = 0f;
-            _anxietyIncreaseScale += CalculateAnxietyScaleBasedOffGlareLevel();
-            _anxietyIncreaseScale += CalculateAnxietyScaleBasedOffNoiseLevel();
-        }
-
-        private void DetermineDeathTimer()
-        {
-            if (_anxietyLevel >= _maxAnxietyLevel)
-            {
-                _currDeathTimer += Time.deltaTime;
-            }
-            else
-            {
-                _currDeathTimer -= Time.deltaTime;
-            }
-            _currDeathTimer = Mathf.Clamp(_currDeathTimer, 0, _maxDeathTime);
-
-            if (_currDeathTimer >= _maxDeathTime && !isDead)
-            {
-                isDead = true;
-                em_g.TriggerEvent(GameEvents.LOSE);
-            }
-        }
-
-        #endregion
-
-        #region noise + glare anxiety calculation
+        #region ANXIETY CALC
         float CalculateAnxietyScaleBasedOffNoiseLevel()
         {
             float totalNoiseLevel = 0;
@@ -164,7 +114,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                     , glareValue / _maxGlareValue);
             }
         }
-        #endregion
+
         void IncrementAnxietyLevel()
         {
             _anxietyLevel += (Time.deltaTime * _anxietyIncreaseSpeed) * _anxietyIncreaseScale;
@@ -174,6 +124,60 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         {
             _anxietyLevel -= Time.deltaTime * anxietyReduction;
         }
+
+        private void DetermineAnxietyLevel()
+        {
+            if (_anxietyIncreaseScale < 0.01f)
+            {
+                reduceElapseTime += Time.deltaTime;
+                if (reduceElapseTime > maxTimeReduction)
+                {
+                    ReduceAnxietyLevel();
+                }
+            }
+            else
+            {
+                reduceElapseTime = 0;
+                IncrementAnxietyLevel();
+            }
+            _anxietyLevel = Mathf.Clamp(_anxietyLevel, 0, _maxAnxietyLevel);
+        }
+
+        private void DetermineAnxietyScale()
+        {
+            _anxietyIncreaseScale = 0f;
+            _anxietyIncreaseScale += CalculateAnxietyScaleBasedOffGlareLevel();
+            _anxietyIncreaseScale += CalculateAnxietyScaleBasedOffNoiseLevel();
+        }
+
+        private void DetermineDeathTimer()
+        {
+            if (_anxietyLevel >= _maxAnxietyLevel)
+            {
+                _currDeathTimer += Time.deltaTime;
+            }
+            else
+            {
+                _currDeathTimer -= Time.deltaTime;
+            }
+            _currDeathTimer = Mathf.Clamp(_currDeathTimer, 0, _maxDeathTime);
+
+
+
+            if (_currDeathTimer >= _maxDeathTime && !isDead)
+            {
+                isDead = true;
+                if (GameData.IsInTutorial)
+                {
+                    em_t.TriggerEvent(TutorialEvents.TUTORIAL_DEATH);
+                }
+                else
+                {
+                    em_g.TriggerEvent(GameEvents.LOSE);
+                }
+            }
+        }
+        #endregion
 
         void Breath(float decrease)
         {
@@ -215,5 +219,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 
             //glareValue = gv;
         }
+
+
     }
 }

@@ -102,20 +102,27 @@ public class Kiosk : MonoBehaviour
 
         UpdateProgressUI();
 
+        //complete
         if (progress >= 1 && !scanCompleted)
         {
-            popup.CanPopUp = false;
-            //stop audiosource 2 from playing
-            audioSource2.Stop();
-            audioSource2.loop = false;
-
-            scanCompleted = true;
-            audioSource.PlayOneShot(audioClips[1]);
-            em_l.TriggerEvent(LevelEvents.KIOSK_CLEARED);
-            animator.SetBool("Completed",true);
+            Complete();
         }
     }
 
+    void Complete()
+    {
+        popup.CanPopUp = false;
+        //stop audiosource 2 from playing
+        audioSource2.Stop();
+        audioSource2.loop = false;
+
+        scanCompleted = true;
+        audioSource.PlayOneShot(audioClips[1]);
+        em_l.TriggerEvent(LevelEvents.OBJECTIVE_PROGRESSED,ObjectiveName.KIOSK);
+        animator.SetBool("Completed", true);
+    }
+
+    #region Animation
     void UpdateProgressUI()
     {
         progressUI.fillAmount = progress;
@@ -249,6 +256,7 @@ public class Kiosk : MonoBehaviour
         audioSource.loop = false;
         audioSource.Stop();
     }
+    #endregion
 }
 
 
