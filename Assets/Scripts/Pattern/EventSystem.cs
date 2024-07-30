@@ -21,15 +21,13 @@ public enum GameEvents
 
 public enum PlayerEvents
 {
-    ANXIETY_UPDATE,
     ANXIETY_BREATHE,
-    START_GAME,
     REQUEST_LUMTEXTURE,
-    GLARE_UPDATE,
     HEART_BEAT,
     SUNGLASSES_ON,
     SUNGLASSES_OFF,
-    //objective related,
+
+    //objective related
     OBJECTIVE_UPDATED,
 
 }
@@ -40,6 +38,10 @@ public enum TutorialEvents
     INIT_TUTORIAL,
     ACTIVATE_KIOSK,
     FIRST_KIOSK,
+    TUTORIAL_DEATH,
+    DEATH_SCREEN_FADED,
+    RES_SCREEN_FADED,
+    RESTART,
 }
 
 public enum LevelEvents

@@ -8,9 +8,8 @@ public class Player : MonoBehaviour
 {
     bool isWearingSunglasses;
 
-    //AnxietyHandler anxietyHandler;
-    PlayerAnxietyHandler anxietyHandler;
-    NoiseProximityHandler noiseProximityHandler;
+    PlayerAnxietyHandler anxietyHandler; //handles noise + light + breathing
+    PlayerVFX vfx;
 
     //references to ui
     [SerializeField]
@@ -24,6 +23,11 @@ public class Player : MonoBehaviour
         InitializePlayer();
     }
 
+    private void Update()
+    {
+        anxietyHandler.CalculateAnxiety();
+    }
+
     #region Initialization
     EventManager<PlayerEvents> em_p = EventSystem.player;
     EventManager<TutorialEvents> em_t = EventSystem.tutorial;
@@ -34,11 +38,15 @@ public class Player : MonoBehaviour
     {
         EventSubscribing();
         GetReferenceToComponents();
+        anxietyHandler.InitializePlayerAnxiety();
     }
 
     void EventSubscribing()
     {
+        //tutorial events
         em_t.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
+        em_t.AddListener(TutorialEvents.TUTORIAL_DEATH, TutorialDeath);
+        em_t.AddListener(TutorialEvents.RESTART, TutorialDeath);
 
         //dialogue events
         em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
@@ -47,6 +55,7 @@ public class Player : MonoBehaviour
         //level events
         em_l.AddListener<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ProgressObjective);
         em_l.AddListener<Room>(LevelEvents.ENTER_NEW_ROOM, SwitchCurrentRoom);
+        
     }
 
     void EventUnsubscribing()
@@ -60,7 +69,6 @@ public class Player : MonoBehaviour
     void GetReferenceToComponents()
     {
         anxietyHandler = GetComponent<PlayerAnxietyHandler>();
-        noiseProximityHandler = GetComponent<NoiseProximityHandler>();
     }
 
     #endregion
@@ -77,11 +85,20 @@ public class Player : MonoBehaviour
         isWearingSunglasses = false;
     }
     #endregion
-    //Mechanics :
-    //Noise Range Indicator
-    //Heartrate
-    //Level objective
 
+    void ProgressObjective(ObjectiveName name)
+    {
+        currentRoom.ProgressObjective(name);
+    }
+
+    void SwitchCurrentRoom(Room newRoom)
+    {
+        if (newRoom == null) throw new System.Exception("THE NEW ROOM IS NULL");
+
+        currentRoom = newRoom;
+    }
+
+    #region TUTORIAL METHODS
     void ActivateHeartRateMechanic()
     {
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.FUTURISTIC_PANEL_OPEN);
@@ -102,18 +119,34 @@ public class Player : MonoBehaviour
         //disable objective indicator
         anxietyHandler.CanRun = false;
         Heart.SetActive(false);
-        Objective.SetActive(false);
+        //Objective.SetActive(false);
     }
 
-    void ProgressObjective(ObjectiveName name)
+    void TutorialDeath()
     {
-        currentRoom.ProgressObjective(name);
+        StartCoroutine(T_Death());
     }
 
-    void SwitchCurrentRoom(Room newRoom)
+    void TutorialRespawn()
     {
-        if (newRoom == null) throw new System.Exception("THE NEW ROOM IS NULL");
-
-        currentRoom = newRoom;
+        StartCoroutine(T_Respawn());
     }
+
+    IEnumerator T_Death()
+    {
+        vfx.BeginFadeScreen();
+        yield return new WaitUntil(() => vfx.isFaded);
+        em_t.TriggerEvent(TutorialEvents.DEATH_SCREEN_FADED);
+        yield return new WaitForSeconds(1f);
+        vfx.BeginUnfadeScreen();
+    }
+
+    IEnumerator T_Respawn()
+    {
+        vfx.BeginFadeScreen();
+        yield return new WaitUntil(() => vfx.isFaded);
+        em_t.TriggerEvent(TutorialEvents.RES_SCREEN_FADED);
+        vfx.BeginUnfadeScreen();
+    }
+    #endregion
 }

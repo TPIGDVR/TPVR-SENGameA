@@ -16,14 +16,8 @@ public class GameOverManager : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (levelToReturn != null)
-            {
-                SceneManager.LoadScene(levelToReturn);
-            }
-            else
-            {
-                Debug.Log("No Level to Return to!");
-            }
+            SceneManager.LoadScene(levelToReturn);
+
         }
     }
 }

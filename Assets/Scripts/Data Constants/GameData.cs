@@ -5,5 +5,10 @@ using UnityEngine.Rendering;
 
 public static class GameData
 {
-    public static Volume volume;
+    public static bool IsInTutorial;
+
+    public static void ChangeTutorialStatus(bool b)
+    {
+        IsInTutorial = b;
+    }
 }
