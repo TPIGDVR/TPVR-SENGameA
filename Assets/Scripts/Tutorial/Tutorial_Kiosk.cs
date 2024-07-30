@@ -177,6 +177,12 @@ public class Tutorial_Kiosk : MonoBehaviour
         }
     }
 
+    public void StartKioskDialog()
+    {
+        ChangeImage();
+        StartTyping();     
+    }
+
     public void ChangeImagePanel()
     {
         ChangeImage();
