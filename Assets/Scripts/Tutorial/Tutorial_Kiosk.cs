@@ -117,7 +117,6 @@ public class Tutorial_Kiosk : MonoBehaviour
             audioPlayer.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
             audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
 
-
             em_t.TriggerEvent(t_event);
             if(TutorialLevelScript.kioskDownload == 1)
             {
@@ -212,8 +211,10 @@ public class Tutorial_Kiosk : MonoBehaviour
 
         if (indexDialog >= kioskData.Lines.Length)
         {
+            //dialog is complete
             //audioSource.PlayOneShot(audioClips[4]);
             SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE,transform.position);
+            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, kioskData.OtherDialogue);
             animator.SetTrigger(hidePanelHash);
         }
         else

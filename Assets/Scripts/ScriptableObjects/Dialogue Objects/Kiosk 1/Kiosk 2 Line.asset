@@ -15,8 +15,7 @@ MonoBehaviour:
   Lines:
   - Speaker: 0
     Text: Some humans, like you, are unable to withstand loud noises and high frequencies.
-      For your safety, please stay clear of automatons.
-    hasBeenTriggered: 0
+    hasBeenTriggered: 1
     dialogEndTrigger: 0
     audioClip:
       sfx: 0
@@ -24,17 +23,18 @@ MonoBehaviour:
       volume: 0
       pitch: 0
   - Speaker: 0
-    Text: "Ah, watch out. That\u2019s an automaton."
-    hasBeenTriggered: 0
-    dialogEndTrigger: 0
+    Text: For your safety, please stay clear of automatons. I'll visualize the unsafe
+      distance.
+    hasBeenTriggered: 1
+    dialogEndTrigger: 5
     audioClip:
       sfx: 0
       clip: {fileID: 0}
       volume: 0
       pitch: 0
   - Speaker: 0
-    Text: Let it pass before we proceed.
-    hasBeenTriggered: 0
+    Text: Let the automaton pass before we proceed.
+    hasBeenTriggered: 1
     dialogEndTrigger: 0
     audioClip:
       sfx: 0

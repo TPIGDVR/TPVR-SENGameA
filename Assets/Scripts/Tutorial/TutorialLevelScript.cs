@@ -97,7 +97,7 @@ public class TutorialLevelScript : MonoBehaviour
 
     void IncrementKioskDownload()
     {
-        EM_Dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, (DialogueLines)RetrieveRuntimeScriptableObject(lines[kioskDownload]));
+        //EM_Dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, (DialogueLines)RetrieveRuntimeScriptableObject(lines[kioskDownload]));
         kioskDownload++;
         if(kioskDownload >= numberOfKioskToOpenDoor)
         {
