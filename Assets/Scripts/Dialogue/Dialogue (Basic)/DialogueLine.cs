@@ -14,12 +14,6 @@ namespace Dialog
         public Line[] Lines;
     }
 
-    [CreateAssetMenu(menuName = "Dialogue/kiosk lines")]
-    public class KioskLines : ScriptableObject
-    {
-        public KLine[] Lines;
-    }
-
     [System.Serializable]
     public class Line
     {
@@ -35,16 +29,5 @@ namespace Dialog
         public DialogEvents dialogEndTrigger = DialogEvents.NONE;
 
         public MusicClip audioClip;
-    }
-
-    [System.Serializable]
-    public class KLine : Line
-    {
-        [Header("Image related")]
-        public Sprite image;
-        public Vector2 preferredDimension;
-        [Header("Others")]
-        public AudioClip clip;
-        public float duration = 3f;
     }
 }
