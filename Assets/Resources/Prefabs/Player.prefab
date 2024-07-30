@@ -679,7 +679,7 @@ RectTransform:
   m_LocalRotation: {x: -0.0050577316, y: -0.14499407, z: -0.03449228, w: 0.9888182}
   m_LocalPosition: {x: 0, y: 0, z: -5.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3205947754425174983}
   - {fileID: 8341389638829282284}
@@ -2121,7 +2121,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1125521434102979608}
-  - component: {fileID: 3999784688863474067}
   m_Layer: 9
   m_Name: Camera Offset
   m_TagString: Untagged
@@ -2148,66 +2147,6 @@ Transform:
   - {fileID: 178256247095347416}
   m_Father: {fileID: 2224142548037433946}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3999784688863474067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2291004974247496089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60523e0647cc6ab43acc73cb266a32a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_InteractionManager: {fileID: 0}
-  m_InteractionLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_InteractionLayers:
-    m_Bits: 4294967295
-  m_AttachTransform: {fileID: 0}
-  m_KeepSelectedTargetValid: 1
-  m_DisableVisualsWhenBlockedInGroup: 1
-  m_StartingSelectedInteractable: {fileID: 0}
-  m_StartingTargetFilter: {fileID: 0}
-  m_HoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_HoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_StartingHoverFilters: []
-  m_StartingSelectFilters: []
-  m_OnHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ShowInteractableHoverMeshes: 1
-  m_InteractableHoverMeshMaterial: {fileID: 0}
-  m_InteractableCantHoverMeshMaterial: {fileID: 0}
-  m_SocketActive: 1
-  m_InteractableHoverScale: 1
-  m_RecycleDelayTime: 1
-  m_HoverSocketSnapping: 0
-  m_SocketSnappingRadius: 0.1
-  m_SocketScaleMode: 0
-  m_FixedScale: {x: 1, y: 1, z: 1}
-  m_TargetBoundsSize: {x: 1, y: 1, z: 1}
 --- !u!1 &2337310314195492766
 GameObject:
   m_ObjectHideFlags: 0
@@ -3622,7 +3561,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 138, y: 38}
+  m_CellSize: {x: 280, y: 38}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -3637,6 +3576,7 @@ GameObject:
   - component: {fileID: 4566481768762889832}
   - component: {fileID: 6233674887359796909}
   - component: {fileID: 2038510045604174098}
+  - component: {fileID: 4264885309192059463}
   m_Layer: 8
   m_Name: Objective Tracking
   m_TagString: Untagged
@@ -3654,7 +3594,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: 0.09519688, z: -0, w: 0.99545854}
   m_LocalPosition: {x: 0, y: 0, z: 0.31}
   m_LocalScale: {x: 0.04, y: 0.04, z: 0.04}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6308415114803969777}
   - {fileID: 2327360469532715669}
@@ -3703,6 +3643,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &4264885309192059463
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5998300796106860043}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bd8d524dab4779a4aaa7c49a9d1263aa, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6152627165707792605
 GameObject:
   m_ObjectHideFlags: 0
@@ -5195,7 +5156,6 @@ GameObject:
   - component: {fileID: 3181638085964715147}
   - component: {fileID: 6662889647085483701}
   - component: {fileID: 3967505116142997767}
-  - component: {fileID: 187095835826643347}
   - component: {fileID: 3306439539602345516}
   - component: {fileID: 8216588566784586350}
   m_Layer: 9
@@ -5282,7 +5242,7 @@ MonoBehaviour:
   m_MoveSpeed: 3
   m_EnableStrafe: 1
   m_EnableFly: 0
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_GravityApplicationMode: 0
   m_ForwardSource: {fileID: 5733521324502215028}
   m_LeftHandMoveAction:
@@ -5309,7 +5269,8 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 0}
+    m_Reference: {fileID: -8198699208435500284, guid: c348712bda248c246b8c49b3db54643f,
+      type: 3}
 --- !u!143 &3967505116142997767
 CharacterController:
   m_ObjectHideFlags: 0
@@ -5336,21 +5297,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &187095835826643347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8533209921530342119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af6bf904e410ee8479f9093d8830d1f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_LocomotionProvider: {fileID: 6662889647085483701}
-  m_MinHeight: 1.5
-  m_MaxHeight: 1.5
 --- !u!114 &3306439539602345516
 MonoBehaviour:
   m_ObjectHideFlags: 0
