@@ -25,7 +25,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         [SerializeField]
         float _maxDeathTime;
         float _currDeathTimer = 0;
-        bool isDead;
+        public bool isDead;
 
         //noise related
 
