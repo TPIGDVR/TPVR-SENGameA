@@ -31,6 +31,22 @@ namespace SoundRelated
     //this is the custom data structure to contain the music clip.
     public struct MusicClip
     {
+        public MusicClip(AudioClip clip)
+        {
+            sfx = SFXClip.NEXT_LINE;
+            this.clip = clip;
+            pitch = 1f;
+            volume = 1f;
+        }
+
+        public MusicClip(AudioClip clip, float volume)
+        {
+            sfx = SFXClip.NEXT_LINE;
+            this.clip = clip;
+            pitch = 1f;
+            this.volume = volume;
+        }
+
         public SFXClip sfx;
         public AudioClip clip;
         [Range(0, 1)]

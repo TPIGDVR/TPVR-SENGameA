@@ -90,12 +90,12 @@ public class Tutorial_Kiosk : MonoBehaviour
 
         if (scanning && !scanCompleted)
         {
-            progress += Time.fixedDeltaTime / 100 * speedMultiplier;
+            progress += Time.deltaTime / 100 * speedMultiplier;
         }
         else if (!scanning && !scanCompleted)
         {
             //make the progress decay slightly slower than the gain speed
-            progress -= Time.fixedDeltaTime / 200 * speedMultiplier;
+            progress -= Time.deltaTime / 200 * speedMultiplier;
 
             if (progress <= 0 && !authenticate) //check if there is progress and hand is still on the kiosk
             {
@@ -205,8 +205,22 @@ public class Tutorial_Kiosk : MonoBehaviour
 
     private IEnumerator WaitTimer(float second)
     {
+        var clip = kioskData.Lines[indexDialog].clip;
+        AudioSource source = null;
+        if (clip)
+        {
+            MusicClip musicClip = new MusicClip(clip);  
+            source = SoundManager.Instance.PlayMusicClip(musicClip,transform.position);
+
+        }
         StartCoroutine(TypeNextSentence());
         yield return new WaitForSeconds(second);
+
+        if (source)
+        {
+            SoundManager.Instance.RetrieveAudioSource(source);
+        }
+
         indexDialog++;
 
         if (indexDialog >= kioskData.Lines.Length)
