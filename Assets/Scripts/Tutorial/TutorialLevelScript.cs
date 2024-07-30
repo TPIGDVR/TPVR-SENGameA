@@ -39,13 +39,21 @@ public class TutorialLevelScript : MonoBehaviour
     [SerializeField]
     Transform finalKioskTrigger;
 
-
+    [Header("GAME OVER")]
+    [SerializeField]
+    Transform playerTransform;
+    [SerializeField]
+    TutorialGameOver gameOver;
+    Vector3 initialPlayerPosition;
     private void OnEnable()
     {
         EM_Tut.AddListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
         EM_Tut.AddListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
+
         EM_Tut.AddListener<Tutorial_Kiosk>(TutorialEvents.LAST_KIOSK, SetUpLastKiosk);
         EM_Tut.AddListener(TutorialEvents.CHASE_PLAYER, ChasePlayer);
+        EM_Tut.AddListener(TutorialEvents.DEATH_SCREEN_FADED, poop);
+        EM_Tut.AddListener(TutorialEvents.RES_SCREEN_FADED, TutorialRespawn);
     }
 
     private void OnDisable()
@@ -71,6 +79,8 @@ public class TutorialLevelScript : MonoBehaviour
         {
             AddIntoSOCollection(l);
         }
+
+        GameData.ChangeTutorialStatus(true);
     }
 
     void IncrementKioskDownload()
@@ -156,4 +166,24 @@ public class TutorialLevelScript : MonoBehaviour
 
     }
 
+    void poop()
+    {
+        StartCoroutine(TutorialDeath());
+    }
+
+    IEnumerator TutorialDeath()
+    {
+        //set player to death location
+        initialPlayerPosition = playerTransform.position;
+        yield return null;
+        playerTransform.position = gameOver.deathPoint.position;
+
+        //reset the scene to just before they scan kiosk 4
+
+    }
+
+    void TutorialRespawn()
+    {
+        playerTransform.position = initialPlayerPosition;
+    }
 }
