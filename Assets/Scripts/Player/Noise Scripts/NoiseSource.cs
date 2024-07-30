@@ -69,14 +69,11 @@ public class NoiseSource : MonoBehaviour
     
     void ActivateNoiseRangeIndicator()
     {
-
-        Debug.Log("ACTIVATE INDICATOR");
         meshRenderer.enabled = true;
     }
 
     void DeactivateNoiseRangeIndicator()
     {
-        Debug.Log("DEACTIVATE INDICATOR");
         meshRenderer.enabled = false;
     }
 }

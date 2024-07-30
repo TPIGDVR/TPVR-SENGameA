@@ -12,7 +12,6 @@ public static class ScriptableObjectManager //make singleton
     /// <param name="original"></param>
     public static void AddIntoSOCollection(ScriptableObject original)
     {
-        Debug.Log($"adding {original.name}...");
         scriptableObjectCollection.Add(original, ScriptableObject.Instantiate(original));
     }
     

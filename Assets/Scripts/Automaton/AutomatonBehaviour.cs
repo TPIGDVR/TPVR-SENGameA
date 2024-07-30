@@ -1,8 +1,9 @@
 using System.Collections;
+using System.Data;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AutomatonBehaviour : MonoBehaviour
+public class AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
 {
     AutomatonStates _state;
     Animator _ani;
@@ -27,14 +28,22 @@ public class AutomatonBehaviour : MonoBehaviour
     [SerializeField]float oringinalMovement = 5f;
     [SerializeField] float acceptableDegree = 15f;
     [SerializeField] float rotationSpeed = 3f;
-    private void Start()
+
+    #region INITIALIZATION
+    private void Awake()
+    {
+        ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.AUTOMATONS);
+    }
+
+    public void Initialize()
     {
         _ani = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
         _audio = GetComponent<AudioSource>();
         StartCoroutine(Behaviour());
     }
-
+    
+    #endregion
     IEnumerator Behaviour()
     {
         while (true) 

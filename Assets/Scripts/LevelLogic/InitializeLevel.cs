@@ -19,6 +19,6 @@ public class InitializeLevel : MonoBehaviour
 
     private void Start()
     {
-        level.InitializeLevel();
+        ScriptLoadSequencer.LoadScripts();
     }
 }

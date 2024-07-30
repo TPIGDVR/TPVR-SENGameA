@@ -4,12 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IScriptLoadQueuer
 {
     bool isWearingSunglasses;
 
     PlayerAnxietyHandler anxietyHandler; //handles noise + light + breathing
     PlayerVFX vfx;
+    PlayerObjectiveHandler objectiveHandler;
 
     //references to ui
     [SerializeField]
@@ -20,7 +21,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        InitializePlayer();
+        ScriptLoadSequencer.Enqueue(this,(int)LevelLoadSequence.PLAYER);
     }
 
     private void Update()
@@ -34,11 +35,12 @@ public class Player : MonoBehaviour
     EventManager<DialogEvents> em_d = EventSystem.dialog;
     EventManager<LevelEvents> em_l = EventSystem.level;
 
-    void InitializePlayer()
+    public void Initialize()
     {
         EventSubscribing();
         GetReferenceToComponents();
         anxietyHandler.InitializePlayerAnxiety();
+        objectiveHandler.InitializeObjectiveHandler();
     }
 
     void EventSubscribing()
@@ -69,9 +71,9 @@ public class Player : MonoBehaviour
     void GetReferenceToComponents()
     {
         anxietyHandler = GetComponent<PlayerAnxietyHandler>();
+        objectiveHandler = GetComponent<PlayerObjectiveHandler>();
         vfx = GetComponent<PlayerVFX>();
     }
-
     #endregion
 
     #region UNUSED FOR NOW

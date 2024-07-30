@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+
 public class PlayerObjectiveHandler : MonoBehaviour
 {
     [SerializeField]
@@ -9,9 +10,9 @@ public class PlayerObjectiveHandler : MonoBehaviour
 
     EventManager<PlayerEvents> em_p = EventSystem.player;
 
-    private void Start()
+    public void InitializeObjectiveHandler()
     {
-        em_p.AddListener<string>(PlayerEvents.OBJECTIVE_UPDATED,UpdateObjectiveText);
+        em_p.AddListener<string>(PlayerEvents.OBJECTIVE_UPDATED, UpdateObjectiveText);
     }
 
     void UpdateObjectiveText(string text)
