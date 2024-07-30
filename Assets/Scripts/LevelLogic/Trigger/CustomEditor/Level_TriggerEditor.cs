@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.UIElements;
-using Unity.VisualScripting;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(Level_Trigger))]
 public class Level_TriggerEditor : Editor
 {
@@ -54,3 +51,4 @@ public class Level_TriggerEditor : Editor
         EditorGUILayout.PropertyField(Room);
     }
 }
+#endif

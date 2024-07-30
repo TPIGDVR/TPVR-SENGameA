@@ -72,6 +72,8 @@ public class Tutorial_Kiosk : MonoBehaviour
     [SerializeField]
     bool hasHologramPanels;
 
+    public Transform TargetDestination { get => targetDestination; }
+
     private void Start()
     {
         progressUI.fillAmount = 0f;
@@ -206,17 +208,18 @@ public class Tutorial_Kiosk : MonoBehaviour
     {
         StartCoroutine(TypeNextSentence());
         yield return new WaitForSeconds(second);
-
         indexDialog++;
 
         if (indexDialog >= kioskData.Lines.Length)
         {
             //audioSource.PlayOneShot(audioClips[4]);
+            SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE,transform.position);
             animator.SetTrigger(hidePanelHash);
         }
         else
         {
             //audioSource.PlayOneShot(audioClips[3]);
+            SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
             animator.SetTrigger(changePanel);
         }
         //animator.SetTrigger()
@@ -224,24 +227,17 @@ public class Tutorial_Kiosk : MonoBehaviour
 
     private IEnumerator TypeNextSentence()
     {
+        SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING, transform.position);
         dialogText.text = "";
         string text = kioskData.Lines[indexDialog].Text;
-
-        //start playing audio clip to play the typing sfx
-        //audioSource.clip = audioClips[2];
-        //audioSource.loop = true;
-        //audioSource.Play();
-
-        //play the audio clip forspeech
-        //speechSource.PlayOneShot(kioskData.Lines[indexDialog].clip);
 
         foreach (char c in text.ToCharArray())
         {
             dialogText.text += c;
             yield return new WaitForSeconds(0.5f / textSpeed);
         }
-        //audioSource.loop = false;
-        //audioSource.Stop();
+        SoundManager.Instance.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
+
     }
 
 }

@@ -82,7 +82,6 @@ public class AutomatonBehaviour : MonoBehaviour
 
     IEnumerator MovementCoroutine()
     {
-        print("running the movement Script");
         Vector3 previousPosition = transform.position;
         while(_agent.remainingDistance >= _travelCompleteThreshold)
         {

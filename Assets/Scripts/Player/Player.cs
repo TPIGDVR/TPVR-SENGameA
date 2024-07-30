@@ -144,6 +144,7 @@ public class Player : MonoBehaviour
     void TutorialRespawn()
     {
         StartCoroutine(T_Respawn());
+        anxietyHandler.isDead = false;
     }
 
     IEnumerator T_Death()

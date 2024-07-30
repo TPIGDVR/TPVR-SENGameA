@@ -17,18 +17,25 @@ namespace Assets.Scripts.Automaton
         Waypoint[] _wayPoints;
         int _wayPointIndex = 0;
         public Vector3 targetDestination;
+
+        public NavMeshAgent Agent { get => _agent; }
+
+        Vector3 originalPosition;
+
         private void Start()
         {
             _ani = GetComponent<Animator>();
             _agent = GetComponent<NavMeshAgent>();
             _audio = GetComponent<AudioSource>();
             StartCoroutine(Behaviour());
+            originalPosition = transform.position;  
         }
 
         IEnumerator Behaviour()
         {
             while (true)
             {
+                //print($"{transform.parent.name} is at {_state}");
                 switch (_state)
                 {
                     case AutomatonStates.IDLE:
@@ -44,13 +51,13 @@ namespace Assets.Scripts.Automaton
                         SetDestination(pos);
 
                         yield return new WaitForSeconds(0.1f);
-                        yield return new WaitUntil(() => _agent.remainingDistance <= _travelCompleteThreshold);
+                        yield return new WaitUntil(() => Agent.remainingDistance <= _travelCompleteThreshold);
                         _ani.SetFloat("Spd", 0f);
                         break;
                     case AutomatonStates.WALK_TO_TARGET:
                         SetDestination(targetDestination);
                         yield return new WaitForSeconds(0.1f);
-                        yield return new WaitUntil(() => _agent.remainingDistance <= _travelCompleteThreshold);
+                        yield return new WaitUntil(() => Agent.remainingDistance <= _travelCompleteThreshold);
                         _ani.SetFloat("Spd", 0f);
                         SwitchToIdle();
                         break;
@@ -61,7 +68,7 @@ namespace Assets.Scripts.Automaton
             }
         }
 
-        void SwitchToIdle()
+        public void SwitchToIdle()
         {
             _state = AutomatonStates.IDLE;
         }
@@ -78,7 +85,7 @@ namespace Assets.Scripts.Automaton
 
         void SetDestination(Vector3 pos)
         {
-            _agent.SetDestination(pos);
+            Agent.SetDestination(pos);
             _ani.SetFloat("Spd", 0.5f);
         }
 
@@ -88,6 +95,20 @@ namespace Assets.Scripts.Automaton
             int index = Random.Range(0, _footStepClips.Length);
             _audio.PlayOneShot(_footStepClips[index], vol);
         }
+
+        public void SetAgentSpeed(float speed)
+        {
+            Agent.speed = speed;
+        }
+
+        public void ResetOriginalPostion()
+        {
+            _agent.Stop();
+            transform.position = originalPosition;
+            SwitchToIdle() ;
+
+        }
+
 
         enum AutomatonStates
         {
