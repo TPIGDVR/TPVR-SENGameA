@@ -9,6 +9,7 @@ public class HeartBeatScript : MonoBehaviour
 {
     [SerializeField] Animator animator;
     [SerializeField] TextMeshProUGUI text;
+    [SerializeField] TextMeshProUGUI text_BPM;
     [SerializeField] Image heartBeatImage;
     EventManager<PlayerEvents> em = EventSystem.player;
     float anxiety => em.TriggerEvent<float>(PlayerEvents.HEART_BEAT);
@@ -21,6 +22,7 @@ public class HeartBeatScript : MonoBehaviour
 
     public void ChangeHeartBeat()
     {
+        Debug.Log(anxiety);
         float curAnxiety = anxiety;
         int currBPM = (int) Mathf.Lerp(minHeartBeat, maxHeartBeat, curAnxiety);
         currBPM += UnityEngine.Random.Range(-heartBeatRand, heartBeatRand);
@@ -28,8 +30,10 @@ public class HeartBeatScript : MonoBehaviour
         animator.speed = speed;
 
         //set ui component
-        text.text = $"{currBPM} BPM";
+        text.text = $"{currBPM}";
         heartBeatImage.color = colorGradient.Evaluate(curAnxiety);
+        text.color = colorGradient.Evaluate(curAnxiety);
+        text_BPM.color = colorGradient.Evaluate(curAnxiety);
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HEART_BEAT);
     }
 }
