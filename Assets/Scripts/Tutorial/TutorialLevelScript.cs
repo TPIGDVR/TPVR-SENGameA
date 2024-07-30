@@ -39,7 +39,7 @@ public class TutorialLevelScript : MonoBehaviour
     {
         EM_Tut.AddListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
         EM_Tut.AddListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
-        EM_Tut.AddListener(TutorialEvents.DEATH_SCREEN_FADED, TutorialDeath);
+        EM_Tut.AddListener(TutorialEvents.DEATH_SCREEN_FADED, poop);
         EM_Tut.AddListener(TutorialEvents.RES_SCREEN_FADED, TutorialRespawn);
     }
 
@@ -114,10 +114,16 @@ public class TutorialLevelScript : MonoBehaviour
         em.TriggerEvent(DialogEvents.ACTIVATE_OBJECTIVE);
     }
 
-    void TutorialDeath()
+    void poop()
+    {
+        StartCoroutine(TutorialDeath());
+    }
+
+    IEnumerator TutorialDeath()
     {
         //set player to death location
         initialPlayerPosition = playerTransform.position;
+        yield return null;
         playerTransform.position = gameOver.deathPoint.position;
 
         //reset the scene to just before they scan kiosk 4

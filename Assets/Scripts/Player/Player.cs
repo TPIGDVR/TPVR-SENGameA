@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
 
     //references to ui
     [SerializeField]
-    GameObject Heart,Objective;
+    GameObject Heart,Objective,Dialogue;
 
     //room / objective variables
     Room currentRoom;
@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
         //tutorial events
         em_t.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
         em_t.AddListener(TutorialEvents.TUTORIAL_DEATH, TutorialDeath);
-        em_t.AddListener(TutorialEvents.RESTART, TutorialDeath);
+        em_t.AddListener(TutorialEvents.RESTART, TutorialRespawn);
 
         //dialogue events
         em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
@@ -69,6 +69,7 @@ public class Player : MonoBehaviour
     void GetReferenceToComponents()
     {
         anxietyHandler = GetComponent<PlayerAnxietyHandler>();
+        vfx = GetComponent<PlayerVFX>();
     }
 
     #endregion
@@ -122,6 +123,19 @@ public class Player : MonoBehaviour
         //Objective.SetActive(false);
     }
 
+    void CloseAllUI()
+    {
+        Heart.SetActive(false);
+        Objective.SetActive(false);
+        Dialogue.SetActive(false);
+    }
+
+    void OpenUI()
+    {
+        Heart.SetActive(true);
+        Objective.SetActive(true);
+    }
+
     void TutorialDeath()
     {
         StartCoroutine(T_Death());
@@ -135,6 +149,7 @@ public class Player : MonoBehaviour
     IEnumerator T_Death()
     {
         vfx.BeginFadeScreen();
+        CloseAllUI();
         yield return new WaitUntil(() => vfx.isFaded);
         em_t.TriggerEvent(TutorialEvents.DEATH_SCREEN_FADED);
         yield return new WaitForSeconds(1f);
@@ -147,6 +162,8 @@ public class Player : MonoBehaviour
         yield return new WaitUntil(() => vfx.isFaded);
         em_t.TriggerEvent(TutorialEvents.RES_SCREEN_FADED);
         vfx.BeginUnfadeScreen();
+        yield return new WaitUntil(() => !vfx.isFaded);
+        OpenUI();
     }
     #endregion
 }

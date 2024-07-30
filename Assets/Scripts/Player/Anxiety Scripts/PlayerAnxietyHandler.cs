@@ -64,6 +64,8 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 
         public void CalculateAnxiety()
         {
+            Debug.Log("calculating anxiety...");
+
             DetermineAnxietyScale();
             if (!CanRun || isDead)
             {
