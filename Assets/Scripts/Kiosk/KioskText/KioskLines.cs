@@ -7,6 +7,7 @@ using UnityEngine;
 public class KioskLines : ScriptableObject
 {
     public KLine[] Lines;
+    public DialogueLines OtherDialogue;
 }
 
 [System.Serializable]
