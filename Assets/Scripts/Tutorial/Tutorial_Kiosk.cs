@@ -44,8 +44,7 @@ public class Tutorial_Kiosk : MonoBehaviour
     bool scanning = false;
     bool authenticate = false;
 
-    [SerializeField]
-    Transform targetDestination;
+    [SerializeField] Transform targetDestination;
 
     [Header("Event")]
     EventManager<TutorialEvents> em_t = EventSystem.tutorial;
@@ -58,17 +57,20 @@ public class Tutorial_Kiosk : MonoBehaviour
 
     SoundManager audioPlayer;
 
-    public Transform TargetDestination { get => targetDestination;}
+    [Header("Kiosk Dialog")]
+    [SerializeField] KioskLines kioskData;
+    [SerializeField] TextMeshProUGUI dialogText;
+    [SerializeField] Image image;
+    [SerializeField] GridLayoutGroup imageSizer; // using the cell size to increase the width and heigh of it.1
+    [SerializeField, Range(1, 30)]
+    float textSpeed = 20;
+    int indexDialog = 0;
+    int changePanel = Animator.StringToHash("ShowImage");
+    int hidePanelHash = Animator.StringToHash("HidePanel");
 
-    private void OnEnable()
-    {
-        em_t.AddListener(TutorialEvents.DETERMINE_LAST_KIOSK, CheckIfFinalKiosk);
-    }
 
-    private void OnDisable()
-    {
-        em_t.RemoveListener(TutorialEvents.DETERMINE_LAST_KIOSK, CheckIfFinalKiosk);
-    }
+    [SerializeField]
+    bool hasHologramPanels;
 
     private void Start()
     {
@@ -175,19 +177,71 @@ public class Tutorial_Kiosk : MonoBehaviour
         }
     }
 
-    //void StopSFX()
-    //{
-    //    audioSource.Stop();
-    //    audioSource.loop = false;
-    //}
-
-    void CheckIfFinalKiosk()
+    public void StartKioskDialog()
     {
-        if(!scanCompleted)
-        {//if kioskdownloaded is the three one and the kiosk is 
-            //not scan, it is the last kiosk
-            em_t.TriggerEvent<Tutorial_Kiosk>(TutorialEvents.LAST_KIOSK, this);
+        ChangeImage();
+        StartTyping();     
+    }
+
+    public void ChangeImagePanel()
+    {
+        ChangeImage();
+        dialogText.text = "";
+    }
+
+    public void StartTyping()
+    {
+        StopAllCoroutines();
+        StartCoroutine(WaitTimer(kioskData.Lines[indexDialog].duration));
+    }
+
+    void ChangeImage()
+    {
+        var line = kioskData.Lines[indexDialog];
+        image.sprite = line.image;
+        imageSizer.cellSize = line.preferredDimension;
+    }
+
+    private IEnumerator WaitTimer(float second)
+    {
+        StartCoroutine(TypeNextSentence());
+        yield return new WaitForSeconds(second);
+
+        indexDialog++;
+
+        if (indexDialog >= kioskData.Lines.Length)
+        {
+            //audioSource.PlayOneShot(audioClips[4]);
+            animator.SetTrigger(hidePanelHash);
         }
+        else
+        {
+            //audioSource.PlayOneShot(audioClips[3]);
+            animator.SetTrigger(changePanel);
+        }
+        //animator.SetTrigger()
+    }
+
+    private IEnumerator TypeNextSentence()
+    {
+        dialogText.text = "";
+        string text = kioskData.Lines[indexDialog].Text;
+
+        //start playing audio clip to play the typing sfx
+        //audioSource.clip = audioClips[2];
+        //audioSource.loop = true;
+        //audioSource.Play();
+
+        //play the audio clip forspeech
+        //speechSource.PlayOneShot(kioskData.Lines[indexDialog].clip);
+
+        foreach (char c in text.ToCharArray())
+        {
+            dialogText.text += c;
+            yield return new WaitForSeconds(0.5f / textSpeed);
+        }
+        //audioSource.loop = false;
+        //audioSource.Stop();
     }
 
 }
