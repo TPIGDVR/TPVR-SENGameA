@@ -61,7 +61,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         public float MaxAnxietyIncreaseScale { get => _maxAnxietyIncreaseScale; set => _maxAnxietyIncreaseScale = value; }
         public float AnxietyIncreaseScale { get => _anxietyIncreaseScale; set => _anxietyIncreaseScale = value; }
         #endregion
-        private void Start()
 
         public void InitializePlayerAnxiety()
         {
@@ -72,7 +71,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 
         public void CalculateAnxiety()
         {
-            Debug.Log("calculating anxiety...");
+            //Debug.Log("calculating anxiety...");
 
             DetermineAnxietyScale();
             if (!CanRun || isDead)
