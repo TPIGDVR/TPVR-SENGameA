@@ -55,6 +55,12 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         public bool CanRun;
         float curAnxiety => _anxietyLevel / _maxAnxietyLevel;
 
+        #region properties
+        public float AnxietyIncreaseSpeed { get => _anxietyIncreaseSpeed; set => _anxietyIncreaseSpeed = value; }
+        public float MinAnxietyIncreaseScale { get => _minAnxietyIncreaseScale; set => _minAnxietyIncreaseScale = value; }
+        public float MaxAnxietyIncreaseScale { get => _maxAnxietyIncreaseScale; set => _maxAnxietyIncreaseScale = value; }
+        public float AnxietyIncreaseScale { get => _anxietyIncreaseScale; set => _anxietyIncreaseScale = value; }
+        #endregion
         private void Start()
         {
             //_noiseProximityHandler = GetComponent<NoiseProximityHandler>();

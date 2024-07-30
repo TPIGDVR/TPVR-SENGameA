@@ -89,6 +89,11 @@ namespace Assets.Scripts.Automaton
             _audio.PlayOneShot(_footStepClips[index], vol);
         }
 
+        public void SetAgentSpeed(float speed)
+        {
+            _agent.speed = speed;
+        }
+
         enum AutomatonStates
         {
             IDLE,

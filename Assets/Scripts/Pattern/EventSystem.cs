@@ -40,6 +40,10 @@ public enum TutorialEvents
     INIT_TUTORIAL,
     ACTIVATE_KIOSK,
     FIRST_KIOSK,
+    DETERMINE_LAST_KIOSK,
+    LAST_KIOSK,
+    CHASE_PLAYER
+
 }
 
 public enum LevelEvents

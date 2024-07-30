@@ -44,7 +44,8 @@ public class Tutorial_Kiosk : MonoBehaviour
     bool scanning = false;
     bool authenticate = false;
 
-    [SerializeField] Transform targetDestination;
+    [SerializeField]
+    Transform targetDestination;
 
     [Header("Event")]
     EventManager<TutorialEvents> em_t = EventSystem.tutorial;
@@ -56,6 +57,18 @@ public class Tutorial_Kiosk : MonoBehaviour
     PopUp popup;
 
     SoundManager audioPlayer;
+
+    public Transform TargetDestination { get => targetDestination;}
+
+    private void OnEnable()
+    {
+        em_t.AddListener(TutorialEvents.DETERMINE_LAST_KIOSK, CheckIfFinalKiosk);
+    }
+
+    private void OnDisable()
+    {
+        em_t.RemoveListener(TutorialEvents.DETERMINE_LAST_KIOSK, CheckIfFinalKiosk);
+    }
 
     private void Start()
     {
@@ -167,5 +180,14 @@ public class Tutorial_Kiosk : MonoBehaviour
     //    audioSource.Stop();
     //    audioSource.loop = false;
     //}
+
+    void CheckIfFinalKiosk()
+    {
+        if(!scanCompleted)
+        {//if kioskdownloaded is the three one and the kiosk is 
+            //not scan, it is the last kiosk
+            em_t.TriggerEvent<Tutorial_Kiosk>(TutorialEvents.LAST_KIOSK, this);
+        }
+    }
 
 }

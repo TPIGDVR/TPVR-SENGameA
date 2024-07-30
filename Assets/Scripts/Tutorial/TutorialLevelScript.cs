@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using static ScriptableObjectManager;
+using Assets.Scripts.Player.Anxiety_Scripts;
 
 public class TutorialLevelScript : MonoBehaviour
 {
@@ -22,24 +23,37 @@ public class TutorialLevelScript : MonoBehaviour
     EventManager<TutorialEvents> EM_Tut = EventSystem.tutorial;
     EventManager<PlayerEvents> EM_P = EventSystem.player;
 
+    [Header("player")]
+    [SerializeField] PlayerAnxietyHandler anxietyHandler;
+
     [Header("Dialogue Triggers")]
     [SerializeField]
     Transform automaton_DialogueTrigger;
-
     [SerializeField]
     TMP_Text ObjectiveText;
+
+    [Header("Last kiosk variables")]
+    [SerializeField] float robotsSpeed= 7f;
+    [SerializeField] float anxietySpeed = 7f;
+    Tutorial_Kiosk lastKiosk;
+    [SerializeField]
+    Transform finalKioskTrigger;
+
 
     private void OnEnable()
     {
         EM_Tut.AddListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
         EM_Tut.AddListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
+        EM_Tut.AddListener<Tutorial_Kiosk>(TutorialEvents.LAST_KIOSK, SetUpLastKiosk);
+        EM_Tut.AddListener(TutorialEvents.CHASE_PLAYER, ChasePlayer);
     }
 
     private void OnDisable()
     {
         EM_Tut.RemoveListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
         EM_Tut.RemoveListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
-
+        EM_Tut.RemoveListener<Tutorial_Kiosk>(TutorialEvents.LAST_KIOSK, SetUpLastKiosk);
+        EM_Tut.RemoveListener(TutorialEvents.CHASE_PLAYER, ChasePlayer);
     }
 
     private void Start()
@@ -71,6 +85,11 @@ public class TutorialLevelScript : MonoBehaviour
 
         //update objective ui
         EM_P.TriggerEvent<string>(PlayerEvents.OBJECTIVE_UPDATED, $"Kiosk Completed : {kioskDownload}/{numberOfKioskToOpenDoor}");
+
+        if(kioskDownload == 3)
+        {
+            EM_Tut.TriggerEvent(TutorialEvents.DETERMINE_LAST_KIOSK);
+        }
     }
 
     void CallClosestAutomatonToDestination(Transform kiosk)
@@ -103,4 +122,38 @@ public class TutorialLevelScript : MonoBehaviour
         em.TriggerEvent(DialogEvents.ACTIVATE_NOISE_INDICATOR);
         em.TriggerEvent(DialogEvents.ACTIVATE_OBJECTIVE);
     }
+
+    void SetUpLastKiosk(Tutorial_Kiosk targetKiosk)
+    {
+        lastKiosk = targetKiosk;
+        finalKioskTrigger.parent = targetKiosk.transform;
+        finalKioskTrigger.localPosition = Vector3.zero;
+
+        anxietyHandler.AnxietyIncreaseSpeed = anxietySpeed;
+
+        foreach(var a in automatons)
+        {
+            a.SetAgentSpeed(robotsSpeed);
+        }
+    }
+
+    void ChasePlayer()
+    {
+        Tutorial_AutomatonBehaviour furtherestA = null;
+        float furthestDist = float.MinValue;
+        foreach (var a in automatons)
+        {
+            var dist = Vector3.Distance(lastKiosk.transform.position, a.transform.position);
+            if (dist > furthestDist)
+            {
+                furtherestA = a;
+                furthestDist = dist;
+            }
+        }
+
+        furtherestA.targetDestination = lastKiosk.TargetDestination.position;
+        furtherestA.SwitchToTarget();
+
+    }
+
 }
