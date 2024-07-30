@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace Assets.Scripts.Automaton
 {
-    public class Tutorial_AutomatonBehaviour : MonoBehaviour
+    public class Tutorial_AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
     {
         AutomatonStates _state;
         Animator _ani;
@@ -22,13 +22,18 @@ namespace Assets.Scripts.Automaton
 
         Vector3 originalPosition;
 
-        private void Start()
+        public void Initialize()
         {
             _ani = GetComponent<Animator>();
             _agent = GetComponent<NavMeshAgent>();
             _audio = GetComponent<AudioSource>();
             StartCoroutine(Behaviour());
-            originalPosition = transform.position;  
+            originalPosition = transform.position;
+        }
+
+        private void Awake()
+        {
+            ScriptLoadSequencer.Enqueue(this,(int)LevelLoadSequence.AUTOMATONS);
         }
 
         IEnumerator Behaviour()

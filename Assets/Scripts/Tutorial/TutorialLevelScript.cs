@@ -7,7 +7,7 @@ using TMPro;
 using static ScriptableObjectManager;
 using Assets.Scripts.Player.Anxiety_Scripts;
 
-public class TutorialLevelScript : MonoBehaviour
+public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
 {
     [SerializeField] Level_Door door;
     public static int kioskDownload = 0;
@@ -53,32 +53,12 @@ public class TutorialLevelScript : MonoBehaviour
     [SerializeField]  Vector3 originalTriggerPosition;
     [SerializeField]  Vector3 originalAutomatonPosition;
     [SerializeField] Tutorial_AutomatonBehaviour movedAutomaton;
-    private void OnEnable()
-    {
-        EM_Tut.AddListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
-        EM_Tut.AddListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
 
-        EM_Tut.AddListener<Tutorial_Kiosk>(TutorialEvents.LAST_KIOSK, SetUpLastKiosk);
-        EM_Tut.AddListener(TutorialEvents.CHASE_PLAYER, ChasePlayer);
-        EM_Tut.AddListener(TutorialEvents.DEATH_SCREEN_FADED, poop);
-        EM_Tut.AddListener(TutorialEvents.RES_SCREEN_FADED, TutorialRespawn);
-    }
-
-    private void OnDisable()
+    #region INITIALIZATION
+    public void Initialize()
     {
-        EM_Tut.RemoveListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
-        EM_Tut.RemoveListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
-        EM_Tut.RemoveListener<Tutorial_Kiosk>(TutorialEvents.LAST_KIOSK, SetUpLastKiosk);
-        EM_Tut.RemoveListener(TutorialEvents.CHASE_PLAYER, ChasePlayer);
-    }
+        EventSubscribing();
 
-    private void Start()
-    {
-        InitializeTutorial();
-    }
-
-    void InitializeTutorial()
-    {
         EM_Tut.TriggerEvent(TutorialEvents.INIT_TUTORIAL);
         EM_P.TriggerEvent<string>(PlayerEvents.OBJECTIVE_UPDATED, $"Kiosk Completed : {kioskDownload}/{numberOfKioskToOpenDoor}");
         //instantiate all dialogue scriptable object
@@ -93,6 +73,30 @@ public class TutorialLevelScript : MonoBehaviour
         GameData.ChangeTutorialStatus(true);
     }
 
+    void EventSubscribing()
+    {
+        EM_Tut.AddListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
+        EM_Tut.AddListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
+        EM_Tut.AddListener<Tutorial_Kiosk>(TutorialEvents.LAST_KIOSK, SetUpLastKiosk);
+        EM_Tut.AddListener(TutorialEvents.CHASE_PLAYER, ChasePlayer);
+        EM_Tut.AddListener(TutorialEvents.DEATH_SCREEN_FADED, poop);
+        EM_Tut.AddListener(TutorialEvents.RES_SCREEN_FADED, TutorialRespawn);
+    }
+
+    private void OnDisable()
+    {
+        EM_Tut.RemoveListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
+        EM_Tut.RemoveListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
+        EM_Tut.RemoveListener<Tutorial_Kiosk>(TutorialEvents.LAST_KIOSK, SetUpLastKiosk);
+        EM_Tut.RemoveListener(TutorialEvents.CHASE_PLAYER, ChasePlayer);
+    }
+
+    private void Awake()
+    {
+        ScriptLoadSequencer.Enqueue(this,(int)LevelLoadSequence.AUTOMATONS + 1);
+    }
+
+    #endregion
     void IncrementKioskDownload()
     {
         EM_Dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, (DialogueLines)RetrieveRuntimeScriptableObject(lines[kioskDownload]));

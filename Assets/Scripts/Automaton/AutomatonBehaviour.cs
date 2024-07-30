@@ -42,8 +42,8 @@ public class AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
         _audio = GetComponent<AudioSource>();
         StartCoroutine(Behaviour());
     }
-    
     #endregion
+
     IEnumerator Behaviour()
     {
         while (true) 

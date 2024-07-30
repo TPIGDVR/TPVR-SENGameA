@@ -20,7 +20,14 @@ public static class ScriptLoadSequencer
         {
             var obj = (IScriptLoadQueuer)ScriptQueue.Dequeue().Item1;
             Debug.LogAssertion("LOADING : " + obj);
-            obj?.Initialize();
+            try
+            {
+                obj?.Initialize();
+            }
+            catch
+            {
+                Debug.LogError($"TROUBLE INITIALIZING : {obj}");
+            }
         }
     }
 }
