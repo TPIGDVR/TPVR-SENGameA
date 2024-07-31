@@ -70,5 +70,8 @@ public enum DialogEvents
     //tutorial dialogue events
     ACTIVATE_NOISE_INDICATOR,
     ACTIVATE_HEARTRATE,
-    ACTIVATE_OBJECTIVE
+    ACTIVATE_OBJECTIVE,
+    MOVE_FIRST_AUTOMATON,
+
+    
 }

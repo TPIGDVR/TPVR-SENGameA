@@ -18,7 +18,7 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
 
     [Header("Automaton")]
     [SerializeField] Tutorial_AutomatonBehaviour[] automatons;
-
+    [SerializeField] Tutorial_AutomatonBehaviour firstAutomaton;
     EventManager<DialogEvents> EM_Dialog = EventSystem.dialog;
     EventManager<TutorialEvents> EM_Tut = EventSystem.tutorial;
     EventManager<PlayerEvents> EM_P = EventSystem.player;
@@ -48,11 +48,11 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
 
 
     //original variable
-    [SerializeField] float originalRobotsSpeed;
-    [SerializeField]  float originalAnxietySpeed;
-    [SerializeField]  Vector3 originalTriggerPosition;
-    [SerializeField]  Vector3 originalAutomatonPosition;
-    [SerializeField] Tutorial_AutomatonBehaviour movedAutomaton;
+    float originalRobotsSpeed;
+     float originalAnxietySpeed;
+     Vector3 originalTriggerPosition;
+     Vector3 originalAutomatonPosition;
+    Tutorial_AutomatonBehaviour movedAutomaton;
 
     #region INITIALIZATION
     public void Initialize()
@@ -70,6 +70,8 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
         originalAnxietySpeed = anxietyHandler.AnxietyIncreaseSpeed;
         originalRobotsSpeed = automatons[0].Agent.speed;
 
+        firstAutomaton.SwitchToIdle();
+
         GameData.ChangeTutorialStatus(true);
     }
 
@@ -81,6 +83,8 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
         EM_Tut.AddListener(TutorialEvents.CHASE_PLAYER, ChasePlayer);
         EM_Tut.AddListener(TutorialEvents.DEATH_SCREEN_FADED, poop);
         EM_Tut.AddListener(TutorialEvents.RES_SCREEN_FADED, TutorialRespawn);
+        EM_Dialog.AddListener(DialogEvents.MOVE_FIRST_AUTOMATON, MoveFirstAutomaton);
+
     }
 
     private void OnDisable()
@@ -121,6 +125,7 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
 
     void CallClosestAutomatonToDestination(Transform kiosk)
     {
+        print("running call auto");
         Tutorial_AutomatonBehaviour closestA = null;
         float closestDist = float.MaxValue;
         foreach (var a in automatons)
@@ -135,7 +140,6 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
 
         closestA.targetDestination = kiosk.position;
         closestA.SwitchToTarget();
-
         //attach the dialogue trigger to this automaton
         automaton_DialogueTrigger.SetParent(closestA.transform);
         automaton_DialogueTrigger.localPosition = new(0, 0, 0);
@@ -214,6 +218,10 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
 
     }
 
+    void MoveFirstAutomaton()
+    {
+        firstAutomaton.SwitchToRoam();
+    }
 
     void TutorialRespawn()
     {

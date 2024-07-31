@@ -6,6 +6,7 @@ namespace Assets.Scripts.Automaton
 {
     public class Tutorial_AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
     {
+        [SerializeField]
         AutomatonStates _state;
         Animator _ani;
         AudioSource _audio;
@@ -21,6 +22,7 @@ namespace Assets.Scripts.Automaton
         public NavMeshAgent Agent { get => _agent; }
 
         Vector3 originalPosition;
+
 
         public void Initialize()
         {
@@ -61,6 +63,7 @@ namespace Assets.Scripts.Automaton
                         _ani.SetFloat("Spd", 0f);
                         break;
                     case AutomatonStates.WALK_TO_TARGET:
+                        print("set to walk to target");
                         SetDestination(targetDestination);
                         yield return new WaitForSeconds(0.1f);
                         yield return new WaitUntil(() => Agent.remainingDistance <= _travelCompleteThreshold);
@@ -77,16 +80,22 @@ namespace Assets.Scripts.Automaton
         public void SwitchToIdle()
         {
             _state = AutomatonStates.IDLE;
+            StopAllCoroutines();
+            StartCoroutine(Behaviour());
         }
 
-        void SwitchToRoam()
+        public void SwitchToRoam()
         {
             _state = AutomatonStates.ROAM;
+            StopAllCoroutines();
+            StartCoroutine(Behaviour());
         }
 
         public void SwitchToTarget()
         {
             _state = AutomatonStates.WALK_TO_TARGET;
+            StopAllCoroutines();
+            StartCoroutine(Behaviour());
         }
 
         void SetDestination(Vector3 pos)
