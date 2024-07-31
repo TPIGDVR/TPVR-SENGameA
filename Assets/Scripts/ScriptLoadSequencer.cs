@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class ScriptLoadSequencer
 {
+    static string id = "S.L.S :";
     //the smaller number => higher priority
     static PriorityQueue<object> ScriptQueue = new();
 
@@ -19,14 +20,14 @@ public static class ScriptLoadSequencer
         while (!ScriptQueue.IsEmpty)
         {
             var obj = (IScriptLoadQueuer)ScriptQueue.Dequeue().Item1;
-            Debug.LogAssertion("LOADING : " + obj);
+            Debug.Log(id +" LOADING - " + obj);
             try
             {
                 obj?.Initialize();
             }
             catch
             {
-                Debug.LogError($"TROUBLE INITIALIZING : {obj}");
+                Debug.LogError(id + $" Trouble initializing script {obj}");
             }
         }
     }
@@ -39,6 +40,7 @@ public interface IScriptLoadQueuer
 
 public enum LevelLoadSequence
 {
+    SYSTEM = -2,
     PLAYER = -1,
     LEVEL = 0,
     /*

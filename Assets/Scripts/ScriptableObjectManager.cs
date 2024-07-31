@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class ScriptableObjectManager //make singleton
 {
+    static string id = "S.O.M :";
     static Dictionary<ScriptableObject, ScriptableObject> scriptableObjectCollection = new();
     
     /// <summary>
@@ -12,7 +13,14 @@ public static class ScriptableObjectManager //make singleton
     /// <param name="original"></param>
     public static void AddIntoSOCollection(ScriptableObject original)
     {
-        scriptableObjectCollection.Add(original, ScriptableObject.Instantiate(original));
+        try
+        {
+            scriptableObjectCollection.Add(original, ScriptableObject.Instantiate(original));
+        }
+        catch
+        {
+            Debug.LogError(id + $" Scriptable Object ({original}) already in collection!");
+        }
     }
     
     public static void AddIntoSOCollection(ScriptableObject[] originals)
@@ -24,9 +32,15 @@ public static class ScriptableObjectManager //make singleton
     }
 
     public static void RemoveFromSOCollection(ScriptableObject original)
-    {
-        if (scriptableObjectCollection[original] == null) throw new System.Exception($"Scriptable Object Manager : Item does not exist in dictionary!");
-        scriptableObjectCollection.Remove(original);
+    {        
+        try
+        {
+            scriptableObjectCollection.Remove(original);
+        }
+        catch
+        {
+            Debug.LogError(id + $" Scriptable Object ({original}) cannot be found in the collection!");
+        }
     }
 
     public static void RemoveFromSOCollection(ScriptableObject[] originals)
@@ -45,8 +59,15 @@ public static class ScriptableObjectManager //make singleton
     /// <returns>Returns the instantiated runtime scriptable object</returns>
     public static ScriptableObject RetrieveRuntimeScriptableObject(ScriptableObject original)
     {
-        if (scriptableObjectCollection[original] == null) throw new System.Exception($"Scriptable Object Manager : Item does not exist in dictionary!");
-        return scriptableObjectCollection[original];
+        try
+        {
+            return scriptableObjectCollection[original];
+        }
+        catch
+        {
+            Debug.LogError(id + $" Scriptable Object ({original}) cannot be found in the collection!");
+            return null;
+        }
     } 
 
     public static ScriptableObject[] RetrieveRuntimeScriptableObject(ScriptableObject[] originals)
