@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Tutorial_Kiosk : MonoBehaviour
+public class Tutorial_Kiosk : MonoBehaviour , IScriptLoadQueuer
 {
     [SerializeField]
     Image progressUI;
@@ -74,12 +74,11 @@ public class Tutorial_Kiosk : MonoBehaviour
     bool hasHologramPanels;
 
     public Transform TargetDestination { get => targetDestination; }
+    [SerializeField]DialogueLines triggerLines;
 
-    private void Start()
+    private void Awake()
     {
-        progressUI.fillAmount = 0f;
-        progress_GO.SetActive(true);
-        audioPlayer = SoundManager.Instance;
+        ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.LEVEL);
     }
 
     private void Update()
@@ -234,7 +233,7 @@ public class Tutorial_Kiosk : MonoBehaviour
             //dialog is complete
             //audioSource.PlayOneShot(audioClips[4]);
             SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE,transform.position);
-            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, kioskData.OtherDialogue);
+            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, triggerLines);
             animator.SetTrigger(hidePanelHash);
         }
         else
@@ -261,4 +260,12 @@ public class Tutorial_Kiosk : MonoBehaviour
         globalAudioSource = null;
     }
 
+    public void Initialize()
+    {
+        progressUI.fillAmount = 0f;
+        progress_GO.SetActive(true);
+        audioPlayer = SoundManager.Instance;
+        ScriptableObjectManager.AddIntoSOCollection(kioskData.OtherDialogue);
+        triggerLines = (DialogueLines)ScriptableObjectManager.RetrieveRuntimeScriptableObject(kioskData.OtherDialogue);
+    }
 }

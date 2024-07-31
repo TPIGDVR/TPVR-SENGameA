@@ -6,7 +6,7 @@ namespace SoundRelated
     using UnityEngine;
     using UnityEngine.SceneManagement;
 
-    public class SoundManager : SingletonDontDestroy<SoundManager>
+    public class SoundManager : SingletonDontDestroy<SoundManager> , IScriptLoadQueuer
     {
         [Header("Avaliable SFX")]
         [SerializeField] private List<MusicClip> musicClips;
@@ -25,12 +25,10 @@ namespace SoundRelated
         //[SerializeField] private AmbientClip currentAmbientClip;
         //private AudioSource ambientAudioSource;
 
-        private void Start()
+        protected override void Awake()
         {
-            //InitAmbientClip();
-            //ambientAudioSource.loop = true;
-            pooled3DAudioSource = CreatePoolObject(initPoolSize3D, prefabFor3DAudioSource, containerFor3DAudioSource);
-            pooledGlobalAudioSource = CreatePoolObject(initPoolSizeGlobal, prefabForGlobalAudioSource, containerForGlobalAudioSource);
+            base.Awake();
+            ScriptLoadSequencer.Enqueue(this, (int) LevelLoadSequence.SYSTEM);
         }
 
         private PoolingPattern<AudioSource> CreatePoolObject(int sizeNumber, 
@@ -181,6 +179,12 @@ namespace SoundRelated
             {
                 pooled3DAudioSource.Retrieve(audioSource);
             }
+        }
+
+        public void Initialize()
+        {
+            pooled3DAudioSource = CreatePoolObject(initPoolSize3D, prefabFor3DAudioSource, containerFor3DAudioSource);
+            pooledGlobalAudioSource = CreatePoolObject(initPoolSizeGlobal, prefabForGlobalAudioSource, containerForGlobalAudioSource);
         }
 
         #region Ambient related code
