@@ -39,11 +39,11 @@ public interface IScriptLoadQueuer
 
 public enum LevelLoadSequence
 {
+    PLAYER = -1,
     LEVEL = 0,
     /*
     * ROOMS = 1
     * DOORS = 2
     */
     AUTOMATONS = 50,
-    PLAYER = 100,
 }
