@@ -6,7 +6,7 @@ namespace SoundRelated
     using UnityEngine;
     using UnityEngine.SceneManagement;
 
-    public class SoundManager : SingletonDontDestroy<SoundManager>
+    public class SoundManager : SingletonDontDestroy<SoundManager> , IScriptLoadQueuer
     {
         [Header("Avaliable SFX")]
         [SerializeField] private List<MusicClip> musicClips;
@@ -25,16 +25,10 @@ namespace SoundRelated
         //[SerializeField] private AmbientClip currentAmbientClip;
         //private AudioSource ambientAudioSource;
 
-        private Dictionary<SFXClip, AudioSource> loopedAudioSources;
-
-
-        private void Start()
+        protected override void Awake()
         {
-            //InitAmbientClip();
-            //ambientAudioSource.loop = true;
-            pooled3DAudioSource = CreatePoolObject(initPoolSize3D, prefabFor3DAudioSource, containerFor3DAudioSource);
-            pooledGlobalAudioSource = CreatePoolObject(initPoolSizeGlobal, prefabForGlobalAudioSource, containerForGlobalAudioSource);
-            loopedAudioSources = new Dictionary<SFXClip, AudioSource>();
+            base.Awake();
+            ScriptLoadSequencer.Enqueue(this, (int) LevelLoadSequence.SYSTEM);
         }
 
         private PoolingPattern<AudioSource> CreatePoolObject(int sizeNumber, 
@@ -105,7 +99,7 @@ namespace SoundRelated
 
         #region playing continuous music
         //this will need to have another method to stop this
-        public void PlayAudioContinuous(SFXClip clip)
+        public AudioSource PlayAudioContinuous(SFXClip clip)
         {
             foreach (var musicClip in musicClips)
             {
@@ -117,16 +111,14 @@ namespace SoundRelated
                     audioSource.loop = true;
 
                     audioSource.Play();
-
-                    loopedAudioSources.Add(clip, audioSource);
-
-                    return;
+                    return audioSource;
                 }
             }
             //show an error if there is no clip to play
             Debug.LogError("no clips");
+            return null;
         }
-        public void PlayAudioContinuous(SFXClip clip, Vector3 globalPosition)
+        public AudioSource PlayAudioContinuous(SFXClip clip, Vector3 globalPosition)
         {
             foreach (var musicClip in musicClips)
             {
@@ -139,26 +131,12 @@ namespace SoundRelated
                     audioSource.loop = true;
 
                     audioSource.Play();
-
-                    loopedAudioSources.Add(clip, audioSource);
-
-                    return;
+                    return audioSource;
                 }
             }
             //show an error if there is no clip to play
             Debug.LogError("no clips");
-        }
-
-        public void StopPlayingContinuousAudio(SFXClip clip)
-        {
-            if(loopedAudioSources.TryGetValue(clip, out var audioSource))
-            {
-                RetrieveAudioSource(audioSource);
-
-                loopedAudioSources.Remove(clip);
-            }
-            Debug.LogError("no clips to stop playing");
-
+            return null;
         }
         #endregion
         
@@ -191,6 +169,7 @@ namespace SoundRelated
 
         public void RetrieveAudioSource(AudioSource audioSource)
         {
+            if (audioSource == null) Debug.LogError("no audio source to retrieve from!");
             audioSource.Stop();
             if (audioSource.transform.parent == containerForGlobalAudioSource)
             {
@@ -200,6 +179,12 @@ namespace SoundRelated
             {
                 pooled3DAudioSource.Retrieve(audioSource);
             }
+        }
+
+        public void Initialize()
+        {
+            pooled3DAudioSource = CreatePoolObject(initPoolSize3D, prefabFor3DAudioSource, containerFor3DAudioSource);
+            pooledGlobalAudioSource = CreatePoolObject(initPoolSizeGlobal, prefabForGlobalAudioSource, containerForGlobalAudioSource);
         }
 
         #region Ambient related code
