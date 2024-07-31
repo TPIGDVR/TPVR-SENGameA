@@ -27,6 +27,7 @@ namespace Assets.Scripts.Automaton
             _ani = GetComponent<Animator>();
             _agent = GetComponent<NavMeshAgent>();
             _audio = GetComponent<AudioSource>();
+            _state = AutomatonStates.ROAM;
             StartCoroutine(Behaviour());
             originalPosition = transform.position;
         }
