@@ -66,7 +66,7 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
         {
             AddIntoSOCollection(l);
         }
-
+        initialPlayerPosition = playerTransform.position;
         originalAnxietySpeed = anxietyHandler.AnxietyIncreaseSpeed;
         originalRobotsSpeed = automatons[0].Agent.speed;
 
@@ -101,6 +101,9 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
     {
         //EM_Dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, (DialogueLines)RetrieveRuntimeScriptableObject(lines[kioskDownload]));
         kioskDownload++;
+
+        initialPlayerPosition = playerTransform.position;
+
         if(kioskDownload >= numberOfKioskToOpenDoor)
         {
             Debug.Log("Tutorial Cleared");
@@ -188,9 +191,9 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
 
     IEnumerator TutorialDeath()
     {
-        //set player to death location
-        initialPlayerPosition = playerTransform.position;
+
         yield return null;
+        //set player to death location
         playerTransform.position = gameOver.deathPoint.position;
 
         //reset the scene to just before they scan kiosk 4

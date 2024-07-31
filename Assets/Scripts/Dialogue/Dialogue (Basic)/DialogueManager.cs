@@ -11,7 +11,7 @@ namespace Dialog
     /// <summary>
     /// 
     /// </summary>
-    public class DialogueManager : MonoBehaviour
+    public class DialogueManager : MonoBehaviour , IScriptLoadQueuer
     {
         EventManager<DialogEvents> em_l = EventSystem.dialog;
 
@@ -39,7 +39,6 @@ namespace Dialog
         private void OnEnable()
         {
             em_l.AddListener<DialogueLines>(DialogEvents.ADD_DIALOG, AddDialog);
-
         }
 
         private void OnDisable()
@@ -47,10 +46,9 @@ namespace Dialog
             em_l.RemoveListener<DialogueLines>(DialogEvents.ADD_DIALOG, AddDialog);
         }
 
-        private void Start()
+        private void Awake()
         {
-            dialogueBox.SetActive(false);
-
+            ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.SYSTEM);
         }
 
         #region opening/closing the dialogue box
@@ -228,6 +226,11 @@ namespace Dialog
 
                 Debug.Log($"Triggered Event : {evnt}");
             }
+        }
+
+        public void Initialize()
+        {
+            dialogueBox.SetActive(false);
         }
     }
 }
