@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NoiseSource : MonoBehaviour
+public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
 {
     [SerializeField] Transform noiseIndicator;
     [SerializeField] CapsuleCollider c;
@@ -13,21 +13,32 @@ public class NoiseSource : MonoBehaviour
     AudioHighPassFilter highPassFilter;
     AudioLowPassFilter lowPassFilter;
     MeshRenderer meshRenderer;
-    private void Awake()
+
+    public void Initialize()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
-        audioSource = GetComponent<AudioSource>();
+        GetComponent();
+
         noiseIndicator.localScale = new Vector3(NoiseRange, NoiseRange, NoiseRange);
         NoiseRangeScaled = (NoiseRange + c.radius) * LevelConstants.Scale;
         audioSource.maxDistance = NoiseRangeScaled;
         audioSource.minDistance = 0;
-        //audio.PlayDelayed(Random.Range(0, 3));
         audioSource.Play();
-        highPassFilter = GetComponent<AudioHighPassFilter>();
-        lowPassFilter = GetComponent<AudioLowPassFilter>();
 
         EventSystem.dialog.AddListener(DialogEvents.ACTIVATE_NOISE_INDICATOR, ActivateNoiseRangeIndicator);
         EventSystem.tutorial.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateNoiseRangeIndicator);
+    }
+
+    void GetComponent()
+    {
+        meshRenderer = GetComponent<MeshRenderer>();
+        audioSource = GetComponent<AudioSource>();
+        highPassFilter = GetComponent<AudioHighPassFilter>();
+        lowPassFilter = GetComponent<AudioLowPassFilter>();
+    }
+
+    private void Awake()
+    {
+        ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.AUTOMATONS - 1);
     }
 
     public bool CheckIfBlockedOrOutOfRange()
@@ -69,14 +80,11 @@ public class NoiseSource : MonoBehaviour
     
     void ActivateNoiseRangeIndicator()
     {
-
-        Debug.Log("ACTIVATE INDICATOR");
         meshRenderer.enabled = true;
     }
 
     void DeactivateNoiseRangeIndicator()
     {
-        Debug.Log("DEACTIVATE INDICATOR");
         meshRenderer.enabled = false;
     }
 }

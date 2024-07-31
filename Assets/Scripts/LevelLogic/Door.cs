@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.ProBuilder.Shapes;
 
-public abstract class Door : MonoBehaviour
+public abstract class Door : MonoBehaviour, IScriptLoadQueuer
 {
     [SerializeField]
     Transform door_L, door_R;
@@ -14,13 +14,18 @@ public abstract class Door : MonoBehaviour
     Vector3 door_L_OP, door_R_OP;
     EventManager<LevelEvents> em_l = EventSystem.level;
 
-    public void InitializeDoor()
+    #region Initialization
+    public void Initialize()
     {
         door_L_OP = door_L.localPosition;
         door_R_OP = door_R.localPosition;
-        //em_l.AddListener(LevelEvents.LEVEL_CLEARED, LevelCleared);
     }
 
+    private void Awake()
+    {
+        ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.LEVEL + 2);
+    }
+    #endregion
     public void OpenDoor()
     {
         StartCoroutine(OpenDoor_Cor());

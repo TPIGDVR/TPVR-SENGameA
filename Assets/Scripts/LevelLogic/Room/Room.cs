@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ScriptableObjectManager;
 
-public class Room : MonoBehaviour
+public class Room : MonoBehaviour, IScriptLoadQueuer
 {
     [SerializeField]
-    readonly Objective[] roomObj;
+    Objective[] roomObj;
+    [SerializeField]
     Objective[] roomObj_rt;
 
+
+    [SerializeField]
     AutomatonBehaviour[] automatons;
+    [SerializeField]
     Kiosk[] kiosks;
+    [SerializeField]
     Room_Door[] doors;
     bool isCompleted;
 
     #region ROOM INITIALIZATION
-    public void InitializeRoom()
+    public void Initialize()
     {
         RetrieveAutomatonsInRoom();
         RetrieveKiosksInRoom();
@@ -37,10 +42,6 @@ public class Room : MonoBehaviour
     void RetrieveDoorsInRoom()
     {
         doors = GetComponentsInChildren<Room_Door>();
-        foreach (var door in doors)
-        {
-            door.InitializeDoor();
-        }
     }
 
     void InstantiateScriptableObject()
@@ -55,6 +56,11 @@ public class Room : MonoBehaviour
             roomObj_rt[index] = (Objective)item;
             index++;
         }
+    }
+
+    private void Awake()
+    {
+        ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.LEVEL + 1);
     }
     #endregion
 
