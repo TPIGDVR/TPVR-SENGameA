@@ -14,7 +14,7 @@ public class Tutorial_Kiosk : MonoBehaviour
     Image progressUI;
     [SerializeField]
     GameObject progress_GO;
-    // first and second audio source is for SFX
+    // first and second audio speechSource is for SFX
 
     //[SerializeField]
     //AudioSource audioSource;
@@ -56,6 +56,7 @@ public class Tutorial_Kiosk : MonoBehaviour
     PopUp popup;
 
     SoundManager audioPlayer;
+    AudioSource globalAudioSource = null;
 
     [Header("Kiosk Dialog")]
     [SerializeField] KioskLines kioskData;
@@ -114,7 +115,8 @@ public class Tutorial_Kiosk : MonoBehaviour
 
             //StopSFX();
             //audioSource.PlayOneShot(audioClips[1]);
-            audioPlayer.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
+            //audioPlayer.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
+            audioPlayer.RetrieveAudioSource(globalAudioSource);
             audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
 
             em_t.TriggerEvent(t_event);
@@ -160,8 +162,12 @@ public class Tutorial_Kiosk : MonoBehaviour
 
         if (!scanCompleted)
         {
+            if (globalAudioSource)
+            {
+                audioPlayer.RetrieveAudioSource(globalAudioSource);
+            }
             //StopSFX();
-            audioPlayer.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
+            //audioPlayer.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
         }
     }
 
@@ -171,17 +177,16 @@ public class Tutorial_Kiosk : MonoBehaviour
         if (authenticate)
         {
             scanning = true;
-            //audioSource.loop = true;
-            //audioSource.clip = audioClips[5];
-            //audioSource.Play();
-            audioPlayer.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING , transform.position);
+            //if there is a audio speechSource than keep it
+            if (globalAudioSource) audioPlayer.RetrieveAudioSource(globalAudioSource);
+            globalAudioSource = audioPlayer.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING , transform.position);
         }
     }
 
     public void StartKioskDialog()
     {
         ChangeImage();
-        StartTyping();     
+        StartTyping();
     }
 
     public void ChangeImagePanel()
@@ -206,20 +211,21 @@ public class Tutorial_Kiosk : MonoBehaviour
     private IEnumerator WaitTimer(float second)
     {
         var clip = kioskData.Lines[indexDialog].clip;
-        AudioSource source = null;
+        AudioSource speechSource = null;
+
         if (clip)
         {
             MusicClip musicClip = new MusicClip(clip);  
-            source = SoundManager.Instance.PlayMusicClip(musicClip,transform.position);
-
+            speechSource = audioPlayer.PlayMusicClip(musicClip,transform.position);
         }
         StartCoroutine(TypeNextSentence());
         yield return new WaitForSeconds(second);
 
-        if (source)
-        {
-            SoundManager.Instance.RetrieveAudioSource(source);
-        }
+
+        //audio source related
+        //For error catch safety.
+        if (globalAudioSource) audioPlayer.RetrieveAudioSource(globalAudioSource);
+        if (speechSource) audioPlayer.RetrieveAudioSource(speechSource);
 
         indexDialog++;
 
@@ -242,7 +248,7 @@ public class Tutorial_Kiosk : MonoBehaviour
 
     private IEnumerator TypeNextSentence()
     {
-        SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING, transform.position);
+        globalAudioSource = audioPlayer.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
         dialogText.text = "";
         string text = kioskData.Lines[indexDialog].Text;
 
@@ -251,8 +257,8 @@ public class Tutorial_Kiosk : MonoBehaviour
             dialogText.text += c;
             yield return new WaitForSeconds(0.5f / textSpeed);
         }
-        SoundManager.Instance.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
-
+        audioPlayer.RetrieveAudioSource(globalAudioSource);
+        globalAudioSource = null;
     }
 
 }
