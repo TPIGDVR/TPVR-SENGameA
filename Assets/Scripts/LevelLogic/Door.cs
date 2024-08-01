@@ -9,16 +9,23 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
     Transform door_L, door_R;
     [SerializeField]
     float aniSpeedMutiplier, aniTime;
-    public bool isOpened;
+    bool canBeOpened;
 
     Vector3 door_L_OP, door_R_OP;
     EventManager<LevelEvents> em_l = EventSystem.level;
+
+    [SerializeField]
+    float scanSpeed;
+
+    [SerializeField]
+    ScannerUI scanner;
 
     #region Initialization
     public void Initialize()
     {
         door_L_OP = door_L.localPosition;
         door_R_OP = door_R.localPosition;
+        scanner.enabled = false;
     }
 
     private void Awake()
@@ -26,12 +33,13 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
         ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.LEVEL + 2);
     }
     #endregion
+
     public void OpenDoor()
     {
         StartCoroutine(OpenDoor_Cor());
     }
 
-    public void LevelCleared()
+    protected void LevelCleared()
     {
         StartCoroutine(OpenDoor_Cor());
     }
@@ -45,9 +53,23 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
         {
             door_L.localPosition = Vector3.Lerp(door_L_OP, new(-1.75f, 0, -16f), timer / time);
             door_R.localPosition = Vector3.Lerp(door_R_OP, new(1.25f, 0, 16f), timer / time);
-            //door_L.localPosition += Vector3.forward;
             timer += timeInterval;
+            //play sound
+
             yield return new WaitForSeconds(timeInterval);
         }
+    }
+
+    public void MakeDoorOpenable()
+    {
+        canBeOpened = true;
+        scanner.enabled = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!canBeOpened) return;
+
+
     }
 }
