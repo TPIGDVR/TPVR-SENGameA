@@ -13,7 +13,7 @@ namespace UI
         [SerializeField] private Button quitButton;
 
 
-        [SerializeField] private ToggleRay[] toggleRays;
+        //[SerializeField] private ToggleRay[] toggleRays;
 
         public void Start()
         {
@@ -22,25 +22,25 @@ namespace UI
             gameObject.SetActive(false);
         }
 
-        public override void ToggleUI()
-        {
-            base.ToggleUI();
-            if (gameObject.active)
-            {
-                //if active
-                foreach (var t in toggleRays)
-                {
-                    t.ActivateRay();
-                }
-            }
-            else
-            {
-                foreach (var t in toggleRays)
-                {
-                    t.DeactivateRay();
-                }
-            }
-        }
+        //public override void ToggleUI()
+        //{
+        //    base.ToggleUI();
+        //    if (gameObject.active)
+        //    {
+        //        //if active
+        //        foreach (var t in toggleRays)
+        //        {
+        //            t.ActivateRay();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        foreach (var t in toggleRays)
+        //        {
+        //            t.DeactivateRay();
+        //        }
+        //    }
+        //}
 
         public void QuitGame()
         {
