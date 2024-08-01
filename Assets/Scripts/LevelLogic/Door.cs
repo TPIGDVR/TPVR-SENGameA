@@ -12,7 +12,7 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
     bool canBeOpened;
 
     Vector3 door_L_OP, door_R_OP;
-    EventManager<LevelEvents> em_l = EventSystem.level;
+    protected EventManager<LevelEvents> em_l = EventSystem.level;
 
     [SerializeField]
     float scanSpeed;
@@ -21,7 +21,7 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
     ScannerUI scanner;
 
     #region Initialization
-    public void Initialize()
+    public virtual void Initialize()
     {
         door_L_OP = door_L.localPosition;
         door_R_OP = door_R.localPosition;

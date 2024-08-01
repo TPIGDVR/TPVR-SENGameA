@@ -16,6 +16,9 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     [SerializeField]
     GameObject Heart,Objective,Dialogue;
 
+    [SerializeField]
+    Transform playerTransform;
+
     //room / objective variables
     Room currentRoom;
 
@@ -41,6 +44,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         GetReferenceToComponents();
         anxietyHandler.InitializePlayerAnxiety();
         objectiveHandler.InitializeObjectiveHandler();
+        GameData.playerTransform = playerTransform;
     }
 
     void EventSubscribing()

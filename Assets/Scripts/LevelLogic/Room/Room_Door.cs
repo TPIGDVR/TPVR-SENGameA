@@ -13,6 +13,18 @@ public class Room_Door : Door
     {
         return doorTag == tag;
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            bool isForward = Vector3.Dot(GameData.playerTransform.position - transform.position, transform.right) < 0;
+            if (isForward)
+            {
+                em_l.TriggerEvent(LevelEvents.ENTER_NEW_ROOM, leadingRoom);
+            }
+        }
+    }
 }
 
 public enum Room_Door_Tag

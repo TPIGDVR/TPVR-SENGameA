@@ -48,11 +48,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 497e68251d78ddc46a96e39f0ade01a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  door_L: {fileID: 0}
-  door_R: {fileID: 0}
-  aniSpeedMutiplier: 0
-  aniTime: 0
-  scanSpeed: 0
+  door_L: {fileID: 2230025543157024884}
+  door_R: {fileID: 4471985085085115684}
+  aniSpeedMutiplier: 1
+  aniTime: 2
+  scanSpeed: 60
+  scanner: {fileID: 4619627515576820476}
   leadingRoom: {fileID: 0}
   doorTag: 0
 --- !u!65 &5945874551317479561
@@ -70,7 +71,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -431,3 +432,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5287420210716489098}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4619627515576820476 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 683568668363822966, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+    type: 3}
+  m_PrefabInstance: {fileID: 5287420210716489098}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a1aa762642adb04ba1abdf73f791bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
