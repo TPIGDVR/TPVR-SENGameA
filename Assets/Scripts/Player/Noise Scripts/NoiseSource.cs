@@ -46,7 +46,6 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
         Transform camTrans = Camera.main.transform;
         Vector3 rayDir = camTrans.position - transform.position;
         Ray toPlayer = new(transform.position, rayDir);
-
         bool hasHit = Physics.Raycast(toPlayer, out RaycastHit hitInfo, NoiseRangeScaled);
         float dist = Vector3.Distance(camTrans.position, transform.position);
         
@@ -60,18 +59,19 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
 
         if (hasHit)
         {
-            if (!hitInfo.transform.CompareTag("Player"))
+            if (!hitInfo.transform.CompareTag("Player") || !hitInfo.transform.CompareTag("MainCamera"))
             {
                 highPassFilter.cutoffFrequency = 1000;
                 lowPassFilter.cutoffFrequency = 300;
             }
             else
             {
+                Debug.DrawRay(transform.position, rayDir);
                 highPassFilter.cutoffFrequency = 0;
                 lowPassFilter.cutoffFrequency = 22000;
             }
 
-            return !hitInfo.transform.CompareTag("Player") || dist > NoiseRangeScaled;
+            return !hitInfo.transform.CompareTag("Player") || dist > NoiseRangeScaled || !hitInfo.transform.CompareTag("MainCamera");
         }
 
         //out of range

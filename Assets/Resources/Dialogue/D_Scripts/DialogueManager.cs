@@ -224,7 +224,7 @@ namespace Dialog
                 EventSystem.dialog.TriggerEvent(evnt);
                 line.hasBeenTriggered = true;
 
-                Debug.Log($"Triggered Event : {evnt}");
+                //Debug.Log($"Triggered Event : {evnt}");
             }
         }
 
