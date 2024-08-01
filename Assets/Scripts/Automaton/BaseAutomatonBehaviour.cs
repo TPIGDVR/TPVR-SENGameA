@@ -92,7 +92,6 @@ public class BaseAutomatonBehaviour : MonoBehaviour
         _ani.SetFloat("Spd", 0f);
     }
 
-
     protected virtual IEnumerator WalkToTPointCoroutine()
     {
         if (_dataInterfaceT.Length <= 0) yield break;
