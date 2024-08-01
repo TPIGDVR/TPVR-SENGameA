@@ -1,17 +1,18 @@
 using System.Collections;
-using System.Data;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
+public class BaseAutomatonBehaviour : MonoBehaviour
 {
-    AutomatonStates _state;
-    Animator _ani;
-    AudioSource _audio;
-    NavMeshAgent _agent;
-    float _travelCompleteThreshold = 0.001f;
-    float _minWaitTime = 1;
-    float _maxWaitTime = 3;
+    protected AutomatonStates _state;
+    protected Animator _ani;
+    protected AudioSource _audio;
+    protected NavMeshAgent _agent;
+    protected float _travelCompleteThreshold = 0.001f;
+    protected float _minWaitTime = 1;
+    protected float _maxWaitTime = 3;
     [SerializeField]
     AudioClip[] _footStepClips;
     [SerializeField]
@@ -19,15 +20,14 @@ public class AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
     int _wayPointIndex = 0;
 
     [SerializeField]
-    Transform[] _dataInterfaceT;
-
-    [SerializeField]
     bool _isStationary;
 
+    [SerializeField] Transform[] _dataInterfaceT;
+
     [Header("Movement")]
-    [SerializeField]float oringinalMovement = 5f;
-    [SerializeField] float acceptableDegree = 15f;
-    [SerializeField] float rotationSpeed = 3f;
+    [SerializeField]protected float oringinalMovement = 5f;
+    [SerializeField]protected float acceptableDegree = 15f;
+    [SerializeField]protected float rotationSpeed = 3f;
 
     #region INITIALIZATION
     private void Awake()
@@ -44,9 +44,10 @@ public class AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
     }
     #endregion
 
-    IEnumerator Behaviour()
+    //placeholder coroutine for basic behaviours
+    protected virtual IEnumerator Behaviour()
     {
-        while (true) 
+        while (true)
         {
             EvaluateState();
             float waitTime = Random.Range(_minWaitTime, _maxWaitTime);
@@ -57,31 +58,13 @@ public class AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
                     yield return new WaitForSeconds(waitTime);
                     break;
                 case AutomatonStates.WALK:
-                    _wayPointIndex++;
-                    if(_wayPointIndex >= _wayPoints.Length)
-                        _wayPointIndex = 0;
-
-                    Vector3 pos = _wayPoints[_wayPointIndex].Position;
-                    yield return new WaitForSeconds(_wayPoints[_wayPointIndex].Delay);
-                    SetDestination(pos);
-
-                    yield return new WaitForSeconds(0.1f);
-                    yield return MovementCoroutine();
-                    _ani.SetFloat("Spd", 0f);
+                    yield return WalkToWayPointCoroutine();
                     break;
                 case AutomatonStates.SCAN:
-                    if (_dataInterfaceT.Length <= 0)
-                        break;
-                    int index = Random.Range(0, _dataInterfaceT.Length);
-                    if (_dataInterfaceT[index] != null)      
-                        SetDestination(_dataInterfaceT[index].position);
-
-                    yield return new WaitForSeconds(0.1f);
-                    yield return new WaitUntil(() => _agent.remainingDistance <= _travelCompleteThreshold);
-                    _ani.SetFloat("Spd", 0f);
+                    yield return WalkToTPointCoroutine();
                     break;
                 case AutomatonStates.WALK_TO_TARGET:
-
+                    //TODO!!!
                 default:
                     Debug.Log("Automaton : Unable to get a state...");
                     break;
@@ -89,18 +72,51 @@ public class AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
         }
     }
 
-    IEnumerator MovementCoroutine()
+
+    /// <summary>
+    /// Basic walk coroutine to move the automaton to a selected waypoint
+    /// </summary>
+    /// <returns></returns>
+    protected virtual IEnumerator WalkToWayPointCoroutine()
+    {
+        _wayPointIndex++;
+        if (_wayPointIndex >= _wayPoints.Length)
+            _wayPointIndex = 0;
+
+        Vector3 pos = _wayPoints[_wayPointIndex].Position;
+        yield return new WaitForSeconds(_wayPoints[_wayPointIndex].Delay);
+        SetDestination(pos);
+
+        yield return new WaitForSeconds(0.1f);
+        yield return MovementCoroutine();
+        _ani.SetFloat("Spd", 0f);
+    }
+
+
+    protected virtual IEnumerator WalkToTPointCoroutine()
+    {
+        if (_dataInterfaceT.Length <= 0) yield break;
+        int index = Random.Range(0, _dataInterfaceT.Length);
+        if (_dataInterfaceT[index] != null)
+            SetDestination(_dataInterfaceT[index].position);
+
+        yield return new WaitForSeconds(0.1f);
+        yield return MovementCoroutine();
+        _ani.SetFloat("Spd", 0f);
+    }
+
+     IEnumerator MovementCoroutine()
     {
         Vector3 previousPosition = transform.position;
-        while(_agent.remainingDistance >= _travelCompleteThreshold)
+        while (_agent.remainingDistance >= _travelCompleteThreshold)
         {
             //check 
             Vector3 nxtDirection = _agent.nextPosition - previousPosition;
-            
-            float degreeOfRotation = Vector3.SignedAngle(transform.forward, nxtDirection , transform.up);
-            if(!(degreeOfRotation < acceptableDegree && 
+
+            float degreeOfRotation = Vector3.SignedAngle(transform.forward, nxtDirection, transform.up);
+            if (!(degreeOfRotation < acceptableDegree &&
                 degreeOfRotation > -acceptableDegree))
-                //if not within acceptable degree.
+            //if not within acceptable degree.
             {
                 yield return RotateKyle(degreeOfRotation, nxtDirection, transform.forward);
             }
@@ -108,7 +124,7 @@ public class AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
             {
                 _ani.SetFloat("Spd", 0.5f);
                 _agent.speed = oringinalMovement;
-                
+
             }
             //print($"rotation;{degreeOfRotation}, forward {transform.forward}, nxtDirection {nxtDirection} \n" +
             //    $"agent nxt Position {_agent.nextPosition}, transform position {transform.position}");
@@ -121,7 +137,7 @@ public class AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
     {
         _agent.speed = 0;
         float strength = degree / 180;
-        
+
         _ani.SetFloat("RotationStrength", strength);
         _ani.SetFloat("Spd", 0f);
 
@@ -157,27 +173,34 @@ public class AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
         }
 
         int nxtState = (int)_state + 1;
-        if(nxtState == 3)
+        if (nxtState == 3)
         {
             nxtState = 0;
         }
         _state = (AutomatonStates)nxtState;
     }
 
-    void OnFootstep()
+    protected void ChangeState(AutomatonStates stateToChange)
     {
-        float vol = Random.Range(0.8f, 1f);
-        int index = Random.Range(0,_footStepClips.Length);
-        _audio.PlayOneShot(_footStepClips[index], vol);
+        _state = stateToChange;
+        StopAllCoroutines();
+        StartCoroutine(Behaviour());
     }
 
-    
-
-    enum AutomatonStates
+    protected enum AutomatonStates
     {
         IDLE,
         WALK,
         SCAN,
         WALK_TO_TARGET,
     }
+    #region misc functions
+    //called in the animator
+    void OnFootstep()
+    {
+        float vol = Random.Range(0.8f, 1f);
+        int index = Random.Range(0, _footStepClips.Length);
+        _audio.PlayOneShot(_footStepClips[index], vol);
+    }
+    #endregion
 }
