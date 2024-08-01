@@ -17,6 +17,7 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
     Kiosk[] kiosks;
     [SerializeField]
     Room_Door[] doors;
+
     bool isCompleted;
 
     #region ROOM INITIALIZATION
@@ -90,9 +91,9 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
                     //go through each door to check
                     foreach(var door in doors)
                     {
-                        if(door.doorTag == obj.doorToOpen)
+                        if(door.CheckIfSameDoor(obj.doorToOpen))
                         {
-                            door.OpenDoor();
+                            door.MakeDoorOpenable();
                         }
                     }
                 }
@@ -110,4 +111,5 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
 
         return completed;
     }
+
 }

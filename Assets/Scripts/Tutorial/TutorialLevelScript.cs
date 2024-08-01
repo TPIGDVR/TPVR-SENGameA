@@ -111,7 +111,7 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
         if(kioskDownload >= numberOfKioskToOpenDoor)
         {
             Debug.Log("Tutorial Cleared");
-            door.LevelCleared();
+            door.MakeDoorOpenable();
         }
 
         //update objective ui
