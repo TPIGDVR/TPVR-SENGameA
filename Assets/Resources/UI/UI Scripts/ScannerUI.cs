@@ -77,6 +77,7 @@ public class ScannerUI : MonoBehaviour
     void Complete()
     {
         scanCompleted = true;
+        onCompleteScan?.Invoke();
         audioPlayer.RetrieveAudioSource(globalAudioSource);
         audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
     }
