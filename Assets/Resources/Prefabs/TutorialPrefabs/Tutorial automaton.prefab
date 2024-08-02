@@ -969,6 +969,9 @@ MonoBehaviour:
   NoiseRange: 20
   NoiseValue: 10
   NoiseRangeScaled: 0
+  mask:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!82 &3058721413443789089
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1775,6 +1778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f14ec7d24da73ac4c931f637054fa18f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _state: 0
   _footStepClips:
   - {fileID: 8300000, guid: 8ac1df3b66ca1d64ea5ef524c3282ff5, type: 3}
   - {fileID: 8300000, guid: 41e119a7edfd1b749b8189579ff52e04, type: 3}

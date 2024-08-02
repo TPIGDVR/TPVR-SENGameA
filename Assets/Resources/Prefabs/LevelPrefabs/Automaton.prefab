@@ -630,6 +630,9 @@ MonoBehaviour:
   - {fileID: 5821255509011692051}
   _dataInterfaceT: []
   _isStationary: 0
+  oringinalMovement: 5
+  acceptableDegree: 15
+  rotationSpeed: 3
 --- !u!136 &2553735085579286181
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1551,9 +1554,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseIndicator: {fileID: 7423191285754510144}
   c: {fileID: 2553735085579286181}
-  NoiseRange: 20
+  NoiseRange: 4
   NoiseValue: 10
   NoiseRangeScaled: 0
+  mask:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!82 &3790567143759614900
 AudioSource:
   m_ObjectHideFlags: 0
