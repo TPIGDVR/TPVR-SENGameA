@@ -9,7 +9,7 @@ namespace Automaton
         [SerializeField] protected AutomatonStates _state;
         protected Animator _ani;
         protected AudioSource _audio;
-        protected NavMeshAgent _agent;
+        private NavMeshAgent _agent;
         private float _travelCompleteThreshold = 0.001f;
         private float _minWaitTime = 1;
         private float _maxWaitTime = 3;
@@ -28,6 +28,8 @@ namespace Automaton
         [SerializeField] private float oringinalMovement = 5f;
         [SerializeField] private float acceptableDegree = 15f;
         [SerializeField] private float rotationSpeed = 3f;
+
+        public NavMeshAgent Agent { get => _agent; set => _agent = value; }
 
         #region INITIALIZATION
         private void Awake()
@@ -128,7 +130,7 @@ namespace Automaton
                 }
 
                 //print($"rotation;{degreeOfRotation}, forward {transform.forward}, nxtDirection {nxtDirection} \n" +
-                //    $"agent nxt Position {_agent.nextPosition}, transform position {transform.position}");
+                //    $"_agent nxt Position {_agent.nextPosition}, transform position {transform.position}");
                 previousPosition = transform.position;
                 yield return null;
             }
@@ -181,14 +183,14 @@ namespace Automaton
         {
             //NOOP
         }
-        protected void ChangeState(AutomatonStates stateToChange)
+        public void ChangeState(AutomatonStates stateToChange)
         {
             _state = stateToChange;
             StopAllCoroutines();
             StartCoroutine(Behaviour());
         }
 
-        protected enum AutomatonStates
+        public enum AutomatonStates
         {
             IDLE,
             WALK,
@@ -210,7 +212,7 @@ namespace Automaton
 
         public void ChangeToMoveTarget(Vector3 targetDestination)
         {
-            this.targetDestination
+            this.targetDestination = targetDestination;
         }
 
         #region misc functions

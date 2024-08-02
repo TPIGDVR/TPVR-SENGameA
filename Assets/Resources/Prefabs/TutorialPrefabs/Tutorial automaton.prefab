@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 183337670236226693}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4, y: 0, z: 15.7}
+  m_LocalPosition: {x: 22.6, y: 0, z: 18.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -969,9 +969,6 @@ MonoBehaviour:
   NoiseRange: 20
   NoiseValue: 10
   NoiseRangeScaled: 0
-  mask:
-    serializedVersion: 2
-    m_Bits: 512
 --- !u!82 &3058721413443789089
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1284,7 +1281,7 @@ Transform:
   m_GameObject: {fileID: 3832960614927129089}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.8, y: 0, z: 15.7}
+  m_LocalPosition: {x: -19.2, y: 0, z: 15.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1569,7 +1566,7 @@ GameObject:
   - component: {fileID: 851280449665558099}
   - component: {fileID: 4331064249280680018}
   - component: {fileID: 1354272977199735056}
-  - component: {fileID: 6070971273094718871}
+  - component: {fileID: 8855880512575267790}
   m_Layer: 10
   m_Name: KyleRobot
   m_TagString: Untagged
@@ -1766,7 +1763,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6070971273094718871
+--- !u!114 &8855880512575267790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1775,7 +1772,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5438229045362949587}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f14ec7d24da73ac4c931f637054fa18f, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d99a314b15c10d49b8cd76ea7295722, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _state: 0
@@ -1790,8 +1787,18 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1e5cf7e626c83d0488714d391aff6258, type: 3}
   - {fileID: 8300000, guid: 637b99b55ce8469439ac6e1b3bd83cb7, type: 3}
   - {fileID: 8300000, guid: 6fbb42f9da4cde3439d575e117f006c4, type: 3}
-  _wayPoints: []
-  targetDestination: {x: 0, y: 0, z: 0}
+  _wayPoints:
+  - {fileID: 1800329307968115337}
+  - {fileID: 1449409875129415104}
+  - {fileID: 3934741892726017383}
+  - {fileID: 2374665983456936566}
+  - {fileID: 990501603937410359}
+  - {fileID: 4330843608771760314}
+  _isStationary: 0
+  _dataInterfaceT: []
+  oringinalMovement: 5
+  acceptableDegree: 15
+  rotationSpeed: 3
 --- !u!1 &5446331344781756715
 GameObject:
   m_ObjectHideFlags: 0
@@ -2070,7 +2077,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6425298820236117610}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 44.4, y: 0, z: -70.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -2105,7 +2112,7 @@ Transform:
   m_GameObject: {fileID: 6617344076665251893}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.8, y: 0, z: 15.7}
+  m_LocalPosition: {x: 21.7, y: 0, z: -23.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2423,7 +2430,7 @@ Transform:
   m_GameObject: {fileID: 8206037551900345306}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.8, y: 0, z: 35.3}
+  m_LocalPosition: {x: -18.3, y: 0, z: -23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

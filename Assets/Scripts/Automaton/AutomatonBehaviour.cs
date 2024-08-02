@@ -111,7 +111,7 @@ public class AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
                 
             }
             //print($"rotation;{degreeOfRotation}, forward {transform.forward}, nxtDirection {nxtDirection} \n" +
-            //    $"agent nxt Position {_agent.nextPosition}, transform position {transform.position}");
+            //    $"_agent nxt Position {_agent.nextPosition}, transform position {transform.position}");
             previousPosition = transform.position;
             yield return null;
         }

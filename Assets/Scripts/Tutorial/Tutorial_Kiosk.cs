@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Tutorial_Kiosk : MonoBehaviour , IScriptLoadQueuer
+public class Kiosk : MonoBehaviour , IScriptLoadQueuer
 {
     [SerializeField]
     Image progressUI;
@@ -231,8 +231,8 @@ public class Tutorial_Kiosk : MonoBehaviour , IScriptLoadQueuer
         if (indexDialog >= kioskData.Lines.Length)
         {
             //dialog is complete
-            //audioSource.PlayOneShot(audioClips[4]);
             SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE,transform.position);
+            //if can trigger line than trigger the dialog sequence
             EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, triggerLines);
             animator.SetTrigger(hidePanelHash);
         }

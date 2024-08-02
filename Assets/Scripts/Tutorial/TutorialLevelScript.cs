@@ -6,6 +6,7 @@ using UnityEngine;
 using TMPro;
 using static ScriptableObjectManager;
 using Assets.Scripts.Player.Anxiety_Scripts;
+using Automaton;
 
 public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
 {
@@ -17,8 +18,8 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
     [SerializeField] DialogueLines[] lines;
 
     [Header("Automaton")]
-    [SerializeField] Tutorial_AutomatonBehaviour[] automatons;
-    [SerializeField] Tutorial_AutomatonBehaviour firstAutomaton;
+    [SerializeField] BaseAutomatonBehaviour[] automatons;
+    [SerializeField] BaseAutomatonBehaviour firstAutomaton;
     EventManager<DialogEvents> EM_Dialog = EventSystem.dialog;
     EventManager<TutorialEvents> EM_Tut = EventSystem.tutorial;
     EventManager<PlayerEvents> EM_P = EventSystem.player;
@@ -35,7 +36,7 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
     [Header("Last kiosk variables")]
     [SerializeField] float robotsSpeed= 7f;
     [SerializeField] float anxietySpeed = 7f;
-    Tutorial_Kiosk lastKiosk;
+    Kiosk lastKiosk;
     [SerializeField]
     Transform finalKioskTrigger;
 
@@ -52,7 +53,7 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
      float originalAnxietySpeed;
      Vector3 originalTriggerPosition;
      Vector3 originalAutomatonPosition;
-    Tutorial_AutomatonBehaviour movedAutomaton;
+    BaseAutomatonBehaviour movedAutomaton;
 
     #region INITIALIZATION
     public void Initialize()
@@ -70,7 +71,7 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
         originalAnxietySpeed = anxietyHandler.AnxietyIncreaseSpeed;
         originalRobotsSpeed = automatons[0].Agent.speed;
 
-        firstAutomaton.SwitchToIdle();
+        firstAutomaton.ChangeState(BaseAutomatonBehaviour.AutomatonStates.IDLE);
 
         GameData.ChangeTutorialStatus(true);
     }
@@ -79,7 +80,7 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
     {
         EM_Tut.AddListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
         EM_Tut.AddListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
-        EM_Tut.AddListener<Tutorial_Kiosk>(TutorialEvents.LAST_KIOSK, SetUpLastKiosk);
+        EM_Tut.AddListener<Kiosk>(TutorialEvents.LAST_KIOSK, SetUpLastKiosk);
         EM_Tut.AddListener(TutorialEvents.CHASE_PLAYER, ChasePlayer);
         EM_Tut.AddListener(TutorialEvents.DEATH_SCREEN_FADED, poop);
         EM_Tut.AddListener(TutorialEvents.RES_SCREEN_FADED, TutorialRespawn);
@@ -91,7 +92,7 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
     {
         EM_Tut.RemoveListener(TutorialEvents.ACTIVATE_KIOSK, IncrementKioskDownload);
         EM_Tut.RemoveListener<Transform>(TutorialEvents.FIRST_KIOSK, CallClosestAutomatonToDestination);
-        EM_Tut.RemoveListener<Tutorial_Kiosk>(TutorialEvents.LAST_KIOSK, SetUpLastKiosk);
+        EM_Tut.RemoveListener<Kiosk>(TutorialEvents.LAST_KIOSK, SetUpLastKiosk);
         EM_Tut.RemoveListener(TutorialEvents.CHASE_PLAYER, ChasePlayer);
     }
 
@@ -126,7 +127,7 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
     void CallClosestAutomatonToDestination(Transform kiosk)
     {
         print("running call auto");
-        Tutorial_AutomatonBehaviour closestA = null;
+        BaseAutomatonBehaviour closestA = null;
         float closestDist = float.MaxValue;
         foreach (var a in automatons)
         {
@@ -138,8 +139,7 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
             }
         }
 
-        closestA.targetDestination = kiosk.position;
-        closestA.SwitchToTarget();
+        closestA.ChangeToMoveTarget(kiosk.position);
         //attach the dialogue trigger to this automaton
         automaton_DialogueTrigger.SetParent(closestA.transform);
         automaton_DialogueTrigger.localPosition = new(0, 0, 0);
@@ -154,7 +154,7 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
         em.TriggerEvent(DialogEvents.ACTIVATE_OBJECTIVE);
     }
 
-    void SetUpLastKiosk(Tutorial_Kiosk targetKiosk)
+    void SetUpLastKiosk(Kiosk targetKiosk)
     {
         lastKiosk = targetKiosk;
         originalTriggerPosition = finalKioskTrigger.position;
@@ -164,13 +164,14 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
 
         foreach(var a in automatons)
         {
-            a.SetAgentSpeed(robotsSpeed);
+            //a.SetAgentSpeed(robotsSpeed);
+            a.Agent.speed = robotsSpeed;
         }
     }
 
     void ChasePlayer()
     {
-        Tutorial_AutomatonBehaviour furtherestA = null;
+        BaseAutomatonBehaviour furtherestA = null;
         float furthestDist = float.MinValue;
         foreach (var a in automatons)
         {
@@ -182,8 +183,7 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
             }
         }
         originalAutomatonPosition = furtherestA.transform.position;
-        furtherestA.targetDestination = lastKiosk.TargetDestination.position;
-        furtherestA.SwitchToTarget();
+        furtherestA.ChangeToMoveTarget(lastKiosk.TargetDestination.position);
         //Store the reference of the moved automaton so that it can be move back;
         movedAutomaton = furtherestA;
     }
@@ -201,26 +201,27 @@ public class TutorialLevelScript : MonoBehaviour,IScriptLoadQueuer
         playerTransform.position = gameOver.deathPoint.position;
 
         //reset the scene to just before they scan kiosk 4
-        ResetScene();
+        //ResetScene();
     }
 
-    void ResetScene()
-    {
-        anxietyHandler.AnxietyIncreaseSpeed = originalAnxietySpeed;
-        foreach (var a in automatons)
-        {
-            a.SetAgentSpeed(originalRobotsSpeed);
-        }
-        print($"reseting scene {originalAutomatonPosition}");
-        movedAutomaton.ResetOriginalPostion();
-        //movedAutomaton.transform.position = originalAutomatonPosition;
-        //finalKioskTrigger.transform.position = originalTriggerPosition;
+    //void ResetScene()
+    //{
+    //    anxietyHandler.AnxietyIncreaseSpeed = originalAnxietySpeed;
+    //    foreach (var a in automatons)
+    //    {
+    //        a.Agent.speed = originalRobotsSpeed;
+    //    }
+    //    print($"reseting scene {originalAutomatonPosition}");
+    //    movedAutomaton.ResetOriginalPostion();
+    //    //movedAutomaton.transform.position = originalAutomatonPosition;
+    //    //finalKioskTrigger.transform.position = originalTriggerPosition;
 
-    }
+    //}
 
     void MoveFirstAutomaton()
     {
-        firstAutomaton.SwitchToRoam();
+        //firstAutomaton.SwitchToRoam();
+        firstAutomaton.ChangeToWalkToWayPoint();
     }
 
     void TutorialRespawn()

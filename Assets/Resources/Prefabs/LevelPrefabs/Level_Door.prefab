@@ -32,6 +32,7 @@ Transform:
   m_Children:
   - {fileID: 2230025543157024884}
   - {fileID: 4471985085085115684}
+  - {fileID: 1528281779934468155}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4070615035970035123
@@ -50,7 +51,8 @@ MonoBehaviour:
   door_R: {fileID: 4471985085085115684}
   aniSpeedMutiplier: 1
   aniTime: 2
-  isOpened: 0
+  scanSpeed: 0
+  scanner: {fileID: 7828219201914290984}
 --- !u!1 &2693483148983562275
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,3 +329,94 @@ Transform:
   - {fileID: 6601108329383576994}
   m_Father: {fileID: 3527029452212063340}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1001 &7340847560478151774
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3527029452212063340}
+    m_Modifications:
+    - target: {fileID: 67262924515207132, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+        type: 3}
+      propertyPath: m_Name
+      value: Scanner
+      objectReference: {fileID: 0}
+    - target: {fileID: 683568668363822966, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+        type: 3}
+      propertyPath: onCompleteScan.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4070615035970035123}
+    - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 12.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d22165f8f82f1ab4eb7a518cc28f942f, type: 3}
+--- !u!4 &1528281779934468155 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7340847560478151774}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7828219201914290984 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 683568668363822966, guid: d22165f8f82f1ab4eb7a518cc28f942f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7340847560478151774}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a1aa762642adb04ba1abdf73f791bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
