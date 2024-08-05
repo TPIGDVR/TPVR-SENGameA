@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Unity.Jobs;
 
 namespace Assets.Scripts.Player.Anxiety_Scripts
 {
@@ -66,7 +67,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             em_p.AddListener<float>(PlayerEvents.ANXIETY_BREATHE, Breath);
             em_p.AddListener<float>(PlayerEvents.HEART_BEAT, () => curAnxiety);
             _noiseSources = FindObjectsOfType<NoiseSource>();
-        }       
+        }
 
         public void CalculateAnxiety()
         {
@@ -76,6 +77,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             if (!CanRun || isDead)
             {
                 _anxietyIncreaseScale = 0f;
+                em_t.TriggerEvent(TutorialEvents.TUTORIAL_DEATH);
             }
 
             DetermineAnxietyLevel();
@@ -195,7 +197,9 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             try
             {
                 RenderTexture rt = em_p.TriggerEvent<RTHandle>(PlayerEvents.REQUEST_LUMTEXTURE).rt;
-                lumTex2D = new(rt.width, rt.height);
+                if (lumTex2D == null || lumTex2D.width != rt.width || lumTex2D.height != rt.height)
+                    lumTex2D = new(rt.width, rt.height);
+
                 RenderTexture.active = rt;
                 lumTex2D.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
                 lumTex2D.Apply();
@@ -211,21 +215,21 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 totalBrightness /= lumArray.Length;
                 if (totalBrightness < lT)
                     totalBrightness = 0;
-                rt.Release();
 
+                rt.Release();
                 glareValue = totalBrightness;
 
                 //Debug.Log(totalBrightness);
                 //em.TriggerEvent<float>(PlayerEvents.GLARE_UPDATE, totalBrightness);
             }
-            catch {
+            catch
+            {
                 Debug.LogWarning("Using defualt value");
                 glareValue = 0;
             }
 
             //glareValue = gv;
         }
-
-
     }
 }
+
