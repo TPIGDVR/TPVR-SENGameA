@@ -74,11 +74,11 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             //Debug.Log("calculating anxiety...");
 
             DetermineAnxietyScale();
-            if (!CanRun || isDead)
-            {
-                _anxietyIncreaseScale = 0f;
-                em_t.TriggerEvent(TutorialEvents.TUTORIAL_DEATH);
-            }
+            //if (!CanRun || isDead)
+            //{
+            //    _anxietyIncreaseScale = 0f;
+            //    em_t.TriggerEvent(TutorialEvents.TUTORIAL_DEATH);
+            //}
 
             DetermineAnxietyLevel();
             DetermineDeathTimer();
