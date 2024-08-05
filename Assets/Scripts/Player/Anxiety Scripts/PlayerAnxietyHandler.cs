@@ -78,7 +78,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             if (!CanRun || isDead)
             {
                 _anxietyIncreaseScale = 0f;
-                em_t.TriggerEvent(TutorialEvents.TUTORIAL_DEATH);
+                //em_t.TriggerEvent(TutorialEvents.TUTORIAL_DEATH);
             }
 
             DetermineAnxietyLevel();
