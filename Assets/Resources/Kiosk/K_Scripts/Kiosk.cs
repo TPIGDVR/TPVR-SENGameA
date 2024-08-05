@@ -1,4 +1,3 @@
-using Caress.Examples;
 using Dialog;
 using PopUpAssistance;
 using SoundRelated;

@@ -42,7 +42,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         Texture2D lumTex2D;
         [SerializeField, Range(0, 1)] float lT = 0.2f;
 
-
         EventManager<PlayerEvents> em_p = EventSystem.player;
         EventManager<GameEvents> em_g = EventSystem.game;
         EventManager<TutorialEvents> em_t = EventSystem.tutorial;
