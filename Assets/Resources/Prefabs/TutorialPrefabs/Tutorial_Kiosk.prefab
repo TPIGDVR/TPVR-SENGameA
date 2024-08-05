@@ -193,8 +193,8 @@ GameObject:
   - component: {fileID: 5614685660216302380}
   - component: {fileID: 765540470426037263}
   - component: {fileID: 8027455713298895819}
+  - component: {fileID: 2195593265983000996}
   - component: {fileID: 8684481500337133844}
-  - component: {fileID: 5363716754942748401}
   m_Layer: 10
   m_Name: Scan area
   m_TagString: Scan
@@ -278,7 +278,7 @@ MonoBehaviour:
   m_HoverEntered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2195593265983000996}
         m_TargetAssemblyTypeName: Tutorial_Kiosk, Assembly-CSharp
         m_MethodName: ScanStart
         m_Mode: 1
@@ -293,7 +293,7 @@ MonoBehaviour:
   m_HoverExited:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2195593265983000996}
         m_TargetAssemblyTypeName: Tutorial_Kiosk, Assembly-CSharp
         m_MethodName: ScanStop
         m_Mode: 1
@@ -365,6 +365,36 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2195593265983000996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749231755802714638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e136c8751e4048c41985910c5294f1ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progressUI: {fileID: 4614447275027929986}
+  progress_GO: {fileID: 5184496907866623758}
+  animator: {fileID: 8684481500337133844}
+  speedMultiplier: 81
+  progress: 0
+  lowColor: {r: 0.8784314, g: 0.19607843, b: 0.22745098, a: 1}
+  medColor: {r: 0.9254902, g: 0.73333335, b: 0.20392157, a: 1}
+  hiColor: {r: 0.43137255, g: 0.8392157, b: 0.6117647, a: 1}
+  scanCompleted: 0
+  targetDestination: {fileID: 4971867599052564856}
+  popup: {fileID: 8872983900653166831}
+  kioskData: {fileID: 0}
+  dialogText: {fileID: 9024809072739837626}
+  image: {fileID: 1694896246986086247}
+  imageSizer: {fileID: 4052964094166198492}
+  textSpeed: 20
+  hasHologramPanels: 1
+  triggerLines: {fileID: 0}
 --- !u!95 &8684481500337133844
 Animator:
   serializedVersion: 5
@@ -386,36 +416,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5363716754942748401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 749231755802714638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e136c8751e4048c41985910c5294f1ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  progressUI: {fileID: 0}
-  progress_GO: {fileID: 0}
-  animator: {fileID: 8684481500337133844}
-  speedMultiplier: 60
-  progress: 0
-  lowColor: {r: 0, g: 0, b: 0, a: 0}
-  medColor: {r: 0, g: 0, b: 0, a: 0}
-  hiColor: {r: 0, g: 0, b: 0, a: 0}
-  scanCompleted: 0
-  targetDestination: {fileID: 0}
-  popup: {fileID: 0}
-  kioskData: {fileID: 0}
-  dialogText: {fileID: 0}
-  image: {fileID: 0}
-  imageSizer: {fileID: 0}
-  textSpeed: 20
-  hasHologramPanels: 0
-  triggerLines: {fileID: 0}
 --- !u!1 &774156099607326242
 GameObject:
   m_ObjectHideFlags: 0
