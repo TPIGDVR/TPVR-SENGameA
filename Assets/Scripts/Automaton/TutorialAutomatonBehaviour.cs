@@ -4,18 +4,34 @@ using UnityEngine;
 
 namespace Automaton
 {
-    public class TutorialAutomatonBehaviour : MonoBehaviour
+    public class TutorialAutomatonBehaviour : BaseAutomatonBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        protected override void EvaluateState()
         {
+            //we want to control it base on event.
+        }
+
+        protected override void StartBehaviour()
+        {
+            //we want the tutorial bot be in idle.
+            _state = AutomatonStates.IDLE;
+            //subscribe to the event
+            SubscibeToEvent();
 
         }
 
-        // Update is called once per frame
-        void Update()
+        void SubscibeToEvent()
         {
-
+            EventSystem.tutorial.AddListener<Transform>(TutorialEvents.FIRST_KIOSK, MoveToKiosk);
         }
+
+        void MoveToKiosk(Transform targetPosition)
+        {
+            print($"{name} is moving to {targetPosition.position}");
+            ChangeToMoveTarget(targetPosition.position);
+            EventSystem.tutorial.RemoveListener<Transform>(TutorialEvents.FIRST_KIOSK, MoveToKiosk);
+        }
+
+
     }
 }

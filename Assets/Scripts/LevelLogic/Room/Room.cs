@@ -7,13 +7,12 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
     [SerializeField]
     Objective[] roomObj;
     [SerializeField]
-    Objective[] roomObj_rt;
-
+    protected Objective[] roomObj_rt;
 
     [SerializeField]
     AutomatonBehaviour[] automatons;
     [SerializeField]
-    Kiosk[] kiosks;
+    protected Kiosk[] kiosks;
     [SerializeField]
     Room_Door[] doors;
 
@@ -26,9 +25,11 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
         RetrieveKiosksInRoom();
         RetrieveDoorsInRoom();
         InstantiateScriptableObject();
+        InitRoom();
         isCompleted = false;
     }
 
+    #region retrieving room
     void RetrieveAutomatonsInRoom()
     {
         automatons = GetComponentsInChildren<AutomatonBehaviour>();
@@ -57,22 +58,25 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
             index++;
         }
     }
+    #endregion
 
     private void Awake()
     {
-        ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.LEVEL + 1);
+        ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.AUTOMATONS + 1);
     }
     #endregion
 
     //call this when switching objective
-    void DisplayRoomObjective()
+    protected void DisplayRoomObjective()
     {
         //call the display event?
-        List<string> objStr = new();
+        string objectivename = "";
         foreach (var item in roomObj_rt)
         {
-            objStr.Add($"\n {item.Name} : {item.Completed} / {item.NumToComplete}");
+            //objStr.Add($"\n {item.Name} : {item.Completed} / {item.NumToComplete}");
+            objectivename += $"{item.Name} : {item.Completed} / {item.NumToComplete}\n";
         }
+        EventSystem.player.TriggerEvent(PlayerEvents.OBJECTIVE_UPDATED, objectivename);
     }
 
     public void ProgressObjective(ObjectiveName objName)
@@ -83,21 +87,35 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
             if (obj.Name == objName && !obj.IsComplete) 
             {
                 obj.Completed += 1;
-
                 //check if the objective is completed
+                EvaluateObjective();
+                //show the objective
+                DisplayRoomObjective();
                 if (obj.IsComplete)
                 {
-                    //go through each door to check
+                    //go through each door to check\
+                    print("Room is Completed");
                     foreach(var door in doors)
                     {
                         if(door.CheckIfSameDoor(obj.doorToOpen))
                         {
+                            print($"made {door.name}");
                             door.MakeDoorOpenable();
                         }
                     }
                 }
             }
         }
+    }
+
+    protected virtual void EvaluateObjective()
+    {
+        //NOOP
+    }
+
+    protected virtual void InitRoom()
+    {
+        //NOOP
     }
 
     bool isObjectiveComplete()

@@ -45,11 +45,7 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     bool authenticate = false;
 
     [SerializeField] Transform targetDestination;
-
-    [Header("Event")]
-    EventManager<TutorialEvents> em_t = EventSystem.tutorial;
-    [SerializeField]
-    TutorialEvents t_event;
+    
 
     [Header("Popup")]
     [SerializeField] 
@@ -74,6 +70,8 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     bool hasHologramPanels;
 
     public Transform TargetDestination { get => targetDestination; }
+    public bool ScanCompleted { get => scanCompleted; }
+
     [SerializeField]DialogueLines triggerLines;
 
     private void Awake()
@@ -117,12 +115,7 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
             //audioPlayer.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
             audioPlayer.RetrieveAudioSource(globalAudioSource);
             audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
-
-            em_t.TriggerEvent(t_event);
-            if(TutorialLevelScript.kioskDownload == 1)
-            {
-                em_t.TriggerEvent<Transform>(TutorialEvents.FIRST_KIOSK, targetDestination);
-            }
+            EventSystem.level.TriggerEvent<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ObjectiveName.KIOSK);
             animator.SetBool("Completed", true);       
         }
     }

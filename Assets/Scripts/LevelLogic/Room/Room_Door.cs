@@ -18,7 +18,7 @@ public class Room_Door : Door
     {
         if (other.CompareTag("Player"))
         {
-            bool isForward = Vector3.Dot(GameData.playerTransform.position - transform.position, transform.right) < 0;
+            bool isForward = Vector3.Dot(GameData.player.PlayerTransform.position - transform.position, transform.right) < 0;
             if (isForward)
             {
                 em_l.TriggerEvent(LevelEvents.ENTER_NEW_ROOM, leadingRoom);

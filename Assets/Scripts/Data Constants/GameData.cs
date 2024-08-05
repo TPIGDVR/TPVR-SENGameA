@@ -6,15 +6,15 @@ using UnityEngine.Rendering;
 public static class GameData
 {
     public static bool IsInTutorial;
-    public static Transform playerTransform;
+    public static Player player;
 
     public static void ChangeTutorialStatus(bool b)
     {
         IsInTutorial = b;
     }
 
-    public static void UpdatePlayerTransform(Transform t)
+    public static void UpdatePlayer(Player t)
     {
-        playerTransform = t;
+        player = t;
     }
 }

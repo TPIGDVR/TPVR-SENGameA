@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Reflection.Emit;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -42,6 +43,7 @@ namespace Automaton
             _ani = GetComponent<Animator>();
             _agent = GetComponent<NavMeshAgent>();
             _audio = GetComponent<AudioSource>();
+            StartBehaviour();
             StartCoroutine(Behaviour());
         }
         #endregion
@@ -49,7 +51,6 @@ namespace Automaton
         //placeholder coroutine for basic behaviours
         protected virtual IEnumerator Behaviour()
         {
-            StartBehaviour();
             while (true)
             {
                 EvaluateState();
@@ -139,7 +140,6 @@ namespace Automaton
 
         IEnumerator RotateKyle(float degree, Vector3 targetDirection, Vector3 currentDirection)
         {
-            print("Rotating kyle");
             _agent.speed = 0;
             float strength = degree / 180;
 
@@ -213,6 +213,7 @@ namespace Automaton
         public void ChangeToMoveTarget(Vector3 targetDestination)
         {
             this.targetDestination = targetDestination;
+            ChangeState(AutomatonStates.WALK_TO_TARGET);
         }
 
         #region misc functions

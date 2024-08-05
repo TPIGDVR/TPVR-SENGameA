@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class ScannerUI : MonoBehaviour
+public class ScannerUI : MonoBehaviour , IScriptLoadQueuer
 {
     [SerializeField]
     Image progressBar;
@@ -26,12 +26,13 @@ public class ScannerUI : MonoBehaviour
 
     private void Awake()
     {
-        Initialize();
+        ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.LEVEL);
     }
 
     public void Initialize()
     {
         scanCompleted = false;
+        audioPlayer = SoundManager.Instance;
         UpdateProgressUI();
     }
 

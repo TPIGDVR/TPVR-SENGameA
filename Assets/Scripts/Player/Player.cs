@@ -38,13 +38,15 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     EventManager<DialogEvents> em_d = EventSystem.dialog;
     EventManager<LevelEvents> em_l = EventSystem.level;
 
+    public Transform PlayerTransform { get => playerTransform; set => playerTransform = value; }
+
     public void Initialize()
     {
         EventSubscribing();
         GetReferenceToComponents();
         anxietyHandler.InitializePlayerAnxiety();
         objectiveHandler.InitializeObjectiveHandler();
-        GameData.playerTransform = playerTransform;
+        GameData.player = this;
     }
 
     void EventSubscribing()
@@ -103,6 +105,11 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         if (newRoom == null) throw new System.Exception("THE NEW ROOM IS NULL");
 
         currentRoom = newRoom;
+    }
+
+    public void SetCurrentRoom(Room room)
+    {
+        currentRoom = room;
     }
 
     #region TUTORIAL METHODS

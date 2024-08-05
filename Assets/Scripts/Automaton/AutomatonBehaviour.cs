@@ -171,8 +171,6 @@ public class AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
         _audio.PlayOneShot(_footStepClips[index], vol);
     }
 
-    
-
     enum AutomatonStates
     {
         IDLE,

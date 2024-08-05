@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3527029452212063340}
-  - component: {fileID: 4070615035970035123}
+  - component: {fileID: 2193297260508362367}
   m_Layer: 10
   m_Name: Level_Door
   m_TagString: Untagged
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 1528281779934468155}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4070615035970035123
+--- !u!114 &2193297260508362367
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 580411291065536962}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2a4d8e112f40d549a387b065d6b824f, type: 3}
+  m_Script: {fileID: 11500000, guid: 497e68251d78ddc46a96e39f0ade01a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   door_L: {fileID: 2230025543157024884}
@@ -53,6 +53,8 @@ MonoBehaviour:
   aniTime: 2
   scanSpeed: 0
   scanner: {fileID: 7828219201914290984}
+  leadingRoom: {fileID: 0}
+  doorTag: 0
 --- !u!1 &2693483148983562275
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,11 +348,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onCompleteScan.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4070615035970035123}
+      objectReference: {fileID: 2193297260508362367}
     - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2.41
       objectReference: {fileID: 0}
     - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
         type: 3}
@@ -360,7 +362,7 @@ PrefabInstance:
     - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.31
+      value: 10.87
       objectReference: {fileID: 0}
     - target: {fileID: 8136423261319056485, guid: d22165f8f82f1ab4eb7a518cc28f942f,
         type: 3}
