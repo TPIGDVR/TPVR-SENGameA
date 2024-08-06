@@ -189,16 +189,16 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             try
             {
                 RenderTexture rt = em_p.TriggerEvent<RTHandle>(PlayerEvents.REQUEST_LUMTEXTURE).rt;
-                float v;
+
                 if (useNew)
                 {
-                    v = RunComputeShader(rt);
+                    glareValue = RunComputeShader(rt);
                 }
                 else
                 {
-                    v = Old(rt);
+                    glareValue = Old(rt);
                 }
-                debugText.text = v.ToString();
+                debugText.text = glareValue.ToString();
             }
             catch
             {
