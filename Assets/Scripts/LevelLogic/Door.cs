@@ -6,7 +6,9 @@ using UnityEngine.ProBuilder.Shapes;
 public abstract class Door : MonoBehaviour, IScriptLoadQueuer
 {
     [SerializeField]
-    GameObject mapIcon;
+    GameObject interactionIcon;
+    [SerializeField]
+    GameObject doorIcon;
     [SerializeField]
     Transform door_L, door_R;
     [SerializeField]
@@ -28,7 +30,8 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
         door_L_OP = door_L.localPosition;
         door_R_OP = door_R.localPosition;
         scanner.SetActive(false);
-        mapIcon.SetActive(false);
+        interactionIcon.SetActive(false);
+        doorIcon.SetActive(true);
     }
 
     private void Awake()
@@ -40,7 +43,8 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
     public void OpenDoor()
     {
         scanner.SetActive(false);
-        mapIcon.SetActive(false);
+        interactionIcon.SetActive(false);
+        doorIcon.SetActive(false);
         StartCoroutine(OpenDoor_Cor());
     }
 
@@ -69,7 +73,8 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
     {
         canBeOpened = true;
         scanner.SetActive(true);
-        mapIcon.SetActive(true);
+        interactionIcon.SetActive(true);
+        doorIcon.SetActive(false);
         scanner.enabled = true;
 
     }

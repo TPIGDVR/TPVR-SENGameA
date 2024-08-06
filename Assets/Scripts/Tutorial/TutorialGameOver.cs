@@ -70,14 +70,8 @@ public class TutorialGameOver : MonoBehaviour
 
         if (progress >= 1 && !scanCompleted)
         {
-
-            scanCompleted = true;
-
-
-            
+            scanCompleted = true;   
             audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
-
-
             em_t.TriggerEvent(TutorialEvents.RESTART);
         }
     }
