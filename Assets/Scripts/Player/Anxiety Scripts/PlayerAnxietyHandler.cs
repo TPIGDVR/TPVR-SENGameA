@@ -34,10 +34,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 
         //CalculateGlare related
         [Header("Glare related")]
-        [SerializeField]
-        [Tooltip("Any glare below this threshold will be ignored")]
-        [Range(0, 1)]
-        float glareThrehold = 0.1f;
         float _maxGlareValue = 1;
         float glareValue = 0;
         Texture2D lumTex2D;
@@ -46,6 +42,8 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         ComputeShader glareCS;
         [SerializeField]
         TMP_Text debugText;
+        public bool useNew;
+
         EventManager<PlayerEvents> em_p = EventSystem.player;
         EventManager<GameEvents> em_g = EventSystem.game;
         EventManager<TutorialEvents> em_t = EventSystem.tutorial;
@@ -112,17 +110,11 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         float CalculateAnxietyScaleBasedOffGlareLevel()
         {
             CalculateGlare();
-            if (glareValue <= glareThrehold)
-            {
-                //do change this if u adding the anxiety for noise;
-                return 0f;
-            }
-            else
-            {
-                return Mathf.Lerp(_minAnxietyIncreaseScale
+
+            return Mathf.Lerp(_minAnxietyIncreaseScale
                     , _maxAnxietyIncreaseScale
                     , glareValue / _maxGlareValue);
-            }
+            
         }
 
         void IncrementAnxietyLevel()
@@ -172,8 +164,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             }
             _currDeathTimer = Mathf.Clamp(_currDeathTimer, 0, _maxDeathTime);
 
-
-
             if (_currDeathTimer >= _maxDeathTime && !isDead)
             {
                 isDead = true;
@@ -199,13 +189,46 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             try
             {
                 RenderTexture rt = em_p.TriggerEvent<RTHandle>(PlayerEvents.REQUEST_LUMTEXTURE).rt;
-
-                float v1 = RunComputeShader(rt);
+                float v;
+                if (useNew)
+                {
+                    v = RunComputeShader(rt);
+                }
+                else
+                {
+                    v = Old(rt);
+                }
+                debugText.text = v.ToString();
             }
             catch
             {
                 Debug.LogWarning("Using defualt value");
                 glareValue = 0;
+            }
+
+            float Old(RenderTexture rt)
+            {
+                if (lumTex2D == null || lumTex2D.width != rt.width || lumTex2D.height != rt.height)
+                    lumTex2D = new(rt.width, rt.height);
+
+                RenderTexture.active = rt;
+                lumTex2D.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+                lumTex2D.Apply();
+                RenderTexture.active = null;
+
+                Color[] lumArray = lumTex2D.GetPixels();
+                float totalBrightness = 0;
+                for (int i = 0; i < lumArray.Length; i++)
+                {
+                    float brightness = lumArray[i].grayscale;
+                    totalBrightness += brightness;
+                }
+                totalBrightness /= lumArray.Length;
+                //if (totalBrightness < lT)
+                //    totalBrightness = 0;
+
+                rt.Release();
+                return totalBrightness;
             }
 
             float RunComputeShader(RenderTexture rt)
@@ -231,10 +254,9 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 }
 
                 totalBrightness /= brightnessL.Length;
-                if (totalBrightness < 0)
-                    totalBrightness = 0;
+                //if (totalBrightness < 0)
+                //    totalBrightness = 0;
 
-                debugText.text = totalBrightness.ToString();
                 return totalBrightness;
             }
         }
