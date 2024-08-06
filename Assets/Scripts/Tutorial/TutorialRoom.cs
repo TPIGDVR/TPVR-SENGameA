@@ -11,7 +11,6 @@ namespace Assets.Scripts.Tutorial
 
         protected override void InitRoom()
         {
-            GameData.player.SetCurrentRoom(this);
             GameData.ChangeTutorialStatus(true);
             DisplayRoomObjective();
         }
