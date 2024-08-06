@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using Unity.Jobs;
-
+using TMPro;
 namespace Assets.Scripts.Player.Anxiety_Scripts
 {
     public class PlayerAnxietyHandler : MonoBehaviour
@@ -34,15 +34,15 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 
         //CalculateGlare related
         [Header("Glare related")]
-        [SerializeField]
-        [Tooltip("Any glare below this threshold will be ignored")]
-        [Range(0, 1)]
-        float glareThrehold = 0.1f;
         float _maxGlareValue = 1;
         float glareValue = 0;
         Texture2D lumTex2D;
         [SerializeField, Range(0, 1)] float lT = 0.2f;
-
+        [SerializeField]
+        ComputeShader glareCS;
+        [SerializeField]
+        TMP_Text debugText;
+        public bool useNew;
 
         EventManager<PlayerEvents> em_p = EventSystem.player;
         EventManager<GameEvents> em_g = EventSystem.game;
@@ -110,17 +110,11 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         float CalculateAnxietyScaleBasedOffGlareLevel()
         {
             CalculateGlare();
-            if (glareValue <= glareThrehold)
-            {
-                //do change this if u adding the anxiety for noise;
-                return 0f;
-            }
-            else
-            {
-                return Mathf.Lerp(_minAnxietyIncreaseScale
+
+            return Mathf.Lerp(_minAnxietyIncreaseScale
                     , _maxAnxietyIncreaseScale
                     , glareValue / _maxGlareValue);
-            }
+            
         }
 
         void IncrementAnxietyLevel()
@@ -170,8 +164,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             }
             _currDeathTimer = Mathf.Clamp(_currDeathTimer, 0, _maxDeathTime);
 
-
-
             if (_currDeathTimer >= _maxDeathTime && !isDead)
             {
                 isDead = true;
@@ -197,6 +189,25 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             try
             {
                 RenderTexture rt = em_p.TriggerEvent<RTHandle>(PlayerEvents.REQUEST_LUMTEXTURE).rt;
+
+                if (useNew)
+                {
+                    glareValue = RunComputeShader(rt);
+                }
+                else
+                {
+                    glareValue = Old(rt);
+                }
+                debugText.text = glareValue.ToString();
+            }
+            catch
+            {
+                Debug.LogWarning("Using defualt value");
+                glareValue = 0;
+            }
+
+            float Old(RenderTexture rt)
+            {
                 if (lumTex2D == null || lumTex2D.width != rt.width || lumTex2D.height != rt.height)
                     lumTex2D = new(rt.width, rt.height);
 
@@ -213,22 +224,41 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                     totalBrightness += brightness;
                 }
                 totalBrightness /= lumArray.Length;
-                if (totalBrightness < lT)
-                    totalBrightness = 0;
+                //if (totalBrightness < lT)
+                //    totalBrightness = 0;
 
                 rt.Release();
-                glareValue = totalBrightness;
-
-                //Debug.Log(totalBrightness);
-                //em.TriggerEvent<float>(PlayerEvents.GLARE_UPDATE, totalBrightness);
+                return totalBrightness;
             }
-            catch
+
+            float RunComputeShader(RenderTexture rt)
             {
-                Debug.LogWarning("Using defualt value");
-                glareValue = 0;
-            }
+                int size = rt.width * rt.height;
+                int kernel = glareCS.FindKernel("CSMain");
+                float[] brightnessL = new float[rt.width * rt.height];
+                glareCS.SetTexture(kernel,"Glare",rt);
+                glareCS.SetInts("width", rt.width);
 
-            //glareValue = gv;
+                //setting buffer
+                ComputeBuffer buffer = new(size,sizeof(float)); 
+                glareCS.SetBuffer(kernel, "Result", buffer);
+
+                glareCS.Dispatch(kernel,rt.width/8,rt.height/8,1);
+                buffer.GetData(brightnessL);
+                buffer.Release();
+                float totalBrightness = 0;
+
+                foreach (var l in brightnessL) 
+                {
+                    totalBrightness += l;
+                }
+
+                totalBrightness /= brightnessL.Length;
+                //if (totalBrightness < 0)
+                //    totalBrightness = 0;
+
+                return totalBrightness;
+            }
         }
     }
 }

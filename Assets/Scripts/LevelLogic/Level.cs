@@ -8,11 +8,13 @@ public class Level : MonoBehaviour, IScriptLoadQueuer
     Room[] rooms;
     [SerializeField]
     Level_Door door;
-
+    [SerializeField]
+    Room startingRoom;
     public void Initialize()
     {
         rooms = GetComponentsInChildren<Room>();
         door = GetComponentInChildren<Level_Door>();
+        EventSystem.level.TriggerEvent(LevelEvents.ENTER_NEW_ROOM, startingRoom);
     }
 
     private void Awake()

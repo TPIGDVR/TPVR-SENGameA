@@ -3,6 +3,7 @@ using System.Data;
 using UnityEngine;
 using UnityEngine.AI;
 
+
 public class AutomatonBehaviour : MonoBehaviour,IScriptLoadQueuer
 {
     AutomatonStates _state;

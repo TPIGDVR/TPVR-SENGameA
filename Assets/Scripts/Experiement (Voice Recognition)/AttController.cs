@@ -1,9 +1,4 @@
-﻿using Caress.Examples;
-using Caress;
-using System.Collections;
-using System.Globalization;
-using UnityEngine;
-using UnityEngine.Audio;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Breathing3;
 using TMPro;

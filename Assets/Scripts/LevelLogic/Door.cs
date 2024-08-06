@@ -64,6 +64,7 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
     {
         canBeOpened = true;
         scanner.enabled = true;
+        //put ur stuff here
     }
 
     private void OnTriggerEnter(Collider other)
