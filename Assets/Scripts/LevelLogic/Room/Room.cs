@@ -62,7 +62,7 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
 
     private void Awake()
     {
-        ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.AUTOMATONS + 1);
+        ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.ROOM);
     }
     #endregion
 
