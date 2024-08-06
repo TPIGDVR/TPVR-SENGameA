@@ -243,7 +243,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 ComputeBuffer buffer = new(size,sizeof(float)); 
                 glareCS.SetBuffer(kernel, "Result", buffer);
 
-                glareCS.Dispatch(kernel,rt.width/8,8,1);
+                glareCS.Dispatch(kernel,rt.width/8,rt.height/8,1);
                 buffer.GetData(brightnessL);
                 buffer.Release();
                 float totalBrightness = 0;
