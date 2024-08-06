@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using Unity.Jobs;
-
+using TMPro;
 namespace Assets.Scripts.Player.Anxiety_Scripts
 {
     public class PlayerAnxietyHandler : MonoBehaviour
@@ -42,7 +42,10 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         float glareValue = 0;
         Texture2D lumTex2D;
         [SerializeField, Range(0, 1)] float lT = 0.2f;
-
+        [SerializeField]
+        ComputeShader glareCS;
+        [SerializeField]
+        TMP_Text debugText;
         EventManager<PlayerEvents> em_p = EventSystem.player;
         EventManager<GameEvents> em_g = EventSystem.game;
         EventManager<TutorialEvents> em_t = EventSystem.tutorial;
@@ -196,30 +199,8 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             try
             {
                 RenderTexture rt = em_p.TriggerEvent<RTHandle>(PlayerEvents.REQUEST_LUMTEXTURE).rt;
-                if (lumTex2D == null || lumTex2D.width != rt.width || lumTex2D.height != rt.height)
-                    lumTex2D = new(rt.width, rt.height);
 
-                RenderTexture.active = rt;
-                lumTex2D.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
-                lumTex2D.Apply();
-                RenderTexture.active = null;
-
-                Color[] lumArray = lumTex2D.GetPixels();
-                float totalBrightness = 0;
-                for (int i = 0; i < lumArray.Length; i++)
-                {
-                    float brightness = lumArray[i].grayscale;
-                    totalBrightness += brightness;
-                }
-                totalBrightness /= lumArray.Length;
-                if (totalBrightness < lT)
-                    totalBrightness = 0;
-
-                rt.Release();
-                glareValue = totalBrightness;
-
-                //Debug.Log(totalBrightness);
-                //em.TriggerEvent<float>(PlayerEvents.GLARE_UPDATE, totalBrightness);
+                float v1 = RunComputeShader(rt);
             }
             catch
             {
@@ -227,7 +208,35 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 glareValue = 0;
             }
 
-            //glareValue = gv;
+            float RunComputeShader(RenderTexture rt)
+            {
+                int size = rt.width * rt.height;
+                int kernel = glareCS.FindKernel("CSMain");
+                float[] brightnessL = new float[rt.width * rt.height];
+                glareCS.SetTexture(kernel,"Glare",rt);
+                glareCS.SetInts("width", rt.width);
+
+                //setting buffer
+                ComputeBuffer buffer = new(size,sizeof(float)); 
+                glareCS.SetBuffer(kernel, "Result", buffer);
+
+                glareCS.Dispatch(kernel,rt.width/8,8,1);
+                buffer.GetData(brightnessL);
+                buffer.Release();
+                float totalBrightness = 0;
+
+                foreach (var l in brightnessL) 
+                {
+                    totalBrightness += l;
+                }
+
+                totalBrightness /= brightnessL.Length;
+                if (totalBrightness < 0)
+                    totalBrightness = 0;
+
+                debugText.text = totalBrightness.ToString();
+                return totalBrightness;
+            }
         }
     }
 }
