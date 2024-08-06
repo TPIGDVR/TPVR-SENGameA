@@ -48,4 +48,6 @@ public enum LevelLoadSequence
     * DOORS = 2
     */
     AUTOMATONS = 50,
+    ROOM = 51,
+    LEVELSYSTEM = 52,
 }

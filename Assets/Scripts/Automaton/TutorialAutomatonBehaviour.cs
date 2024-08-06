@@ -27,7 +27,7 @@ namespace Automaton
 
         void MoveToKiosk(Transform targetPosition)
         {
-            print($"{name} is moving to {targetPosition.position}");
+            //print($"{name} is moving to {targetPosition.position}");
             ChangeToMoveTarget(targetPosition.position);
             EventSystem.tutorial.RemoveListener<Transform>(TutorialEvents.FIRST_KIOSK, MoveToKiosk);
         }

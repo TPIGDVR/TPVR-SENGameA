@@ -48,6 +48,8 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     [Header("Popup")]
     [SerializeField] 
     PopUp popup;
+    [SerializeField]
+    GameObject mapIcon;
 
     SoundManager audioPlayer;
     AudioSource globalAudioSource = null;
@@ -106,6 +108,7 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
         if (progress >= 1 && !scanCompleted)
         {
             popup.CanPopUp = false;
+            mapIcon.gameObject.SetActive(false);
             scanCompleted = true;
 
             //StopSFX();

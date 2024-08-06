@@ -6,6 +6,11 @@ using UnityEngine.UI;
 public class ScannerUI : MonoBehaviour , IScriptLoadQueuer
 {
     [SerializeField]
+    Collider triggerBox;
+    [SerializeField]
+    GameObject canvas;
+
+    [SerializeField]
     Image progressBar;
 
     [SerializeField]
@@ -97,4 +102,17 @@ public class ScannerUI : MonoBehaviour , IScriptLoadQueuer
         }
     }
     #endregion
+
+    public void SetActive(bool active)
+    {
+        if(active)
+        {
+            canvas.SetActive(true);
+        }
+        else
+        {
+            canvas.SetActive(false);
+        }
+        triggerBox.enabled = active;
+    }
 }

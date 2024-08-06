@@ -19,6 +19,6 @@ public class Level : MonoBehaviour, IScriptLoadQueuer
 
     private void Awake()
     {
-        ScriptLoadSequencer.Enqueue(this,(int)LevelLoadSequence.LEVEL);
+        ScriptLoadSequencer.Enqueue(this,(int)LevelLoadSequence.LEVELSYSTEM);
     }
 }
