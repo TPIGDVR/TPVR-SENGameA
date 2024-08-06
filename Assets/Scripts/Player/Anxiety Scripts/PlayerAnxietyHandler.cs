@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using Unity.Jobs;
-
+using TMPro;
 namespace Assets.Scripts.Player.Anxiety_Scripts
 {
     public class PlayerAnxietyHandler : MonoBehaviour
@@ -44,7 +44,8 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         [SerializeField, Range(0, 1)] float lT = 0.2f;
         [SerializeField]
         ComputeShader glareCS;
-
+        [SerializeField]
+        TMP_Text debugText;
         EventManager<PlayerEvents> em_p = EventSystem.player;
         EventManager<GameEvents> em_g = EventSystem.game;
         EventManager<TutorialEvents> em_t = EventSystem.tutorial;
@@ -233,6 +234,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 if (totalBrightness < 0)
                     totalBrightness = 0;
 
+                debugText.text = totalBrightness.ToString();
                 return totalBrightness;
             }
         }
