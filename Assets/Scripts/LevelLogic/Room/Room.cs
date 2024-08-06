@@ -118,6 +118,16 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
         //NOOP
     }
 
+    public virtual void OnEnter()
+    {
+
+    }
+
+    public virtual void OnExit()
+    {
+
+    }
+
     bool isObjectiveComplete()
     {
         bool completed = false;

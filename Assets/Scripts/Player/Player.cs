@@ -109,7 +109,11 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     public void SetCurrentRoom(Room room)
     {
+        if(currentRoom != null)
+            currentRoom.OnExit();
+
         currentRoom = room;
+        currentRoom.OnEnter();
     }
 
     #region TUTORIAL METHODS
