@@ -104,15 +104,10 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     {
         if (newRoom == null) throw new System.Exception("THE NEW ROOM IS NULL");
 
-        currentRoom = newRoom;
-    }
-
-    public void SetCurrentRoom(Room room)
-    {
-        if(currentRoom != null)
+        if (currentRoom != null)
             currentRoom.OnExit();
 
-        currentRoom = room;
+        currentRoom = newRoom;
         currentRoom.OnEnter();
     }
 

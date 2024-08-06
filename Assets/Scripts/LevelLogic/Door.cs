@@ -70,6 +70,8 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
         canBeOpened = true;
         scanner.SetActive(true);
         mapIcon.SetActive(true);
+        scanner.enabled = true;
+
     }
 
     private void OnTriggerEnter(Collider other)
