@@ -22,14 +22,14 @@ namespace Automaton
 
         void SubscibeToEvent()
         {
-            EventSystem.tutorial.AddListener<Transform>(TutorialEvents.FIRST_KIOSK, MoveToKiosk);
+            EventSystem.level.AddListener<Transform>(LevelEvents.FIRST_KIOSK, MoveToKiosk);
         }
 
         void MoveToKiosk(Transform targetPosition)
         {
             //print($"{name} is moving to {targetPosition.position}");
             ChangeToMoveTarget(targetPosition.position);
-            EventSystem.tutorial.RemoveListener<Transform>(TutorialEvents.FIRST_KIOSK, MoveToKiosk);
+            EventSystem.level.RemoveListener<Transform>(LevelEvents.FIRST_KIOSK, MoveToKiosk);
         }
 
 

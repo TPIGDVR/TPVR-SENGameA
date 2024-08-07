@@ -19,17 +19,17 @@ namespace Assets.Scripts.Tutorial
         {
             base.OnEnter();
             //adding listeners
-            EventSystem.tutorial.AddListener(TutorialEvents.DEATH_SCREEN_FADED, poop);
+            EventSystem.player.AddListener(PlayerEvents.DEATH_SCREEN_FADED, poop);
 
             //trigger event
-            EventSystem.tutorial.TriggerEvent(TutorialEvents.INIT_TUTORIAL);
+            EventSystem.level.TriggerEvent(LevelEvents.INIT_TUTORIAL);
         }
 
         public override void OnExit()
         {
             base.OnExit();
 
-            EventSystem.tutorial.RemoveListener(TutorialEvents.DEATH_SCREEN_FADED, poop);
+            EventSystem.player.RemoveListener(PlayerEvents.DEATH_SCREEN_FADED, poop);
         }
 
         protected override void EvaluateObjective()
@@ -48,7 +48,7 @@ namespace Assets.Scripts.Tutorial
             if(objective.Completed == 1)
             {
                 var kiosk = kiosks.FirstOrDefault(kiosk => kiosk.ScanCompleted);
-                EventSystem.tutorial.TriggerEvent<Transform>(TutorialEvents.FIRST_KIOSK, kiosk.TargetDestination);
+                EventSystem.level.TriggerEvent<Transform>(LevelEvents.FIRST_KIOSK, kiosk.TargetDestination);
             }
         }
 

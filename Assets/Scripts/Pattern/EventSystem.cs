@@ -8,7 +8,7 @@ public static class EventSystem
     public static EventManager<GameEvents> game = new();
     public static EventManager<LevelEvents> level = new();
     public static EventManager<DialogEvents> dialog = new();
-    public static EventManager<TutorialEvents> tutorial = new();
+    //public static EventManager<TutorialEvents> tutorial = new();
 }
 
 public enum GameEvents
@@ -16,7 +16,7 @@ public enum GameEvents
     NONE,
     LOSE,
     WIN,
-    ENTER_NEW_SCENE
+    ENTER_NEW_SCENE,
 }
 
 public enum PlayerEvents
@@ -30,22 +30,27 @@ public enum PlayerEvents
     //objective related
     OBJECTIVE_UPDATED,
 
+    //death related
+    DEATH,//tutorial death
+    DEATH_SCREEN_FADED, //tutorial event death screen faded
+    RESTART,//tutorial event death screen faded
+    RES_SCREEN_FADED, // tutorial res screen faded
 }
 
-public enum TutorialEvents
-{
-    NONE,
-    INIT_TUTORIAL,
-    ACTIVATE_KIOSK,
-    FIRST_KIOSK,
-    DETERMINE_LAST_KIOSK,
-    LAST_KIOSK,
-    CHASE_PLAYER,
-    TUTORIAL_DEATH,
-    DEATH_SCREEN_FADED,
-    RES_SCREEN_FADED,
-    RESTART,
-}
+//public enum TutorialEvents
+//{
+//    NONE,
+//    INIT_TUTORIAL,
+//    ACTIVATE_KIOSK,
+//    FIRST_KIOSK,
+//    DETERMINE_LAST_KIOSK,
+//    LAST_KIOSK,
+//    CHASE_PLAYER,
+//    TUTORIAL_DEATH,
+//    DEATH_SCREEN_FADED,
+//    RES_SCREEN_FADED,
+//    RESTART,
+//}
 
 public enum LevelEvents
 {
@@ -56,7 +61,11 @@ public enum LevelEvents
     //objective system
     ENTER_NEW_ROOM,
     OBJECTIVE_PROGRESSED,
-    OBJECTIVE_COMPLETE     
+    OBJECTIVE_COMPLETE,
+
+    //tutorial related
+    INIT_TUTORIAL,
+    FIRST_KIOSK,
 }
 
 public enum DialogEvents
@@ -72,6 +81,4 @@ public enum DialogEvents
     ACTIVATE_HEARTRATE,
     ACTIVATE_OBJECTIVE,
     MOVE_FIRST_AUTOMATON,
-
-    
 }

@@ -25,7 +25,7 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
         audioSource.Play();
 
         EventSystem.dialog.AddListener(DialogEvents.ACTIVATE_NOISE_INDICATOR, ActivateNoiseRangeIndicator);
-        EventSystem.tutorial.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateNoiseRangeIndicator);
+        EventSystem.level.AddListener(LevelEvents.INIT_TUTORIAL, DeactivateNoiseRangeIndicator);
     }
 
     void GetComponent()

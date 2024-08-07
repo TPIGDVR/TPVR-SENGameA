@@ -46,7 +46,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 
         EventManager<PlayerEvents> em_p = EventSystem.player;
         EventManager<GameEvents> em_g = EventSystem.game;
-        EventManager<TutorialEvents> em_t = EventSystem.tutorial;
 
         [Header("reduction anxiety")]
         [SerializeField] float maxTimeReduction;
@@ -169,7 +168,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 isDead = true;
                 if (GameData.IsInTutorial)
                 {
-                    em_t.TriggerEvent(TutorialEvents.TUTORIAL_DEATH);
+                    em_p.TriggerEvent(PlayerEvents.DEATH);
                 }
                 else
                 {

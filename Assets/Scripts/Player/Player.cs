@@ -34,7 +34,6 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     #region Initialization
     EventManager<PlayerEvents> em_p = EventSystem.player;
-    EventManager<TutorialEvents> em_t = EventSystem.tutorial;
     EventManager<DialogEvents> em_d = EventSystem.dialog;
     EventManager<LevelEvents> em_l = EventSystem.level;
 
@@ -51,10 +50,12 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     void EventSubscribing()
     {
+       
+
         //tutorial events
-        em_t.AddListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
-        em_t.AddListener(TutorialEvents.TUTORIAL_DEATH, TutorialDeath);
-        em_t.AddListener(TutorialEvents.RESTART, TutorialRespawn);
+        em_l.AddListener(LevelEvents.INIT_TUTORIAL, DeactivateAllMechanic);
+        em_p.AddListener(PlayerEvents.DEATH, TutorialDeath);
+        em_p.AddListener(PlayerEvents.RESTART, TutorialRespawn);
 
         //dialogue events
         em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
@@ -68,7 +69,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     void EventUnsubscribing()
     {
-        em_t.RemoveListener(TutorialEvents.INIT_TUTORIAL, DeactivateAllMechanic);
+        em_l.RemoveListener(LevelEvents.INIT_TUTORIAL, DeactivateAllMechanic);
         em_d.RemoveListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
         em_d.RemoveListener(DialogEvents.ACTIVATE_OBJECTIVE, ActivateObjectiveMechanic);
         em_l.RemoveListener<ObjectiveName>(LevelEvents.OBJECTIVE_COMPLETE, ProgressObjective);
@@ -164,7 +165,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         vfx.BeginFadeScreen();
         CloseAllUI();
         yield return new WaitUntil(() => vfx.isFaded);
-        em_t.TriggerEvent(TutorialEvents.DEATH_SCREEN_FADED);
+        em_p.TriggerEvent(PlayerEvents.DEATH_SCREEN_FADED);
         yield return new WaitForSeconds(1f);
         vfx.BeginUnfadeScreen();
     }
@@ -173,7 +174,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     {
         vfx.BeginFadeScreen();
         yield return new WaitUntil(() => vfx.isFaded);
-        em_t.TriggerEvent(TutorialEvents.RES_SCREEN_FADED);
+        em_p.TriggerEvent(PlayerEvents.RES_SCREEN_FADED);
         vfx.BeginUnfadeScreen();
         yield return new WaitUntil(() => !vfx.isFaded);
         OpenUI();

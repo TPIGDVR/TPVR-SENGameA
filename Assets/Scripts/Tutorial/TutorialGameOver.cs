@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+//refactor this!
 public class TutorialGameOver : MonoBehaviour
 {
 
@@ -17,7 +18,6 @@ public class TutorialGameOver : MonoBehaviour
 
 
     public Transform deathPoint;
-    EventManager<TutorialEvents> em_t = EventSystem.tutorial;
     float t, progress;
     bool scanning;
     bool scanCompleted;
@@ -72,7 +72,7 @@ public class TutorialGameOver : MonoBehaviour
         {
             scanCompleted = true;   
             audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
-            em_t.TriggerEvent(TutorialEvents.RESTART);
+            EventSystem.player.TriggerEvent(PlayerEvents.RESTART);
         }
     }
 
