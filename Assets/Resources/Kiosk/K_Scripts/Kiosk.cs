@@ -12,12 +12,6 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     Image progressUI;
     [SerializeField]
     GameObject progress_GO;
-    // first and second audio speechSource is for SFX
-
-    //[SerializeField]
-    //AudioSource audioSource;
-    //[SerializeField]
-    //AudioSource speechSource;
 
     [SerializeField]
     Animator animator;
@@ -63,6 +57,9 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     int changePanel = Animator.StringToHash("ShowImage");
     int hidePanelHash = Animator.StringToHash("HidePanel");
 
+    [SerializeField]
+    Hologram hologram;
+
 
     [SerializeField]
     bool hasHologramPanels;
@@ -71,6 +68,15 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     public bool ScanCompleted { get => scanCompleted; }
 
     [SerializeField]DialogueLines triggerLines;
+
+    public void Initialize()
+    {
+        progressUI.fillAmount = 0f;
+        progress_GO.SetActive(true);
+        audioPlayer = SoundManager.Instance;
+        ScriptableObjectManager.AddIntoSOCollection(kioskData.OtherDialogue);
+        triggerLines = (DialogueLines)ScriptableObjectManager.RetrieveRuntimeScriptableObject(kioskData.OtherDialogue);
+    }
 
     private void Awake()
     {
@@ -133,6 +139,8 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
         }
     }
 
+#region Scanning
+
     //called by xr simple interactor
     public void ScanStart()
     {
@@ -172,6 +180,7 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
             globalAudioSource = audioPlayer.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING , transform.position);
         }
     }
+#endregion
 
     public void StartKioskDialog()
     {
@@ -251,12 +260,4 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
         globalAudioSource = null;
     }
 
-    public void Initialize()
-    {
-        progressUI.fillAmount = 0f;
-        progress_GO.SetActive(true);
-        audioPlayer = SoundManager.Instance;
-        ScriptableObjectManager.AddIntoSOCollection(kioskData.OtherDialogue);
-        triggerLines = (DialogueLines)ScriptableObjectManager.RetrieveRuntimeScriptableObject(kioskData.OtherDialogue);
-    }
 }
