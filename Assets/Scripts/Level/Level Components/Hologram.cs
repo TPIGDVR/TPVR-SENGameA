@@ -17,4 +17,19 @@ public abstract class Hologram : MonoBehaviour
     float textSpeed = 20f;
 
     protected abstract void PlayAnimation();
+
+    // protected IEnumerator TypeNextSentence()
+    // {
+    //     globalAudioSource = audioPlayer.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
+    //     dialogText.text = "";
+    //     string text = kioskData.Lines[indexDialog].Text;
+
+    //     foreach (char c in text.ToCharArray())
+    //     {
+    //         dialogText.text += c;
+    //         yield return new WaitForSeconds(0.5f / textSpeed);
+    //     }
+    //     audioPlayer.RetrieveAudioSource(globalAudioSource);
+    //     globalAudioSource = null;
+    // }
 }
