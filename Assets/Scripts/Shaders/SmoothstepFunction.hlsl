@@ -92,8 +92,13 @@ float Trig(float x)
 }
 
 float EaseOutExpo(float x)
-{
+{	
 	return (x == 1) ? 1 : 1 - pow(2, -10 * x);
+}
+
+void EaseOutExpo_float(in float x,out float y)
+{
+	y = (x == 1) ? 1 : 1 - pow(2, -10 * x);
 }
 
 float EaseOutBounce(float x){
@@ -115,6 +120,7 @@ float EaseInBounce(float x)
 {
 	return 1 - EaseOutBounce(1 - x);
 }
+
 
 float EaseOutElastic(float x)
 {
@@ -144,6 +150,11 @@ float EaseInElastic(float x)
 	  : x == 1
 	  ? 1
 	  : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c4);
+}
+
+void EaseInElastic_float(in float x, out float y)
+{
+	y = EaseInElastic(x);
 }
 
 void SmoothStep_float(in float x,in int i,in float n,out float outVal)
