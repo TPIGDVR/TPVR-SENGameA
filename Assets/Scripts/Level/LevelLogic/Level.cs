@@ -20,7 +20,7 @@ public class Level : MonoBehaviour, IScriptLoadQueuer
         rooms = GetComponentsInChildren<Room>();
         door = GetComponentInChildren<Level_Door>();
         EventSystem.level.TriggerEvent(LevelEvents.ENTER_NEW_ROOM, startingRoom);
-        EventSystem.level.AddListener(LevelEvents.OBJECTIVE_PROGRESSED, UpdateRespawnPosition);
+        EventSystem.level.AddListener<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, UpdateRespawnPosition);
         EventSystem.player.AddListener(PlayerEvents.DEATH_SCREEN_FADED, TeleportPlayerToDeathPosition);
         EventSystem.player.AddListener(PlayerEvents.RES_SCREEN_FADED, TeleportPlayerToRespawnPosition);
         UpdateRespawnPosition();
@@ -37,8 +37,9 @@ public class Level : MonoBehaviour, IScriptLoadQueuer
         EventSystem.player.TriggerEvent(PlayerEvents.RESTART);
     }
 
-    public void UpdateRespawnPosition()
+    public void UpdateRespawnPosition(ObjectiveName _ = ObjectiveName.KIOSK)
     {
+        print("update position");
         respawnPosition = GameData.playerTransform.position;
     }
 

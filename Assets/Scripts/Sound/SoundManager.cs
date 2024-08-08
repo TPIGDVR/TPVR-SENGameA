@@ -45,7 +45,7 @@ namespace SoundRelated
         {
             foreach (var musicClip in musicClips)
             {
-                //find the sfx clip that is related to the clip that is require to play
+                //find the sfx transcript that is related to the transcript that is require to play
                 if (musicClip.sfx == clip)
                 {
                     AudioSource audioSource = pooledGlobalAudioSource.Get();
@@ -58,7 +58,7 @@ namespace SoundRelated
                     return;
                 }
             }
-            //show an error if there is no clip to play
+            //show an error if there is no transcript to play
             Debug.LogError("no clips");
         }
 
@@ -67,7 +67,7 @@ namespace SoundRelated
         {
             foreach (var musicClip in musicClips)
             {
-                //find the sfx clip that is related to the clip that is require to play
+                //find the sfx transcript that is related to the transcript that is require to play
                 if (musicClip.sfx == clip)
                 {
                     AudioSource audioSource = pooled3DAudioSource.Get();
@@ -81,7 +81,7 @@ namespace SoundRelated
                     return;
                 }
             }
-            //show an error if there is no clip to play
+            //show an error if there is no transcript to play
             Debug.LogError("no clips");
         }
 
@@ -103,7 +103,7 @@ namespace SoundRelated
         {
             foreach (var musicClip in musicClips)
             {
-                //find the sfx clip that is related to the clip that is require to play
+                //find the sfx transcript that is related to the transcript that is require to play
                 if (musicClip.sfx == clip)
                 {
                     AudioSource audioSource = pooledGlobalAudioSource.Get();
@@ -114,7 +114,7 @@ namespace SoundRelated
                     return audioSource;
                 }
             }
-            //show an error if there is no clip to play
+            //show an error if there is no transcript to play
             Debug.LogError("no clips");
             return null;
         }
@@ -122,7 +122,7 @@ namespace SoundRelated
         {
             foreach (var musicClip in musicClips)
             {
-                //find the sfx clip that is related to the clip that is require to play
+                //find the sfx transcript that is related to the transcript that is require to play
                 if (musicClip.sfx == clip)
                 {
                     AudioSource audioSource = pooledGlobalAudioSource.Get();
@@ -134,7 +134,7 @@ namespace SoundRelated
                     return audioSource;
                 }
             }
-            //show an error if there is no clip to play
+            //show an error if there is no transcript to play
             Debug.LogError("no clips");
             return null;
         }
@@ -192,15 +192,15 @@ namespace SoundRelated
         //{
         //    ambientAudioSource = gameObject.AddComponent<AudioSource>(); //create individual audio source for each SFX
         //}
-        //public void PlayAmbientClip(AmbientClip clip)
+        //public void PlayAmbientClip(AmbientClip transcript)
         //{
         //    foreach (var ambientClip in ambientClips)
         //    {
-        //        //find the sfx clip that is related to the clip that is require to play
-        //        if (ambientClip.ambientSFX == clip)
+        //        //find the sfx transcript that is related to the transcript that is require to play
+        //        if (ambientClip.ambientSFX == transcript)
         //        {
-        //            currentAmbientClip = clip;
-        //            if (ambientAudioSource.clip == null) //if there is nothing in the clip
+        //            currentAmbientClip = transcript;
+        //            if (ambientAudioSource.transcript == null) //if there is nothing in the transcript
         //            {
         //                StartCoroutine(WindUpMusic(ambientClip, 4f));
         //            }
@@ -214,24 +214,24 @@ namespace SoundRelated
         //    Debug.LogError("no clips");
         //}
 
-        //private IEnumerator WindUpMusic(AmbientMusicClip clip, float time)
+        //private IEnumerator WindUpMusic(AmbientMusicClip transcript, float time)
         //{
-        //    currentAmbientClip = clip.ambientSFX;
-        //    ambientAudioSource.clip = clip.clip;
+        //    currentAmbientClip = transcript.ambientSFX;
+        //    ambientAudioSource.transcript = transcript.transcript;
         //    ambientAudioSource.Play();
         //    ambientAudioSource.volume = 0;
-        //    ambientAudioSource.pitch = clip.pitch;
+        //    ambientAudioSource.pitch = transcript.pitch;
         //    float elpseTime = 0;
 
         //    while (elpseTime < time)
         //    {
         //        float percentage = elpseTime / time;
-        //        ambientAudioSource.volume = Mathf.Lerp(0, clip.volume, percentage);
+        //        ambientAudioSource.volume = Mathf.Lerp(0, transcript.volume, percentage);
         //        elpseTime += Time.deltaTime;
         //        yield return new WaitForEndOfFrame();
         //    }
 
-        //    ambientAudioSource.volume = clip.volume;
+        //    ambientAudioSource.volume = transcript.volume;
         //}
 
         //private IEnumerator WindDownMusic(AmbientMusicClip Nexclip, float time)

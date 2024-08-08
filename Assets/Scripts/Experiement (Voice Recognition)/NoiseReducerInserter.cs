@@ -10,7 +10,7 @@ namespace Breathing3
         [SerializeField] double attuniation = 5f;
         public double Attuniation { get => attuniation; set => attuniation = value; }
 
-        //get the audio clip from the microphone recorder.
+        //get the audio transcript from the microphone recorder.
         [SerializeField] private MicrophoneRecorder _microphoneRecorder = default;
         [SerializeField] private NoiseReducerHandler _noiseReducerHandler = default;
         [SerializeField] private AudioPlayer _audioPlayer = default;

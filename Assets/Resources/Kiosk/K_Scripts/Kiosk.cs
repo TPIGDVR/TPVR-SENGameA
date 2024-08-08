@@ -62,7 +62,6 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     [SerializeField]
     Hologram hologram;
 
-
     [SerializeField]
     bool hasHologramPanels;
 
@@ -117,13 +116,12 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
             mapIcon.gameObject.SetActive(false);
             scanCompleted = true;
 
-            //StopSFX();
-            //audioSource.PlayOneShot(audioClips[1]);
-            //audioPlayer.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
             audioPlayer.RetrieveAudioSource(globalAudioSource);
             audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
             EventSystem.level.TriggerEvent<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ObjectiveName.KIOSK);
-            animator.SetBool("Completed", true);       
+            hologram.PlayAnimation();
+
+            //animator.SetBool("Completed", true);       
         }
     }
 

@@ -1,18 +1,17 @@
 using Dialog;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using SoundRelated;
 
-public abstract class Hologram : MonoBehaviour
+public abstract class Hologram : MonoBehaviour , IScriptLoadQueuer
 {
     [SerializeField]
     protected Animator animator;
 
     [Header("Subtitles")]
-    [SerializeField]
-    protected KioskLines kioskData;
+    //[SerializeField]
+    //protected KioskLines kioskData;
     [SerializeField]
     protected TextMeshProUGUI subtitleText;
     [SerializeField]
@@ -23,22 +22,33 @@ public abstract class Hologram : MonoBehaviour
     [SerializeField]
     DialogueLines dialogueAfterKioskData;
 
+    protected SoundManager soundManager;
+    AudioSource globalAudioSource;
 
     //audio
-    AudioSource globalAudioSource = null;
-    SoundManager soundManager;
-    
-    protected abstract void PlayAnimation();
+
+    private void Awake()
+    {
+        ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.LEVEL);
+    }
+
+    public abstract void PlayAnimation();
+
+    public void Initialize()
+    {
+        soundManager = SoundManager.Instance;
+    }
+
+    #region typing courtine
 
     protected IEnumerator PrintKioskLines(float second)
     {
-        var clip = kioskData.Lines[indexDialog].clip;
+        var clip = slideshowData.Lines[indexDialog].clip;
         AudioSource speechSource = null;
 
-        if (clip)
+        if (clip.clip)
         {
-            MusicClip musicClip = new MusicClip(clip);
-            speechSource = soundManager.PlayMusicClip(musicClip, transform.position);
+            speechSource = SoundManager.Instance.PlayMusicClip(clip, transform.position);
         }
         StartCoroutine(TypeNextSentence());
         yield return new WaitForSeconds(second);
@@ -56,15 +66,11 @@ public abstract class Hologram : MonoBehaviour
             SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
             //if can trigger line than trigger the dialog sequence
             EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogueAfterKioskData);
-            //animator.SetTrigger(hidePanelHash);
         }
         else
         {
-            //audioSource.PlayOneShot(audioClips[3]);
             SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
-            //animator.SetTrigger(changePanel);
         }
-        //animator.SetTrigger()
     }
 
     protected IEnumerator TypeNextSentence()
@@ -81,4 +87,6 @@ public abstract class Hologram : MonoBehaviour
         soundManager.RetrieveAudioSource(globalAudioSource);
         globalAudioSource = null;
     }
+
+    #endregion
 }

@@ -1,3 +1,5 @@
+using Dialog;
+using SoundRelated;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,13 +7,16 @@ using UnityEngine.UI;
 
 public class Hologram_Slideshow : Hologram
 {
+    [SerializeField]
+    HologramSlideShowData slideshowData;
+
     [SerializeField] 
     Image image;
     [SerializeField] 
     GridLayoutGroup imageSizer;
 
     //CALL THIS METHOD FROM KIOSK CLASS
-    protected override void PlayAnimation()
+    public override void PlayAnimation()
     {
 
     }
@@ -42,5 +47,6 @@ public class Hologram_Slideshow : Hologram
         var line = kioskData.Lines[indexDialog];
         image.sprite = line.image;
         imageSizer.cellSize = line.preferredDimension;
-    }
+    }    
+
 }

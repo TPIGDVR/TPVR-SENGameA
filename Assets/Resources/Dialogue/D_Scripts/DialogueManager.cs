@@ -99,7 +99,7 @@ namespace Dialog
         IEnumerator PrintLine(Line l)
         {
             if(l.audioClip.clip != null)
-            {//check if there is a valid clip to play.
+            {//check if there is a valid transcript to play.
                 CurrentAudioSource = SoundManager.Instance.PlayMusicClip(l.audioClip);
             }
 
