@@ -21,5 +21,6 @@ public class HighlightControllerComponents : MonoBehaviour, IScriptLoadQueuer
     public void Initialize()
     {
         em_Controller.AddListener(DialogEvents.STOP_HIGHLIGHTING_ABUTTON_HIGHLIGHT_THUMBSTICKS);
+        em_Controller.AddListener(DialogEvents.HIGHLIGHT_ABUTTON_STOP_HIGHLIGHTING_THUMBSTICKS);
     }
 }
