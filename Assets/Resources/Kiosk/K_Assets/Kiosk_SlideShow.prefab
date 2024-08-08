@@ -61,22 +61,22 @@ PrefabInstance:
     - target: {fileID: 1015583895064207645, guid: 9905b9f5c40464f4a96aee847cbea288,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1015583895064207645, guid: 9905b9f5c40464f4a96aee847cbea288,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1015583895064207645, guid: 9905b9f5c40464f4a96aee847cbea288,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 67.76
       objectReference: {fileID: 0}
     - target: {fileID: 1015583895064207645, guid: 9905b9f5c40464f4a96aee847cbea288,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 33.88
       objectReference: {fileID: 0}
     - target: {fileID: 4137086397621037758, guid: 9905b9f5c40464f4a96aee847cbea288,
         type: 3}
@@ -86,5 +86,34 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4408385604147044544, guid: 9905b9f5c40464f4a96aee847cbea288,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5040995314326556273}
   m_SourcePrefab: {fileID: 100100000, guid: 9905b9f5c40464f4a96aee847cbea288, type: 3}
+--- !u!1 &4455473275400172968 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4408385604147044544, guid: 9905b9f5c40464f4a96aee847cbea288,
+    type: 3}
+  m_PrefabInstance: {fileID: 70014769319925096}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5040995314326556273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455473275400172968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4903279bf6657f4448608cf5d8add988, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  kioskData: {fileID: 0}
+  subtitleText: {fileID: 0}
+  textSpeed: 20
+  dialogueAfterKioskData: {fileID: 0}
+  image: {fileID: 0}
+  imageSizer: {fileID: 0}

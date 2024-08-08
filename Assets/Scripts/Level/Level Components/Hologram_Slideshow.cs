@@ -10,9 +10,10 @@ public class Hologram_Slideshow : Hologram
     [SerializeField] 
     GridLayoutGroup imageSizer;
 
+    //CALL THIS METHOD FROM KIOSK CLASS
     protected override void PlayAnimation()
     {
-        
+
     }
 
     //called by animation event : DigitalCircle_Completed
