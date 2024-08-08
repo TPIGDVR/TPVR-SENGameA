@@ -10,11 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c21d49d04dc36745ac1a58cdf35f67b, type: 3}
-  m_Name: Kiosk 4 Line
+  m_Name: D_AfterK3
   m_EditorClassIdentifier: 
   Lines:
   - Speaker: 0
-    Text: "There. You\u2019ve got four sets of data already."
+    Text: To help you, I have initialized your heart rate tracker.
+    hasBeenTriggered: 0
+    dialogEndTrigger: 6
+    audioClip:
+      sfx: 0
+      clip: {fileID: 0}
+      volume: 0
+      pitch: 0
+  - Speaker: 0
+    Text: Being near automatons for too long might overwhelm you, so make use of
+      the soundwave visual indicators to stay clear of them.
     hasBeenTriggered: 0
     dialogEndTrigger: 0
     audioClip:
@@ -23,29 +33,9 @@ MonoBehaviour:
       volume: 0
       pitch: 0
   - Speaker: 0
-    Text: "Remember though, you\u2019re here to get as much data as possible. There
-      are specific ones that you need."
+    Text: "Let\u2019s go to the last panel."
     hasBeenTriggered: 0
     dialogEndTrigger: 0
-    audioClip:
-      sfx: 0
-      clip: {fileID: 0}
-      volume: 0
-      pitch: 0
-  - Speaker: 0
-    Text: "I\u2019ll look for those specific panels. When you\u2019re in range of
-      them, I\u2019ll notify you of their locations."
-    hasBeenTriggered: 0
-    dialogEndTrigger: 0
-    audioClip:
-      sfx: 0
-      clip: {fileID: 0}
-      volume: 0
-      pitch: 0
-  - Speaker: 0
-    Text: I'll also help you keep track of all the kiosk in this vicinity.
-    hasBeenTriggered: 1
-    dialogEndTrigger: 7
     audioClip:
       sfx: 0
       clip: {fileID: 0}
