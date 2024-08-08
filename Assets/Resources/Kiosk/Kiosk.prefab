@@ -393,6 +393,7 @@ MonoBehaviour:
   image: {fileID: 1694896246986086247}
   imageSizer: {fileID: 4052964094166198492}
   textSpeed: 20
+  hologram: {fileID: 0}
   hasHologramPanels: 1
   triggerLines: {fileID: 0}
 --- !u!95 &8684481500337133844
@@ -1198,7 +1199,7 @@ GameObject:
   m_Component:
   - component: {fileID: 239952488906774548}
   m_Layer: 10
-  m_Name: Tutorial_Kiosk
+  m_Name: Kiosk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1723,10 +1724,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5330167682667665143}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 33.88, y: 0}
+  m_SizeDelta: {x: 67.76, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &8821464449308783383
 CanvasRenderer:

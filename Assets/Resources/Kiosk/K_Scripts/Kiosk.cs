@@ -182,12 +182,14 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     }
 #endregion
 
+    //caled by animation event
     public void StartKioskDialog()
     {
         ChangeImage();
         StartTyping();
     }
 
+    //called by animation events
     public void ChangeImagePanel()
     {
         ChangeImage();
