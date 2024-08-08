@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-//refactor this!
 public class TutorialGameOver : MonoBehaviour
 {
 
@@ -16,7 +15,6 @@ public class TutorialGameOver : MonoBehaviour
     [SerializeField]
     Color lowColor, medColor, hiColor;
 
-
     public Transform deathPoint;
     float t, progress;
     bool scanning;
@@ -26,95 +24,97 @@ public class TutorialGameOver : MonoBehaviour
     SoundManager audioPlayer;
     AudioSource globalAudioSource = null;
 
+    
 
-    private void Start()
-    {
-        progressUI.fillAmount = 0f;
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            ScanStart();
-        }
-        
-    }
+    #region legacy
+    //private void Start()
+    //{
+    //    progressUI.fillAmount = 0f;
+    //}
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        ScanStart();
+    //    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            ScanStop();
-        }
-    }
+    //}
 
-    private void Update()
-    {
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.CompareTag("Player"))
+    //    {
+    //        ScanStop();
+    //    }
+    //}
 
-        if (scanning && !scanCompleted)
-        {
-            progress += Time.deltaTime / 100 * speedMultiplier;
-            
-        }
+    //private void Update()
+    //{
 
+    //    if (scanning && !scanCompleted)
+    //    {
+    //        progress += Time.deltaTime / 100 * speedMultiplier;
 
-        else if (!scanning && !scanCompleted)
-        {
-            //make the progress decay slightly slower than the gain speed
-            progress -= Time.deltaTime / 200 * speedMultiplier;
-        }
+    //    }
 
 
-        progress = Mathf.Clamp01(progress); //make sure we maintain the 0-1 values 
-        UpdateProgressUI();
-
-        if (progress >= 1 && !scanCompleted)
-        {
-            scanCompleted = true;   
-            audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
-            EventSystem.player.TriggerEvent(PlayerEvents.RESTART);
-        }
-    }
-
-    void UpdateProgressUI()
-    {
-        progressUI.fillAmount = progress;
-
-        //slowly changes color as it progresses
-        if (progress < 0.5)
-        {
-            progressUI.color = Color.Lerp(lowColor, medColor, progress * 0.5f);
-        }
-        else
-        {
-            progressUI.color = Color.Lerp(medColor, hiColor, progress * 0.5f);
-        }
-    }
+    //    else if (!scanning && !scanCompleted)
+    //    {
+    //        //make the progress decay slightly slower than the gain speed
+    //        progress -= Time.deltaTime / 200 * speedMultiplier;
+    //    }
 
 
-    //called by xr simple interactor
-    public void ScanStart()
-    {
-        scanning = true;
-        if (!scanCompleted)
-            //audioSource.PlayOneShot(audioClips[0]);
-            audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.KIOSK_AUTHETICATED, transform.position);
-    }
+    //    progress = Mathf.Clamp01(progress); //make sure we maintain the 0-1 values 
+    //    UpdateProgressUI();
 
-    //called by xr simple interactor
-    public void ScanStop()
-    {
-        scanning = false;
+    //    if (progress >= 1 && !scanCompleted)
+    //    {
+    //        scanCompleted = true;   
+    //        audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
+    //        EventSystem.player.TriggerEvent(PlayerEvents.RESTART);
+    //    }
+    //}
 
-        if (!scanCompleted)
-        {
-            if (globalAudioSource)
-            {
-                audioPlayer.RetrieveAudioSource(globalAudioSource);
-            }
-            //StopSFX();
-            //audioPlayer.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
-        }
-    }
+    //void UpdateProgressUI()
+    //{
+    //    progressUI.fillAmount = progress;
 
+    //    //slowly changes color as it progresses
+    //    if (progress < 0.5)
+    //    {
+    //        progressUI.color = Color.Lerp(lowColor, medColor, progress * 0.5f);
+    //    }
+    //    else
+    //    {
+    //        progressUI.color = Color.Lerp(medColor, hiColor, progress * 0.5f);
+    //    }
+    //}
+
+
+    ////called by xr simple interactor
+    //public void ScanStart()
+    //{
+    //    scanning = true;
+    //    if (!scanCompleted)
+    //        //audioSource.PlayOneShot(audioClips[0]);
+    //        audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.KIOSK_AUTHETICATED, transform.position);
+    //}
+
+    ////called by xr simple interactor
+    //public void ScanStop()
+    //{
+    //    scanning = false;
+
+    //    if (!scanCompleted)
+    //    {
+    //        if (globalAudioSource)
+    //        {
+    //            audioPlayer.RetrieveAudioSource(globalAudioSource);
+    //        }
+    //        //StopSFX();
+    //        //audioPlayer.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
+    //    }
+    //}
+    #endregion
 }

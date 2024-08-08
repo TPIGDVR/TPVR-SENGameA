@@ -37,21 +37,6 @@ public enum PlayerEvents
     RES_SCREEN_FADED, // tutorial res screen faded
 }
 
-//public enum TutorialEvents
-//{
-//    NONE,
-//    INIT_TUTORIAL,
-//    ACTIVATE_KIOSK,
-//    FIRST_KIOSK,
-//    DETERMINE_LAST_KIOSK,
-//    LAST_KIOSK,
-//    CHASE_PLAYER,
-//    TUTORIAL_DEATH,
-//    DEATH_SCREEN_FADED,
-//    RES_SCREEN_FADED,
-//    RESTART,
-//}
-
 public enum LevelEvents
 {
     KIOSK_CLEARED,
