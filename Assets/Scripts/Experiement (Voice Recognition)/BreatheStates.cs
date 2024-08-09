@@ -23,7 +23,7 @@ namespace Breathing3
     #region V1 inhale/exhale states
     public class BreatheStateV1 : FSMState
     {
-        //u can then swap the provider of this data to test which one is better suited :)
+        //u can then swap the provider of this slideshowData to test which one is better suited :)
         protected VolumeProvider provider;
         protected InhaleData inhaleData;
         protected ExhaleData exhaleData;

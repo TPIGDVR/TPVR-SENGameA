@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Hologram_3D : Hologram
 {
-    protected override void PlayAnimation()
+    public override void PlayAnimation()
     {
         
     }  

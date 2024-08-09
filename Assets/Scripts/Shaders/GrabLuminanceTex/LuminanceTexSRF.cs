@@ -71,7 +71,7 @@ internal class LuminanceTexSRF : ScriptableRendererFeature
         //DECLARE ANY VARIABLES YOU NEED HERE
 
         #region HELPER METHODS
-        public bool SetUp(ref Material material, ref LuminanceTexSetting setting) //setup the render pass with all the data
+        public bool SetUp(ref Material material, ref LuminanceTexSetting setting) //setup the render pass with all the slideshowData
         {
             mat = material;
             settings = setting;

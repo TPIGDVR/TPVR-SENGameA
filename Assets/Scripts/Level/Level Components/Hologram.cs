@@ -16,7 +16,7 @@ public abstract class Hologram : MonoBehaviour , IScriptLoadQueuer
     protected TextMeshProUGUI subtitleText;
     [SerializeField]
     float textSpeed = 20f;
-    protected int indexDialog;
+    protected int indexDialog = 0;
 
     [Header("Dialogue After Kiosk")]
     [SerializeField]
@@ -24,8 +24,6 @@ public abstract class Hologram : MonoBehaviour , IScriptLoadQueuer
 
     protected SoundManager soundManager;
     AudioSource globalAudioSource;
-
-    //audio
 
     private void Awake()
     {
@@ -41,17 +39,17 @@ public abstract class Hologram : MonoBehaviour , IScriptLoadQueuer
 
     #region typing courtine
 
-    protected IEnumerator PrintKioskLines(float second)
+    protected IEnumerator PrintKioskLines(HologramDialogLineBasic targetLine)
     {
-        var clip = slideshowData.Lines[indexDialog].clip;
+        var clip = targetLine.transcript;
         AudioSource speechSource = null;
 
         if (clip.clip)
         {
             speechSource = SoundManager.Instance.PlayMusicClip(clip, transform.position);
         }
-        StartCoroutine(TypeNextSentence());
-        yield return new WaitForSeconds(second);
+        StartCoroutine(TypeNextSentence(targetLine.line));
+        yield return new WaitForSeconds(targetLine.timer);
 
         //audio source related
         //For error catch safety.
@@ -59,25 +57,26 @@ public abstract class Hologram : MonoBehaviour , IScriptLoadQueuer
         if (speechSource) soundManager.RetrieveAudioSource(speechSource);
 
         indexDialog++;
+        //ignore this for reference
 
-        if (indexDialog >= kioskData.Lines.Length)
-        {
-            //dialog is complete
-            SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
-            //if can trigger line than trigger the dialog sequence
-            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogueAfterKioskData);
-        }
-        else
-        {
-            SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
-        }
+        //if (indexDialog >= kioskData.Lines.Length)
+        //{
+        //    //dialog is complete
+        //    SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
+        //    //if can trigger targetLine than trigger the dialog sequence
+        //    EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogueAfterKioskData);
+        //}
+        //else
+        //{
+        //    SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
+        //}
     }
 
-    protected IEnumerator TypeNextSentence()
+    protected IEnumerator TypeNextSentence(string text)
     {
         globalAudioSource = soundManager.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
         subtitleText.text = "";
-        string text = kioskData.Lines[indexDialog].Text;
+        //string text = kioskData.Lines[indexDialog].Text;
 
         foreach (char c in text.ToCharArray())
         {

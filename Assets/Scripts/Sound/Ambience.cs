@@ -28,7 +28,7 @@ namespace SoundRelated
     }
 
     [Serializable]
-    //this is the custom data structure to contain the music transcript.
+    //this is the custom slideshowData structure to contain the music transcript.
     public struct MusicClip
     {
         public MusicClip(AudioClip clip)

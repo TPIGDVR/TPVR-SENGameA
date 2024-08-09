@@ -53,7 +53,7 @@ public static class ScriptableObjectManager //make singleton
 
     /// <summary>
     /// Passes in the original SO to retrieve the runtime scriptable object instance.
-    /// Helps prevent the editing of the original data in the original scriptable object.
+    /// Helps prevent the editing of the original slideshowData in the original scriptable object.
     /// </summary>
     /// <param name="original">The original scriptable object</param>
     /// <returns>Returns the instantiated runtime scriptable object</returns>
