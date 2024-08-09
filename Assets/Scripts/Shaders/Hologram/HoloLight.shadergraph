@@ -26,6 +26,9 @@
         },
         {
             "m_Id": "0bb17d6e2524413ba52c57c05f78cf58"
+        },
+        {
+            "m_Id": "fe3d5fb4435e4dc984b8c732ad120dfc"
         }
     ],
     "m_Keywords": [],
@@ -113,6 +116,9 @@
         },
         {
             "m_Id": "6c453616f0ae4a2593b4fd7f4c9fb1f6"
+        },
+        {
+            "m_Id": "e9b9e5ba12bf4bccad6b96718b48f6b8"
         }
     ],
     "m_GroupDatas": [],
@@ -354,6 +360,20 @@
                     "m_Id": "4a7a940a60cf45e880c3ac23525c51cd"
                 },
                 "m_SlotId": -1788552331
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "e9b9e5ba12bf4bccad6b96718b48f6b8"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "4a7a940a60cf45e880c3ac23525c51cd"
+                },
+                "m_SlotId": -441633497
             }
         }
     ],
@@ -1092,6 +1112,9 @@
             "m_Id": "aa8fc8782cc24307b160f4bb19b06662"
         },
         {
+            "m_Id": "96329633c8184ccb85097fc2bbd89e73"
+        },
+        {
             "m_Id": "406d269005704486a2caadc588aac786"
         },
         {
@@ -1116,7 +1139,8 @@
         "cfe92937-d3ee-4c5a-b9d4-0c5c22f5f273",
         "5b825c40-d26f-452d-9e15-acabb6b84377",
         "ae4e42b3-360c-4e7a-ba64-faa552f3ddc8",
-        "2023cae1-5290-4e58-86ab-7c4982e863b2"
+        "2023cae1-5290-4e58-86ab-7c4982e863b2",
+        "8fbab7be-5fc9-43ae-b8de-af75e803165c"
     ],
     "m_PropertyIds": [
         -107749031,
@@ -1124,7 +1148,8 @@
         -1404183742,
         -1035984121,
         -1928076457,
-        -1788552331
+        -1788552331,
+        -441633497
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
@@ -1709,6 +1734,20 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.BooleanMaterialSlot",
+    "m_ObjectId": "85342abf739b49c9b0cf205b9e4bf039",
+    "m_Id": 0,
+    "m_DisplayName": "FlickerLights",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": false,
+    "m_DefaultValue": false
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "89ee3886542c4b07a27b1a43e131fb87",
     "m_Id": 2,
@@ -1879,6 +1918,9 @@
         },
         {
             "m_Id": "0bb17d6e2524413ba52c57c05f78cf58"
+        },
+        {
+            "m_Id": "fe3d5fb4435e4dc984b8c732ad120dfc"
         }
     ]
 }
@@ -1896,6 +1938,20 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.5,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.BooleanMaterialSlot",
+    "m_ObjectId": "96329633c8184ccb85097fc2bbd89e73",
+    "m_Id": -441633497,
+    "m_DisplayName": "FlickeringLights",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_FlickeringLights",
+    "m_StageCapability": 2,
+    "m_Value": false,
+    "m_DefaultValue": false
 }
 
 {
@@ -2691,6 +2747,42 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "e9b9e5ba12bf4bccad6b96718b48f6b8",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -362.60870361328127,
+            "y": 311.3043518066406,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "85342abf739b49c9b0cf205b9e4bf039"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "fe3d5fb4435e4dc984b8c732ad120dfc"
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "efc6653e6c3d4e0882d5f9fad955696d",
     "m_Id": 3,
@@ -2799,5 +2891,28 @@
     },
     "isMainColor": false,
     "m_ColorMode": 1
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.BooleanShaderProperty",
+    "m_ObjectId": "fe3d5fb4435e4dc984b8c732ad120dfc",
+    "m_Guid": {
+        "m_GuidSerialized": "93c76723-39d9-4b94-a154-60647dd2c761"
+    },
+    "m_Name": "FlickerLights",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "FlickerLights",
+    "m_DefaultReferenceName": "_FlickerLights",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": false
 }
 
