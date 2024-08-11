@@ -21,14 +21,12 @@ public abstract class Hologram : MonoBehaviour
     //protected SoundManager soundManager;
     AudioSource globalAudioSource;
 
-
-
     public abstract void PlayAnimation();
 
 
     #region typing courtine
 
-    protected IEnumerator PrintKioskLines(HologramDialogLineBasic targetLine)
+    protected IEnumerator PrintKioskLines(HologramDialogLine targetLine)
     {
         var clip = targetLine.transcript;
         AudioSource speechSource = null;
@@ -47,18 +45,6 @@ public abstract class Hologram : MonoBehaviour
 
         indexDialog++;
         //ignore this for reference
-
-        //if (indexDialog >= kioskData.Lines.Length)
-        //{
-        //    //dialog is complete
-        //    SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
-        //    //if can trigger targetLine than trigger the dialog sequence
-        //    EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogueAfterKioskData);
-        //}
-        //else
-        //{
-        //    SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
-        //}
     }
 
     protected IEnumerator TypeNextSentence(string text)

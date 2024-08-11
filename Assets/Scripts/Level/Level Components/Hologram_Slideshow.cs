@@ -19,6 +19,7 @@ public class Hologram_Slideshow : Hologram
     public override void PlayAnimation()
     {
         //play the animation here...
+        gameObject.SetActive(true);
     }
 
     //called by animation event : DigitalCircle_Completed
@@ -52,7 +53,7 @@ public class Hologram_Slideshow : Hologram
     IEnumerator RunPanel()
     {
         yield return PrintKioskLines(new
-            HologramDialogLineBasic(slideshowData.Lines[indexDialog]));
+            HologramDialogLine(slideshowData.Lines[indexDialog]));
 
         if (indexDialog >= slideshowData.Lines.Length)
         {
