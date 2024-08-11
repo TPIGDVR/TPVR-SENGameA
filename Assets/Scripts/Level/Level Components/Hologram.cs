@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using SoundRelated;
 
-public abstract class Hologram : MonoBehaviour , IScriptLoadQueuer
+public abstract class Hologram : MonoBehaviour
 {
     [SerializeField]
     protected Animator animator;
@@ -18,24 +18,13 @@ public abstract class Hologram : MonoBehaviour , IScriptLoadQueuer
     float textSpeed = 20f;
     protected int indexDialog = 0;
 
-    [Header("Dialogue After Kiosk")]
-    [SerializeField]
-    DialogueLines dialogueAfterKioskData;
-
-    protected SoundManager soundManager;
+    //protected SoundManager soundManager;
     AudioSource globalAudioSource;
 
-    private void Awake()
-    {
-        ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.LEVEL);
-    }
+
 
     public abstract void PlayAnimation();
 
-    public void Initialize()
-    {
-        soundManager = SoundManager.Instance;
-    }
 
     #region typing courtine
 
@@ -53,8 +42,8 @@ public abstract class Hologram : MonoBehaviour , IScriptLoadQueuer
 
         //audio source related
         //For error catch safety.
-        if (globalAudioSource) soundManager.RetrieveAudioSource(globalAudioSource);
-        if (speechSource) soundManager.RetrieveAudioSource(speechSource);
+        if (globalAudioSource) SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
+        if (speechSource) SoundManager.Instance.RetrieveAudioSource(speechSource);
 
         indexDialog++;
         //ignore this for reference
@@ -74,7 +63,7 @@ public abstract class Hologram : MonoBehaviour , IScriptLoadQueuer
 
     protected IEnumerator TypeNextSentence(string text)
     {
-        globalAudioSource = soundManager.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
+        globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
         subtitleText.text = "";
         //string text = kioskData.Lines[indexDialog].Text;
 
@@ -83,7 +72,7 @@ public abstract class Hologram : MonoBehaviour , IScriptLoadQueuer
             subtitleText.text += c;
             yield return new WaitForSeconds(0.5f / textSpeed);
         }
-        soundManager.RetrieveAudioSource(globalAudioSource);
+        SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
         globalAudioSource = null;
     }
 

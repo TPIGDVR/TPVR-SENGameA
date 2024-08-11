@@ -57,19 +57,30 @@ public class Hologram_Slideshow : Hologram
         if (indexDialog >= slideshowData.Lines.Length)
         {
             //dialog is complete
-            SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
+            //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
             //if can trigger line than trigger the dialog sequence
-            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, slideshowData.OtherDialogue);
-            
-            //animator.SetTrigger(hidePanelHash);
+            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, slideshowData.DialogAfterComplete);
+
+            animator.SetTrigger("HidePanel");
         }
         else
         {
             //audioSource.PlayOneShot(audioClips[3]);
-            SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
+            //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
             //change the trigger
-            //animator.SetTrigger(changePanel);
+            animator.SetTrigger("ShowImage");
         }
+    }
+
+    //will be played at the animator
+    void PlayNewSlideSFX()
+    {
+        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
+    }
+
+    void PlayCloseHologramSFX()
+    {
+        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
     }
 
 }

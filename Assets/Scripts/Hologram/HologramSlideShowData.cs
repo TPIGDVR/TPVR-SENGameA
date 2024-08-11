@@ -3,11 +3,11 @@ using SoundRelated;
 using System;
 using UnityEngine;
 
-
+[CreateAssetMenu(menuName = "Hologram/Slide show data")]
 public class HologramSlideShowData : ScriptableObject
 {
     public HologramSlideShowBasic[] Lines;
-    public DialogueLines OtherDialogue; 
+    public DialogueLines DialogAfterComplete; 
     
 }
 
