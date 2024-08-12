@@ -9,17 +9,39 @@ public class HighlightControllerComponents : MonoBehaviour, IScriptLoadQueuer
     [SerializeField]
     Material materialHighlight;
 
-    [SerializeField]
-    GameObject thumbstick_left;
-    [SerializeField]
-    GameObject thumbstick_right;
-    [SerializeField]
-    GameObject button_a;
+    public GameObject thumbstick_left;
+    public GameObject thumbstick_right;
+    public GameObject button_a;
 
     EventManager<DialogEvents> em_Controller = EventSystem.dialog;
 
-    public void Initialize()
+    //public void Initialize()
+    //{
+    //    //thumbstick_left = GameObject.Find("Controller Tutorial Left(Clone)").GetComponent<ControllerReference>().thumbstick_reference;
+    //    //thumbstick_right = GameObject.Find("Controller Tutorial Right(Clone)").GetComponent<ControllerReference>().thumbstick_reference;
+    //    //button_a = GameObject.Find("Controller Tutorial Right(Clone)").GetComponent<ControllerReference>().button_a_reference;
+    //    //em_Controller.AddListener(DialogEvents.STOP_HIGHLIGHTING_ABUTTON_HIGHLIGHT_THUMBSTICKS, AButton_Off);
+    //    //em_Controller.AddListener(DialogEvents.HIGHLIGHT_ABUTTON_STOP_HIGHLIGHTING_THUMBSTICKS, AButton_On);
+    //}
+
+    //private void Awake()
+    //{
+    //    //ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.SYSTEM);
+    //    //thumbstick_left = GameObject.Find("Controller Tutorial Left(Clone)").GetComponent<ControllerReference>().thumbstick_reference;
+    //    //thumbstick_right = GameObject.Find("Controller Tutorial Right(Clone)").GetComponent<ControllerReference>().thumbstick_reference;
+    //    //button_a = GameObject.Find("Controller Tutorial Right(Clone)").GetComponent<ControllerReference>().button_a_reference;
+    //    //em_Controller.AddListener(DialogEvents.STOP_HIGHLIGHTING_ABUTTON_HIGHLIGHT_THUMBSTICKS, AButton_Off);
+    //    //em_Controller.AddListener(DialogEvents.HIGHLIGHT_ABUTTON_STOP_HIGHLIGHTING_THUMBSTICKS, AButton_On);
+    //}
+
+    // THOM PLEASE SAVE US!!!!!!!
+
+    IEnumerator Start()
     {
+        yield return new WaitForSeconds(0.5f);
+        thumbstick_left = GameObject.Find("Controller Tutorial Left(Clone)").GetComponent<ControllerReference>().thumbstick_reference;
+        thumbstick_right = GameObject.Find("Controller Tutorial Right(Clone)").GetComponent<ControllerReference>().thumbstick_reference;
+        button_a = GameObject.Find("Controller Tutorial Right(Clone)").GetComponent<ControllerReference>().button_a_reference;
         em_Controller.AddListener(DialogEvents.STOP_HIGHLIGHTING_ABUTTON_HIGHLIGHT_THUMBSTICKS, AButton_Off);
         em_Controller.AddListener(DialogEvents.HIGHLIGHT_ABUTTON_STOP_HIGHLIGHTING_THUMBSTICKS, AButton_On);
     }
