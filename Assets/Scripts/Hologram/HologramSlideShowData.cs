@@ -11,15 +11,8 @@ public class HologramSlideShowData : ScriptableObject
     public DialogueLines DialogAfterComplete; 
 }
 
-[CreateAssetMenu(menuName = "Hologram/3D data")]
-public class Hologram3DData : ScriptableObject
-{
-    public Hologram3DSlideLine[] Lines;
-    public DialogueLines DialogAfterComplete;
-}
-
 [Serializable]
-public struct Hologram3DSlideLine
+public struct Hologram3DSlideShowLine
 {
     [TextArea(3, 5)]
     public string line;
@@ -54,7 +47,7 @@ public struct HologramDialogLine
         timer = data.timer;
     }
 
-    public HologramDialogLine(Hologram3DSlideLine data)
+    public HologramDialogLine(Hologram3DSlideShowLine data)
     {
         line = data.line;
         transcript = data.transcript;

@@ -10,8 +10,6 @@ public abstract class Hologram : MonoBehaviour
     protected Animator animator;
 
     [Header("Subtitles")]
-    //[SerializeField]
-    //protected KioskLines kioskData;
     [SerializeField]
     protected TextMeshProUGUI subtitleText;
     [SerializeField]
@@ -23,6 +21,7 @@ public abstract class Hologram : MonoBehaviour
 
     public abstract void PlayAnimation();
 
+    public abstract void InitHologram(object data);
 
     #region typing courtine
 
@@ -31,6 +30,7 @@ public abstract class Hologram : MonoBehaviour
         var clip = targetLine.transcript;
         AudioSource speechSource = null;
 
+        //if there is a clip than play the clip transcipt.
         if (clip.clip)
         {
             speechSource = SoundManager.Instance.PlayMusicClip(clip, transform.position);
@@ -51,7 +51,6 @@ public abstract class Hologram : MonoBehaviour
     {
         globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
         subtitleText.text = "";
-        //string text = kioskData.Lines[indexDialog].Text;
 
         foreach (char c in text.ToCharArray())
         {

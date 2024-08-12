@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,9 +26,10 @@ public static class ScriptLoadSequencer
             {
                 obj?.Initialize();
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError(id + $" Trouble initializing script {obj}");
+                Debug.LogError(id + $" Trouble initializing script {obj} \n" +
+                    $"{ex}");
             }
         }
     }

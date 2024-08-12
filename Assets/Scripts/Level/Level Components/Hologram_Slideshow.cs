@@ -14,6 +14,12 @@ public class Hologram_Slideshow : Hologram
     Image image;
     [SerializeField] 
     GridLayoutGroup imageSizer;
+    DialogueLines dialogLine;
+
+    private void Start()
+    {
+        gameObject.SetActive(false);
+    }
 
     //CALL THIS METHOD FROM KIOSK CLASS
     public override void PlayAnimation()
@@ -60,7 +66,7 @@ public class Hologram_Slideshow : Hologram
             //dialog is complete
             //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
             //if can trigger line than trigger the dialog sequence
-            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, slideshowData.DialogAfterComplete);
+            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
 
             animator.SetTrigger("HidePanel");
         }
@@ -84,4 +90,18 @@ public class Hologram_Slideshow : Hologram
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
     }
 
+    public override void InitHologram(object data)
+    {
+        var convertedData = (HologramSlideShowData)data;
+        if (convertedData)
+        {
+            slideshowData = convertedData;
+            ScriptableObjectManager.AddIntoSOCollection(convertedData.DialogAfterComplete);
+            dialogLine = (DialogueLines)ScriptableObjectManager.RetrieveRuntimeScriptableObject(convertedData.DialogAfterComplete);
+        }
+        else
+        {
+            throw new System.Exception("Cant convert data into slideshow data");
+        }
+    }
 }

@@ -3,6 +3,8 @@ using PopUpAssistance;
 using SoundRelated;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,9 +38,8 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     bool scanning = false;
     bool authenticate = false;
 
-    [SerializeField] Transform targetDestination;
-    
-
+    [SerializeField] Transform automatonTargetDestination;
+    [SerializeField] Transform hologramTargetDestination;
     [Header("Popup")]
     [SerializeField] 
     PopUp popup;
@@ -48,35 +49,53 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     SoundManager audioPlayer;
     AudioSource globalAudioSource = null;
 
-    [Header("Kiosk Dialog")]
-    [SerializeField] KioskLines kioskData;
-    [SerializeField] TextMeshProUGUI dialogText;
-    [SerializeField] Image image;
-    [SerializeField] GridLayoutGroup imageSizer; // using the cell size to increase the width and heigh of it.1
-    [SerializeField, Range(1, 30)]
-    float textSpeed = 20;
-    int indexDialog = 0;
     int changePanel = Animator.StringToHash("ShowImage");
     int hidePanelHash = Animator.StringToHash("HidePanel");
 
+    [SerializeField]
+    Hologram3DData hologram3DData;
+    [SerializeField]
+    HologramSlideShowData hologramslideShowData;
     [SerializeField]
     Hologram hologram;
 
     [SerializeField]
     bool hasHologramPanels;
 
-    public Transform TargetDestination { get => targetDestination; }
     public bool ScanCompleted { get => scanCompleted; }
+    public Transform AutomatonTargetDestination { get => automatonTargetDestination; }
 
-    [SerializeField]DialogueLines triggerLines;
+    //DialogueLines triggerLines;
 
     public void Initialize()
     {
         progressUI.fillAmount = 0f;
         progress_GO.SetActive(true);
         audioPlayer = SoundManager.Instance;
-        ScriptableObjectManager.AddIntoSOCollection(kioskData.OtherDialogue);
-        triggerLines = (DialogueLines)ScriptableObjectManager.RetrieveRuntimeScriptableObject(kioskData.OtherDialogue);
+        //ScriptableObjectManager.AddIntoSOCollection(kioskData.OtherDialogue);
+        //triggerLines = (DialogueLines)ScriptableObjectManager.RetrieveRuntimeScriptableObject(kioskData.OtherDialogue);
+
+        if (hologram3DData)
+        {
+            ScriptableObjectManager.AddIntoSOCollection(hologram3DData);
+            var hologramGO = Instantiate(GameData.hologram3D, hologramTargetDestination);
+            hologramGO.transform.localPosition = Vector3.zero;
+            //get the component of the scriptable object from the 
+            hologram = hologramGO.GetComponent<Hologram>();
+            hologram.InitHologram(ScriptableObjectManager.RetrieveRuntimeScriptableObject(hologram3DData));
+        }
+        else if (hologramslideShowData)
+        {
+            ScriptableObjectManager.AddIntoSOCollection(hologramslideShowData);
+            var hologramGO = Instantiate(GameData.hologramSlideShow, hologramTargetDestination);
+            hologramGO.transform.localPosition = Vector3.zero;
+            //get the component of the scriptable object from the 
+            print($"Hologram reference is {hologramGO.name}");
+            hologram = hologramGO.GetComponentInChildren<Hologram>();
+            hologram.InitHologram(ScriptableObjectManager.RetrieveRuntimeScriptableObject(hologramslideShowData));
+
+        }
+
     }
 
     private void Awake()
@@ -115,13 +134,13 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
             popup.CanPopUp = false;
             mapIcon.gameObject.SetActive(false);
             scanCompleted = true;
-
+            
             audioPlayer.RetrieveAudioSource(globalAudioSource);
             audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
-            EventSystem.level.TriggerEvent<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ObjectiveName.KIOSK);
             hologram.PlayAnimation();
 
-            //animator.SetBool("Completed", true);       
+            animator.SetBool("Completed", true);
+            EventSystem.level.TriggerEvent<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ObjectiveName.KIOSK);
         }
     }
 
@@ -183,84 +202,86 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     }
 #endregion
 
-    //caled by animation event
-    public void StartKioskDialog()
-    {
-        ChangeImage();
-        StartTyping();
-    }
 
+    #region legacy
+    ////caled by animation event
+    //public void StartKioskDialog()
+    //{
+    //    ChangeImage();
+    //    StartTyping();
+    //}
     //called by animation events
-    public void ChangeImagePanel()
-    {
-        ChangeImage();
-        dialogText.text = "";
-    }
+    //public void ChangeImagePanel()
+    //{
+    //    ChangeImage();
+    //    dialogText.text = "";
+    //}
 
-    public void StartTyping()
-    {
-        StopAllCoroutines();
-        StartCoroutine(WaitTimer(kioskData.Lines[indexDialog].duration));
-    }
+    //public void StartTyping()
+    //{
+    //    StopAllCoroutines();
+    //    StartCoroutine(WaitTimer(kioskData.Lines[indexDialog].duration));
+    //}
 
-    void ChangeImage()
-    {
-        var line = kioskData.Lines[indexDialog];
-        image.sprite = line.image;
-        imageSizer.cellSize = line.preferredDimension;
-    }
+    //void ChangeImage()
+    //{
+    //    var line = kioskData.Lines[indexDialog];
+    //    image.sprite = line.image;
+    //    imageSizer.cellSize = line.preferredDimension;
+    //}
 
-    private IEnumerator WaitTimer(float second)
-    {
-        var clip = kioskData.Lines[indexDialog].clip;
-        AudioSource speechSource = null;
+    //private IEnumerator WaitTimer(float second)
+    //{
+    //    var clip = kioskData.Lines[indexDialog].clip;
+    //    AudioSource speechSource = null;
 
-        if (clip)
-        {
-            MusicClip musicClip = new MusicClip(clip);  
-            speechSource = audioPlayer.PlayMusicClip(musicClip,transform.position);
-        }
-        StartCoroutine(TypeNextSentence());
-        yield return new WaitForSeconds(second);
+    //    if (clip)
+    //    {
+    //        MusicClip musicClip = new MusicClip(clip);  
+    //        speechSource = audioPlayer.PlayMusicClip(musicClip,transform.position);
+    //    }
+    //    StartCoroutine(TypeNextSentence());
+    //    yield return new WaitForSeconds(second);
 
 
-        //audio source related
-        //For error catch safety.
-        if (globalAudioSource) audioPlayer.RetrieveAudioSource(globalAudioSource);
-        if (speechSource) audioPlayer.RetrieveAudioSource(speechSource);
+    //    //audio source related
+    //    //For error catch safety.
+    //    if (globalAudioSource) audioPlayer.RetrieveAudioSource(globalAudioSource);
+    //    if (speechSource) audioPlayer.RetrieveAudioSource(speechSource);
 
-        indexDialog++;
+    //    indexDialog++;
 
-        if (indexDialog >= kioskData.Lines.Length)
-        {
-            //dialog is complete
-            SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE,transform.position);
-            //if can trigger line than trigger the dialog sequence
-            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, triggerLines);
-            animator.SetTrigger(hidePanelHash);
-        }
-        else
-        {
-            //audioSource.PlayOneShot(audioClips[3]);
-            SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
-            animator.SetTrigger(changePanel);
-        }
-        //animator.SetTrigger()
-    }
+    //    if (indexDialog >= kioskData.Lines.Length)
+    //    {
+    //        //dialog is complete
+    //        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE,transform.position);
+    //        //if can trigger line than trigger the dialog sequence
+    //        EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, triggerLines);
+    //        animator.SetTrigger(hidePanelHash);
+    //    }
+    //    else
+    //    {
+    //        //audioSource.PlayOneShot(audioClips[3]);
+    //        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
+    //        animator.SetTrigger(changePanel);
+    //    }
+    //    //animator.SetTrigger()
+    //}
 
-    private IEnumerator TypeNextSentence()
-    {
-        globalAudioSource = audioPlayer.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
-        dialogText.text = "";
-        string text = kioskData.Lines[indexDialog].Text;
+    //private IEnumerator TypeNextSentence()
+    //{
+    //    globalAudioSource = audioPlayer.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
+    //    dialogText.text = "";
+    //    string text = kioskData.Lines[indexDialog].Text;
 
-        foreach (char c in text.ToCharArray())
-        {
-            dialogText.text += c;
-            yield return new WaitForSeconds(0.5f / textSpeed);
-        }
-        audioPlayer.RetrieveAudioSource(globalAudioSource);
-        globalAudioSource = null;
-    }
+    //    foreach (char c in text.ToCharArray())
+    //    {
+    //        dialogText.text += c;
+    //        yield return new WaitForSeconds(0.5f / textSpeed);
+    //    }
+    //    audioPlayer.RetrieveAudioSource(globalAudioSource);
+    //    globalAudioSource = null;
+    //}
+    #endregion
 
 }

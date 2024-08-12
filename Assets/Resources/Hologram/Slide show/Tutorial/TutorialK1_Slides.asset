@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac84fb6e7b2f37e4c9563d3365462048, type: 3}
+  m_Name: TutorialK1_Slides
+  m_EditorClassIdentifier: 
+  Lines:
+  - line: "Identity\u2026 Human. Authentication Successful.\r"
+    transcript:
+      sfx: 0
+      clip: {fileID: 8300000, guid: 3a2bbf40b66559646a061dff51bcd63c, type: 3}
+      volume: 1
+      pitch: 1
+    timer: 5
+    image: {fileID: 21300000, guid: f45299b37fe3cb24bba9622eebe59093, type: 3}
+    preferredImageSize: {x: 1, y: 1}
+  - line: "Welcome to the Nirvana Tower, the world's hub for Nirvana Research and
+      the field of consciousness. Founded in the year 2891 by Sir Chrysaor, we have
+      dedicated the past decade to the sharing of data, varying in types.\r\n\r"
+    transcript:
+      sfx: 0
+      clip: {fileID: 8300000, guid: 1fcd22215cb12ce41a5e3678117df52a, type: 3}
+      volume: 1
+      pitch: 1
+    timer: 17
+    image: {fileID: 21300000, guid: b3b3c83576aaf434786694521b682804, type: 3}
+    preferredImageSize: {x: 1, y: 1}
+  - line: We hope you enjoy your time here.
+    transcript:
+      sfx: 0
+      clip: {fileID: 8300000, guid: 016fd7386875ec3478e6accb2325755a, type: 3}
+      volume: 1
+      pitch: 1
+    timer: 4
+    image: {fileID: 21300000, guid: b3b3c83576aaf434786694521b682804, type: 3}
+    preferredImageSize: {x: 1, y: 1}
+  DialogAfterComplete: {fileID: 11400000, guid: d83f48b32e5e25047aec7c4a9ae370c9,
+    type: 2}

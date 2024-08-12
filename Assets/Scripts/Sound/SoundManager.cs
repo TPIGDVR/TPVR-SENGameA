@@ -169,7 +169,11 @@ namespace SoundRelated
 
         public void RetrieveAudioSource(AudioSource audioSource)
         {
-            if (audioSource == null) Debug.LogError("no audio source to retrieve from!");
+            if (audioSource == null)
+            {
+                Debug.LogError("no audio source to retrieve from!");
+                return;
+            }
             audioSource.Stop();
             if (audioSource.transform.parent == containerForGlobalAudioSource)
             {

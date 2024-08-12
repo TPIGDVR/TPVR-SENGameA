@@ -17,7 +17,7 @@ namespace Assets.Scripts.Automaton
     //    [SerializeField]
     //    Waypoint[] _wayPoints;
     //    int _wayPointIndex = 0;
-    //    public Vector3 targetDestination;
+    //    public Vector3 automatonTargetDestination;
 
     //    public NavMeshAgent Agent { get => _agent; }
 
@@ -64,7 +64,7 @@ namespace Assets.Scripts.Automaton
     //                    break;
     //                case AutomatonStates.WALK_TO_TARGET:
     //                    print("set to walk to target");
-    //                    SetDestination(targetDestination);
+    //                    SetDestination(automatonTargetDestination);
     //                    yield return new WaitForSeconds(0.1f);
     //                    yield return new WaitUntil(() => Agent.remainingDistance <= _travelCompleteThreshold);
     //                    _ani.SetFloat("Spd", 0f);
