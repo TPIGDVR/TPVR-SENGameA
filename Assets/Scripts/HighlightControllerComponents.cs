@@ -20,7 +20,21 @@ public class HighlightControllerComponents : MonoBehaviour, IScriptLoadQueuer
 
     public void Initialize()
     {
-        em_Controller.AddListener(DialogEvents.STOP_HIGHLIGHTING_ABUTTON_HIGHLIGHT_THUMBSTICKS);
-        em_Controller.AddListener(DialogEvents.HIGHLIGHT_ABUTTON_STOP_HIGHLIGHTING_THUMBSTICKS);
+        em_Controller.AddListener(DialogEvents.STOP_HIGHLIGHTING_ABUTTON_HIGHLIGHT_THUMBSTICKS, AButton_Off);
+        em_Controller.AddListener(DialogEvents.HIGHLIGHT_ABUTTON_STOP_HIGHLIGHTING_THUMBSTICKS, AButton_On);
+    }
+
+    void AButton_Off()
+    {
+        button_a.GetComponent<MeshRenderer>().material = materialNormal;
+        thumbstick_left.GetComponent<MeshRenderer>().material = materialHighlight;
+        thumbstick_right.GetComponent<MeshRenderer>().material = materialHighlight;
+    }
+
+    void AButton_On()
+    {
+        button_a.GetComponent<MeshRenderer>().material = materialHighlight;
+        thumbstick_left.GetComponent<MeshRenderer>().material = materialNormal;
+        thumbstick_right.GetComponent<MeshRenderer>().material = materialNormal;
     }
 }
