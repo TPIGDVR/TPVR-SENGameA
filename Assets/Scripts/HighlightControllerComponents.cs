@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HighlightControllerComponents : MonoBehaviour, IScriptLoadQueuer
+public class HighlightControllerComponents : MonoBehaviour
 {
     [SerializeField]
     Material materialNormal;
@@ -38,10 +38,15 @@ public class HighlightControllerComponents : MonoBehaviour, IScriptLoadQueuer
 
     IEnumerator Start()
     {
-        yield return new WaitForSeconds(0.5f);
-        thumbstick_left = GameObject.Find("Controller Tutorial Left(Clone)").GetComponent<ControllerReference>().thumbstick_reference;
-        thumbstick_right = GameObject.Find("Controller Tutorial Right(Clone)").GetComponent<ControllerReference>().thumbstick_reference;
-        button_a = GameObject.Find("Controller Tutorial Right(Clone)").GetComponent<ControllerReference>().button_a_reference;
+        bool foundAll = false;
+        while (!foundAll)
+        {
+            thumbstick_left = GameObject.Find("Controller Tutorial Left(Clone)")?.GetComponent<ControllerReference>().thumbstick_reference;
+            thumbstick_right = GameObject.Find("Controller Tutorial Right(Clone)")?.GetComponent<ControllerReference>().thumbstick_reference;
+            button_a = GameObject.Find("Controller Tutorial Right(Clone)")?.GetComponent<ControllerReference>().button_a_reference;
+            foundAll = (thumbstick_left != null) && (thumbstick_right != null) && (button_a != null);
+            yield return null;
+        }
         em_Controller.AddListener(DialogEvents.STOP_HIGHLIGHTING_ABUTTON_HIGHLIGHT_THUMBSTICKS, AButton_Off);
         em_Controller.AddListener(DialogEvents.HIGHLIGHT_ABUTTON_STOP_HIGHLIGHTING_THUMBSTICKS, AButton_On);
     }
