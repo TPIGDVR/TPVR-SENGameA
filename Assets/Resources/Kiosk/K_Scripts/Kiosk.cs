@@ -201,87 +201,21 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
         }
     }
 #endregion
+    public void SetHide()
+    {
+        popup.CanPopUp = false;
+        mapIcon.gameObject.SetActive(false);
+        enabled = false;
+    }
 
-
-    #region legacy
-    ////caled by animation event
-    //public void StartKioskDialog()
-    //{
-    //    ChangeImage();
-    //    StartTyping();
-    //}
-    //called by animation events
-    //public void ChangeImagePanel()
-    //{
-    //    ChangeImage();
-    //    dialogText.text = "";
-    //}
-
-    //public void StartTyping()
-    //{
-    //    StopAllCoroutines();
-    //    StartCoroutine(WaitTimer(kioskData.Lines[indexDialog].duration));
-    //}
-
-    //void ChangeImage()
-    //{
-    //    var line = kioskData.Lines[indexDialog];
-    //    image.sprite = line.image;
-    //    imageSizer.cellSize = line.preferredDimension;
-    //}
-
-    //private IEnumerator WaitTimer(float second)
-    //{
-    //    var clip = kioskData.Lines[indexDialog].clip;
-    //    AudioSource speechSource = null;
-
-    //    if (clip)
-    //    {
-    //        MusicClip musicClip = new MusicClip(clip);  
-    //        speechSource = audioPlayer.PlayMusicClip(musicClip,transform.position);
-    //    }
-    //    StartCoroutine(TypeNextSentence());
-    //    yield return new WaitForSeconds(second);
-
-
-    //    //audio source related
-    //    //For error catch safety.
-    //    if (globalAudioSource) audioPlayer.RetrieveAudioSource(globalAudioSource);
-    //    if (speechSource) audioPlayer.RetrieveAudioSource(speechSource);
-
-    //    indexDialog++;
-
-    //    if (indexDialog >= kioskData.Lines.Length)
-    //    {
-    //        //dialog is complete
-    //        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE,transform.position);
-    //        //if can trigger line than trigger the dialog sequence
-    //        EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, triggerLines);
-    //        animator.SetTrigger(hidePanelHash);
-    //    }
-    //    else
-    //    {
-    //        //audioSource.PlayOneShot(audioClips[3]);
-    //        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
-    //        animator.SetTrigger(changePanel);
-    //    }
-    //    //animator.SetTrigger()
-    //}
-
-    //private IEnumerator TypeNextSentence()
-    //{
-    //    globalAudioSource = audioPlayer.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
-    //    dialogText.text = "";
-    //    string text = kioskData.Lines[indexDialog].Text;
-
-    //    foreach (char c in text.ToCharArray())
-    //    {
-    //        dialogText.text += c;
-    //        yield return new WaitForSeconds(0.5f / textSpeed);
-    //    }
-    //    audioPlayer.RetrieveAudioSource(globalAudioSource);
-    //    globalAudioSource = null;
-    //}
-    #endregion
+    public void SetShow()
+    {
+        enabled = true;
+        if (!scanCompleted)
+        {
+            popup.CanPopUp = true;
+            mapIcon.gameObject.SetActive(true);
+        }
+    }
 
 }

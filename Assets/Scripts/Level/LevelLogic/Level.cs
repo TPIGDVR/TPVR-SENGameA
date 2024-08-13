@@ -39,7 +39,6 @@ public class Level : MonoBehaviour, IScriptLoadQueuer
 
     public void UpdateRespawnPosition(ObjectiveName _ = ObjectiveName.KIOSK)
     {
-        print("update position");
         respawnPosition = GameData.playerTransform.position;
     }
 

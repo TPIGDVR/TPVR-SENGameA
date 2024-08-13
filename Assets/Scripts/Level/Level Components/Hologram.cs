@@ -40,7 +40,7 @@ public abstract class Hologram : MonoBehaviour
             timerToWait = Mathf.Max(timerToWait, clip.clip.length);
         }
 
-        timerToWait += 1f;
+        timerToWait += targetLine.timerOffset;
         StartCoroutine(TypeNextSentence(targetLine.line));
         yield return new WaitForSeconds(timerToWait);
 
@@ -55,7 +55,7 @@ public abstract class Hologram : MonoBehaviour
 
     protected IEnumerator TypeNextSentence(string text)
     {
-        globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
+        globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING,transform.position);
         subtitleText.text = "";
 
         foreach (char c in text.ToCharArray())

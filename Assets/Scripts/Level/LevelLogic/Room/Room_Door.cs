@@ -16,7 +16,7 @@ public class Room_Door : Door
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("DoorChecker"))
         {
             bool isForward = Vector3.Dot(GameData.player.PlayerTransform.position - transform.position, transform.right) < 0;
             if (isForward)
@@ -24,6 +24,12 @@ public class Room_Door : Door
                 em_l.TriggerEvent(LevelEvents.ENTER_NEW_ROOM, leadingRoom);
             }
         }
+    }
+    [ContextMenu("Change new room")]
+    public void TriggerEvent()
+    {
+        em_l.TriggerEvent(LevelEvents.ENTER_NEW_ROOM, leadingRoom);
+
     }
 }
 

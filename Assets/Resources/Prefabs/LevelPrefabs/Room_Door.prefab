@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3527029452212063340}
   - component: {fileID: 2193297260508362367}
+  - component: {fileID: 5109841857152655962}
   m_Layer: 10
   m_Name: Room_Door
   m_TagString: Untagged
@@ -52,14 +53,34 @@ MonoBehaviour:
   doorIcon: {fileID: 3243010340446304838}
   door_L: {fileID: 2230025543157024884}
   door_R: {fileID: 4471985085085115684}
-  aniSpeedMultiplier: 0
+  aniSpeedMultiplier: 1
   aniTime: 2
-  scanSpeed: 0
   scanner: {fileID: 7828219201914290984}
   pingCircle: {fileID: 5913485759014438096}
   pingSize: 10
   leadingRoom: {fileID: 0}
   doorTag: 0
+--- !u!65 &5109841857152655962
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580411291065536962}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.97758, y: 15.528718, z: 18.281935}
+  m_Center: {x: -0.12154296, y: 7.264357, z: -0.0027573109}
 --- !u!1 &2693483148983562275
 GameObject:
   m_ObjectHideFlags: 0

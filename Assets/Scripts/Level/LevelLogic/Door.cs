@@ -18,8 +18,7 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
     Vector3 door_L_OP, door_R_OP;
     protected EventManager<LevelEvents> em_l = EventSystem.level;
 
-    [SerializeField]
-    float scanSpeed;
+
 
     [SerializeField]
     ScannerUI scanner;
