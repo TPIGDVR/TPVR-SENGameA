@@ -63,13 +63,13 @@
 //        base.Update();
 //        if (progressBar.size != 0)
 //        {
-//            visualizer.SetActive(true);
+//            visualizer.SetShow(true);
 //            ChangeBarColor();
 //        }
 //        else
 //        {
 //            //once the visualizer is set to zero decide on the effect
-//            visualizer.SetActive(false);
+//            visualizer.SetShow(false);
 //            DecideEffect();
 //        }
 

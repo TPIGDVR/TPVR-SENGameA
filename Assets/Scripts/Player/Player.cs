@@ -131,7 +131,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         //disable objective indicator
         anxietyHandler.CanRun = false;
         Heart.SetActive(false);
-        //Objective.SetActive(false);
+        //Objective.SetShow(false);
     }
 
     void CloseAllUI()

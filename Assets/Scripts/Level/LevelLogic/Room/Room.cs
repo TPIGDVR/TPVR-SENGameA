@@ -1,3 +1,4 @@
+using Automaton;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.XR.CoreUtils;
@@ -11,7 +12,7 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
     protected Objective[] roomObj_rt;
 
     [SerializeField]
-    AutomatonBehaviour[] automatons;
+    BaseAutomatonBehaviour[] automatons;
     [SerializeField]
     protected Kiosk[] kiosks;
     [SerializeField]
@@ -27,13 +28,36 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
         RetrieveDoorsInRoom();
         InstantiateScriptableObject();
         InitRoom();
+        ScriptionOfEvent();
         isCompleted = false;
+    }
+
+    public void ScriptionOfEvent()
+    {
+        EventSystem.level.AddListener<Room>(LevelEvents.ENTER_NEW_ROOM, CheckCurrentRoom);
+    }
+
+    public void CheckCurrentRoom(Room currentRoom)
+    {
+        print($"this function is called in {name}");
+        if(currentRoom != this)
+        {
+            //Hide all game related objects
+            foreach (var kiosk in kiosks) kiosk.SetHide();
+            foreach(var a in automatons) a.SetHide();
+        }
+        else
+        {
+            //Enable component
+            foreach (var kiosk in kiosks) kiosk.SetShow();
+            foreach (var a in automatons) a.SetShow();
+        }
     }
 
     #region retrieving room
     void RetrieveAutomatonsInRoom()
     {
-        automatons = GetComponentsInChildren<AutomatonBehaviour>();
+        automatons = GetComponentsInChildren<BaseAutomatonBehaviour>();
     }
 
     void RetrieveKiosksInRoom()
@@ -95,12 +119,10 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
                 if (obj.IsComplete)
                 {
                     //go through each door to check\
-                    print("Room is Completed");
                     foreach(var door in doors)
                     {
                         if(door.CheckIfSameDoor(obj.doorToOpen))
                         {
-                            print($"made {door.name}");
                             door.MakeDoorOpenable();
                         }
                     }

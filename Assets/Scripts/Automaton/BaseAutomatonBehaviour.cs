@@ -32,6 +32,18 @@ namespace Automaton
 
         public NavMeshAgent Agent { get => _agent; set => _agent = value; }
 
+        public void SetHide()
+        {
+            print($"{name} is set inactive");
+            gameObject.SetActive(false);
+        }
+
+        public void SetShow()
+        {
+            print($"{name} is set active");
+            gameObject.SetActive(true);
+        }
+
         #region INITIALIZATION
         private void Awake()
         {
@@ -53,6 +65,7 @@ namespace Automaton
         {
             while (true)
             {
+                print($"Coroutine Running is {transform.parent.name}");
                 EvaluateState();
                 if (_isStationary) yield return null;
                 switch (_state)
