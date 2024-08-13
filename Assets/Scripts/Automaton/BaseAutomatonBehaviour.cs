@@ -65,7 +65,7 @@ namespace Automaton
         {
             while (true)
             {
-                print($"Coroutine Running is {transform.parent.name}");
+                //print($"Coroutine Running is {transform.parent.name}");
                 EvaluateState();
                 if (_isStationary) yield return null;
                 switch (_state)

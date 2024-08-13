@@ -51,7 +51,7 @@ public class Hologram_3D : Hologram
         {
             //dialog is complete
             //if can trigger line than trigger the dialog sequence
-            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
+            if(dialogLine) EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
             //do another animation here to hide hologram
             animator.SetTrigger("HideHologram");
         }
@@ -117,8 +117,11 @@ public class Hologram_3D : Hologram
         if(convertedData)
         {
             _data = convertedData;
-            ScriptableObjectManager.AddIntoSOCollection(convertedData.DialogAfterComplete);
-            dialogLine = (DialogueLines)ScriptableObjectManager.RetrieveRuntimeScriptableObject(convertedData.DialogAfterComplete);
+            if (convertedData.DialogAfterComplete)
+            {
+                ScriptableObjectManager.AddIntoSOCollection(convertedData.DialogAfterComplete);
+                dialogLine = (DialogueLines)ScriptableObjectManager.RetrieveRuntimeScriptableObject(convertedData.DialogAfterComplete);
+            }
         }
         else
         {

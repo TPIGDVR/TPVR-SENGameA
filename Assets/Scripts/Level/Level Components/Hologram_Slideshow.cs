@@ -66,7 +66,10 @@ public class Hologram_Slideshow : Hologram
             //dialog is complete
             //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
             //if can trigger line than trigger the dialog sequence
-            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
+            if (dialogLine)
+            {
+                EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
+            }
 
             animator.SetTrigger("HidePanel");
         }
@@ -96,8 +99,11 @@ public class Hologram_Slideshow : Hologram
         if (convertedData)
         {
             slideshowData = convertedData;
-            ScriptableObjectManager.AddIntoSOCollection(convertedData.DialogAfterComplete);
-            dialogLine = (DialogueLines)ScriptableObjectManager.RetrieveRuntimeScriptableObject(convertedData.DialogAfterComplete);
+            if (convertedData.DialogAfterComplete)
+            {
+                ScriptableObjectManager.AddIntoSOCollection(convertedData.DialogAfterComplete);
+                dialogLine = (DialogueLines)ScriptableObjectManager.RetrieveRuntimeScriptableObject(convertedData.DialogAfterComplete);
+            }
         }
         else
         {
