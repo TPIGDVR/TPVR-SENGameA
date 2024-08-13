@@ -17,7 +17,7 @@ public struct Hologram3DSlideShowLine
     [TextArea(3, 5)]
     public string line;
     public MusicClip transcript;
-    public float timer;
+    public float timerOffset;
     public GameObject prefab3D;
 }
 
@@ -27,7 +27,7 @@ public struct HologramSlideShowLine
     [TextArea(3, 5)]
     public string line;
     public MusicClip transcript;
-    public float timer;
+    public float timerOffset;
     public Sprite image;
     public Vector2 preferredImageSize;
 }
@@ -38,19 +38,19 @@ public struct HologramDialogLine
     [TextArea(3,5)]
     public string line;
     public MusicClip transcript;
-    public float timer;
+    public float timerOffset;
 
     public HologramDialogLine(HologramSlideShowLine data)
     {
         line = data.line;
         transcript = data.transcript;
-        timer = data.timer;
+        timerOffset = data.timerOffset;
     }
 
     public HologramDialogLine(Hologram3DSlideShowLine data)
     {
         line = data.line;
         transcript = data.transcript;
-        timer = data.timer;
+        timerOffset = data.timerOffset;
     }
 }

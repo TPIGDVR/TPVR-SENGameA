@@ -22,7 +22,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         [SerializeField]
         float _anxietyIncreaseScale = 0;
 
-        //Death timer related
+        //Death timerOffset related
         [SerializeField]
         float _maxDeathTime;
         float _currDeathTimer = 0;

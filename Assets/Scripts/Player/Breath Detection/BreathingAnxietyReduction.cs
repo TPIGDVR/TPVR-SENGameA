@@ -198,7 +198,7 @@ namespace BreathDetection
 
     public class WaitForExhaleState : BreathingState
     {
-        //put a timer here
+        //put a timerOffset here
         public WaitForExhaleState(FSM fsm, int id, BreathingAnxietyReduction anxietyReduction) : base(fsm, id, anxietyReduction)
         {
         }

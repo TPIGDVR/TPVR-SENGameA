@@ -649,7 +649,7 @@ namespace Breathing3
 
         public override void Update()
         {
-            //Debug.Log($"Timer :{timer}");
+            //Debug.Log($"Timer :{timerOffset}");
             while (timer > elapseTimer)
             {
                 elapseTimer += Time.deltaTime;

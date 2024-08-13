@@ -47,7 +47,6 @@ namespace Assets.Scripts.Tutorial
         {
             if(objective.Completed == 1)
             {
-                print("Call first kiosk");
                 var kiosk = kiosks.FirstOrDefault(kiosk => kiosk.ScanCompleted);
                 EventSystem.level.TriggerEvent<Transform>(LevelEvents.FIRST_KIOSK, kiosk.AutomatonTargetDestination);
             }

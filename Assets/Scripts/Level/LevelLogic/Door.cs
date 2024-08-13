@@ -96,7 +96,7 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
             while (timer < time)
             {
                 pingCircle.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one * pingSize, timer / time);
-                //pingCircle.transform.localRotation = Quaternion.Euler(0, 0, 360 * timer / time);
+                //pingCircle.transform.localRotation = Quaternion.Euler(0, 0, 360 * timerOffset / time);
                 timer += timeInterval;
                 yield return new WaitForSeconds(timeInterval);
             }

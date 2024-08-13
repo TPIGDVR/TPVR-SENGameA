@@ -30,13 +30,19 @@ public abstract class Hologram : MonoBehaviour
         var clip = targetLine.transcript;
         AudioSource speechSource = null;
 
+        //time it takes to wait for the text to finish 
+        float timerToWait = (0.5f / textSpeed) * targetLine.line.Length;
+
         //if there is a clip than play the clip transcipt.
         if (clip.clip)
         {
             speechSource = SoundManager.Instance.PlayMusicClip(clip, transform.position);
+            timerToWait = Mathf.Max(timerToWait, clip.clip.length);
         }
+
+        timerToWait += 1f;
         StartCoroutine(TypeNextSentence(targetLine.line));
-        yield return new WaitForSeconds(targetLine.timer);
+        yield return new WaitForSeconds(timerToWait);
 
         //audio source related
         //For error catch safety.

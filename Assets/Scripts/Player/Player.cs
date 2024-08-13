@@ -50,8 +50,6 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     void EventSubscribing()
     {
-       
-
         //tutorial events
         em_l.AddListener(LevelEvents.INIT_TUTORIAL, DeactivateAllMechanic);
         em_p.AddListener(PlayerEvents.DEATH, TutorialDeath);
