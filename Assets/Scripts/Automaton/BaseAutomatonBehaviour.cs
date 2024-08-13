@@ -35,13 +35,15 @@ namespace Automaton
         public void SetHide()
         {
             print($"{name} is set inactive");
-            gameObject.SetActive(false);
+            StopAllCoroutines();
         }
 
         public void SetShow()
         {
             print($"{name} is set active");
-            gameObject.SetActive(true);
+            enabled = true;
+            StartBehaviour();
+            StartCoroutine(Behaviour());
         }
 
         #region INITIALIZATION

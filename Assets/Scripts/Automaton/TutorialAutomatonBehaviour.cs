@@ -17,7 +17,6 @@ namespace Automaton
             _state = AutomatonStates.IDLE;
             //subscribe to the event
             SubscibeToEvent();
-
         }
 
         void SubscibeToEvent()

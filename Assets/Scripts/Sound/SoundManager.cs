@@ -125,7 +125,7 @@ namespace SoundRelated
                 //find the sfx transcript that is related to the transcript that is require to play
                 if (musicClip.sfx == clip)
                 {
-                    AudioSource audioSource = pooledGlobalAudioSource.Get();
+                    AudioSource audioSource = pooled3DAudioSource.Get();
                     SetUpAudioSource(musicClip,audioSource);
                     audioSource.transform.position = globalPosition;
                     audioSource.loop = true;

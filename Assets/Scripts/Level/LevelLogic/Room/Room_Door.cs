@@ -18,7 +18,11 @@ public class Room_Door : Door
     {
         if (other.CompareTag("DoorChecker"))
         {
+            //Debug.DrawLine(GameData.player.PlayerTransform.position, transform.position,Color.red,4f);
+            //Debug.DrawRay(transform.position, (GameData.player.PlayerTransform.position - transform.position),Color.yellow,5f);
+            //float val = Vector3.Dot(GameData.player.PlayerTransform.position - transform.position, transform.right);
             bool isForward = Vector3.Dot(GameData.player.PlayerTransform.position - transform.position, transform.right) < 0;
+            //print($"doorchecker left {val}, {isForward}");
             if (isForward)
             {
                 em_l.TriggerEvent(LevelEvents.ENTER_NEW_ROOM, leadingRoom);
