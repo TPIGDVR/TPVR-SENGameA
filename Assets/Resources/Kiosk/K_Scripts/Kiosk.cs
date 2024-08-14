@@ -40,6 +40,7 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
 
     [SerializeField] Transform automatonTargetDestination;
     [SerializeField] Transform hologramTargetDestination;
+    [SerializeField] Transform playerFinalDestination;
     [Header("Popup")]
     [SerializeField] 
     PopUp popup;
@@ -137,10 +138,16 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
             
             audioPlayer.RetrieveAudioSource(globalAudioSource);
             audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
-            hologram.PlayAnimation();
+            if (hologram)
+            {
+                hologram.PlayAnimation();
+                StartCoroutine(TeleportPlayer());
+            }
 
             animator.SetBool("Completed", true);
             EventSystem.level.TriggerEvent<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ObjectiveName.KIOSK);
+
+            //teleport player to location once the 
         }
     }
 
@@ -216,6 +223,19 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
             popup.CanPopUp = true;
             mapIcon.gameObject.SetActive(true);
         }
+    }
+
+    public IEnumerator TeleportPlayer()
+    {
+        var player = GameData.player;
+        //wait for the cinemachine to have an active blend
+        while (player.MainCinemachineBrain.ActiveBlend == null) yield return null;
+        var blend = player.MainCinemachineBrain.ActiveBlend;
+
+        while(!blend.IsComplete) yield return null;
+        //player.MovePlayerToTransform(playerFinalDestination);
+        EventSystem.player.TriggerEvent<Transform>(PlayerEvents.MOVE_PLAYER_TO_KIOKPOSITION, playerFinalDestination);
+
     }
 
 }

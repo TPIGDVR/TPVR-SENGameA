@@ -18,8 +18,14 @@ public abstract class Hologram : MonoBehaviour
 
     //protected SoundManager soundManager;
     AudioSource globalAudioSource;
+    AudioSource speechSource;
     [SerializeField]
     protected GameObject virtualCamera;
+
+    protected virtual void Start()
+    {
+        EventSystem.player.AddListener(PlayerEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
+    }
 
     //how a typical hologram would play can change this to abstract if
     //all hologram needs to operate differently
@@ -37,7 +43,7 @@ public abstract class Hologram : MonoBehaviour
     protected IEnumerator PrintKioskLines(HologramDialogLine targetLine)
     {
         var clip = targetLine.transcript;
-        AudioSource speechSource = null;
+        speechSource = null;
 
         //time it takes to wait for the text to finish 
         float timerToWait = (0.5f / textSpeed) * targetLine.line.Length;
@@ -55,11 +61,16 @@ public abstract class Hologram : MonoBehaviour
 
         //audio source related
         //For error catch safety.
-        if (globalAudioSource) SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
-        if (speechSource) SoundManager.Instance.RetrieveAudioSource(speechSource);
+        RetrieveAudioSource();
 
         indexDialog++;
         //ignore this for reference
+    }
+
+    private void RetrieveAudioSource()
+    {
+        if (globalAudioSource) SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
+        if (speechSource) SoundManager.Instance.RetrieveAudioSource(speechSource);
     }
 
     protected IEnumerator TypeNextSentence(string text)
@@ -74,6 +85,21 @@ public abstract class Hologram : MonoBehaviour
         }
         SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
         globalAudioSource = null;
+    }
+
+    private void InteruptHologram()
+    {
+        if (!virtualCamera.gameObject.active) return;
+        StopAllCoroutines();
+        RetrieveAudioSource();//basically stop the audio from playing
+        OnInteruptHologram();
+        //remove the listener since it is not needed anymore.
+        EventSystem.player.RemoveListener(PlayerEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
+    }
+
+    protected virtual void OnInteruptHologram()
+    {
+        //NOOP
     }
 
     #endregion

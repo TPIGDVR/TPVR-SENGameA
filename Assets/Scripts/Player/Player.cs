@@ -1,4 +1,6 @@
+using Assets.HelpfulScripts;
 using Assets.Scripts.Player.Anxiety_Scripts;
+using Cinemachine;
 using SoundRelated;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +17,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     //references to ui
     [SerializeField]
-    GameObject Heart,Objective,Dialogue;
+    GameObject Heart,Objective,Dialogue,SkipHologramText;
 
     [SerializeField]
     Transform playerTransform;
@@ -23,7 +25,10 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     [Header("Controller related")]
     [SerializeField] ContinuousMoveProviderBase movementController;
     [SerializeField] ContinuousTurnProviderBase cameraController;
+    [SerializeField] ControllerManager controllerManager;
 
+    [Header("Camera related")]
+    [SerializeField] CinemachineBrain mainCinemachineBrain;
 
     //room / objective variables
     Room currentRoom;
@@ -35,7 +40,10 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     private void Update()
     {
-        anxietyHandler.CalculateAnxiety();
+        if (!GameData.IsInTutorial)
+        {
+            anxietyHandler.CalculateAnxiety();
+        }
     }
 
     #region Initialization
@@ -44,6 +52,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     EventManager<LevelEvents> em_l = EventSystem.level;
 
     public Transform PlayerTransform { get => playerTransform; set => playerTransform = value; }
+    public CinemachineBrain MainCinemachineBrain { get => mainCinemachineBrain; }
 
     public void Initialize()
     {
@@ -71,6 +80,8 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         //for Hologram
         em_p.AddListener(PlayerEvents.START_PLAYING_HOLOGRAM, OnHologramPlaying);
         em_p.AddListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, OnHologramStop);
+        em_p.AddListener<Transform>(PlayerEvents.MOVE_PLAYER_TO_KIOKPOSITION, MovePlayerToKioskPosition);
+        
     }
 
     void EventUnsubscribing()
@@ -198,5 +209,32 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         //then stop the anxiety handler from running
         anxietyHandler.CanRun = true;
     }
+    void MovePlayerToKioskPosition(Transform targetTransform)
+    {
+        playerTransform.position = targetTransform.position;
+        playerTransform.rotation = targetTransform.rotation;
+
+        SkipHologramText.SetActive(true);
+        EventSystem.player.AddListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, RemoveInterruptHologramButton);
+        controllerManager.AddOnPressEvent(Controls.BButton, TriggerInterruptHologram);
+    }
+
+    void TriggerInterruptHologram()
+    {
+        print("is triggered??");
+        EventSystem.player.TriggerEvent(PlayerEvents.INTERRUPT_HOLOGRAM);
+    }
+
+    void RemoveInterruptHologramButton()
+    {
+        controllerManager.RemoveHoldEvent(Controls.BButton, TriggerInterruptHologram);
+        EventSystem.player.RemoveListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, RemoveInterruptHologramButton);
+
+    }
+
     #endregion
+
+
+
+
 }

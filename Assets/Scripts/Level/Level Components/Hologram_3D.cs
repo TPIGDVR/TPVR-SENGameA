@@ -12,8 +12,9 @@ public class Hologram_3D : Hologram
     [SerializeField] float hologram3DFadeInSec = 1f;
     GameObject current3DHologram;
     DialogueLines dialogLine;
-    public void Start()
+    protected override void Start()
     {
+        base.Start();
         gameObject.SetActive(false);
         virtualCamera.SetActive(false);
     }
@@ -53,9 +54,7 @@ public class Hologram_3D : Hologram
         {
             //dialog is complete
             //if can trigger line than trigger the dialog sequence
-            if(dialogLine) EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
-            //do another animation here to hide hologram
-            animator.SetTrigger("HideHologram");
+            EndHologram();
         }
         else
         {
@@ -64,6 +63,18 @@ public class Hologram_3D : Hologram
             //do an animation to hide the gameobject with the target position
             animator.SetTrigger("NewHologram");
         }
+    }
+
+    protected override void OnInteruptHologram()
+    {
+        EndHologram() ;
+    }
+
+    private void EndHologram()
+    {
+        if (dialogLine) EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
+        //do another animation here to hide hologram
+        animator.SetTrigger("HideHologram");
     }
 
     IEnumerator FadeOutHologram() 
@@ -100,7 +111,7 @@ public class Hologram_3D : Hologram
     {
         StartCoroutine(RunPanel());
     }
-
+    //played in the kiosk
     void HideHologram()
     {
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);

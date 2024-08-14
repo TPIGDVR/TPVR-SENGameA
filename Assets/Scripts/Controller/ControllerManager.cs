@@ -60,6 +60,7 @@ namespace Assets.HelpfulScripts
             }
         }
 
+        //mapping allow one to adjust the action with the enum called controls
         [Serializable]
         public class Mapping
         {
@@ -67,6 +68,7 @@ namespace Assets.HelpfulScripts
             public InputAction correspondingAction;
         }
 
+        //the events that is related to the controls
         [Serializable]
         public class ActionsMap
         {
@@ -77,6 +79,7 @@ namespace Assets.HelpfulScripts
 
             public void Pressed(InputAction.CallbackContext context)
             {
+                print($"{action} is being press");
                 OnPress.Invoke();
             }
 
@@ -91,6 +94,91 @@ namespace Assets.HelpfulScripts
             }
         }
 
+        public void AddOnPressEvent(Controls assignControl, UnityAction onPress)
+        {
+            print($"Adding");
+
+            foreach (var map in actionMap)
+            {
+                print($"{map.action} in actionmap");
+                if(map.action == assignControl)
+                {
+                    map.OnPress.AddListener(onPress);
+                    return;
+                }
+            }
+            throw new NullReferenceException("Assign a mapping to the designated assign control before adding an event!");
+        }
+
+        public void AddOnHoldEvent(Controls assignControl, UnityAction onHold)
+        {
+            foreach (var map in actionMap)
+            {
+                if (map.action == assignControl)
+                {
+                    map.OnHold.AddListener(onHold);
+                    return;
+                }
+            }
+            throw new NullReferenceException("Assign a mapping to the designated assign control before adding an event!");
+        }
+
+        public void AddOnReleaseEvent(Controls assignControl, UnityAction onRelease)
+        {
+            foreach (var map in actionMap)
+            {
+                if (map.action == assignControl)
+                {
+                    map.OnRelease.AddListener(onRelease);
+                    return;
+
+                }
+            }
+            throw new NullReferenceException("Assign a mapping to the designated assign control before adding an event!");
+        }
+
+
+        public void RemovePressEvent(Controls assignControl, UnityAction onPress)
+        {
+            foreach (var map in actionMap)
+            {
+                if (map.action == assignControl)
+                {
+                    map.OnPress.RemoveListener(onPress);
+                    return;
+
+                }
+            }
+            throw new NullReferenceException("Assign a mapping to the designated assign control before adding an event!");
+        }
+
+        public void RemoveHoldEvent(Controls assignControl, UnityAction onHold)
+        {
+            foreach (var map in actionMap)
+            {
+                if (map.action == assignControl)
+                {
+                    map.OnHold.RemoveListener(onHold);
+                    return;
+
+                }
+            }
+            throw new NullReferenceException("Assign a mapping to the designated assign control before adding an event!");
+        }
+
+        public void RemoveReleaseEvent(Controls assignControl, UnityAction onRelease)
+        {
+            foreach (var map in actionMap)
+            {
+                if (map.action == assignControl)
+                {
+                    map.OnRelease.RemoveListener(onRelease);
+                    return;
+
+                }
+            }
+            throw new NullReferenceException("Assign a mapping to the designated assign control before adding an event!");
+        }
         public void OnPress()
         {
             print("button click");

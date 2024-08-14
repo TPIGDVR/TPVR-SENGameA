@@ -240,6 +240,7 @@ MonoBehaviour:
   scanCompleted: 0
   automatonTargetDestination: {fileID: 4971867599052564856}
   hologramTargetDestination: {fileID: 5914979190958302031}
+  playerFinalDestination: {fileID: 996521284669478171}
   popup: {fileID: 8872983900653166831}
   mapIcon: {fileID: 4592347557642301963}
   hologram3DData: {fileID: 0}
@@ -342,6 +343,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &922839663707307845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 996521284669478171}
+  m_Layer: 10
+  m_Name: final player destination
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &996521284669478171
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922839663707307845}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -4.62, y: 0, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 239952488906774548}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1297554129622525318
 GameObject:
   m_ObjectHideFlags: 0
@@ -935,6 +967,7 @@ Transform:
   - {fileID: 7336413921286986940}
   - {fileID: 4971867599052564856}
   - {fileID: 5914979190958302031}
+  - {fileID: 996521284669478171}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4592347557642301963

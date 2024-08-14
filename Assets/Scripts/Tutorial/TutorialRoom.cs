@@ -25,6 +25,9 @@ namespace Assets.Scripts.Tutorial
             hasActivateHeartRateMonitor = true;
             //remove the event
             EventSystem.dialog.RemoveListener(DialogEvents.ACTIVATE_HEARTRATE, ActivatedHeartRateMonitor);
+
+            //player anxiety will increase
+            GameData.ChangeTutorialStatus(false);
         }
 
         void ActivateNoiseIndicatorDetection()

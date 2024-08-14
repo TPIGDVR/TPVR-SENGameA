@@ -17,8 +17,9 @@ public class Hologram_Slideshow : Hologram
     DialogueLines dialogLine;
     
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         gameObject.SetActive(false);
         virtualCamera.SetActive(false);
     }
@@ -68,14 +69,7 @@ public class Hologram_Slideshow : Hologram
             //dialog is complete
             //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
             //if can trigger line than trigger the dialog sequence
-            if (dialogLine)
-            {
-                EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
-            }
-            //stop focusing on the camera
-            virtualCamera.SetActive(false);
-            EventSystem.player.TriggerEvent(PlayerEvents.FINISH_PLAYING_HOLOGRAM);
-            animator.SetTrigger("HidePanel");
+            EndHologram();
         }
         else
         {
@@ -84,6 +78,22 @@ public class Hologram_Slideshow : Hologram
             //change the trigger
             animator.SetTrigger("ShowImage");
         }
+    }
+
+    protected override void OnInteruptHologram()
+    {
+        EndHologram(); 
+    }
+    private void EndHologram()
+    {
+        if (dialogLine)
+        {
+            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
+        }
+        //stop focusing on the camera
+        virtualCamera.SetActive(false);
+        EventSystem.player.TriggerEvent(PlayerEvents.FINISH_PLAYING_HOLOGRAM);
+        animator.SetTrigger("HidePanel");
     }
 
     //will be played at the animator
