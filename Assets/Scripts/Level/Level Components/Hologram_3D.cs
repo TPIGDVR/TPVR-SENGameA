@@ -15,12 +15,14 @@ public class Hologram_3D : Hologram
     public void Start()
     {
         gameObject.SetActive(false);
+        virtualCamera.SetActive(false);
     }
 
-    public override void PlayAnimation()
-    {
-        gameObject.SetActive(true);
-    }
+    //public override void PlayAnimation()
+    //{
+    //    gameObject.SetActive(true);
+    //    virtualCamera.SetActive(true);
+    //}
 
     IEnumerator RunPanel()
     {
@@ -76,6 +78,9 @@ public class Hologram_3D : Hologram
         SetHologramFadeValue(0);
         //set the animator here.
         animator.SetTrigger("FinishFadeOut");
+        //stop focusing on the camera
+        virtualCamera.SetActive(false);
+        EventSystem.player.TriggerEvent(PlayerEvents.FINISH_PLAYING_HOLOGRAM);
     }
 
     IEnumerator FadeInHologram()

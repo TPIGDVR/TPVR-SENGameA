@@ -7,17 +7,13 @@ using UnityEngine;
 
 namespace Dialog
 {
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class DialogueManager : MonoBehaviour , IScriptLoadQueuer
+    public class DialogueManager : MonoBehaviour, IScriptLoadQueuer
     {
-        EventManager<DialogEvents> em_l = EventSystem.dialog;
+        EventManager<DialogEvents> em_d = EventSystem.dialog;
 
         //dialog information
         Queue<DialogueLines> _queueDialog = new();
-        List<DialogueLines> listOfFinishDialog = new(); 
+        List<DialogueLines> listOfFinishDialog = new();
         DialogueLines currentDialog;
         Line currentLine;
         int currentIndex;
@@ -29,26 +25,28 @@ namespace Dialog
         TextMeshProUGUI dialogueText;
         [SerializeField]
         TextMeshProUGUI dialogueSpeaker;
-        [SerializeField] 
+        [SerializeField]
         Animator dialogAnimator;
         [SerializeField, Range(1, 20)]
         float textSpeed;
 
         Coroutine printingCoroutine = null;
         AudioSource CurrentAudioSource = null;
-        private void OnEnable()
-        {
-            em_l.AddListener<DialogueLines>(DialogEvents.ADD_DIALOG, AddDialog);
-        }
 
         private void OnDisable()
         {
-            em_l.RemoveListener<DialogueLines>(DialogEvents.ADD_DIALOG, AddDialog);
+            em_d.RemoveListener<DialogueLines>(DialogEvents.ADD_DIALOG, AddDialog);
         }
 
         private void Awake()
         {
             ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.SYSTEM);
+        }
+        public void Initialize()
+        {
+            dialogueBox.SetActive(false);
+            em_d.AddListener<DialogueLines>(DialogEvents.ADD_DIALOG, AddDialog);
+            EventSystem.level.AddListener<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, InteruptDialog);
         }
 
         #region opening/closing the dialogue box
@@ -63,7 +61,6 @@ namespace Dialog
             SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.END_DIALOG);
             StopAllCoroutines();
             StartCoroutine(closeDialog());
-
 
             IEnumerator closeDialog()
             {
@@ -83,12 +80,16 @@ namespace Dialog
         public void PrintCurrentDialogueLine()
         {
             StopAllCoroutines();
-            //em_l.TriggerEvent(DialogEvents.NEXT_LINE);
+            //em_d.TriggerEvent(DialogEvents.NEXT_LINE);
             SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.NEXT_LINE);
 
             printingCoroutine = StartCoroutine(PrintLine(currentLine));
         }
 
+        /// <summary>
+        /// Immediately Print the line if the player request it.
+        /// </summary>
+        /// <param name="l"></param>
         void InstantPrintLine(Line l)
         {
             dialogueText.text = l.Text;
@@ -96,9 +97,14 @@ namespace Dialog
             TriggerDialogueEvents(l);
         }
 
+        /// <summary>
+        /// Print the line in the dialog panel
+        /// </summary>
+        /// <param name="l">The dialog line specified.</param>
+        /// <returns></returns>
         IEnumerator PrintLine(Line l)
         {
-            if(l.audioClip.clip != null)
+            if (l.audioClip.clip != null)
             {//check if there is a valid transcript to play.
                 CurrentAudioSource = SoundManager.Instance.PlayMusicClip(l.audioClip);
             }
@@ -166,8 +172,6 @@ namespace Dialog
                 printingCoroutine = null;
 
                 InstantPrintLine(currentLine);
-
-                
             }
             else //not currently printing anymore
             {
@@ -228,9 +232,21 @@ namespace Dialog
             }
         }
 
-        public void Initialize()
+        void InteruptDialog(ObjectiveName objective)
         {
-            dialogueBox.SetActive(false);
+            if (dialogueBox.active)
+            {
+                if (printingCoroutine != null)
+                {
+                    StopCoroutine(printingCoroutine);
+                    //set as null and clear all the dialog out.
+                    printingCoroutine = null;
+                }
+                _queueDialog.Clear();
+                currentDialog = null;
+                HideDialogueBox();
+            }
+            
         }
     }
 }

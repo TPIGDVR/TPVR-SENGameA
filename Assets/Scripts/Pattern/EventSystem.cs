@@ -35,6 +35,8 @@ public enum PlayerEvents
     DEATH_SCREEN_FADED, //tutorial event death screen faded
     RESTART,//tutorial event death screen faded
     RES_SCREEN_FADED, // tutorial res screen faded
+    START_PLAYING_HOLOGRAM,
+    FINISH_PLAYING_HOLOGRAM,
 }
 
 public enum LevelEvents
@@ -64,7 +66,8 @@ public enum DialogEvents
     //tutorial dialogue events
     ACTIVATE_NOISE_INDICATOR,
     ACTIVATE_HEARTRATE,
-    ACTIVATE_OBJECTIVE,
+    //ACTIVATE_OBJECTIVE,
+    COMPLETED_TUTORIAL_DIALOG,
     MOVE_FIRST_AUTOMATON,
     HIGHLIGHT_ABUTTON_STOP_HIGHLIGHTING_THUMBSTICKS,
     STOP_HIGHLIGHTING_ABUTTON_HIGHLIGHT_THUMBSTICKS

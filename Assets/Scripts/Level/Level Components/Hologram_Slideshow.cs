@@ -15,18 +15,20 @@ public class Hologram_Slideshow : Hologram
     [SerializeField] 
     GridLayoutGroup imageSizer;
     DialogueLines dialogLine;
+    
 
     private void Start()
     {
         gameObject.SetActive(false);
+        virtualCamera.SetActive(false);
     }
 
     //CALL THIS METHOD FROM KIOSK CLASS
-    public override void PlayAnimation()
-    {
-        //play the animation here...
-        gameObject.SetActive(true);
-    }
+    //public override void PlayAnimation()
+    //{
+    //    gameObject.SetActive(true);
+    //    virtualCamera.SetActive(true);
+    //}
 
     //called by animation event : DigitalCircle_Completed
     void StartKioskDialog()
@@ -70,7 +72,9 @@ public class Hologram_Slideshow : Hologram
             {
                 EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
             }
-
+            //stop focusing on the camera
+            virtualCamera.SetActive(false);
+            EventSystem.player.TriggerEvent(PlayerEvents.FINISH_PLAYING_HOLOGRAM);
             animator.SetTrigger("HidePanel");
         }
         else

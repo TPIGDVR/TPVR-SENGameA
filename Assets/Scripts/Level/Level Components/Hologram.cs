@@ -18,8 +18,17 @@ public abstract class Hologram : MonoBehaviour
 
     //protected SoundManager soundManager;
     AudioSource globalAudioSource;
+    [SerializeField]
+    protected GameObject virtualCamera;
 
-    public abstract void PlayAnimation();
+    //how a typical hologram would play can change this to abstract if
+    //all hologram needs to operate differently
+    public virtual void PlayAnimation()
+    {
+        gameObject.SetActive(true);
+        virtualCamera.SetActive(true);
+        EventSystem.player.TriggerEvent(PlayerEvents.START_PLAYING_HOLOGRAM);
+    }
 
     public abstract void InitHologram(object data);
 

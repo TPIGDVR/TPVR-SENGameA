@@ -99,8 +99,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 totalNoiseLevel += noiseLevel;
             }
 
-
-
             return Mathf.Lerp(_minAnxietyIncreaseScale
                 , _maxAnxietyIncreaseScale
                 , totalNoiseLevel);
@@ -149,6 +147,11 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             _anxietyIncreaseScale = 0f;
             _anxietyIncreaseScale += CalculateAnxietyScaleBasedOffGlareLevel();
             _anxietyIncreaseScale += CalculateAnxietyScaleBasedOffNoiseLevel();
+            //debugging
+            //float glareAnxietyVal = CalculateAnxietyScaleBasedOffGlareLevel();
+            //float noiseAnxietyVal = CalculateAnxietyScaleBasedOffNoiseLevel();
+            //print($"glare val {glareAnxietyVal} noise anxiety val {noiseAnxietyVal}");
+            //_anxietyIncreaseScale = glareAnxietyVal + noiseAnxietyVal;
         }
 
         private void DetermineDeathTimer()
@@ -223,8 +226,8 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                     totalBrightness += brightness;
                 }
                 totalBrightness /= lumArray.Length;
-                //if (totalBrightness < lT)
-                //    totalBrightness = 0;
+                if (totalBrightness < lT)
+                    totalBrightness = 0;
 
                 rt.Release();
                 return totalBrightness;

@@ -34,13 +34,11 @@ namespace Automaton
 
         public void SetHide()
         {
-            print($"{name} is set inactive");
             StopAllCoroutines();
         }
 
         public void SetShow()
         {
-            print($"{name} is set active");
             enabled = true;
             StartBehaviour();
             StartCoroutine(Behaviour());

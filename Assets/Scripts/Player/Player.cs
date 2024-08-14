@@ -3,6 +3,7 @@ using SoundRelated;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class Player : MonoBehaviour, IScriptLoadQueuer
 {
@@ -18,6 +19,11 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     [SerializeField]
     Transform playerTransform;
+
+    [Header("Controller related")]
+    [SerializeField] ContinuousMoveProviderBase movementController;
+    [SerializeField] ContinuousTurnProviderBase cameraController;
+
 
     //room / objective variables
     Room currentRoom;
@@ -52,24 +58,25 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     {
         //tutorial events
         em_l.AddListener(LevelEvents.INIT_TUTORIAL, DeactivateAllMechanic);
-        em_p.AddListener(PlayerEvents.DEATH, TutorialDeath);
-        em_p.AddListener(PlayerEvents.RESTART, TutorialRespawn);
+        em_p.AddListener(PlayerEvents.DEATH, Death);
+        em_p.AddListener(PlayerEvents.RESTART, Respawn);
 
         //dialogue events
         em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
-        em_d.AddListener(DialogEvents.ACTIVATE_OBJECTIVE, ActivateObjectiveMechanic);
 
         //level events
         em_l.AddListener<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ProgressObjective);
         em_l.AddListener<Room>(LevelEvents.ENTER_NEW_ROOM, SwitchCurrentRoom);
-        
+
+        //for Hologram
+        em_p.AddListener(PlayerEvents.START_PLAYING_HOLOGRAM, OnHologramPlaying);
+        em_p.AddListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, OnHologramStop);
     }
 
     void EventUnsubscribing()
     {
         em_l.RemoveListener(LevelEvents.INIT_TUTORIAL, DeactivateAllMechanic);
         em_d.RemoveListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
-        em_d.RemoveListener(DialogEvents.ACTIVATE_OBJECTIVE, ActivateObjectiveMechanic);
         em_l.RemoveListener<ObjectiveName>(LevelEvents.OBJECTIVE_COMPLETE, ProgressObjective);
     }
 
@@ -118,12 +125,6 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         Heart.SetActive(true);
     }
 
-    void ActivateObjectiveMechanic()
-    {
-        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.FUTURISTIC_PANEL_OPEN);
-        Objective.SetActive(true);
-    }
-
     void DeactivateAllMechanic()
     {
         //heart rate: deactivate the ui + anxiety build up
@@ -147,12 +148,12 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         Objective.SetActive(true);
     }
 
-    void TutorialDeath()
+    void Death()
     {
         StartCoroutine(T_Death());
     }
 
-    void TutorialRespawn()
+    void Respawn()
     {
         StartCoroutine(T_Respawn());
         anxietyHandler.isDead = false;
@@ -176,6 +177,26 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         vfx.BeginUnfadeScreen();
         yield return new WaitUntil(() => !vfx.isFaded);
         OpenUI();
+    }
+    #endregion
+
+    #region hologram
+    void OnHologramPlaying()
+    {
+        //stop controller from moving
+        movementController.enabled = false;
+        cameraController.enabled = false;
+        //then stop the anxiety handler from running
+        anxietyHandler.CanRun = false;
+    }
+
+    void OnHologramStop()
+    {
+        //stop controller from moving
+        movementController.enabled = true;
+        cameraController.enabled = true;
+        //then stop the anxiety handler from running
+        anxietyHandler.CanRun = true;
     }
     #endregion
 }
