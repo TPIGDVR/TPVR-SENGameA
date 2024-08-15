@@ -79,7 +79,6 @@ namespace Assets.HelpfulScripts
 
             public void Pressed(InputAction.CallbackContext context)
             {
-                print($"{action} is being press");
                 OnPress.Invoke();
             }
 
