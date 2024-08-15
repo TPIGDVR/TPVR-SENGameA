@@ -547,6 +547,7 @@ GameObject:
   - component: {fileID: 3634868039540906935}
   - component: {fileID: 3892442967343247031}
   - component: {fileID: 5156926127142314907}
+  - component: {fileID: 1478191377480505022}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -570,7 +571,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 49.9667, y: 0}
+  m_AnchoredPosition: {x: 49.962833, y: 0}
   m_SizeDelta: {x: 0.025001526, y: 0.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3892442967343247031
@@ -670,6 +671,21 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1478191377480505022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4028458131364042782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c3d0fc5ca81c404a91f0c6260a1a46d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sphereCollider: {fileID: 4022502393186556393}
+  parentControllerComponent: {fileID: 5551125943416818270}
+  detectionRadius: 0.001
 --- !u!1 &4045590804765120743
 GameObject:
   m_ObjectHideFlags: 0
@@ -1246,6 +1262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8270855663187062767}
   - component: {fileID: 9210124312071283218}
+  - component: {fileID: 4022502393186556393}
   m_Layer: 0
   m_Name: Controller Tutorial Left
   m_TagString: Untagged
@@ -1287,4 +1304,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thumbstick_reference: {fileID: 2920996176376820429}
-  primaryButton: {fileID: 6877554675875058235}
+  button_a_reference: {fileID: 0}
+--- !u!135 &4022502393186556393
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8758423527188247893}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.04447108
+  m_Center: {x: 0, y: -0.02, z: 0}
