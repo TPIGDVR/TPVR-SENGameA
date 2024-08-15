@@ -38,6 +38,7 @@ public class ControllerCheckForCollider : MonoBehaviour
         bool hasHit = Physics.Raycast(ray, out RaycastHit hitinfo, 5f, layerMask);
         if(hasHit)
             Debug.Log(hitinfo.collider.name);
+        hasHit = false; //Band-aid patch for now
         Vector3 upwardOffset = hasHit? Vector3.up * 0.2f : Vector3.zero;
         transform.position = Vector3.Lerp(transform.position, parentControllerComponent.position + dirAwayFromController + dirTowardsCamera + upwardOffset,math.saturate(Time.deltaTime * 5f));
     }
