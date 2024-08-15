@@ -1,40 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
-
+using Unity.Mathematics;
 public class ControllerCheckForCollider : MonoBehaviour
 {
-    [SerializeField]
-    SphereCollider sphereCollider;
     [SerializeField]
     Transform parentControllerComponent;
     [SerializeField]
     float detectionRadius = 0.001f;
 
+    [SerializeField]
+    float maxDistanceFromController = 0.1f;
+    [SerializeField]
+    float distLimiter = 10f;
+    Camera mainCamera;
+    [SerializeField]
     Vector3 shiftOffset;
-
-    private void Start()
+    Ray ray;
+    [SerializeField]
+    LayerMask layerMask;
+    void Start()
     {
-        shiftOffset = transform.position - sphereCollider.transform.position;
+        mainCamera = Camera.main;
     }
-
     // Update is called once per frame
     void Update()
     {
-        transform.position = sphereCollider.transform.position + shiftOffset;
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius);
+        Vector3 dirAwayFromController = (transform.position - parentControllerComponent.position).normalized;
+        dirAwayFromController /= distLimiter;
+        Vector3 dirTowardsCamera = (mainCamera.transform.position - transform.position).normalized;
+        ray = new Ray(mainCamera.transform.position, -dirTowardsCamera);
+        dirTowardsCamera += shiftOffset;
+        dirTowardsCamera.Normalize();
+        dirTowardsCamera /= 20f;
+        bool hasHit = Physics.Raycast(ray, out RaycastHit hitinfo, 5f, layerMask);
+        if(hasHit)
+            Debug.Log(hitinfo.collider.name);
+        Vector3 upwardOffset = hasHit? Vector3.up * 0.2f : Vector3.zero;
+        transform.position = Vector3.Lerp(transform.position, parentControllerComponent.position + dirAwayFromController + dirTowardsCamera + upwardOffset,math.saturate(Time.deltaTime * 5f));
+    }
 
-        foreach (Collider collider in hitColliders)
-        {
-            if (collider == sphereCollider)
-            {
-                Vector3 dir = (transform.position - sphereCollider.transform.position).normalized;
-                transform.position = sphereCollider.transform.position + dir * detectionRadius;
-
-                shiftOffset = transform.position - sphereCollider.transform.position;
-                break;
-            }
-        }
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(ray);
     }
 }
+
