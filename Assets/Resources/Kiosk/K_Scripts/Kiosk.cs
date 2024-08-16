@@ -58,7 +58,7 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     [SerializeField]
     HologramSlideShowData hologramslideShowData;
     [SerializeField]
-    Hologram hologram;
+    BaseHologram hologram;
 
     [SerializeField]
     bool hasHologramPanels;
@@ -78,23 +78,21 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
 
         if (hologram3DData)
         {
-            ScriptableObjectManager.AddIntoSOCollection(hologram3DData);
             var hologramGO = Instantiate(GameData.hologram3D, hologramTargetDestination);
             hologramGO.transform.localPosition = Vector3.zero;
             //get the component of the scriptable object from the 
-            hologram = hologramGO.GetComponent<Hologram>();
-            hologram.InitHologram(ScriptableObjectManager.RetrieveRuntimeScriptableObject(hologram3DData));
+            var hologram3d = hologramGO.GetComponent<Hologram_3D>();
+            hologram3d.InitHologram(hologram3DData);
+            hologram = hologram3d;
         }
         else if (hologramslideShowData)
         {
-            ScriptableObjectManager.AddIntoSOCollection(hologramslideShowData);
             var hologramGO = Instantiate(GameData.hologramSlideShow, hologramTargetDestination);
             hologramGO.transform.localPosition = Vector3.zero;
             //get the component of the scriptable object from the 
-            print($"Hologram reference is {hologramGO.name}");
-            hologram = hologramGO.GetComponentInChildren<Hologram>();
-            hologram.InitHologram(ScriptableObjectManager.RetrieveRuntimeScriptableObject(hologramslideShowData));
-
+            var hologramSlideShow = hologramGO.GetComponentInChildren<Hologram_Slideshow>();
+            hologramSlideShow.InitHologram(hologramslideShowData);
+            hologram = hologramSlideShow;
         }
 
     }

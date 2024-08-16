@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Hologram_Slideshow : Hologram
+public class Hologram_Slideshow : Hologram<HologramSlideShowData>
 {
     [SerializeField]
     HologramSlideShowData slideshowData;
@@ -14,8 +14,13 @@ public class Hologram_Slideshow : Hologram
     Image image;
     [SerializeField] 
     GridLayoutGroup imageSizer;
-    DialogueLines dialogLine;
-    
+
+
+    [ContextMenu("manual set init")]
+    private void ManualSet()
+    {
+        InitHologram(slideshowData);
+    }
 
     protected override void Start()
     {
@@ -23,13 +28,6 @@ public class Hologram_Slideshow : Hologram
         gameObject.SetActive(false);
         virtualCamera.SetActive(false);
     }
-
-    //CALL THIS METHOD FROM KIOSK CLASS
-    //public override void PlayAnimation()
-    //{
-    //    gameObject.SetActive(true);
-    //    virtualCamera.SetActive(true);
-    //}
 
     //called by animation event : DigitalCircle_Completed
     void StartKioskDialog()
@@ -41,6 +39,7 @@ public class Hologram_Slideshow : Hologram
     //called by animation event : Image Change
     void ChangeImagePanel()
     {
+        print("Image change");
         ChangeImage();
         subtitleText.text = "";
     }
@@ -48,8 +47,9 @@ public class Hologram_Slideshow : Hologram
     //called by animation event : Image Change
     void StartTyping()
     {
+        print("Start typing");
         StopAllCoroutines();
-        StartCoroutine(RunPanel());
+        RunPanel();
     }
 
     void ChangeImage()
@@ -59,69 +59,46 @@ public class Hologram_Slideshow : Hologram
         imageSizer.cellSize = line.preferredImageSize;
     }    
 
-    IEnumerator RunPanel()
-    {
-        yield return PrintKioskLines(new
-            HologramDialogLine(slideshowData.Lines[indexDialog]));
+    //IEnumerator RunPanel()
+    //{
+    //    yield return PrintKioskLines(slideshowData.Lines[indexDialog]);
 
-        if (indexDialog >= slideshowData.Lines.Length)
-        {
-            //dialog is complete
-            //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
-            //if can trigger line than trigger the dialog sequence
-            EndHologram();
-        }
-        else
-        {
-            //audioSource.PlayOneShot(audioClips[3]);
-            //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
-            //change the trigger
-            animator.SetTrigger("ShowImage");
-        }
-    }
+    //    if (indexDialog >= slideshowData.Lines.Length)
+    //    {
+    //        //dialog is complete
+    //        //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
+    //        //if can trigger line than trigger the dialog sequence
+    //        EndHologram();
+    //    }
+    //    else
+    //    {
+    //        //audioSource.PlayOneShot(audioClips[3]);
+    //        //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
+    //        //change the trigger
+    //        animator.SetTrigger("ShowImage");
+    //    }
+    //}
 
     protected override void OnInteruptHologram()
     {
         EndHologram(); 
     }
-    private void EndHologram()
+    protected override void EndHologram()
     {
-        if (dialogLine)
-        {
-            EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
-        }
+        base.EndHologram();
         //stop focusing on the camera
-        virtualCamera.SetActive(false);
         EventSystem.player.TriggerEvent(PlayerEvents.FINISH_PLAYING_HOLOGRAM);
         animator.SetTrigger("HidePanel");
     }
 
-    //will be played at the animator
-    void PlayNewSlideSFX()
+    protected override void NextHologram()
     {
+        base.NextHologram();
+        animator.SetTrigger("ShowImage");
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
     }
 
-    void PlayCloseHologramSFX()
-    {
-        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
-    }
+    //will be played at the animator
+    
 
-    public override void InitHologram(object data)
-    {
-        var convertedData = (HologramSlideShowData)data;
-        if (convertedData)
-        {
-            slideshowData = convertedData;
-            if (convertedData.DialogAfterComplete)
-            {
-                ScriptableObjectManager.AddIntoSOCollection(convertedData.DialogAfterComplete);
-                dialogLine = (DialogueLines)ScriptableObjectManager.RetrieveRuntimeScriptableObject(convertedData.DialogAfterComplete);
-            }
-        }
-        else
-        {
-            throw new System.Exception("Cant convert data into slideshow data");
-        }
-    }
 }

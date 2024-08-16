@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac84fb6e7b2f37e4c9563d3365462048, type: 3}
   m_Name: Kiosk 5 Data (Hologram)
   m_EditorClassIdentifier: 
+  DialogAfterComplete: {fileID: 11400000, guid: d83f48b32e5e25047aec7c4a9ae370c9,
+    type: 2}
   Lines:
   - line: 'It is common knowledge that automatons are created at machine-and-human-run
       facilities, known as Spark Centres.
@@ -29,7 +31,7 @@ MonoBehaviour:
       set of data requires careful consideration to craft, and simulates personalities
       for each model.
 
-      
+
 
 '
     transcript:
@@ -51,4 +53,3 @@ MonoBehaviour:
     timerOffset: 2
     image: {fileID: 21300000, guid: 07dcf2bd4925dc1458325345d35cbe8e, type: 3}
     preferredImageSize: {x: 1, y: 1}
-  DialogAfterComplete: {fileID: 0}

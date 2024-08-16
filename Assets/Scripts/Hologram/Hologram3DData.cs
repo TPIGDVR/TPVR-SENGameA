@@ -2,8 +2,9 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Hologram/3D data")]
-public class Hologram3DData : ScriptableObject
+public class Hologram3DData : HologramData
 {
     public Hologram3DSlideShowLine[] Lines;
-    public DialogueLines DialogAfterComplete;
+    public override HologramDialogLine[] dialogLine => Lines;
+    //public DialogueLines DialogAfterComplete;
 }

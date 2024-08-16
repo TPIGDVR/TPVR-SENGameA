@@ -4,7 +4,12 @@ using UnityEngine;
 using TMPro;
 using SoundRelated;
 
-public abstract class Hologram : MonoBehaviour
+public abstract class BaseHologram : MonoBehaviour
+{
+    public abstract void PlayAnimation();
+}
+
+public abstract class Hologram<DataType> : BaseHologram where DataType : HologramData 
 {
     [SerializeField]
     protected Animator animator;
@@ -19,6 +24,10 @@ public abstract class Hologram : MonoBehaviour
     //protected SoundManager soundManager;
     AudioSource globalAudioSource;
     AudioSource speechSource;
+    DialogueLines dialogLine;
+
+    [SerializeField] protected DataType _Data;
+
     [SerializeField]
     protected GameObject virtualCamera;
 
@@ -29,17 +38,82 @@ public abstract class Hologram : MonoBehaviour
 
     //how a typical hologram would play can change this to abstract if
     //all hologram needs to operate differently
-    public virtual void PlayAnimation()
+    public override void PlayAnimation()
     {
         gameObject.SetActive(true);
-        virtualCamera.SetActive(true);
+        //virtualCamera.SetActive(true);
         EventSystem.player.TriggerEvent(PlayerEvents.START_PLAYING_HOLOGRAM);
     }
 
-    public abstract void InitHologram(object data);
+    /// <summary>
+    /// setting the related data to the hologram
+    /// </summary>
+    /// <param name="data">The data that is set for the hologram</param>
+    public virtual void InitHologram(DataType data)
+    {
+        ScriptableObjectManager.AddIntoSOCollection(data);
+        _Data = (DataType) ScriptableObjectManager.RetrieveRuntimeScriptableObject(data);
+        if (_Data)
+        {
+            if (_Data.DialogAfterComplete)
+            {
+                ScriptableObjectManager.AddIntoSOCollection(_Data.DialogAfterComplete);
+                dialogLine = (DialogueLines)ScriptableObjectManager.RetrieveRuntimeScriptableObject(_Data.DialogAfterComplete);
+            }
+        }
+        else
+        {
+            throw new System.Exception("Cant convert data into slideshow data");
+        }
+    }
+
+    protected void RunPanel()
+    {
+        StartCoroutine(RunHologram());
+    }
+
+    private IEnumerator RunHologram()
+    {
+        yield return PrintKioskLines(_Data.dialogLine[indexDialog]);
+        OnCompleteLine();
+        DecideState();
+    }
+
+    protected virtual void OnCompleteLine()
+    {
+        //NOOP
+    }
+
+    private void DecideState()
+    {
+        if(indexDialog >= _Data.dialogLine.Length)
+        {
+            EndHologram();   
+        }
+        else
+        {
+            NextHologram();
+        }
+    }
+
+    protected virtual void EndHologram()
+    {
+        var dialogLine = _Data.DialogAfterComplete;
+        if (dialogLine) EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
+        //add override here!
+    }
+
+    protected virtual void NextHologram()
+    {
+        //NOOP
+    }
 
     #region typing courtine
-
+    /// <summary>
+    /// coroutine to print the line for the kiosk
+    /// </summary>
+    /// <param name="targetLine">the dialog line to print out</param>
+    /// <returns></returns>
     protected IEnumerator PrintKioskLines(HologramDialogLine targetLine)
     {
         var clip = targetLine.transcript;
@@ -87,6 +161,10 @@ public abstract class Hologram : MonoBehaviour
         globalAudioSource = null;
     }
 
+
+    #endregion
+
+    #region interupt hologram
     private void InteruptHologram()
     {
         if (!virtualCamera.gameObject.active) return;
@@ -101,6 +179,18 @@ public abstract class Hologram : MonoBehaviour
     {
         //NOOP
     }
+    #endregion
 
+    #region sound effect related
+    public void PlayNewSlideSFX()
+    {
+        print("running");
+        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
+    }
+
+    public void PlayCloseHologramSFX()
+    {
+        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
+    }
     #endregion
 }
