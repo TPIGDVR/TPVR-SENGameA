@@ -81,7 +81,8 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         //em_p.AddListener(PlayerEvents.START_PLAYING_HOLOGRAM, OnHologramPlaying);
         //em_p.AddListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, OnHologramStop);
         //em_p.AddListener<Transform>(PlayerEvents.MOVE_PLAYER_TO_KIOKPOSITION, MovePlayerToKioskPosition);
-        
+        em_p.AddListener(PlayerEvents.PAUSE_HOLOGRAM, OnHologramPause);
+        em_p.AddListener(PlayerEvents.UNPAUSE_HOLOGRAM, OnHologramUnpause);
     }
 
     void EventUnsubscribing()
@@ -209,6 +210,17 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         //then stop the anxiety handler from running
         anxietyHandler.CanRun = true;
     }
+
+    void OnHologramPause()
+    {
+        SkipHologramText.SetActive(true);
+    }
+
+    void OnHologramUnpause()
+    {
+        SkipHologramText.SetActive(false);
+    }
+
     void MovePlayerToKioskPosition(Transform targetTransform)
     {
         playerTransform.position = targetTransform.position;

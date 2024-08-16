@@ -237,6 +237,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
             print("enter");
             //Resume the hologram
             isRunning = true;
+            EventSystem.player.TriggerEvent(PlayerEvents.UNPAUSE_HOLOGRAM);
         }
     }
 
@@ -246,6 +247,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         {
             print("exit");
             isRunning = false;
+            EventSystem.player.TriggerEvent(PlayerEvents.PAUSE_HOLOGRAM);
         }
     }
 

@@ -38,6 +38,9 @@ public enum PlayerEvents
     START_PLAYING_HOLOGRAM,//when the hologram starts playing,
     INTERRUPT_HOLOGRAM, //
     FINISH_PLAYING_HOLOGRAM, //when the hologram has finish playing
+    PAUSE_HOLOGRAM,
+    UNPAUSE_HOLOGRAM,
+
     MOVE_PLAYER_TO_KIOKPOSITION,
     FINISH_MOVING_PLAYER,
 
