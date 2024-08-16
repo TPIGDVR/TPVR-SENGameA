@@ -22,11 +22,13 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     [SerializeField]
     float textSpeed = 20f;
     protected int indexDialog = 0;
+    [SerializeField]
+    protected bool use3DAudio;
 
     //protected SoundManager soundManager;
     AudioSource globalAudioSource;
     AudioSource speechSource;
-    DialogueLines dialogLine;
+    protected DialogueLines dialogLine;
 
     [SerializeField] protected DataType _Data;
     bool isRunning = false;
@@ -42,7 +44,6 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     {
         gameObject.SetActive(true);
         isRunning = true;
-        //virtualCamera.SetActive(true);
         EventSystem.player.TriggerEvent(PlayerEvents.START_PLAYING_HOLOGRAM);
     }
 
@@ -80,6 +81,9 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         DecideState();
     }
 
+    /// <summary>
+    /// Once a line has been completed
+    /// </summary>
     protected virtual void OnCompleteLine()
     {
         //NOOP
@@ -99,7 +103,6 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
     protected virtual void EndHologram()
     {
-        var dialogLine = _Data.DialogAfterComplete;
         if (dialogLine) EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
         //add override here!
     }
@@ -126,7 +129,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         //if there is a clip than play the clip transcipt.
         if (clip.clip)
         {
-            speechSource = SoundManager.Instance.PlayMusicClip(clip, transform.position);
+            PlaySpeechClip(clip);
             timerToWait = Mathf.Max(timerToWait, clip.clip.length);
         }
 
@@ -164,7 +167,32 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         //ignore this for reference
     }
 
-    private void RetrieveAudioSource()
+    private void PlaySpeechClip(MusicClip clip)
+    {
+        if (use3DAudio)
+        {
+            speechSource = SoundManager.Instance.PlayMusicClip(clip, transform.position);
+        }
+        else
+        {
+            speechSource = SoundManager.Instance.PlayMusicClip(clip);
+        }
+    }
+    private void PlayGlobalAudioSource()
+    {
+        if (use3DAudio)
+        {
+            globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING, transform.position);
+        }
+        else
+        {
+            globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
+        }
+    }
+
+
+
+    protected void RetrieveAudioSource()
     {
         if (globalAudioSource) SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
         if (speechSource) SoundManager.Instance.RetrieveAudioSource(speechSource);
@@ -172,7 +200,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
     protected IEnumerator TypeNextSentence(string text)
     {
-        globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING,transform.position);
+        PlayGlobalAudioSource();
         subtitleText.text = "";
         int index = 0;
         while (index < text.Length)
@@ -185,7 +213,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
                 }
                 subtitleText.text += text[index];
                 index++;
-                yield return new WaitForSeconds(0.5f / textSpeed);   
+                yield return new WaitForSeconds(0.5f / textSpeed);
             }
             else
             {
@@ -196,6 +224,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
         globalAudioSource = null;
     }
+
 
 
     #endregion
@@ -232,23 +261,23 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform == GameData.playerTransform && !isRunning)
-        {
-            print("enter");
-            //Resume the hologram
-            isRunning = true;
-            EventSystem.player.TriggerEvent(PlayerEvents.UNPAUSE_HOLOGRAM);
-        }
+        //if (other.transform == GameData.playerTransform && !isRunning)
+        //{
+        //    print("enter");
+        //    //Resume the hologram
+        //    isRunning = true;
+        //    EventSystem.player.TriggerEvent(PlayerEvents.UNPAUSE_HOLOGRAM);
+        //}
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.transform == GameData.playerTransform && isRunning)
-        {
-            print("exit");
-            isRunning = false;
-            EventSystem.player.TriggerEvent(PlayerEvents.PAUSE_HOLOGRAM);
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if(other.transform == GameData.playerTransform && isRunning)
+    //    {
+    //        print("exit");
+    //        isRunning = false;
+    //        EventSystem.player.TriggerEvent<HologramSlideShowData>(PlayerEvents.PAUSE_HOLOGRAM , _Data);
+    //    }
+    //}
 
 }

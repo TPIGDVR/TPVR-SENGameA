@@ -82,4 +82,16 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform == GameData.playerTransform)
+        {
+            EventSystem.player.TriggerEvent<HologramSlideShowData>(PlayerEvents.PAUSE_HOLOGRAM, _Data);
+            //EventSystem.player.TriggerEvent(PlayerEvents.FINISH_PLAYING_HOLOGRAM);
+            StopAllCoroutines();
+            RetrieveAudioSource();
+            animator.SetTrigger("HidePanel");
+        }
+    }
+
 }

@@ -81,8 +81,8 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         //em_p.AddListener(PlayerEvents.START_PLAYING_HOLOGRAM, OnHologramPlaying);
         //em_p.AddListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, OnHologramStop);
         //em_p.AddListener<Transform>(PlayerEvents.MOVE_PLAYER_TO_KIOKPOSITION, MovePlayerToKioskPosition);
-        em_p.AddListener(PlayerEvents.PAUSE_HOLOGRAM, OnHologramPause);
-        em_p.AddListener(PlayerEvents.UNPAUSE_HOLOGRAM, OnHologramUnpause);
+        //em_p.AddListener(PlayerEvents.PAUSE_HOLOGRAM, OnHologramPause);
+        //em_p.AddListener(PlayerEvents.UNPAUSE_HOLOGRAM, OnHologramUnpause);
     }
 
     void EventUnsubscribing()
@@ -245,8 +245,4 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     }
 
     #endregion
-
-
-
-
 }
