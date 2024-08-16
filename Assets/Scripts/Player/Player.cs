@@ -78,9 +78,9 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         em_l.AddListener<Room>(LevelEvents.ENTER_NEW_ROOM, SwitchCurrentRoom);
 
         //for Hologram
-        em_p.AddListener(PlayerEvents.START_PLAYING_HOLOGRAM, OnHologramPlaying);
-        em_p.AddListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, OnHologramStop);
-        em_p.AddListener<Transform>(PlayerEvents.MOVE_PLAYER_TO_KIOKPOSITION, MovePlayerToKioskPosition);
+        //em_p.AddListener(PlayerEvents.START_PLAYING_HOLOGRAM, OnHologramPlaying);
+        //em_p.AddListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, OnHologramStop);
+        //em_p.AddListener<Transform>(PlayerEvents.MOVE_PLAYER_TO_KIOKPOSITION, MovePlayerToKioskPosition);
         
     }
 

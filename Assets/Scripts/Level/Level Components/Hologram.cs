@@ -13,6 +13,8 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 {
     [SerializeField]
     protected Animator animator;
+    [SerializeField]
+    float stoppingRadius = 10f;
 
     [Header("Subtitles")]
     [SerializeField]
@@ -27,10 +29,8 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     DialogueLines dialogLine;
 
     [SerializeField] protected DataType _Data;
-
-    [SerializeField]
-    protected GameObject virtualCamera;
-
+    bool isRunning = false;
+    
     protected virtual void Start()
     {
         EventSystem.player.AddListener(PlayerEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
@@ -41,6 +41,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     public override void PlayAnimation()
     {
         gameObject.SetActive(true);
+        isRunning = true;
         //virtualCamera.SetActive(true);
         EventSystem.player.TriggerEvent(PlayerEvents.START_PLAYING_HOLOGRAM);
     }
@@ -131,7 +132,29 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
         timerToWait += targetLine.timerOffset;
         StartCoroutine(TypeNextSentence(targetLine.line));
-        yield return new WaitForSeconds(timerToWait);
+
+        //then wait
+        float elapseTime = 0;
+
+        while (elapseTime < timerToWait)
+        {
+            if (isRunning)
+            {
+                print($"elapse time {elapseTime} timer to wait {timerToWait}");
+                if (!speechSource.isPlaying)
+                {
+                    speechSource.UnPause();
+                }
+                elapseTime += Time.deltaTime;
+                yield return null;
+            }
+            else
+            {
+                speechSource.Pause();
+                yield return null;
+            }
+        }
+
 
         //audio source related
         //For error catch safety.
@@ -151,11 +174,24 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     {
         globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING,transform.position);
         subtitleText.text = "";
-
-        foreach (char c in text.ToCharArray())
+        int index = 0;
+        while (index < text.Length)
         {
-            subtitleText.text += c;
-            yield return new WaitForSeconds(0.5f / textSpeed);
+            if (isRunning)
+            {
+                if (!globalAudioSource.isPlaying)
+                {
+                    globalAudioSource.Play();
+                }
+                subtitleText.text += text[index];
+                index++;
+                yield return new WaitForSeconds(0.5f / textSpeed);   
+            }
+            else
+            {
+                globalAudioSource.Pause();
+                yield return null;
+            }
         }
         SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
         globalAudioSource = null;
@@ -167,7 +203,8 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     #region interupt hologram
     private void InteruptHologram()
     {
-        if (!virtualCamera.gameObject.active) return;
+        //if (!virtualCamera.gameObject.active) return;
+        if (gameObject.active) return;
         StopAllCoroutines();
         RetrieveAudioSource();//basically stop the audio from playing
         OnInteruptHologram();
@@ -192,4 +229,24 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
     }
     #endregion
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform == GameData.playerTransform && !isRunning)
+        {
+            print("enter");
+            //Resume the hologram
+            isRunning = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.transform == GameData.playerTransform && isRunning)
+        {
+            print("exit");
+            isRunning = false;
+        }
+    }
+
 }

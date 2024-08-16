@@ -15,7 +15,6 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
     [SerializeField] 
     GridLayoutGroup imageSizer;
 
-
     [ContextMenu("manual set init")]
     private void ManualSet()
     {
@@ -26,7 +25,12 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
     {
         base.Start();
         gameObject.SetActive(false);
-        virtualCamera.SetActive(false);
+        //virtualCamera.SetActive(false);
+    }
+
+    private void Update()
+    {
+        
     }
 
     //called by animation event : DigitalCircle_Completed
@@ -59,26 +63,6 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         imageSizer.cellSize = line.preferredImageSize;
     }    
 
-    //IEnumerator RunPanel()
-    //{
-    //    yield return PrintKioskLines(slideshowData.Lines[indexDialog]);
-
-    //    if (indexDialog >= slideshowData.Lines.Length)
-    //    {
-    //        //dialog is complete
-    //        //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
-    //        //if can trigger line than trigger the dialog sequence
-    //        EndHologram();
-    //    }
-    //    else
-    //    {
-    //        //audioSource.PlayOneShot(audioClips[3]);
-    //        //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
-    //        //change the trigger
-    //        animator.SetTrigger("ShowImage");
-    //    }
-    //}
-
     protected override void OnInteruptHologram()
     {
         EndHologram(); 
@@ -97,8 +81,5 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         animator.SetTrigger("ShowImage");
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
     }
-
-    //will be played at the animator
-    
 
 }

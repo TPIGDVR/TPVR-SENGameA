@@ -15,7 +15,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
     {
         base.Start();
         gameObject.SetActive(false);
-        virtualCamera.SetActive(false);
+        //virtualCamera.SetActive(false);
     }
 
     protected override void OnCompleteLine()
@@ -86,7 +86,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
         //set the animator here.
         animator.SetTrigger("FinishFadeOut");
         //stop focusing on the camera
-        virtualCamera.SetActive(false);
+        //virtualCamera.SetActive(false);
         EventSystem.player.TriggerEvent(PlayerEvents.FINISH_PLAYING_HOLOGRAM);
     }
 
