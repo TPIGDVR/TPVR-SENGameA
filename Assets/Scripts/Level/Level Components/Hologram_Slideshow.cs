@@ -54,7 +54,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
 
     void ChangeImage()
     {
-        var line = slideshowData.Lines[indexDialog];
+        var line = _Data.Lines[indexDialog];
         image.sprite = line.image;
         imageSizer.cellSize = line.preferredImageSize;
     }    

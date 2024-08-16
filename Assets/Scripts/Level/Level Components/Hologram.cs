@@ -184,7 +184,6 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     #region sound effect related
     public void PlayNewSlideSFX()
     {
-        print("running");
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
     }
 

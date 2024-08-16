@@ -30,9 +30,9 @@ public class XRHandModelController : MonoBehaviour
         em_Controller.AddListener(DialogEvents.STOP_HIGHLIGHTING_ABUTTON_HIGHLIGHT_THUMBSTICKS, AButton_Off);
         em_Controller.AddListener(DialogEvents.HIGHLIGHT_ABUTTON_STOP_HIGHLIGHTING_THUMBSTICKS, AButton_On);
 
-        //for hologram
-        EventSystem.player.AddListener(PlayerEvents.START_PLAYING_HOLOGRAM, HideController);
-        EventSystem.player.AddListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, ShowController);
+        ////for hologram
+        //EventSystem.player.AddListener(PlayerEvents.START_PLAYING_HOLOGRAM, HideController);
+        //EventSystem.player.AddListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, ShowController);
     }
 
     void HideController()
