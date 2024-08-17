@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 239d35eeccc7d5f4b9f18fc58696b18a, type: 3}
   m_Name: LuminanceTexSRF
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   shader: {fileID: 4800000, guid: d74200f656b188c4fb8ddc33a5ebe35a, type: 3}
   settings:
     InjectionPoint: 600
@@ -76,10 +76,10 @@ MonoBehaviour:
     zFailOperation: 0
   m_ShadowTransparentReceive: 1
   m_RenderingMode: 0
-  m_DepthPrimingMode: 1
+  m_DepthPrimingMode: 0
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
-  m_IntermediateTextureMode: 0
+  m_IntermediateTextureMode: 1
 --- !u!114 &1825883999883481052
 MonoBehaviour:
   m_ObjectHideFlags: 0
