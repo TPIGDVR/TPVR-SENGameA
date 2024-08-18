@@ -193,56 +193,57 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     #endregion
 
     #region hologram
-    void OnHologramPlaying()
-    {
-        //stop controller from moving
-        movementController.enabled = false;
-        cameraController.enabled = false;
-        //then stop the anxiety handler from running
-        anxietyHandler.CanRun = false;
-    }
+    //legacy code for pausing the hologram
+    //void OnHologramPlaying()
+    //{
+    //    //stop controller from moving
+    //    movementController.enabled = false;
+    //    cameraController.enabled = false;
+    //    //then stop the anxiety handler from running
+    //    anxietyHandler.CanRun = false;
+    //}
 
-    void OnHologramStop()
-    {
-        //stop controller from moving
-        movementController.enabled = true;
-        cameraController.enabled = true;
-        //then stop the anxiety handler from running
-        anxietyHandler.CanRun = true;
-    }
+    //void OnHologramStop()
+    //{
+    //    //stop controller from moving
+    //    movementController.enabled = true;
+    //    cameraController.enabled = true;
+    //    //then stop the anxiety handler from running
+    //    anxietyHandler.CanRun = true;
+    //}
 
-    void OnHologramPause()
-    {
-        SkipHologramText.SetActive(true);
-    }
+    //void OnHologramPause()
+    //{
+    //    SkipHologramText.SetActive(true);
+    //}
 
-    void OnHologramUnpause()
-    {
-        SkipHologramText.SetActive(false);
-    }
+    //void OnHologramUnpause()
+    //{
+    //    SkipHologramText.SetActive(false);
+    //}
 
-    void MovePlayerToKioskPosition(Transform targetTransform)
-    {
-        playerTransform.position = targetTransform.position;
-        playerTransform.rotation = targetTransform.rotation;
+    //void MovePlayerToKioskPosition(Transform targetTransform)
+    //{
+    //    playerTransform.position = targetTransform.position;
+    //    playerTransform.rotation = targetTransform.rotation;
 
-        SkipHologramText.SetActive(true);
-        EventSystem.player.AddListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, RemoveInterruptHologramButton);
-        controllerManager.AddOnPressEvent(Controls.BButton, TriggerInterruptHologram);
-    }
+    //    SkipHologramText.SetActive(true);
+    //    EventSystem.player.AddListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, RemoveInterruptHologramButton);
+    //    controllerManager.AddOnPressEvent(Controls.BButton, TriggerInterruptHologram);
+    //}
 
-    void TriggerInterruptHologram()
-    {
-        print("is triggered??");
-        EventSystem.player.TriggerEvent(PlayerEvents.INTERRUPT_HOLOGRAM);
-    }
+    //void TriggerInterruptHologram()
+    //{
+    //    print("is triggered??");
+    //    EventSystem.player.TriggerEvent(PlayerEvents.INTERRUPT_HOLOGRAM);
+    //}
 
-    void RemoveInterruptHologramButton()
-    {
-        controllerManager.RemoveHoldEvent(Controls.BButton, TriggerInterruptHologram);
-        EventSystem.player.RemoveListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, RemoveInterruptHologramButton);
+    //void RemoveInterruptHologramButton()
+    //{
+    //    controllerManager.RemoveHoldEvent(Controls.BButton, TriggerInterruptHologram);
+    //    EventSystem.player.RemoveListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, RemoveInterruptHologramButton);
 
-    }
+    //}
 
     #endregion
 }

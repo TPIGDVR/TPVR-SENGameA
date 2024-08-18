@@ -77,7 +77,7 @@ namespace SoundRelated
                     audioSource.loop = false;
 
                     audioSource.Play();
-                    StartCoroutine(WaitAudioSourceToPlayFinish(audioSource, pooledGlobalAudioSource));
+                    StartCoroutine(WaitAudioSourceToPlayFinish(audioSource, pooled3DAudioSource));
                     return;
                 }
             }
@@ -179,7 +179,7 @@ namespace SoundRelated
             {
                 pooledGlobalAudioSource.Retrieve(audioSource);
             }
-            else
+            else if(audioSource.transform.parent == containerFor3DAudioSource)
             {
                 pooled3DAudioSource.Retrieve(audioSource);
             }

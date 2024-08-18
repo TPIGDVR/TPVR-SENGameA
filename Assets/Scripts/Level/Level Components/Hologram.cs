@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using SoundRelated;
+using Unity.VisualScripting;
 
 public abstract class BaseHologram : MonoBehaviour
 {
@@ -26,16 +27,16 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     protected bool use3DAudio;
 
     //protected SoundManager soundManager;
-    AudioSource globalAudioSource;
-    AudioSource speechSource;
+    [SerializeField] AudioSource globalAudioSource;
+    [SerializeField] AudioSource speechSource;
     protected DialogueLines dialogLine;
 
     [SerializeField] protected DataType _Data;
-    bool isRunning = false;
-    
+    protected bool isRunning = false;
+
     protected virtual void Start()
     {
-        EventSystem.player.AddListener(PlayerEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
+        //NOOP
     }
 
     //how a typical hologram would play can change this to abstract if
@@ -45,6 +46,9 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         gameObject.SetActive(true);
         isRunning = true;
         EventSystem.player.TriggerEvent(PlayerEvents.START_PLAYING_HOLOGRAM);
+        EventSystem.player.TriggerEvent(PlayerEvents.INTERRUPT_HOLOGRAM);
+        EventSystem.player.AddListener(PlayerEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
+
     }
 
     /// <summary>
@@ -81,14 +85,18 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         DecideState();
     }
 
+    #region on complete function
     /// <summary>
-    /// Once a line has been completed
+    /// Once a line has been completed, this function will call.
+    /// Override it t extend the functionality
     /// </summary>
     protected virtual void OnCompleteLine()
     {
         //NOOP
     }
-
+    /// <summary>
+    /// Deciding which state the Hologram would be doing.
+    /// </summary>
     private void DecideState()
     {
         if(indexDialog >= _Data.dialogLine.Length)
@@ -101,16 +109,23 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         }
     }
 
+    /// <summary>
+    /// called if the hologram is reach the end of the dialog
+    /// </summary>
     protected virtual void EndHologram()
     {
         if (dialogLine) EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
+        EventSystem.player.RemoveListener(PlayerEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
         //add override here!
     }
-
+    /// <summary>
+    /// Called if the hologram has more hologram to show.
+    /// </summary>
     protected virtual void NextHologram()
     {
         //NOOP
     }
+    #endregion
 
     #region typing courtine
     /// <summary>
@@ -167,29 +182,37 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         //ignore this for reference
     }
 
+    #region playing audiosource
     private void PlaySpeechClip(MusicClip clip)
     {
-        if (use3DAudio)
-        {
-            speechSource = SoundManager.Instance.PlayMusicClip(clip, transform.position);
-        }
-        else
-        {
-            speechSource = SoundManager.Instance.PlayMusicClip(clip);
-        }
+        //if (use3DAudio)
+        //{
+        //    speechSource = SoundManager.Instance.PlayMusicClip(clip, transform.position);
+        //}
+        //else
+        //{
+        //    speechSource = SoundManager.Instance.PlayMusicClip(clip);
+        //}
+
+        //play a global audiosource instead 
+        speechSource = SoundManager.Instance.PlayMusicClip(clip);
     }
     private void PlayGlobalAudioSource()
     {
-        if (use3DAudio)
-        {
-            globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING, transform.position);
-        }
-        else
-        {
-            globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
-        }
+        //if (use3DAudio)
+        //{
+        //    globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING, transform.position);
+        //}
+        //else
+        //{
+        //    globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
+        //}
+
+        globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
+
     }
 
+    #endregion
 
 
     protected void RetrieveAudioSource()
@@ -202,6 +225,8 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     {
         PlayGlobalAudioSource();
         subtitleText.text = "";
+        //this is needed since we dont want splits to happen if the player is out of bound.
+        string textToDisplay = "";
         int index = 0;
         while (index < text.Length)
         {
@@ -211,7 +236,8 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
                 {
                     globalAudioSource.Play();
                 }
-                subtitleText.text += text[index];
+                textToDisplay += text[index];
+                subtitleText.text = textToDisplay;
                 index++;
                 yield return new WaitForSeconds(0.5f / textSpeed);
             }
@@ -225,17 +251,14 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         globalAudioSource = null;
     }
 
-
-
     #endregion
 
     #region interupt hologram
     private void InteruptHologram()
     {
         //if (!virtualCamera.gameObject.active) return;
-        if (gameObject.active) return;
         StopAllCoroutines();
-        RetrieveAudioSource();//basically stop the audio from playing
+        RetrieveAudioSource(); //basically stop the audio from playing
         OnInteruptHologram();
         //remove the listener since it is not needed anymore.
         EventSystem.player.RemoveListener(PlayerEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
@@ -250,25 +273,28 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     #region sound effect related
     public void PlayNewSlideSFX()
     {
-        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
+        //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
+        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN);
     }
 
     public void PlayCloseHologramSFX()
     {
-        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
+        //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
+        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE);
     }
     #endregion
 
-    private void OnTriggerEnter(Collider other)
-    {
-        //if (other.transform == GameData.playerTransform && !isRunning)
-        //{
-        //    print("enter");
-        //    //Resume the hologram
-        //    isRunning = true;
-        //    EventSystem.player.TriggerEvent(PlayerEvents.UNPAUSE_HOLOGRAM);
-        //}
-    }
+    #region legacy
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    //if (other.transform == GameData.playerTransform && !isRunning)
+    //    //{
+    //    //    print("enter");
+    //    //    //Resume the hologram
+    //    //    isRunning = true;
+    //    //    EventSystem.player.TriggerEvent(PlayerEvents.UNPAUSE_HOLOGRAM);
+    //    //}
+    //}
 
     //private void OnTriggerExit(Collider other)
     //{
@@ -279,5 +305,5 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     //        EventSystem.player.TriggerEvent<HologramSlideShowData>(PlayerEvents.PAUSE_HOLOGRAM , _Data);
     //    }
     //}
-
+    #endregion
 }

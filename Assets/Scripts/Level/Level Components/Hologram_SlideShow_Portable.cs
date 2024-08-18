@@ -1,46 +1,33 @@
 using Dialog;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Hologram_SlideShow_Portable : Hologram<HologramSlideShowData>
+public class Hologram_SlideShow_Portable : MonoBehaviour
 {
     [SerializeField] Image image;
+    [SerializeField] TextMeshProUGUI text;
+    public bool IsActive => gameObject.activeSelf;
+    public Image Image { get => image; set => image = value; }
+    public TextMeshProUGUI Text { get => text; set => text = value; }
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-        EventSystem.player.AddListener<HologramSlideShowData>(PlayerEvents.PAUSE_HOLOGRAM, AssignData);
+        GameData.playerHologram = this;
+        Hide();
+    }
+
+    public void Hide()
+    {
         gameObject.SetActive(false);
-
     }
 
-    private void AssignData(HologramSlideShowData data)
+    public void Show()
     {
-        indexDialog = 0;
-        _Data = data;
-        dialogLine = (DialogueLines) ScriptableObjectManager.RetrieveRuntimeScriptableObject(data.DialogAfterComplete);
-        PlayAnimation();
-    }
-
-    public override void PlayAnimation()
-    {
-        base.PlayAnimation();
-        image.sprite = _Data.Lines[indexDialog].image;
-        RunPanel();
-    }
-
-    protected override void NextHologram()
-    {
-        image.sprite = _Data.Lines[indexDialog].image;
-        RunPanel();
-    }
-
-    protected override void EndHologram()
-    {
-        base.EndHologram();
-        gameObject.SetActive(false);
+        gameObject.SetActive(true);
     }
 
 }

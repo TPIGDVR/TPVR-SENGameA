@@ -36,11 +36,9 @@ public enum PlayerEvents
     RESTART,//tutorial event death screen faded
     RES_SCREEN_FADED, // tutorial res screen faded
     START_PLAYING_HOLOGRAM,//when the hologram starts playing,
-    INTERRUPT_HOLOGRAM, //
-    FINISH_PLAYING_HOLOGRAM, //when the hologram has finish playing
+    INTERRUPT_HOLOGRAM, //stop the hologram
     PAUSE_HOLOGRAM,
     UNPAUSE_HOLOGRAM,
-
     MOVE_PLAYER_TO_KIOKPOSITION,
     FINISH_MOVING_PLAYER,
 

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
+using UnityEditor.Search;
 using UnityEngine;
 
 namespace Assets.Scripts.pattern
@@ -80,6 +82,17 @@ namespace Assets.Scripts.pattern
         public void Retrieve(T initObject)
         {
             queue.Enqueue(initObject);
+        }
+
+        public void DisplayAllElements()
+        {
+            int counter = queue.Count;
+            for (int i = 0; i < counter; i++)
+            {
+                var element = queue.Dequeue();
+                Debug.Log(element.ToString());
+                queue.Enqueue(element);
+            }
         }
 
     }

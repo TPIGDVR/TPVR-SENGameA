@@ -55,11 +55,6 @@ public class Hologram_3D : Hologram <Hologram3DData>
     //    }
     //}
 
-    protected override void OnInteruptHologram()
-    {
-        EndHologram() ;
-    }
-
     protected override void EndHologram()
     {
         base.EndHologram();
@@ -86,8 +81,6 @@ public class Hologram_3D : Hologram <Hologram3DData>
         //set the animator here.
         animator.SetTrigger("FinishFadeOut");
         //stop focusing on the camera
-        //virtualCamera.SetActive(false);
-        EventSystem.player.TriggerEvent(PlayerEvents.FINISH_PLAYING_HOLOGRAM);
     }
 
     IEnumerator FadeInHologram()
@@ -102,7 +95,6 @@ public class Hologram_3D : Hologram <Hologram3DData>
         }
         SetHologramFadeValue(1);
     }
-
     
     //played in the kiosk
     void HideHologram()
@@ -114,5 +106,4 @@ public class Hologram_3D : Hologram <Hologram3DData>
     {
         hologramMaterial.SetFloat("_Fade_In", value);
     }
-    
 }
