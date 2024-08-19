@@ -8,9 +8,12 @@ public class LerpUIToPoint : MonoBehaviour
     Transform point;
     [SerializeField]
     float speed = 5f;
-    public float timeElapsed = 0f;
-    float timeToReachTarget = 1f;
-
+    // float timeElapsed = 0f;
+    // float timeToReachTarget = 1f;
+    void Start()
+    {
+        transform.position = point.position;
+    }
     void Update()
     {
         transform.position = Vector3.Lerp(transform.position, point.position, Time.deltaTime * speed);
