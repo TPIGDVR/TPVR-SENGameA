@@ -43,6 +43,7 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
 
     public bool CheckIfBlockedOrOutOfRange()
     {
+        
         Transform camTrans = Camera.main.transform;
         Vector3 rayDir = camTrans.position - transform.position;
         Ray toPlayer = new(transform.position, rayDir);
