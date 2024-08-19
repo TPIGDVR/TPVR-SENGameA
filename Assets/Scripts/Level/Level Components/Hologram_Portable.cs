@@ -8,17 +8,17 @@ using UnityEngine.UI;
 
 public class Hologram_Portable : MonoBehaviour
 {
-    [Header("Slide show")]
-    [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI text;
 
+    [Header("Slide show")]
+    [SerializeField] Image image;
 
-
+    [Header("3D hologram")]
+    [SerializeField] RenderTexture textureReference;
+    [SerializeField] Transform placement3D;
     public bool IsActive => gameObject.activeSelf;
     public Image Image { get => image; set => image = value; }
     public TextMeshProUGUI Text { get => text; set => text = value; }
-
-
 
     private void Start()
     {
