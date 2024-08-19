@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731715, g: 0.13414735, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -12387,6 +12387,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 813685035}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &815599370 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8577158378765068116, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+    type: 3}
+  m_PrefabInstance: {fileID: 8718915377130391862}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &827341937
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21949,7 +21955,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popUpPrefabs: {fileID: 659815619934119987, guid: cfee0a31238345847a1c8b2571625636,
     type: 3}
-  _PlayerPosition: {fileID: 0}
+  _PlayerPosition: {fileID: 815599370}
   maxDistance: 20
   minDistance: 0
 --- !u!1001 &1451163742
@@ -31443,50 +31449,65 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1048702205410990784, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048702205410990784, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048702205410990784, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048702205410990784, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048702205410990784, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048702205410990784, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1651883142281181040, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2443348270378261019, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: _radius
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2903942925592118318, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.3
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6470840294056381801, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+    - target: {fileID: 4365472565501176652, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
-      propertyPath: playerTransform
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6470840294056381801, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
-        type: 3}
-      propertyPath: cameraController
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6470840294056381801, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
-        type: 3}
-      propertyPath: controllerManager
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6470840294056381801, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
-        type: 3}
-      propertyPath: movementController
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6470840294056381801, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
-        type: 3}
-      propertyPath: mainCinemachineBrain
-      value: 
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6788133179854204488, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
       propertyPath: m_Name
       value: Player_NEW
       objectReference: {fileID: 0}
-    - target: {fileID: 6810284603217755339, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+    - target: {fileID: 9084544743614460396, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
-      propertyPath: LeftHandControllerParent
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6810284603217755339, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
-        type: 3}
-      propertyPath: RightHandControllerParent
-      value: 
+      propertyPath: speed
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 9170264803382161511, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}

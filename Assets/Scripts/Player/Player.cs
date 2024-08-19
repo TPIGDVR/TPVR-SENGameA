@@ -22,14 +22,6 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     [SerializeField]
     Transform playerTransform;
 
-    [Header("Controller related")]
-    [SerializeField] ContinuousMoveProviderBase movementController;
-    [SerializeField] ContinuousTurnProviderBase cameraController;
-    [SerializeField] ControllerManager controllerManager;
-
-    [Header("Camera related")]
-    [SerializeField] CinemachineBrain mainCinemachineBrain;
-
     //room / objective variables
     Room currentRoom;
 
@@ -52,7 +44,6 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     EventManager<LevelEvents> em_l = EventSystem.level;
 
     public Transform PlayerTransform { get => playerTransform; set => playerTransform = value; }
-    public CinemachineBrain MainCinemachineBrain { get => mainCinemachineBrain; }
 
     public void Initialize()
     {
