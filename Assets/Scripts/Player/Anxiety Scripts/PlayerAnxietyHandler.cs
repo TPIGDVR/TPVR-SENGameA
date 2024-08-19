@@ -256,8 +256,8 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 }
 
                 totalBrightness /= brightnessL.Length;
-                //if (totalBrightness < 0)
-                //    totalBrightness = 0;
+                if (totalBrightness < lT)
+                    totalBrightness = 0;
 
                 return totalBrightness;
             }
