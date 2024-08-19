@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class Hologram_SlideShow_Portable : MonoBehaviour
 {
+    Hologram_Slideshow targetHologram;
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI text;
     public bool IsActive => gameObject.activeSelf;

@@ -9,7 +9,7 @@ public static class GameData
     public static Player player;
     public static Transform playerTransform { get => player.PlayerTransform; }
 
-    public static Hologram_SlideShow_Portable playerHologram ;
+    public static Hologram_SlideShow_Portable playerHologram;
 
     public static void ChangeTutorialStatus(bool b)
     {

@@ -35,10 +35,7 @@ public enum PlayerEvents
     DEATH_SCREEN_FADED, //tutorial event death screen faded
     RESTART,//tutorial event death screen faded
     RES_SCREEN_FADED, // tutorial res screen faded
-    START_PLAYING_HOLOGRAM,//when the hologram starts playing,
-    INTERRUPT_HOLOGRAM, //stop the hologram
-    PAUSE_HOLOGRAM,
-    UNPAUSE_HOLOGRAM,
+
     MOVE_PLAYER_TO_KIOKPOSITION,
     FINISH_MOVING_PLAYER,
 
@@ -58,6 +55,11 @@ public enum LevelEvents
     //tutorial related
     INIT_TUTORIAL,
     FIRST_KIOSK,
+
+    //hologram related
+    INTERRUPT_HOLOGRAM, //stop the hologram
+    HOLOGRAM_SLIDESHOW_PORTABLE_SHOW,
+    HOLOGRAM_SLIDESHOW_PORTABLE_HIDE,
 }
 
 public enum DialogEvents

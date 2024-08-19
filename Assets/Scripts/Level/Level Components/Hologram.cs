@@ -45,9 +45,8 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     {
         gameObject.SetActive(true);
         isRunning = true;
-        EventSystem.player.TriggerEvent(PlayerEvents.START_PLAYING_HOLOGRAM);
-        EventSystem.player.TriggerEvent(PlayerEvents.INTERRUPT_HOLOGRAM);
-        EventSystem.player.AddListener(PlayerEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
+        EventSystem.level.TriggerEvent(LevelEvents.INTERRUPT_HOLOGRAM);
+        EventSystem.level.AddListener(LevelEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
 
     }
 
@@ -87,41 +86,52 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
     #region on complete function
     /// <summary>
-    /// Once a line has been completed, this function will call.
-    /// Override it t extend the functionality
-    /// </summary>
-    protected virtual void OnCompleteLine()
-    {
-        //NOOP
-    }
-    /// <summary>
     /// Deciding which state the Hologram would be doing.
     /// </summary>
     private void DecideState()
     {
         if(indexDialog >= _Data.dialogLine.Length)
         {
-            EndHologram();   
+            FinishHologram();   
         }
         else
         {
-            NextHologram();
+            OnNextHologram();
         }
+    }
+
+    /// <summary>
+    /// When the hologram finishes all its panel. it will call this function
+    /// </summary>
+    private void FinishHologram()
+    {
+        if (dialogLine) EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
+        EventSystem.level.RemoveListener(LevelEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
+        OnEndHologram() ;
+    }
+
+
+    /// <summary>
+    /// Once a line has been completed, this function will call.
+    /// Override it to extend the functionality
+    /// </summary>
+    protected virtual void OnCompleteLine()
+    {
+        //NOOP
     }
 
     /// <summary>
     /// called if the hologram is reach the end of the dialog
     /// </summary>
-    protected virtual void EndHologram()
+    protected virtual void OnEndHologram()
     {
-        if (dialogLine) EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
-        EventSystem.player.RemoveListener(PlayerEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
-        //add override here!
+        //NOOP
     }
     /// <summary>
-    /// Called if the hologram has more hologram to show.
+    /// called when the current panel is finish. The action required to 
+    /// move on to the next panel should be implemented here!
     /// </summary>
-    protected virtual void NextHologram()
+    protected virtual void OnNextHologram()
     {
         //NOOP
     }
@@ -151,74 +161,14 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         timerToWait += targetLine.timerOffset;
         StartCoroutine(TypeNextSentence(targetLine.line));
 
-        //then wait
-        float elapseTime = 0;
-
-        while (elapseTime < timerToWait)
-        {
-            if (isRunning)
-            {
-                print($"elapse time {elapseTime} timer to wait {timerToWait}");
-                if (!speechSource.isPlaying)
-                {
-                    speechSource.UnPause();
-                }
-                elapseTime += Time.deltaTime;
-                yield return null;
-            }
-            else
-            {
-                speechSource.Pause();
-                yield return null;
-            }
-        }
-
+        //afterwards, wait for the either the timer to finish or speech to finish.
+        yield return new WaitForSeconds(timerToWait);
 
         //audio source related
-        //For error catch safety.
         RetrieveAudioSource();
 
+        //increment the index since it is already done.
         indexDialog++;
-        //ignore this for reference
-    }
-
-    #region playing audiosource
-    private void PlaySpeechClip(MusicClip clip)
-    {
-        //if (use3DAudio)
-        //{
-        //    speechSource = SoundManager.Instance.PlayMusicClip(clip, transform.position);
-        //}
-        //else
-        //{
-        //    speechSource = SoundManager.Instance.PlayMusicClip(clip);
-        //}
-
-        //play a global audiosource instead 
-        speechSource = SoundManager.Instance.PlayMusicClip(clip);
-    }
-    private void PlayGlobalAudioSource()
-    {
-        //if (use3DAudio)
-        //{
-        //    globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING, transform.position);
-        //}
-        //else
-        //{
-        //    globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
-        //}
-
-        globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
-
-    }
-
-    #endregion
-
-
-    protected void RetrieveAudioSource()
-    {
-        if (globalAudioSource) SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
-        if (speechSource) SoundManager.Instance.RetrieveAudioSource(speechSource);
     }
 
     protected IEnumerator TypeNextSentence(string text)
@@ -250,20 +200,45 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
         globalAudioSource = null;
     }
+    #endregion
 
+    #region playing audiosource
+    private void PlaySpeechClip(MusicClip clip)
+    {
+        //play a global audiosource instead 
+        speechSource = SoundManager.Instance.PlayMusicClip(clip);
+    }
+
+    private void PlayGlobalAudioSource()
+    {
+        globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
+
+    }
+
+
+    protected void RetrieveAudioSource()
+    {
+        if (globalAudioSource) SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
+        if (speechSource) SoundManager.Instance.RetrieveAudioSource(speechSource);
+    }
     #endregion
 
     #region interupt hologram
+    /// <summary>
+    /// Stop the hologram from running
+    /// </summary>
     private void InteruptHologram()
     {
-        //if (!virtualCamera.gameObject.active) return;
         StopAllCoroutines();
         RetrieveAudioSource(); //basically stop the audio from playing
         OnInteruptHologram();
         //remove the listener since it is not needed anymore.
-        EventSystem.player.RemoveListener(PlayerEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
+        EventSystem.level.RemoveListener(LevelEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
     }
 
+    /// <summary>
+    /// any addition to the interupt hologram state can be added here.
+    /// </summary>
     protected virtual void OnInteruptHologram()
     {
         //NOOP
@@ -271,13 +246,13 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     #endregion
 
     #region sound effect related
-    public void PlayNewSlideSFX()
+    public void PlayNewPanelSFX()
     {
         //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN);
     }
 
-    public void PlayCloseHologramSFX()
+    public void PlayClosePanelSFX()
     {
         //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE);

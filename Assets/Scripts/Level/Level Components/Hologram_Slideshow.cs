@@ -51,11 +51,11 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
     //called by animation event : Image Change
     void ChangeImagePanel()
     {
-        print("Image change");
         ChangeImage();
         subtitleText.text = "";
     }
 
+    //TODO remove this function HERE!!!!
     //called by animation event : Image Change
     void StartTyping()
     {
@@ -68,15 +68,9 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         var line = _Data.Lines[indexDialog];
         image.sprite = line.image;
         imageSizer.cellSize = line.preferredImageSize;
-    }    
-
-    protected override void EndHologram()
-    {
-        base.EndHologram();
-        CloseSlideShowHologram();
     }
 
-    private void CloseSlideShowHologram()
+    protected override void OnEndHologram()
     {
         animator.SetTrigger("HidePanel");
 
@@ -90,9 +84,9 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         enabled = false;
     }
 
-    protected override void NextHologram()
+    protected override void OnNextHologram()
     {
-        base.NextHologram();
+        base.OnNextHologram();
         animator.SetTrigger("ShowImage");
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN);
     }
@@ -101,7 +95,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
     {
         base.OnInteruptHologram();
         //call to end the hologram
-        CloseSlideShowHologram();
+        OnEndHologram();
     }
 
     //So transfer the information to the hologram portable instead

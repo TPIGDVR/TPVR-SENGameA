@@ -44,7 +44,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
     //    {
     //        //dialog is complete
     //        //if can trigger line than trigger the dialog sequence
-    //        EndHologram();
+    //        OnEndHologram();
     //    }
     //    else
     //    {
@@ -55,16 +55,16 @@ public class Hologram_3D : Hologram <Hologram3DData>
     //    }
     //}
 
-    protected override void EndHologram()
+    protected override void OnEndHologram()
     {
-        base.EndHologram();
+        base.OnEndHologram();
         //do another animation here to hide hologram
         animator.SetTrigger("HideHologram");
     }
 
-    protected override void NextHologram()
+    protected override void OnNextHologram()
     {
-        base.NextHologram();
+        base.OnNextHologram();
         animator.SetTrigger("NewHologram");
     }
 
