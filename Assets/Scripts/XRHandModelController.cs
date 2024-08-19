@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class XRHandModelController : MonoBehaviour
 {
-    [SerializeField]
+    /*[SerializeField]
     Material materialNormal;
     [SerializeField]
     Material materialHighlight;
@@ -63,5 +63,5 @@ public class XRHandModelController : MonoBehaviour
         //change the thumbstick material to hightlight
         leftHand.thumbstick_reference.GetComponent<MeshRenderer>().material = materialNormal;
         leftHand.thumbstick_reference.GetComponent<MeshRenderer>().material = materialNormal;
-    }
+    }*/
 }
