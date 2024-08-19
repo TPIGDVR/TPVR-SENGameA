@@ -244,7 +244,8 @@ MonoBehaviour:
   popup: {fileID: 8872983900653166831}
   mapIcon: {fileID: 4592347557642301963}
   hologram3DData: {fileID: 0}
-  hologramslideShowData: {fileID: 0}
+  hologramslideShowData: {fileID: 11400000, guid: 437dbc5484016f545987ea98706540e8,
+    type: 2}
   hologram: {fileID: 0}
   hasHologramPanels: 1
 --- !u!95 &8684481500337133844
@@ -1144,7 +1145,7 @@ Transform:
   m_GameObject: {fileID: 5608525524239956834}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 5.74, z: 0}
+  m_LocalPosition: {x: 0, y: 7.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1160,6 +1161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7385524280438083760}
   - component: {fileID: 5288903802844417414}
+  - component: {fileID: 2087126561308930717}
   m_Layer: 10
   m_Name: Scan sensor
   m_TagString: Untagged
@@ -1203,6 +1205,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.1740513, y: 0.22353469, z: 0.07651695}
   m_Center: {x: 0.007639488, y: -0.022915957, z: -0.00000018566288}
+--- !u!114 &2087126561308930717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7066278989592718384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 454e29aef46ccd245a6453f131b45d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kiosk: {fileID: 2195593265983000996}
 --- !u!1 &7305595124298415834
 GameObject:
   m_ObjectHideFlags: 0

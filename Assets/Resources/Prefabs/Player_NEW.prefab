@@ -6564,7 +6564,7 @@ Transform:
   m_GameObject: {fileID: 3799987542859200075}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -3.3}
+  m_LocalPosition: {x: 0, y: -1, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8198,14 +8198,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4422764293748801273}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4433961092759704465}
   m_Father: {fileID: 9170264803382161511}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &3985715547707388233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8370,7 +8370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0950df82e7936c84983497630bde5b54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Acceleration: 2.01
+  Acceleration: 0.3
   Damping: 0.3
   BackAndSideDampen: 0.5
   JumpForce: 0.3
@@ -10406,8 +10406,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 330, y: 0}
+  m_SizeDelta: {x: 660, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &4908329328045671458
 CanvasRenderer:
@@ -13101,7 +13101,7 @@ MonoBehaviour:
   Objective: {fileID: 6793317264003885720}
   Dialogue: {fileID: 7978656021097677674}
   SkipHologramText: {fileID: 3136701432313155165}
-  playerTransform: {fileID: 0}
+  playerTransform: {fileID: 8577158378765068116}
 --- !u!114 &4665539866139184370
 MonoBehaviour:
   m_ObjectHideFlags: 0
