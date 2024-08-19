@@ -46,6 +46,7 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
         Transform camTrans = Camera.main.transform;
         Vector3 rayDir = camTrans.position - transform.position;
         Ray toPlayer = new(transform.position, rayDir);
+        
         bool hasHit = Physics.Raycast(toPlayer, out RaycastHit hitInfo, NoiseRangeScaled);
         float dist = Vector3.Distance(camTrans.position, transform.position);
         
