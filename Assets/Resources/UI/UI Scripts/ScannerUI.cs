@@ -115,4 +115,14 @@ public class ScannerUI : MonoBehaviour , IScriptLoadQueuer
         }
         triggerBox.enabled = active;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        StartScan();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        StopScan();
+    }
 }
