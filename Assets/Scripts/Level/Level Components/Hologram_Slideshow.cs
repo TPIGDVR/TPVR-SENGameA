@@ -105,7 +105,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
             isRunning)
         {
             //so basically transfer the information to the portable hologram
-            Hologram_SlideShow_Portable portableHologram = GameData.playerHologram;
+            Hologram_Portable portableHologram = GameData.playerHologram;
             //change the reference to the portable hologram text
             image = portableHologram.Image;
             subtitleText = portableHologram.Text;
@@ -126,7 +126,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         if (other.transform == GameData.playerTransform)
         {
             //so basically transfer the information to the portable hologram
-            Hologram_SlideShow_Portable portableHologram = GameData.playerHologram;
+            Hologram_Portable portableHologram = GameData.playerHologram;
 
             //change the current image and text to be the same
             originalImageComponent.sprite = image.sprite;

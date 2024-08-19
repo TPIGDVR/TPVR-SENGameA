@@ -15,7 +15,6 @@ public class Hologram_3D : Hologram <Hologram3DData>
     {
         base.Start();
         gameObject.SetActive(false);
-        //virtualCamera.SetActive(false);
     }
 
     protected override void OnCompleteLine()
@@ -37,23 +36,6 @@ public class Hologram_3D : Hologram <Hologram3DData>
         SetHologramFadeValue(1);
         StartCoroutine(FadeOutHologram());
     }
-
-    //void DecideNextState()
-    //{
-    //    if (indexDialog >= _data.Lines.Length)
-    //    {
-    //        //dialog is complete
-    //        //if can trigger line than trigger the dialog sequence
-    //        OnEndHologram();
-    //    }
-    //    else
-    //    {
-    //        //SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN, transform.position);
-    //        //change the trigger
-    //        //do an animation to hide the gameobject with the target position
-    //        animator.SetTrigger("NewHologram");
-    //    }
-    //}
 
     protected override void OnEndHologram()
     {

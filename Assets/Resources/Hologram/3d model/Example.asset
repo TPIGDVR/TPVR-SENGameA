@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ca54cb67306224d9f267a6fc2c7723, type: 3}
   m_Name: Example
   m_EditorClassIdentifier: 
+  DialogAfterComplete: {fileID: 11400000, guid: d50414ffd7d2cd8458c39aea73329a0d,
+    type: 2}
   Lines:
   - line: I love Kyle Twerking
     transcript:
@@ -19,7 +21,7 @@ MonoBehaviour:
       clip: {fileID: 0}
       volume: 0
       pitch: 0
-    timer: 10
+    timerOffset: 2
     prefab3D: {fileID: 7683546452651435393, guid: e6e184a23bd4640408566daf024ce6d4,
       type: 3}
   - line: I love kyle Dancing
@@ -28,7 +30,7 @@ MonoBehaviour:
       clip: {fileID: 0}
       volume: 0
       pitch: 0
-    timer: 10
+    timerOffset: 2
     prefab3D: {fileID: 3665238772363604454, guid: 9c2d14e767d51484fa2739aae1d9068d,
       type: 3}
   - line: I love kyle twerking even more
@@ -37,8 +39,6 @@ MonoBehaviour:
       clip: {fileID: 0}
       volume: 0
       pitch: 0
-    timer: 10
+    timerOffset: 2
     prefab3D: {fileID: 7683546452651435393, guid: e6e184a23bd4640408566daf024ce6d4,
       type: 3}
-  DialogAfterComplete: {fileID: 11400000, guid: d50414ffd7d2cd8458c39aea73329a0d,
-    type: 2}
