@@ -49,9 +49,6 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
         Ray toPlayer = new(transform.position, rayDir);
         bool hasHit = Physics.Raycast(toPlayer, out RaycastHit hitInfo, NoiseRangeScaled);
         float dist = Vector3.Distance(camTrans.position, transform.position);
-        
-        Debug.DrawRay(transform.position, rayDir, Color.yellow);
-        print($"Has hit {hasHit}");
          
        
         if (hasHit)
@@ -59,7 +56,6 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
             bool haha = (!hitInfo.transform.CompareTag("Player") && !hitInfo.transform.CompareTag("MainCamera")) || GameData.player.IsWearingHeadphones;
             if (haha)
             {
-                print("me mufle");
                 highPassFilter.cutoffFrequency = 1000;
                 lowPassFilter.cutoffFrequency = 300;
             }
