@@ -208,10 +208,12 @@ MonoBehaviour:
   globalAudioSource: {fileID: 0}
   speechSource: {fileID: 0}
   _Data: {fileID: 0}
-  _data: {fileID: 11400000, guid: 2ed5c8b5eafa0e64086b2c2c5b29d442, type: 2}
+  _dataForDebugging: {fileID: 0}
   targetPosition: {fileID: 1228202743392767221}
   hologramMaterial: {fileID: 2100000, guid: 59357bd2830879c498c72208d1f1467e, type: 2}
   hologram3DFadeInSec: 0.5
+  hololights: {fileID: 2363187121355355133}
+  hologramPanel: {fileID: 1604414156377320652}
 --- !u!95 &1582843513684500220
 Animator:
   serializedVersion: 5
@@ -604,10 +606,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8984972352751293836}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 33.88, y: 0}
+  m_SizeDelta: {x: 67.76, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &2919819488545953730
 CanvasRenderer:

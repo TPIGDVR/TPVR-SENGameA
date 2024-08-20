@@ -25,9 +25,15 @@ public class Hologram_Portable : MonoBehaviour
             return imageComponent;
         } }
 
-    
-
-    public TextMeshProUGUI Text { get => text; set => text = value; }
+    public TextMeshProUGUI Text { get => text;}
+    public Transform Placement3D { get {
+            //make sure the raw image and hologram render is rendering the gameobject
+            rawImageComponent.gameObject.SetActive(true);
+            hologramRenderer.SetActive(true);
+            //then hide the component.
+            imageComponent.gameObject.SetActive(false);
+            return placement3D;
+        } }
 
     private void Start()
     {
@@ -39,6 +45,7 @@ public class Hologram_Portable : MonoBehaviour
     public void Hide()
     {
         gameObject.SetActive(false);
+        hologramRenderer.SetActive(false);
     }
 
     public void Show()

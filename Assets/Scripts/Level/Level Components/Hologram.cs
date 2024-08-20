@@ -41,6 +41,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
     //how a typical hologram would play can change this to abstract if
     //all hologram needs to operate differently
+    [ContextMenu("Run animation manually")]
     public override void PlayAnimation()
     {
         gameObject.SetActive(true);
@@ -110,7 +111,6 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         OnEndHologram() ;
     }
 
-
     /// <summary>
     /// Once a line has been completed, this function will call.
     /// Override it to extend the functionality
@@ -134,6 +134,15 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     protected virtual void OnNextHologram()
     {
         //NOOP
+    }
+
+    protected virtual void OnPlayerExitTrigger()
+    {
+
+    }
+    protected virtual void OnPlayerEnterTrigger()
+    {
+
     }
     #endregion
 
@@ -281,4 +290,21 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     //    }
     //}
     #endregion
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.transform == GameData.playerTransform)
+        {
+            OnPlayerEnterTrigger();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform == GameData.playerTransform)
+        {
+            OnPlayerExitTrigger();
+        }
+    }
+
 }

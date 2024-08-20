@@ -2,19 +2,40 @@ using Dialog;
 using SoundRelated;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.XR.CoreUtils;
 using UnityEngine;
 
 public class Hologram_3D : Hologram <Hologram3DData>
 {
-    [SerializeField] Hologram3DData _data;
+    [SerializeField] Hologram3DData _dataForDebugging;
     [SerializeField] Transform targetPosition;
     [SerializeField] Material hologramMaterial;
     [SerializeField] float hologram3DFadeInSec = 1f;
     GameObject current3DHologram;
+
+    [Header("children gameobject")]
+    [SerializeField]  GameObject hololights;
+    [SerializeField] GameObject hologramPanel;
+
+    Transform originalTargetPosition;
+    TextMeshProUGUI originalTextComponent;
+
+
+    [ContextMenu("Set and play")]
+    public void Set3DData()
+    {
+        InitHologram(_dataForDebugging);
+        PlayAnimation();
+    }
+
     protected override void Start()
     {
         base.Start();
         gameObject.SetActive(false);
+
+        originalTextComponent = subtitleText;
+        originalTargetPosition = targetPosition;
     }
 
     protected override void OnCompleteLine()
@@ -26,7 +47,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
     void Spawn3DHologram()
     {
         if(current3DHologram) current3DHologram.SetActive(false);
-        current3DHologram = Instantiate(_data.Lines[indexDialog].prefab3D, targetPosition);
+        current3DHologram = Instantiate(_Data.Lines[indexDialog].prefab3D, targetPosition);
         SetHologramFadeValue(0f);
         StartCoroutine(FadeInHologram());
     }
@@ -42,6 +63,8 @@ public class Hologram_3D : Hologram <Hologram3DData>
         base.OnEndHologram();
         //do another animation here to hide hologram
         animator.SetTrigger("HideHologram");
+        GetComponent<Collider>().enabled = false;
+        enabled = false;
     }
 
     protected override void OnNextHologram()
@@ -79,13 +102,61 @@ public class Hologram_3D : Hologram <Hologram3DData>
     }
     
     //played in the kiosk
-    void HideHologram()
+    void DisableHologram()
     {
-        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE, transform.position);
+        hologramPanel.SetActive(false);
+        hololights.SetActive(false);
+    }
+
+    void EnabledHologram()
+    {
+        hologramPanel.SetActive(true);
+        hololights.SetActive(true);
     }
 
     void SetHologramFadeValue(float value)
     {
         hologramMaterial.SetFloat("_Fade_In", value);
+    }
+
+
+    protected override void OnPlayerEnterTrigger()
+    {
+        //so basically transfer the information to the portable hologram
+        Hologram_Portable portableHologram = GameData.playerHologram;
+        //change the reference to the original hologram text
+        originalTextComponent.text = portableHologram.Text.text;
+        targetPosition = portableHologram.Placement3D;
+
+        //settle the gameobject.
+        current3DHologram.gameObject.SetActive(false);
+        portableHologram.Hide();
+        subtitleText = originalTextComponent;
+        //afterwards, change the imageComponent and text to look the same!
+
+        
+        current3DHologram = Instantiate(_Data.Lines[indexDialog].prefab3D, targetPosition);
+        //afterward hide the component
+        //hide the slideshow hologram
+        animator.SetTrigger("EnableHologram");
+    }
+
+    protected override void OnPlayerExitTrigger()
+    {
+        var portableHologram = GameData.playerHologram;
+        //change the reference
+        targetPosition = portableHologram.Placement3D;
+        subtitleText = portableHologram.Text;
+
+        //make a copy of the animation in the 3d position for the camera to render
+        current3DHologram.SetActive(false);
+        current3DHologram = Instantiate(_Data.Lines[indexDialog].prefab3D, targetPosition);
+        //afterwards replace the text and show the hologram
+        subtitleText.text = originalTextComponent.text;
+        portableHologram.Show();
+
+        //afterward hide the component
+        //hide the slideshow hologram
+        animator.SetTrigger("DisableHologram");
     }
 }

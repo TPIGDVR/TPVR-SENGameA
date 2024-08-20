@@ -94,49 +94,40 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         OnEndHologram();
     }
 
-    //So transfer the information to the hologram portable instead
-    private void OnTriggerExit(Collider other)
+    protected override void OnPlayerEnterTrigger()
     {
-        if (other.transform == GameData.playerTransform &&
-            isRunning)
-        {
-            //so basically transfer the information to the portable hologram
-            Hologram_Portable portableHologram = GameData.playerHologram;
-            //change the reference to the portable hologram text
-            image = portableHologram.SlideShowImage;
-            subtitleText = portableHologram.Text;
+        //so basically transfer the information to the portable hologram
+        Hologram_Portable portableHologram = GameData.playerHologram;
+        //change the reference to the portable hologram text
+        image = portableHologram.SlideShowImage;
+        subtitleText = portableHologram.Text;
 
-            //afterwards, change the imageComponent and text to look the same!
-            ChangeImage();
-            subtitleText.text = originalTextComponent.text;
-            portableHologram.Show();
+        //afterwards, change the imageComponent and text to look the same!
+        ChangeImage();
+        subtitleText.text = originalTextComponent.text;
+        portableHologram.Show();
 
-            //afterward hide the component
-            //hide the slideshow hologram
-            animator.SetTrigger("HidePanelIfFar");
-        }
+        //afterward hide the component
+        //hide the slideshow hologram
+        animator.SetTrigger("HidePanelIfFar");
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void OnPlayerExitTrigger()
     {
-        if (other.transform == GameData.playerTransform)
-        {
-            //so basically transfer the information to the portable hologram
-            Hologram_Portable portableHologram = GameData.playerHologram;
+        //so basically transfer the information to the portable hologram
+        Hologram_Portable portableHologram = GameData.playerHologram;
 
-            //change the current imageComponent and text to be the same
-            originalImageComponent.sprite = image.sprite;
-            originalTextComponent.text = subtitleText.text;
+        //change the current imageComponent and text to be the same
+        originalImageComponent.sprite = image.sprite;
+        originalTextComponent.text = subtitleText.text;
 
-            //change the reference to the portable hologram text
-            image = originalImageComponent;
-            subtitleText = originalTextComponent;
-            portableHologram.Hide();
+        //change the reference to the portable hologram text
+        image = originalImageComponent;
+        subtitleText = originalTextComponent;
+        portableHologram.Hide();
 
-            //afterward hide the component
-            animator.SetTrigger("ShowPanelIfClose");
-        }
-
+        //afterward hide the component
+        animator.SetTrigger("ShowPanelIfClose");
     }
     void HideHologramFit()
     {
