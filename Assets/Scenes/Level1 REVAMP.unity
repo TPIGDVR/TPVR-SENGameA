@@ -15870,6 +15870,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 929408317}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &930553332 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8577158378765068116, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+    type: 3}
+  m_PrefabInstance: {fileID: 8718915377130391862}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &940433647
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25657,7 +25663,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popUpPrefabs: {fileID: 659815619934119987, guid: cfee0a31238345847a1c8b2571625636,
     type: 3}
-  _PlayerPosition: {fileID: 0}
+  _PlayerPosition: {fileID: 930553332}
   maxDistance: 20
   minDistance: 0
 --- !u!1001 &1448797376
@@ -37506,7 +37512,7 @@ PrefabInstance:
         type: 3}
       propertyPath: playerTransform
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 930553332}
     - target: {fileID: 6470840294056381801, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
       propertyPath: cameraController
