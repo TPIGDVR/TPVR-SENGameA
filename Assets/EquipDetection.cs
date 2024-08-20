@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class EquipDetection : MonoBehaviour
 {
+    [SerializeField]
+    Transform p;
+
     bool itemDetection;
-    [SerializeField]
-    GameObject sunglasses;
-    [SerializeField]
-    GameObject headphones;
+
+    GameObject currentGO;
 
     private void Awake()
     {
@@ -29,7 +30,46 @@ public class EquipDetection : MonoBehaviour
 
     private void Equip(GameObject equipment)
     {
+        if (equipment == null)
+        {
+            return;
+        }
 
+
+        if (itemDetection)
+        {
+
+            Debug.Log("Triggered");
+            currentGO = equipment;
+
+
+            if (equipment.CompareTag("Sunglasses"))
+            {
+                print("sunglasses on");
+                EventSystem.player.TriggerEvent(PlayerEvents.SUNGLASSES_ON,0.85f);
+            }
+            else if(equipment.CompareTag("Headphones"))
+            {
+                GameData.player.IsWearingHeadphones = true;
+            }
+
+            currentGO.transform.parent = p;
+            currentGO.transform.localPosition = Vector3.zero;
+        }
+
+        else
+        {
+            currentGO.transform.parent = null;
+
+            if (equipment.CompareTag("Sunglasses"))
+            {
+                EventSystem.player.TriggerEvent(PlayerEvents.SUNGLASSES_OFF);
+            }
+            else if (equipment.CompareTag("Headphones"))
+            {
+                GameData.player.IsWearingHeadphones = false;
+            }
+        }
     }
 
 }

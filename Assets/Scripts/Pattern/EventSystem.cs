@@ -26,6 +26,8 @@ public enum PlayerEvents
     HEART_BEAT,
     SUNGLASSES_ON,
     SUNGLASSES_OFF,
+    HEADPHONES_ON,
+    HEADPHONES_OFF,
 
     //objective related
     OBJECTIVE_UPDATED,

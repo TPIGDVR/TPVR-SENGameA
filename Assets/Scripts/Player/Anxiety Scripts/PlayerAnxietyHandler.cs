@@ -86,6 +86,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         #region ANXIETY CALC
         float CalculateAnxietyScaleBasedOffNoiseLevel()
         {
+            
             float totalNoiseLevel = 0;
             Transform camTrans = Camera.main.transform;
             foreach (var source in _noiseSources)
@@ -95,6 +96,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 if (source.CheckIfBlockedOrOutOfRange())
                     continue;
 
+                print("IM CALCING");
                 float noiseLevel = Mathf.Lerp(source.NoiseValue, 0, dist / source.NoiseRangeScaled);
                 totalNoiseLevel += noiseLevel;
             }
