@@ -39,6 +39,10 @@ public enum PlayerEvents
     MOVE_PLAYER_TO_KIOKPOSITION,
     FINISH_MOVING_PLAYER,
 
+    GRAB_DOWN_LEFT,
+    GRAB_DOWN_RIGHT,
+    GRAB_UP
+
 }
 
 public enum LevelEvents
