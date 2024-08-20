@@ -32,6 +32,7 @@ public class Hologram_Portable : MonoBehaviour
     private void Start()
     {
         GameData.playerHologram = this;
+        hologramRenderer.gameObject.SetActive(false);
         Hide();
     }
 

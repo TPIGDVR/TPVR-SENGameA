@@ -36,10 +36,6 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         originalTextComponent = subtitleText;
     }
 
-    private void Update()
-    {
-        
-    }
 
     //called by animation event : DigitalCircle_Completed
     void StartKioskDialog()
