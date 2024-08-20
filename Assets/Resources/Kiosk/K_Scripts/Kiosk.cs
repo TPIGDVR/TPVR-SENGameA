@@ -22,7 +22,7 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     /// 0. When the panel is touch when it has not been downloaded
     /// 1. when the panel have finish downloading
     /// 2. texting
-    /// 3. image transition
+    /// 3. imageComponent transition
     /// 4. when the panel is close
     /// 5. downloading
     /// </summary>

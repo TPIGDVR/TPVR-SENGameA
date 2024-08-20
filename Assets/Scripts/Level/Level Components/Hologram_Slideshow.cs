@@ -31,7 +31,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         gameObject.SetActive(false);
         //virtualCamera.SetActive(false);
 
-        //store the image component in another reference to call it again
+        //store the imageComponent component in another reference to call it again
         originalImageComponent = image;
         originalTextComponent = subtitleText;
     }
@@ -48,7 +48,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         StartTyping();
     }
 
-    //called by animation event : Image Change
+    //called by animation event : SlideShowImage Change
     void ChangeImagePanel()
     {
         ChangeImage();
@@ -56,7 +56,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
     }
 
     //TODO remove this function HERE!!!!
-    //called by animation event : Image Change
+    //called by animation event : SlideShowImage Change
     void StartTyping()
     {
         StopAllCoroutines();
@@ -107,10 +107,10 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
             //so basically transfer the information to the portable hologram
             Hologram_Portable portableHologram = GameData.playerHologram;
             //change the reference to the portable hologram text
-            image = portableHologram.Image;
+            image = portableHologram.SlideShowImage;
             subtitleText = portableHologram.Text;
 
-            //afterwards, change the image and text to look the same!
+            //afterwards, change the imageComponent and text to look the same!
             ChangeImage();
             subtitleText.text = originalTextComponent.text;
             portableHologram.Show();
@@ -128,7 +128,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
             //so basically transfer the information to the portable hologram
             Hologram_Portable portableHologram = GameData.playerHologram;
 
-            //change the current image and text to be the same
+            //change the current imageComponent and text to be the same
             originalImageComponent.sprite = image.sprite;
             originalTextComponent.text = subtitleText.text;
 

@@ -19,7 +19,7 @@
 //    public ProximityHapticFeedback proximityHapticFeedback;
 //    public Material barMat;
 //    public Color barColor;
-//    private Image image;
+//    private SlideShowImage imageComponent;
 
 
 //    public LayerMask obstructionLayer;
@@ -53,7 +53,7 @@
 //    {
 //        SetScrollbarSize(0f);
 //        //barMat.color = barColor;
-//        image = handle.GetComponent<Image>();
+//        imageComponent = handle.GetComponent<SlideShowImage>();
 
         
 //    }
@@ -132,16 +132,16 @@
 //        switch (currentState)
 //        {
 //            case BreathingState.Deep:
-//                image.color = new Color32(0, 255, 255, 255);
+//                imageComponent.color = new Color32(0, 255, 255, 255);
 //                break;
 //            case BreathingState.Medium:
-//                image.color = new Color32(0, 255, 0, 255);
+//                imageComponent.color = new Color32(0, 255, 0, 255);
 //                break;
 //            case BreathingState.Shallow:
-//                image.color = new Color32(255, 165, 0, 255);
+//                imageComponent.color = new Color32(255, 165, 0, 255);
 //                break;
 //            case BreathingState.None:
-//                image.color = new Color32(255, 0, 0, 255);
+//                imageComponent.color = new Color32(255, 0, 0, 255);
 //                break;
 //        }
 //    }
