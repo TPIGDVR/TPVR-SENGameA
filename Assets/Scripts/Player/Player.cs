@@ -32,9 +32,13 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     private void Update()
     {
-       
-
         anxietyHandler.CalculateAnxiety();
+        if (!GameData.IsInTutorial)
+        {
+            anxietyHandler._anxietyLevel = 0;
+        }
+
+        
     }
 
     #region Initialization

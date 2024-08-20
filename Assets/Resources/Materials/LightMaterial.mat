@@ -28,6 +28,7 @@ Material:
   - _ALPHAMODULATE_ON
   - _EMISSION
   - _ENVIRONMENTREFLECTIONS_OFF
+  - _RECEIVE_SHADOWS_OFF
   - _SPECULARHIGHLIGHTS_OFF
   - _SPECULAR_SETUP
   - _SURFACE_TYPE_TRANSPARENT
@@ -124,7 +125,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
-    - _ReceiveShadows: 1
+    - _ReceiveShadows: 0
     - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 0
@@ -134,8 +135,8 @@ Material:
     - _WorkflowMode: 0
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 0.35686275}
-    - _Color: {r: 1, g: 1, b: 1, a: 0.35686275}
-    - _EmissionColor: {r: 5.1139007, g: 5.1139007, b: 5.1139007, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 0.56078434}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.56078434}
+    - _EmissionColor: {r: 31.626795, g: 31.626795, b: 31.626795, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

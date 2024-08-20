@@ -40,7 +40,8 @@ public class ControllerCheckForCollider : MonoBehaviour
         //    Debug.Log(hitinfo.collider.name);
         hasHit = false; //Band-aid patch for now
         Vector3 upwardOffset = hasHit? Vector3.up * 0.2f : Vector3.zero;
-        transform.position = Vector3.Lerp(transform.position, parentControllerComponent.position + dirAwayFromController + dirTowardsCamera + upwardOffset,math.saturate(Time.deltaTime * 5f));
+        //transform.localPosition = Vector3.Lerp(transform.position, parentControllerComponent.position + dirAwayFromController + dirTowardsCamera + upwardOffset,math.saturate(Time.deltaTime * 5f));
+        transform.localPosition = parentControllerComponent.position + shiftOffset;
     }
 
     void OnDrawGizmos()
