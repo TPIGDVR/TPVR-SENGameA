@@ -21,6 +21,7 @@ public class Hologram_Portable : MonoBehaviour
     public Image SlideShowImage { get {
             rawImageComponent.gameObject.SetActive(false);
             hologramRenderer.SetActive(false);
+            imageComponent.gameObject.SetActive(true);
             return imageComponent;
         } }
 
