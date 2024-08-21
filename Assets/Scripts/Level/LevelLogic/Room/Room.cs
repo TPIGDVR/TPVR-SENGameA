@@ -143,7 +143,7 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
 
     public virtual void OnEnter()
     {
-
+        DisplayRoomObjective();
     }
 
     public virtual void OnExit()
