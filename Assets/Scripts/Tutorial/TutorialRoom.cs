@@ -61,6 +61,7 @@ namespace Assets.Scripts.Tutorial
                         break;
                     //if its the fourth kiosk, then activate the mechanic that is not activated.
                     case 4:
+                        print("Checking last kiosk");
                         if (!hasActivateHeartRateMonitor)
                         {
                             EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_HEARTRATE);

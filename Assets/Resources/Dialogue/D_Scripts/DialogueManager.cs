@@ -46,6 +46,7 @@ namespace Dialog
         {
             dialogueBox.SetActive(false);
             em_d.AddListener<DialogueLines>(DialogEvents.ADD_DIALOG, AddDialog);
+            //when the objective has been progress. stop eve from talking.
             EventSystem.level.AddListener<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, InteruptDialog);
         }
 

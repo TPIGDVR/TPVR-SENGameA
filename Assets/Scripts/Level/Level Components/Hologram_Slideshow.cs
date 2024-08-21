@@ -29,7 +29,6 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
     {
         base.Start();
         gameObject.SetActive(false);
-        //virtualCamera.SetActive(false);
 
         //store the imageComponent component in another reference to call it again
         originalImageComponent = image;
@@ -94,8 +93,9 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         OnEndHologram();
     }
 
-    protected override void OnPlayerEnterTrigger()
+    protected override void OnPlayerExitTrigger()
     {
+
         //so basically transfer the information to the portable hologram
         Hologram_Portable portableHologram = GameData.playerHologram;
         //change the reference to the portable hologram text
@@ -112,7 +112,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         animator.SetTrigger("HidePanelIfFar");
     }
 
-    protected override void OnPlayerExitTrigger()
+    protected override void OnPlayerEnterTrigger()
     {
         //so basically transfer the information to the portable hologram
         Hologram_Portable portableHologram = GameData.playerHologram;

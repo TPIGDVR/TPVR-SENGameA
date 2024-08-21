@@ -32,10 +32,12 @@ public class Hologram_3D : Hologram <Hologram3DData>
     protected override void Start()
     {
         base.Start();
-        gameObject.SetActive(false);
-
         originalTextComponent = subtitleText;
         originalTargetPosition = targetPosition;
+
+        //set inactive for the panel
+        DisableHologram();
+        gameObject.SetActive(false);
     }
 
     protected override void OnCompleteLine()
@@ -43,11 +45,18 @@ public class Hologram_3D : Hologram <Hologram3DData>
         animator.SetTrigger("Complete");
     }
 
+    public override void PlayAnimation()
+    {
+        base.PlayAnimation();
+        EnabledHologram();
+    }
+
     //call in the 3d hologram animator
     void Spawn3DHologram()
     {
         if(current3DHologram) current3DHologram.SetActive(false);
-        current3DHologram = Instantiate(_Data.Lines[indexDialog].prefab3D, targetPosition);
+        current3DHologram = Instantiate(_Data.Lines[indexDialog].prefab3D);
+        MoveHologramToTargetPosition();
         SetHologramFadeValue(0f);
         StartCoroutine(FadeInHologram());
     }
@@ -62,6 +71,12 @@ public class Hologram_3D : Hologram <Hologram3DData>
     {
         base.OnEndHologram();
         //do another animation here to hide hologram
+
+        if (GameData.playerHologram.IsActive)
+        {
+            GameData.playerHologram.Hide();
+        }
+
         animator.SetTrigger("HideHologram");
         GetComponent<Collider>().enabled = false;
         enabled = false;
@@ -93,7 +108,6 @@ public class Hologram_3D : Hologram <Hologram3DData>
         float elapseTime = 0;
         while(elapseTime < hologram3DFadeInSec)
         {
-            print("running fade in hologram");
             elapseTime += Time.deltaTime;
             SetHologramFadeValue(elapseTime / hologram3DFadeInSec);
             yield return null;
@@ -122,41 +136,49 @@ public class Hologram_3D : Hologram <Hologram3DData>
 
     protected override void OnPlayerEnterTrigger()
     {
+        if (current3DHologram == null) return;
         //so basically transfer the information to the portable hologram
         Hologram_Portable portableHologram = GameData.playerHologram;
         //change the reference to the original hologram text
         originalTextComponent.text = portableHologram.Text.text;
-        targetPosition = portableHologram.Placement3D;
-
-        //settle the gameobject.
-        current3DHologram.gameObject.SetActive(false);
-        portableHologram.Hide();
+        targetPosition = originalTargetPosition;
         subtitleText = originalTextComponent;
+
+        //move the hologram to the target location
+        MoveHologramToTargetPosition();
+
+        portableHologram.Hide();
         //afterwards, change the imageComponent and text to look the same!
 
-        
-        current3DHologram = Instantiate(_Data.Lines[indexDialog].prefab3D, targetPosition);
+        //current3DHologram = Instantiate(_Data.Lines[indexDialog].prefab3D, targetPosition);
         //afterward hide the component
         //hide the slideshow hologram
         animator.SetTrigger("EnableHologram");
     }
-
     protected override void OnPlayerExitTrigger()
     {
         var portableHologram = GameData.playerHologram;
-        //change the reference
+        //change and set the reference
         targetPosition = portableHologram.Placement3D;
         subtitleText = portableHologram.Text;
-
-        //make a copy of the animation in the 3d position for the camera to render
-        current3DHologram.SetActive(false);
-        current3DHologram = Instantiate(_Data.Lines[indexDialog].prefab3D, targetPosition);
-        //afterwards replace the text and show the hologram
         subtitleText.text = originalTextComponent.text;
-        portableHologram.Show();
+
+        //afterwards replace the text and show the hologram
+        MoveHologramToTargetPosition();
 
         //afterward hide the component
         //hide the slideshow hologram
+        portableHologram.Show();
         animator.SetTrigger("DisableHologram");
     }
+
+    private void MoveHologramToTargetPosition()
+    {
+        var hologramTransform = current3DHologram.transform;
+        hologramTransform.parent = targetPosition;
+        hologramTransform.localPosition = Vector3.zero;
+        hologramTransform.localRotation = Quaternion.identity;
+        hologramTransform.localScale = Vector3.one;
+    }
+
 }

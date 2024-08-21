@@ -44,8 +44,8 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     [ContextMenu("Run animation manually")]
     public override void PlayAnimation()
     {
-        gameObject.SetActive(true);
         isRunning = true;
+        gameObject.SetActive(true);
         EventSystem.level.TriggerEvent(LevelEvents.INTERRUPT_HOLOGRAM);
         EventSystem.level.AddListener(LevelEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
 
@@ -186,26 +186,15 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         subtitleText.text = "";
         //this is needed since we dont want splits to happen if the player is out of bound.
         string textToDisplay = "";
-        int index = 0;
-        while (index < text.Length)
+        //slowly place in the words into the subtile text
+        foreach(var c in text.ToCharArray())
         {
-            if (isRunning)
-            {
-                if (!globalAudioSource.isPlaying)
-                {
-                    globalAudioSource.Play();
-                }
-                textToDisplay += text[index];
-                subtitleText.text = textToDisplay;
-                index++;
-                yield return new WaitForSeconds(0.5f / textSpeed);
-            }
-            else
-            {
-                globalAudioSource.Pause();
-                yield return null;
-            }
+            textToDisplay += c;
+            subtitleText.text = textToDisplay;
+            yield return new WaitForSeconds(0.5f / textSpeed);
+
         }
+
         SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
         globalAudioSource = null;
     }
@@ -293,16 +282,18 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.transform == GameData.playerTransform)
+        if(other.transform == GameData.playerTransform && isRunning)
         {
+            print("player enter the trigger");
             OnPlayerEnterTrigger();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform == GameData.playerTransform)
+        if (other.transform == GameData.playerTransform && isRunning)
         {
+            print("player exit the trigger");
             OnPlayerExitTrigger();
         }
     }
