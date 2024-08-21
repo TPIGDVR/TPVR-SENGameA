@@ -59,5 +59,6 @@ public class Level : MonoBehaviour, IScriptLoadQueuer
         EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_HEARTRATE);
 
         EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_NOISE_INDICATOR);
+        GameData.ChangeTutorialStatus(false);
     }
 }

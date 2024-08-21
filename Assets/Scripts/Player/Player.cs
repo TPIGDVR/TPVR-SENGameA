@@ -25,6 +25,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     //room / objective variables
     Room currentRoom;
 
+    public bool IsWearingHeadphones;
     private void Awake()
     {
         ScriptLoadSequencer.Enqueue(this,(int)LevelLoadSequence.PLAYER);
@@ -33,7 +34,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     private void Update()
     {
         anxietyHandler.CalculateAnxiety();
-        if (!GameData.IsInTutorial)
+        if (GameData.IsInTutorial)
         {
             anxietyHandler._anxietyLevel = 0;
         }

@@ -47,14 +47,14 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
         Transform camTrans = Camera.main.transform;
         Vector3 rayDir = camTrans.position - transform.position;
         Ray toPlayer = new(transform.position, rayDir);
-        
         bool hasHit = Physics.Raycast(toPlayer, out RaycastHit hitInfo, NoiseRangeScaled);
         float dist = Vector3.Distance(camTrans.position, transform.position);
-        
-
+         
+       
         if (hasHit)
         {
-            if (!hitInfo.transform.CompareTag("Player") && !hitInfo.transform.CompareTag("MainCamera"))
+            bool haha = (!hitInfo.transform.CompareTag("Player") && !hitInfo.transform.CompareTag("MainCamera")) || GameData.player.IsWearingHeadphones;
+            if (haha)
             {
                 highPassFilter.cutoffFrequency = 1000;
                 lowPassFilter.cutoffFrequency = 300;
@@ -65,7 +65,7 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
                 lowPassFilter.cutoffFrequency = 22000;
             }
 
-            return (!hitInfo.transform.CompareTag("Player") && !hitInfo.transform.CompareTag("MainCamera")) || dist > NoiseRangeScaled;
+            return haha || dist > NoiseRangeScaled;
         }
 
         //out of range
