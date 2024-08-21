@@ -8,13 +8,17 @@ public class Interactable : MonoBehaviour
     public Rigidbody rb;
 
     public void Equip(){
-        //mesh.SetActive(false);
+        mesh.SetActive(false);
         rb.isKinematic = true;
     }
 
     public void Unequip()
     {
-        //mesh.SetActive(true);
+        mesh.SetActive(true);
         rb.isKinematic = false;
+    }
+
+    public void ShowMesh(){
+        mesh.SetActive(true);
     }
 }
