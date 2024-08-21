@@ -54,6 +54,10 @@ public class EquipDetection : MonoBehaviour
             currentGO.transform.parent = p;
             Quaternion rotate = Quaternion.Euler(0, 0, 0);
             currentGO.transform.SetLocalPositionAndRotation(Vector3.zero,rotate);
+            if (currentGO != null)
+            {
+                currentGO.GetComponent<Interactable>()?.Equip();
+            }
         }
         else
         {
@@ -66,6 +70,11 @@ public class EquipDetection : MonoBehaviour
             else if (equipment.CompareTag("Headphones"))
             {
                 GameData.player.IsWearingHeadphones = false;
+            }
+
+            if (currentGO != null)
+            {
+                currentGO.GetComponent<Interactable>()?.Unequip();
             }
         }
     }
