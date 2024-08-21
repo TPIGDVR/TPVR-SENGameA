@@ -11,8 +11,16 @@ public class GrabManager : MonoBehaviour
     {
         go_R = EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_RIGHT);
         go_L = EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_LEFT);
-        Debug.Log($"Left : {go_L} Right : {go_R}");
-        
+
+        if(go_R != null)
+        {
+            go_R.GetComponent<Interactable>().mesh.SetActive(false);
+        }
+
+        if(go_L != null)
+        {
+            go_L.GetComponent<Interactable>().mesh.SetActive(false);
+        }
     }
 
 
@@ -22,7 +30,15 @@ public class GrabManager : MonoBehaviour
         EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_RIGHT, go_R);
         EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_LEFT, go_L);
 
-        
+        if (go_R != null)
+        {
+            go_R.GetComponent<Interactable>().mesh.SetActive(true);
+        }
+
+        if (go_L != null)
+        {
+            go_L.GetComponent<Interactable>().mesh.SetActive(true);
+        }
     }
 }
 

@@ -6,7 +6,8 @@ public class EquipDetection : MonoBehaviour
 {
     [SerializeField]
     Transform p;
-
+    [SerializeField]
+    Transform defaultParent;
     bool itemDetection;
 
     GameObject currentGO;
@@ -39,13 +40,10 @@ public class EquipDetection : MonoBehaviour
         if (itemDetection)
         {
 
-            Debug.Log("Triggered");
             currentGO = equipment;
-
 
             if (equipment.CompareTag("Sunglasses"))
             {
-                print("sunglasses on");
                 EventSystem.player.TriggerEvent(PlayerEvents.SUNGLASSES_ON,0.85f);
             }
             else if(equipment.CompareTag("Headphones"))
@@ -54,12 +52,12 @@ public class EquipDetection : MonoBehaviour
             }
 
             currentGO.transform.parent = p;
-            currentGO.transform.localPosition = Vector3.zero;
+            Quaternion rotate = Quaternion.Euler(0, 0, 0);
+            currentGO.transform.SetLocalPositionAndRotation(Vector3.zero,rotate);
         }
-
         else
         {
-            currentGO.transform.parent = null;
+            currentGO.transform.parent = defaultParent;
 
             if (equipment.CompareTag("Sunglasses"))
             {
