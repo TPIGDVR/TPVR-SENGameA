@@ -75,7 +75,7 @@ MonoBehaviour:
   _targetTransform: {fileID: 9062313782037494522}
   _maxGrabPoints: -1
   _rigidbody: {fileID: 5848456447165611461}
-  _kinematicWhileSelected: 1
+  _kinematicWhileSelected: 0
   _throwWhenUnselected: 1
 --- !u!114 &8076467305051039956
 MonoBehaviour:
@@ -197,7 +197,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.35, z: 1}
+  m_Size: {x: 0.25, y: 0.1, z: 0.25}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5848456447165611461
 Rigidbody:
@@ -266,8 +266,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3729562625616757402}
   - {fileID: 985461598444587538}
@@ -324,7 +324,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.35, z: 1}
+  m_Size: {x: 0.25, y: 0.1, z: 0.25}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &731739725352234489
 PrefabInstance:
