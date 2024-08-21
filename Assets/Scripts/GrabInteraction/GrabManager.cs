@@ -14,10 +14,14 @@ public class GrabManager : MonoBehaviour
     }
 
 
-    public void GrabUp()
+    public void GrabUp_R()
     {
-        
         EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_RIGHT, go_R);
+    }
+
+    public void GrabUp_L()
+    {
+
         EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_LEFT, go_L);
     }
 }

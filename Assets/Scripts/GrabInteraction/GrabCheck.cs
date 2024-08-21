@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GrabCheck : MonoBehaviour
 {
-    GameObject go;
+    public GameObject go;
     [SerializeField]
     bool IsRight;
 
@@ -26,6 +26,12 @@ public class GrabCheck : MonoBehaviour
     {
         go = other.gameObject;
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        go = other.gameObject;
+    }
+
 
     private void OnTriggerExit(Collider other)
     {

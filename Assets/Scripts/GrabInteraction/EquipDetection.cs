@@ -10,8 +10,6 @@ public class EquipDetection : MonoBehaviour
     Transform defaultParent;
     bool itemDetection;
 
-    GameObject currentGO;
-
     private void Awake()
     {
         EventSystem.player.AddListener<GameObject>(PlayerEvents.GRAB_UP_LEFT, Equip);
@@ -36,32 +34,36 @@ public class EquipDetection : MonoBehaviour
             return;
         }
 
-
+        StartCoroutine(EQ(equipment));
+    }
+    IEnumerator EQ(GameObject equipment)
+    {
         if (itemDetection)
         {
-
-            currentGO = equipment;
-
             if (equipment.CompareTag("Sunglasses"))
             {
-                EventSystem.player.TriggerEvent(PlayerEvents.SUNGLASSES_ON,0.85f);
+                EventSystem.player.TriggerEvent(PlayerEvents.SUNGLASSES_ON, 0.85f);
             }
-            else if(equipment.CompareTag("Headphones"))
+            else if (equipment.CompareTag("Headphones"))
             {
                 GameData.player.IsWearingHeadphones = true;
             }
 
-            currentGO.transform.parent = p;
-            Quaternion rotate = Quaternion.Euler(0, 0, 0);
-            currentGO.transform.SetLocalPositionAndRotation(Vector3.zero,rotate);
-            if (currentGO != null)
+            equipment.transform.parent = p;
+            yield return null;
+            Quaternion rotate = Quaternion.identity;
+            // equipment.transform.SetLocalPositionAndRotation(Vector3.zero,rotate);
+            equipment.transform.localPosition = Vector3.zero;
+            equipment.transform.localRotation = rotate;
+            print("resetting to zero");
+            if (equipment != null)
             {
-                currentGO.GetComponent<Interactable>()?.Equip();
+                equipment.GetComponent<Interactable>()?.Equip();
             }
         }
         else
         {
-            currentGO.transform.parent = defaultParent;
+            equipment.transform.parent = defaultParent;
 
             if (equipment.CompareTag("Sunglasses"))
             {
@@ -72,11 +74,10 @@ public class EquipDetection : MonoBehaviour
                 GameData.player.IsWearingHeadphones = false;
             }
 
-            if (currentGO != null)
+            if (equipment != null)
             {
-                currentGO.GetComponent<Interactable>()?.Unequip();
+                equipment.GetComponent<Interactable>()?.Unequip();
             }
         }
     }
-
 }
