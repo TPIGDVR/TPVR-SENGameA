@@ -1,11 +1,8 @@
 using Assets.HelpfulScripts;
 using Assets.Scripts.Player.Anxiety_Scripts;
-using Cinemachine;
 using SoundRelated;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 
 public class Player : MonoBehaviour, IScriptLoadQueuer
 {
@@ -17,7 +14,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     //references to ui
     [SerializeField]
-    GameObject Heart,Objective,Dialogue,SkipHologramText;
+    GameObject Heart,Objective,Dialogue,SkipHologramText,BreathDetection;
 
     [SerializeField]
     Transform playerTransform;
@@ -64,10 +61,9 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         em_l.AddListener(LevelEvents.INIT_TUTORIAL, DeactivateAllMechanic);
         em_p.AddListener(PlayerEvents.DEATH, Death);
         em_p.AddListener(PlayerEvents.RESTART, Respawn);
-
         //dialogue events
         em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
-
+        em_d.AddListener(DialogEvents.ACTIVATE_BREATHING,ActivateBreathingMechanic);
         //level events
         em_l.AddListener<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ProgressObjective);
         em_l.AddListener<Room>(LevelEvents.ENTER_NEW_ROOM, SwitchCurrentRoom);
@@ -132,6 +128,11 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         Heart.SetActive(true);
     }
 
+    void ActivateBreathingMechanic()
+    {
+        BreathDetection.SetActive(true);
+    }
+
     void DeactivateAllMechanic()
     {
         //heart rate: deactivate the ui + anxiety build up
@@ -139,6 +140,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         //disable objective indicator
         anxietyHandler.CanRun = false;
         Heart.SetActive(false);
+        BreathDetection.SetActive(false);
         //Objective.SetShow(false);
     }
 
