@@ -288,9 +288,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2033468411662839220}
+  - component: {fileID: 4438006278196519089}
   m_Layer: 10
   m_Name: Wall_HalfArc_Long
-  m_TagString: Untagged
+  m_TagString: Static
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -314,6 +315,22 @@ Transform:
   - {fileID: 4171339710664818776}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &4438006278196519089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3413597719193102373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd42ef7060eeb3946a98285ae007c347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas:
+  - {fileID: 2983941624089051124}
+  - {fileID: 51121051965494972}
+  - {fileID: 8097913233803954886}
 --- !u!1 &4421346370692081435
 GameObject:
   m_ObjectHideFlags: 0

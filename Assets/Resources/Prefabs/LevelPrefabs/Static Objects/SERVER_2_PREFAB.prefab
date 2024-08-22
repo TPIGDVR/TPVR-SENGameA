@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 5678178132498146858}
   - component: {fileID: 7696420605438669176}
   - component: {fileID: 948746042871653052}
+  - component: {fileID: -5926427995963844775}
   m_Layer: 10
   m_Name: SERVER_2_PREFAB
-  m_TagString: Untagged
+  m_TagString: Static
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -131,6 +132,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.5, z: 0.75}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-5926427995963844775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114350352544092844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd42ef7060eeb3946a98285ae007c347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas:
+  - {fileID: 1752603909597434406}
 --- !u!1 &1752603909597434406
 GameObject:
   m_ObjectHideFlags: 0
