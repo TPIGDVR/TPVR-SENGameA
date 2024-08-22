@@ -17608,6 +17608,7 @@ MonoBehaviour:
   Objective: {fileID: 1796532226560801073}
   Dialogue: {fileID: 2887308623997259971}
   SkipHologramText: {fileID: 0}
+  BreathDetection: {fileID: 8430515327997647761}
   playerTransform: {fileID: 8577158378765068116}
   IsWearingHeadphones: 0
 --- !u!114 &4665539866139184370
@@ -21528,7 +21529,7 @@ MonoBehaviour:
   exhalePitchVaranceThreshold: 0
   exhaleVolumeNoiseCorrelation: 0
   exhalePitchNoiseCorrelation: 0
-  stateText: {fileID: 0}
+  stateText: {fileID: 1385252160862115978}
   testTimer: 3
   amountOfTest: 3
   presetInhaleData: {fileID: 11400000, guid: f67dbaf0115da1d4d951de9e5d5d6b31, type: 2}
@@ -21547,7 +21548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71a8572809ecb764082e94c2e750b21c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 0}
+  text: {fileID: 8434194975861964367}
   _audioSource: {fileID: 8224587389766984898}
   _pitchRecordTime: 5
   _volumeRecordTime: 5
@@ -21674,7 +21675,7 @@ MonoBehaviour:
   maxAnxietyReduction: 0.8
   maximumInhaleTimer: 3
   maximumExhaleTimer: 3
-  displayText: {fileID: 0}
+  displayText: {fileID: 8080509650036834226}
   leniecyThreshold: 1
   inhaleElapseTime: 0
   exhaleElapseTime: 0
@@ -23720,6 +23721,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 587519253405813782, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 645
+      objectReference: {fileID: 0}
+    - target: {fileID: 587519253405813782, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 421
+      objectReference: {fileID: 0}
     - target: {fileID: 634133135566806009, guid: 49dc2facff06a0d4086da87425b1048f,
         type: 3}
       propertyPath: m_IsActive
@@ -23729,6 +23740,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 233.79999
+      objectReference: {fileID: 0}
+    - target: {fileID: 822193624379067363, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1852318791657834730, guid: 49dc2facff06a0d4086da87425b1048f,
         type: 3}
@@ -23775,10 +23791,35 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 414
       objectReference: {fileID: 0}
+    - target: {fileID: 3739189317256582064, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_text
+      value: BREATHING_STATES
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739189317256582064, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739189317256582064, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 5775856071634052126, guid: 49dc2facff06a0d4086da87425b1048f,
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5836277992762602632, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5836277992762602632, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6138036505058624757, guid: 49dc2facff06a0d4086da87425b1048f,
         type: 3}
@@ -23794,6 +23835,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -21.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6183834795393824117, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_text
+      value: Breathing DATA
+      objectReference: {fileID: 0}
+    - target: {fileID: 6183834795393824117, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6183834795393824117, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6231832965708143775, guid: 49dc2facff06a0d4086da87425b1048f,
         type: 3}
@@ -23920,6 +23976,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -192.6
       objectReference: {fileID: 0}
+    - target: {fileID: 7320416038362234633, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462136580245364696, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 646
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462136580245364696, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 362
+      objectReference: {fileID: 0}
     - target: {fileID: 7759036401594353163, guid: 49dc2facff06a0d4086da87425b1048f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -23935,6 +24006,21 @@ PrefabInstance:
       propertyPath: hologramRenderer
       value: 
       objectReference: {fileID: 433891338039333626}
+    - target: {fileID: 8029261341935547058, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8443938468990118209, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 640
+      objectReference: {fileID: 0}
+    - target: {fileID: 8443938468990118209, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 311
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1919027579730263477, guid: 49dc2facff06a0d4086da87425b1048f, type: 3}
@@ -23946,6 +24032,18 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1642698185856929241}
   m_SourcePrefab: {fileID: 100100000, guid: 49dc2facff06a0d4086da87425b1048f, type: 3}
+--- !u!114 &1385252160862115978 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3739189317256582064, guid: 49dc2facff06a0d4086da87425b1048f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2368087871195499322}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1544306521868869703 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3869535212783594365, guid: 49dc2facff06a0d4086da87425b1048f,
@@ -24019,6 +24117,30 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2368087871195499322}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8080509650036834226 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5836277992762602632, guid: 49dc2facff06a0d4086da87425b1048f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2368087871195499322}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8434194975861964367 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6183834795393824117, guid: 49dc2facff06a0d4086da87425b1048f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2368087871195499322}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8449708608240728702 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6169445963681984836, guid: 49dc2facff06a0d4086da87425b1048f,
