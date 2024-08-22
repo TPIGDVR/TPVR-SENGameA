@@ -18,7 +18,7 @@ namespace BreathDetection
         [SerializeField] int _datalength = 1024;
         //mic settings
         
-        public bool mute = true;
+        // public bool mute = true;
 
         #region volume provider implementation
         public float volume { get; set; }
