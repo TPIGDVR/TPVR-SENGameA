@@ -15,7 +15,11 @@ namespace Caress.Examples
 
         void Start()
         {
-            _microphoneClip = Microphone.Start(null, true, RecordLengthSec, SampleRate);
+            foreach(string name in Microphone.devices)
+            {
+                print(name);
+            }
+            _microphoneClip = Microphone.Start(Microphone.devices[0], true, RecordLengthSec, SampleRate);
         }
 
         void Update()
