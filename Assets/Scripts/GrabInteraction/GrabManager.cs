@@ -10,7 +10,9 @@ public class GrabManager : MonoBehaviour
     public void GrabDown()
     {
         go_R = EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_RIGHT);
-        go_L = EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_LEFT);    
+        go_L = EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_LEFT);
+        go_R?.GetComponent<Interactable>()?.ShowMesh();
+        go_L?.GetComponent<Interactable>()?.ShowMesh();
     }
 
 
