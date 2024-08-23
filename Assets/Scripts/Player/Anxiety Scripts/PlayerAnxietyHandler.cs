@@ -96,7 +96,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 if (source.CheckIfBlockedOrOutOfRange())
                     continue;
 
-                print("IM CALCING");
                 float noiseLevel = Mathf.Lerp(source.NoiseValue, 0, dist / source.NoiseRangeScaled);
                 totalNoiseLevel += noiseLevel;
             }

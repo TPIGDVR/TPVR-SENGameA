@@ -16,6 +16,8 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     [SerializeField]
     GameObject Heart,Objective,Dialogue,SkipHologramText,BreathDetection;
 
+
+
     [SerializeField]
     Transform playerTransform;
 
@@ -135,6 +137,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     void DeactivateAllMechanic()
     {
+
         //heart rate: deactivate the ui + anxiety build up
         //disable noise range indicator
         //disable objective indicator

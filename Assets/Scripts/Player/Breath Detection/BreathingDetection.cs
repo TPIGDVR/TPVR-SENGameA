@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -5,6 +6,11 @@ namespace BreathDetection
 {
     public class BreathingDetection : MonoBehaviour
     {
+        //if the breath detection can even run.
+        [SerializeField] bool canRun = true;
+        public bool CanRun { get => canRun; set => canRun = value; }
+
+        #region properties
         [SerializeField] MicProvider micProvider;
 
         [Header("Templates")]
@@ -25,7 +31,9 @@ namespace BreathDetection
         [SerializeField]
         InhaleData calculateExhaleSpectrumData;
 
-
+        /// <summary>
+        /// For saving file for inhaling and exhaling
+        /// </summary>
         [Header("safe file")]
         [SerializeField] BreathSafeFile safeFile;
 
@@ -39,40 +47,59 @@ namespace BreathDetection
         [SerializeField] bool usePresetData;
 
         [Header("collection Data")]
-        bool isTesting;
+        bool isTesting = false;
         [SerializeField] int amountToTest = 2;
         [SerializeField] float amountOfTimeToSample = 2f;
+        [SerializeField] float amountOfTimeToPause = 0.5f;
         int amountTested = 0;
-        bool hasTestedInhale = false;
 
         float elapseTime = 0;
 
         ITestable<InhaleData> inhaleTester;
         ITestable<InhaleData> exhaleSpectrumTester;
         ITestable<ExhaleData> exhaleLoudnessTester;
+
         [Header("debugging")]
         [SerializeField] TextMeshProUGUI text;
         [SerializeField] bool useVolPitchExhale;
         public BreathingOutPut breathingOutPut { get; private set; }
 
+        //For breathing panel to display player
+        public BreathingTestingState breathingTestingState { get; private set; }
+        public float remainTimingForTesting { get
+            {
+                switch (breathingTestingState)
+                {
+                    case BreathingTestingState.PAUSE:
+                        return amountOfTimeToPause - elapseTime;
+                    case BreathingTestingState.INHALE:
+                        return amountOfTimeToSample - elapseTime;
+                    case BreathingTestingState.EXHALE:
+                        return amountOfTimeToSample - elapseTime;
+                        default : return 0;
+                }
+            }
+        }
+
+        #endregion
+
         private void Start()
         {
             //do the initializing here
 
-            if (!usePresetData)
+            if (usePresetData)
             {
-                inhaleTester = new SpectrumMinMaxTester(micProvider, _inhaleDataTemplate);
-                exhaleSpectrumTester = new SpectrumMinMaxTester(micProvider, _exhaleDataSpectrumTemplate);
-                exhaleLoudnessTester = new ExhaleTester(_exhaleDataTemplate, micProvider);
-                isTesting = true;
-            }
-            else
-            {
+                //inhaleTester = new SpectrumMinMaxTester(micProvider, _inhaleDataTemplate);
+                //exhaleSpectrumTester = new SpectrumMinMaxTester(micProvider, _exhaleDataSpectrumTemplate);
+                //exhaleLoudnessTester = new ExhaleTester(_exhaleDataTemplate, micProvider);
+                //isTesting = true;
                 inhaleDetection = new InhalingDetector(micProvider, safeFile.inhaleCalculatedData);
                 exhaleDetection = new ExhalingDetector(micProvider, safeFile.exhaleLoudnessData);
                 exhaleSpectrumDetection = new InhalingDetector(micProvider, safeFile.exhaleCalculatedData);
                 isTesting = false;
+                //StartCoroutine(RunBreathingTest());
             }
+            
 
             //Microphone.GetDeviceCaps(Microphone.devices[0],
             //    out int minFrequency,
@@ -80,54 +107,137 @@ namespace BreathDetection
             //print($"{Microphone.devices[0]} min frequency {minFrequency} max frequency {maxFrequency}");
         }
 
-        void CalculateData()
+        #region testing
+        IEnumerator RunBreathingTest()
         {
-            print($"Elapse time {elapseTime}. has finish inhale {hasTestedInhale}");
-            if(elapseTime < amountOfTimeToSample)
+            isTesting = true;
+            int numTested = 0;
+
+            inhaleTester = new SpectrumMinMaxTester(micProvider, _inhaleDataTemplate);
+            exhaleSpectrumTester = new SpectrumMinMaxTester(micProvider, _exhaleDataSpectrumTemplate);
+            exhaleLoudnessTester = new ExhaleTester(_exhaleDataTemplate, micProvider);
+
+            while (numTested < amountToTest)
             {
-                if (!hasTestedInhale)
-                {//run the inhale here
-                    inhaleTester.Run();
-                    text.text = "Please inhale";
-                }
-                else
-                {//run the exhale here
-                    exhaleLoudnessTester.Run();
-                    exhaleSpectrumTester.Run();
-                    text.text = "Please exhale";
-                }
+                yield return PauseForBreathing();
+                yield return CalculatingInhale(numTested);
+                yield return PauseForBreathing();
+                yield return CalculatingExhale(numTested);
+                numTested++;
+                print($"complete test {numTested}");
+            }
+            //indicate that the breathing is done.
+            breathingTestingState = BreathingTestingState.NONE;
+
+            FinishCalculation();
+            isTesting = false;
+            text.text = "finish testing";
+        }
+
+        IEnumerator PauseForBreathing()
+        {
+            breathingTestingState = BreathingTestingState.PAUSE;
+            elapseTime = 0;
+            text.text = "Pause";
+            while(elapseTime < amountOfTimeToPause)
+            {
                 elapseTime += Time.deltaTime;
+                yield return null;
             }
+        }
 
-            else
-            {//when the thing is done
-                if (hasTestedInhale)
-                {
-                    amountTested++;
-
-                    if(amountTested == amountToTest / 2)
-                    {
-                        inhaleTester = new SpectrumTester(micProvider, inhaleTester.Calculate());
-                        exhaleSpectrumTester = new SpectrumTester(micProvider, exhaleSpectrumTester.Calculate());
-                    }
-                }
-
-                if(amountTested < amountToTest)
-                {
-                    elapseTime = 0f;
-                    hasTestedInhale = !hasTestedInhale;
-                }
-                else
-                {
-                    //has reach the requirement
-                    FinishCalculation();
-                    isTesting = false;
-                    text.text = "Testing complete!";
-                }
+        IEnumerator CalculatingInhale(int numberTested)
+        {
+            breathingTestingState = BreathingTestingState.INHALE;
+            elapseTime = 0;
+            if(numberTested == amountToTest / 2)
+            {
+                //if reach half for amount of tested
+                inhaleTester = new SpectrumTester(micProvider, inhaleTester.Calculate());
             }
+            text.text = "Please inhale";
+
+            while(elapseTime < amountOfTimeToSample)
+            {
+                inhaleTester.Run();
+                elapseTime += Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        IEnumerator CalculatingExhale(int numberTested)
+        {
+            breathingTestingState = BreathingTestingState.EXHALE;
+            elapseTime = 0;
+            if (numberTested == amountToTest / 2)
+            {
+                //if reach half for amount of tested
+                exhaleSpectrumTester = new SpectrumTester(micProvider, exhaleSpectrumTester.Calculate());
+            }
+            text.text = "Please exhale";
+
+            while (elapseTime < amountOfTimeToSample)
+            {
+                exhaleSpectrumTester.Run();
+                exhaleLoudnessTester.Run();
+                elapseTime += Time.deltaTime;
+                yield return null;
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Legacy dont use. used for collecting player breath.
+        /// </summary>
+        //void CalculateDataTester()
+        //{
+        //    print($"Elapse time {elapseTime}. has finish inhale {hasTestedInhale}");
+        //    if(elapseTime < amountOfTimeToSample)
+        //    {
+        //        if (!hasTestedInhale)
+        //        {//run the inhale here
+        //            inhaleTester.Run();
+        //            text.text = "Please inhale";
+        //        }
+        //        else
+        //        {//run the exhale here
+        //            exhaleLoudnessTester.Run();
+        //            exhaleSpectrumTester.Run();
+        //            text.text = "Please exhale";
+        //        }
+        //        elapseTime += Time.deltaTime;
+        //    }
+        //    else
+        //    {//when the thing is done
+        //        if (hasTestedInhale)
+        //        {
+        //            amountTested++;
+
+        //            if(amountTested == amountToTest / 2)
+        //            {
+        //                //after finding the min and max points of the inhale and exhale, it would 
+        //                //calculate the spectrum to find the common point between the two points.
+        //                inhaleTester = new SpectrumTester(micProvider, inhaleTester.Calculate());
+        //                exhaleSpectrumTester = new SpectrumTester(micProvider, exhaleSpectrumTester.Calculate());
+        //            }
+        //        }
+
+        //        if(amountTested < amountToTest)
+        //        {
+        //            elapseTime = 0f;
+        //            hasTestedInhale = !hasTestedInhale;
+        //        }
+        //        else
+        //        {
+        //            //has reach the requirement
+        //            FinishCalculation();
+        //            isTesting = false;
+        //            text.text = "Testing complete!";
+        //        }
+        //    }
             
 
-        }
+        //}
         void FinishCalculation()
         {
             calculatedInhaleData = inhaleTester.Calculate();
@@ -141,11 +251,7 @@ namespace BreathDetection
 
         private void Update()
         {
-            if (isTesting)
-            {
-                CalculateData();
-            }
-            else
+            if(!isTesting && CanRun)
             {
                 bool isInhaling = this._IsInhaling;
                 bool isExhaling = this._IsExhaling;
@@ -165,19 +271,22 @@ namespace BreathDetection
             }
         }
 
-
-
         #region debugging
         [ContextMenu("testing")]
-        public void ResetTesting()
+        public void StartTesting()
         {
-            isTesting = true;
-            hasTestedInhale = false;
+            //isTesting = true;
+            //hasTestedInhale = false;
+            //elapseTime = 0;
+            //amountTested = 0;
+            //inhaleTester = new SpectrumMinMaxTester(micProvider, _inhaleDataTemplate);
+            //exhaleLoudnessTester = new ExhaleTester( _exhaleDataTemplate , micProvider);
+            //exhaleSpectrumTester = new SpectrumMinMaxTester(micProvider, _exhaleDataSpectrumTemplate);
+            breathingTestingState = BreathingTestingState.PAUSE;
             elapseTime = 0;
-            amountTested = 0;
-            inhaleTester = new SpectrumMinMaxTester(micProvider, _inhaleDataTemplate);
-            exhaleLoudnessTester = new ExhaleTester( _exhaleDataTemplate , micProvider);
-            exhaleSpectrumTester = new SpectrumMinMaxTester(micProvider, _exhaleDataSpectrumTemplate);
+
+            StopAllCoroutines();
+            StartCoroutine(RunBreathingTest());
         }
 
         [ContextMenu("Update values")]
@@ -207,5 +316,13 @@ namespace BreathDetection
         SILENCE,
         INHALE,
         EXHALE,
+    }
+
+    public enum BreathingTestingState
+    {
+        PAUSE,
+        INHALE,
+        EXHALE,
+        NONE
     }
 }

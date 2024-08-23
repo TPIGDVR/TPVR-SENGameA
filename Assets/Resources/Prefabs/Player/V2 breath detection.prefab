@@ -1,0 +1,295 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4912496315445399040
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4304631765228118537}
+  - component: {fileID: 3949410543582461665}
+  - component: {fileID: 4141692331733736119}
+  - component: {fileID: 2813703925862692838}
+  - component: {fileID: 8413164731251678194}
+  - component: {fileID: 6703736220683526695}
+  - component: {fileID: 3863658818278600440}
+  - component: {fileID: 1173751732601919657}
+  m_Layer: 0
+  m_Name: V2 breath detection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4304631765228118537
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4912496315445399040}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.7090793, y: -2.2539513, z: -5.0860195}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3949410543582461665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4912496315445399040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e138a1d7eb0fee44085bf7de19e5ec09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  micProvider: {fileID: 4141692331733736119}
+  _exhaleDataTemplate:
+    lowPassFilter: 0
+    highPassFilter: 0
+    volumeThreshold: 0
+    minPitchThreshold: 0
+    maxPitchThreshold: 0
+  _inhaleDataTemplate:
+    lowPassFilter: 2500
+    highPassFilter: 6050
+    minNumberOfCommonPoint: 0
+    maxNumberOfCommonPoint: 0
+    minAmplitude: 0.0002
+    maxAmplitude: 0.00056
+    maxDBThreshold: 0
+    inhaleCounterThreshold: 4
+    reductionOfMinCounter: 2
+    numberOfPointsToStop: 12
+  _exhaleDataSpectrumTemplate:
+    lowPassFilter: 0
+    highPassFilter: 2300
+    minNumberOfCommonPoint: 0
+    maxNumberOfCommonPoint: 0
+    minAmplitude: 0.0005
+    maxAmplitude: 0.002
+    maxDBThreshold: 0
+    inhaleCounterThreshold: 7
+    reductionOfMinCounter: 3
+    numberOfPointsToStop: 13
+  calculatedExhaleData:
+    lowPassFilter: 0
+    highPassFilter: 0
+    volumeThreshold: 0
+    minPitchThreshold: 0
+    maxPitchThreshold: 0
+  calculatedInhaleData:
+    lowPassFilter: 0
+    highPassFilter: 0
+    minNumberOfCommonPoint: 0
+    maxNumberOfCommonPoint: 0
+    minAmplitude: 0
+    maxAmplitude: 0
+    maxDBThreshold: 0
+    inhaleCounterThreshold: 0
+    reductionOfMinCounter: 0
+    numberOfPointsToStop: 0
+  calculateExhaleSpectrumData:
+    lowPassFilter: 0
+    highPassFilter: 0
+    minNumberOfCommonPoint: 0
+    maxNumberOfCommonPoint: 0
+    minAmplitude: 0
+    maxAmplitude: 0
+    maxDBThreshold: 0
+    inhaleCounterThreshold: 0
+    reductionOfMinCounter: 0
+    numberOfPointsToStop: 0
+  safeFile: {fileID: 11400000, guid: f8b53eea26809f34cb998648ec4c1bbb, type: 2}
+  usePresetData: 0
+  amountToTest: 4
+  amountOfTimeToSample: 2
+  amountOfTimeToPause: 1
+  text: {fileID: 0}
+  useVolPitchExhale: 0
+--- !u!114 &4141692331733736119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4912496315445399040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae7daf6eac10b2942a5623b00824a0b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioSourceOrignal: {fileID: 8413164731251678194}
+  _pitchRecordTime: 5
+  _volumeRecordTime: 5
+  _datalength: 1024
+  HighPassCutoff: 4000
+  LowPassCutoff: 1000
+  pitchDebugger: 0
+  usedNoiseReducer: 0
+  pitchCalculationMethod: 1
+  volumeCalculationMethod: 1
+  text: {fileID: 0}
+--- !u!114 &2813703925862692838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4912496315445399040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed639974cf8556a4cad0b52ad60bf421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detector: {fileID: 3949410543582461665}
+  minAnxietyReduction: 0.2
+  maxAnxietyReduction: 0.8
+  maximumInhaleTimer: 3
+  maximumExhaleTimer: 3
+  displayText: {fileID: 0}
+  inhaleElapseTime: 0
+  exhaleElapseTime: 0
+  numberOfSample: 40
+  stateName: 
+--- !u!82 &8413164731251678194
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4912496315445399040}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &6703736220683526695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4912496315445399040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3475904f64f0d31448222521c3a30946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3863658818278600440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4912496315445399040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fb567ea6d0dd5a478cbcb945c884238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _microphoneRecorder: {fileID: 6703736220683526695}
+  _audioPlayer: {fileID: 1173751732601919657}
+--- !u!114 &1173751732601919657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4912496315445399040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc834fdab24b64d40b5e342cdab198b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

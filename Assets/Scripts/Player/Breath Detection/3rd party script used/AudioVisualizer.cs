@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
-namespace Caress.Examples
+namespace BreathDetection
 {
     [RequireComponent(typeof(LineRenderer), typeof(AudioSource))]
     public class AudioVisualizer : MonoBehaviour
     {
         [SerializeField] private bool isGetData = false;
         [SerializeField] private LineRenderer _lineRenderer;
-        private AudioSource _source = default;
+        [SerializeField] private AudioSource _source = default;
         public float[] _data = new float[1024];
         const float pitchIncrementor = 24000f / 1024f;
 

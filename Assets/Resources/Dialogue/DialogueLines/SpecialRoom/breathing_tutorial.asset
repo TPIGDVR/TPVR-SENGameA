@@ -14,7 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Lines:
   - Speaker: 0
-    Text: Seems like ur breath stank
+    Text: Seems like the package installed helps you track your breathing level as
+      well as Endorphins level.
+    hasBeenTriggered: 0
+    dialogEndTrigger: 0
+    audioClip:
+      sfx: 0
+      clip: {fileID: 0}
+      volume: 0
+      pitch: 0
+  - Speaker: 0
+    Text: We do need to calibrate the package though. Make sure to take deep breaths
+      when inhale and relax when exhaling.
     hasBeenTriggered: 0
     dialogEndTrigger: 7
     audioClip:

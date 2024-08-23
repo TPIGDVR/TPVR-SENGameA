@@ -47,17 +47,25 @@ namespace BreathDetection
             _mfsm.Add(new ExhaleState(_mfsm, (int)States.EXHALING, this));
             _mfsm.Add(new WaitForExhaleState(_mfsm, (int)States.WAITING_FOR_EXHALE, this));
             _mfsm.SetCurrentState((int)States.SILENCE);
+
+            
         }
 
         private void Update()
         {
-            currentOutput = DetermineBreathingState();
-            _mfsm.Update();
-            string message = $"current State: {(States)_mfsm.GetCurrentState().ID}" +
-                $"currentOutput {currentOutput}";
-            print(message);
-            displayText.text = message;
-
+            if (detector.CanRun)
+            {
+                currentOutput = DetermineBreathingState();
+                _mfsm.Update();
+                string message = $"current State: {(States)_mfsm.GetCurrentState().ID}" +
+                    $"currentOutput {currentOutput}";
+                print(message);
+                displayText.text = message;
+            }
+            else
+            {
+                displayText.text = "idle";
+            }
         }
 
         private BreathingOutPut DetermineBreathingState()
