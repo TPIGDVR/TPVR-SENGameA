@@ -16,7 +16,6 @@ public class Room_Door : Door
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("this");
         if (other.CompareTag("DoorChecker"))
         {
             //Debug.DrawLine(GameData.player.PlayerTransform.position, transform.position,Color.red,4f);

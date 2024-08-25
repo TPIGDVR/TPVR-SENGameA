@@ -48,8 +48,6 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
         }
         else
         {
-
-            print($"this function is called in {name}");
             //Enable component
             foreach (var kiosk in kiosks) kiosk.SetShow();
             foreach (var a in automatons) a.SetShow();

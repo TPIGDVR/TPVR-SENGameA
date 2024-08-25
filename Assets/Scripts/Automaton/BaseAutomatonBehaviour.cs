@@ -30,18 +30,24 @@ namespace Automaton
         [SerializeField] private float acceptableDegree = 15f;
         [SerializeField] private float rotationSpeed = 3f;
 
+        Coroutine currentBehaviourCoroutine;
         public NavMeshAgent Agent { get => _agent; set => _agent = value; }
 
         public void SetHide()
         {
             StopAllCoroutines();
+            //then stop all the coroutine
+            currentBehaviourCoroutine = null;
         }
 
         public void SetShow()
         {
             enabled = true;
-            StartBehaviour();
-            StartCoroutine(Behaviour());
+            if(currentBehaviourCoroutine != null)
+            {
+                StopCoroutine(currentBehaviourCoroutine);
+            }
+            currentBehaviourCoroutine = StartCoroutine(Behaviour());
         }
 
         #region INITIALIZATION
@@ -55,8 +61,7 @@ namespace Automaton
             _ani = GetComponent<Animator>();
             _agent = GetComponent<NavMeshAgent>();
             _audio = GetComponent<AudioSource>();
-            StartBehaviour();
-            StartCoroutine(Behaviour());
+            currentBehaviourCoroutine = StartCoroutine(Behaviour());
         }
         #endregion
 
@@ -106,6 +111,7 @@ namespace Automaton
         }
         protected virtual IEnumerator WalkToWayPointCoroutine()
         {
+            print("called to walk to way point");
             _wayPointIndex++;
             if (_wayPointIndex >= _wayPoints.Length)
                 _wayPointIndex = 0;
@@ -119,6 +125,7 @@ namespace Automaton
 
         protected IEnumerator MovementCoroutine(Vector3 destination)
         {
+            print("Started new way point destination");
             _agent.SetDestination(destination);
             _agent.speed = 0;
 
@@ -127,6 +134,7 @@ namespace Automaton
             Vector3 previousPosition = transform.position;
             while (_agent.remainingDistance >= _travelCompleteThreshold)
             {
+                print($"{Agent.name} has a remaining distance of {_agent.remainingDistance}. {_travelCompleteThreshold}");
                 //check 
                 Vector3 nxtDirection = _agent.nextPosition - previousPosition;
 
@@ -148,6 +156,7 @@ namespace Automaton
                 previousPosition = transform.position;
                 yield return null;
             }
+            print("Finish way point");
             _ani.SetFloat("Spd", 0f);
         }
 
@@ -171,6 +180,10 @@ namespace Automaton
                 transform.forward = Vector3.Slerp(currentDirection, targetDirection, normalizeTime);
                 yield return null;
             }
+
+            transform.forward = targetDirection;
+
+
         }
         #endregion
         /// <summary>
@@ -200,7 +213,11 @@ namespace Automaton
         {
             _state = stateToChange;
             StopAllCoroutines();
-            StartCoroutine(Behaviour());
+            if(currentBehaviourCoroutine != null)
+            {
+                StopCoroutine(currentBehaviourCoroutine);
+            }
+            currentBehaviourCoroutine = StartCoroutine(Behaviour());
         }
 
         public enum AutomatonStates

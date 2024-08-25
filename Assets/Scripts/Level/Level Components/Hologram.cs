@@ -213,7 +213,6 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
     }
 
-
     protected void RetrieveAudioSource()
     {
         if (globalAudioSource) SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
@@ -284,7 +283,6 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     {
         if(other.transform == GameData.playerTransform && isRunning)
         {
-            print("player enter the trigger");
             OnPlayerEnterTrigger();
         }
     }
@@ -293,7 +291,6 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     {
         if (other.transform == GameData.playerTransform && isRunning)
         {
-            print("player exit the trigger");
             OnPlayerExitTrigger();
         }
     }

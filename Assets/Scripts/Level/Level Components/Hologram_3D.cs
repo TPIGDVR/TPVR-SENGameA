@@ -40,11 +40,6 @@ public class Hologram_3D : Hologram <Hologram3DData>
         gameObject.SetActive(false);
     }
 
-    protected override void OnCompleteLine()
-    {
-        animator.SetTrigger("Complete");
-    }
-
     public override void PlayAnimation()
     {
         base.PlayAnimation();
@@ -67,6 +62,21 @@ public class Hologram_3D : Hologram <Hologram3DData>
         StartCoroutine(FadeOutHologram());
     }
 
+    protected override void OnInteruptHologram()
+    {
+        base.OnInteruptHologram();
+        OnEndHologram();
+    }
+
+    protected override void OnCompleteLine()
+    {
+        animator.SetTrigger("Complete");
+    }
+    protected override void OnNextHologram()
+    {
+        base.OnNextHologram();
+        animator.SetTrigger("NewHologram");
+    }
     protected override void OnEndHologram()
     {
         base.OnEndHologram();
@@ -76,16 +86,11 @@ public class Hologram_3D : Hologram <Hologram3DData>
         {
             GameData.playerHologram.Hide();
         }
+        if (current3DHologram) current3DHologram.gameObject.SetActive(false);
 
         animator.SetTrigger("HideHologram");
         GetComponent<Collider>().enabled = false;
         enabled = false;
-    }
-
-    protected override void OnNextHologram()
-    {
-        base.OnNextHologram();
-        animator.SetTrigger("NewHologram");
     }
 
     IEnumerator FadeOutHologram() 
@@ -133,7 +138,6 @@ public class Hologram_3D : Hologram <Hologram3DData>
         hologramMaterial.SetFloat("_Fade_In", value);
     }
 
-
     protected override void OnPlayerEnterTrigger()
     {
         if (current3DHologram == null) return;
@@ -155,6 +159,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
         //hide the slideshow hologram
         animator.SetTrigger("EnableHologram");
     }
+
     protected override void OnPlayerExitTrigger()
     {
         var portableHologram = GameData.playerHologram;

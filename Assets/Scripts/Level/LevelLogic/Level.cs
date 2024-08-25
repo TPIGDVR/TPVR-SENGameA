@@ -41,23 +41,23 @@ public class Level : MonoBehaviour, IScriptLoadQueuer
     {
         respawnPosition = GameData.playerTransform.position;
     }
-
+    [ContextMenu("move player to death")]
     public void TeleportPlayerToDeathPosition()
     {
+        print($"moving player to {deathPosition.position}");
         GameData.playerTransform.position = deathPosition.position;
     }
 
     public void TeleportPlayerToRespawnPosition()
     {
+        //StartCoroutine(TeleportPlayerToLocation(respawnPosition));
         GameData.playerTransform.position = respawnPosition;
-
     }
 
     [ContextMenu("Complete Tutorial")]
     public void CompleteTutorial()
     {
         EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_HEARTRATE);
-
         EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_NOISE_INDICATOR);
         GameData.ChangeTutorialStatus(false);
     }

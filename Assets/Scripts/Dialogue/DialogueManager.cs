@@ -2,6 +2,7 @@ using SoundRelated;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -33,6 +34,10 @@ namespace Dialog
         Coroutine printingCoroutine = null;
         AudioSource CurrentAudioSource = null;
 
+        //Hash int
+        int exitHash = Animator.StringToHash("Exit state");
+
+
         private void OnDisable()
         {
             em_d.RemoveListener<DialogueLines>(DialogEvents.ADD_DIALOG, AddDialog);
@@ -42,12 +47,16 @@ namespace Dialog
         {
             ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.SYSTEM);
         }
+
         public void Initialize()
         {
             dialogueBox.SetActive(false);
             em_d.AddListener<DialogueLines>(DialogEvents.ADD_DIALOG, AddDialog);
             //when the objective has been progress. stop eve from talking.
             EventSystem.level.AddListener<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, InteruptDialog);
+            EventSystem.player.AddListener(PlayerEvents.DEATH, OnDeath);
+            EventSystem.player.AddListener(PlayerEvents.RES_SCREEN_FADED, OnResumeGame);
+
         }
 
         #region opening/closing the dialogue box
@@ -65,8 +74,7 @@ namespace Dialog
 
             IEnumerator closeDialog()
             {
-                int hash = Animator.StringToHash("Exit state");
-                while (dialogAnimator.GetCurrentAnimatorStateInfo(0).shortNameHash != hash)
+                while (dialogAnimator.GetCurrentAnimatorStateInfo(0).shortNameHash != exitHash)
                 {
                     yield return null;
                 }
@@ -88,7 +96,7 @@ namespace Dialog
         }
 
         /// <summary>
-        /// Immediately Print the line if the player request it.
+        /// Immediately Print the dialog if the player request it.
         /// </summary>
         /// <param name="l"></param>
         void InstantPrintLine(Line l)
@@ -99,9 +107,9 @@ namespace Dialog
         }
 
         /// <summary>
-        /// Print the line in the dialog panel
+        /// Print the dialog in the dialog panel
         /// </summary>
-        /// <param name="l">The dialog line specified.</param>
+        /// <param name="l">The dialog dialog specified.</param>
         /// <returns></returns>
         IEnumerator PrintLine(Line l)
         {
@@ -148,7 +156,7 @@ namespace Dialog
             //open up the dialogue box ui
             OpenDialogueBox();
 
-            //get the first line of text
+            //get the first dialog of text
             currentIndex = 0;
             currentLine = currentDialog.Lines[currentIndex];
 
@@ -176,10 +184,10 @@ namespace Dialog
             }
             else //not currently printing anymore
             {
-                //proceed to next line
+                //proceed to next dialog
                 currentIndex++;
 
-                //check if the line is the end
+                //check if the dialog is the end
                 if (currentIndex >= currentDialog.Lines.Length)
                 {
                     EndDialog();
@@ -235,7 +243,7 @@ namespace Dialog
 
         void InteruptDialog(ObjectiveName objective)
         {
-            if (dialogueBox.active)
+            if (dialogueBox.activeSelf)
             {
                 if (printingCoroutine != null)
                 {
@@ -248,6 +256,40 @@ namespace Dialog
                 HideDialogueBox();
             }
             
+        }
+
+        void OnDeath()
+        {
+            if (dialogueBox.activeSelf)
+            {
+                ////Means there is something on the dialog.
+                //if (currentDialog)
+                //{
+                //    var newQueue = new Queue<DialogueLines>();
+                //    newQueue.Enqueue(currentDialog);
+                //    //add the remaining dialog to the new queue
+                //    while(_queueDialog.Count > 0)
+                //    {
+                //        newQueue.Enqueue(_queueDialog.Dequeue());
+                //    }
+                //    //then change the reference of the queue.
+                //    _queueDialog = newQueue;
+                //    currentDialog = null;
+                //}
+                //since the index still remains the same. we can call it later
+                HideDialogueBox();
+            }
+        }
+
+        void OnResumeGame()
+        {
+            if(currentDialog != null)
+            {
+                //that means the before death, the player had dialog to run.
+                OpenDialogueBox();
+                currentLine = currentDialog.Lines[currentIndex];
+                PrintCurrentDialogueLine();
+            }
         }
     }
 }

@@ -170,14 +170,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             if (_currDeathTimer >= _maxDeathTime && !isDead)
             {
                 isDead = true;
-                if (GameData.IsInTutorial)
-                {
-                    em_p.TriggerEvent(PlayerEvents.DEATH);
-                }
-                else
-                {
-                    em_g.TriggerEvent(GameEvents.LOSE);
-                }
+                em_p.TriggerEvent(PlayerEvents.DEATH);
             }
         }
         #endregion

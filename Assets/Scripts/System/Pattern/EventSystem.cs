@@ -33,7 +33,7 @@ public enum PlayerEvents
     OBJECTIVE_UPDATED,
 
     //death related
-    DEATH,//tutorial death
+    DEATH,//tutorial death 
     DEATH_SCREEN_FADED, //tutorial event death screen faded
     RESTART,//tutorial event death screen faded
     RES_SCREEN_FADED, // tutorial res screen faded

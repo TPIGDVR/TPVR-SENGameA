@@ -80,17 +80,9 @@ namespace Assets.Scripts.Tutorial
         {
             base.OnEnter();
             //adding listeners
-            EventSystem.player.AddListener(PlayerEvents.DEATH_SCREEN_FADED, poop);
 
             //trigger event
             EventSystem.level.TriggerEvent(LevelEvents.INIT_TUTORIAL);
-        }
-
-        public override void OnExit()
-        {
-            base.OnExit();
-
-            EventSystem.player.RemoveListener(PlayerEvents.DEATH_SCREEN_FADED, poop);
         }
 
         protected override void EvaluateObjective()
@@ -114,20 +106,8 @@ namespace Assets.Scripts.Tutorial
             
         }
 
-        void poop()
-        {
-            StartCoroutine(TutorialDeath());
-        }
+    
 
-        IEnumerator TutorialDeath()
-        {
-
-            yield return null;
-            //set player to death location
-            GameData.playerTransform.position = gameOver.deathPoint.position;
-
-            //reset the scene to just before they scan kiosk 4
-            //ResetScene();
-        }
+      
     }
 }

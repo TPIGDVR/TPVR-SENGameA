@@ -83,7 +83,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
     {
         base.OnNextHologram();
         animator.SetTrigger("ShowImage");
-        SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.IMAGE_KIOSK_OPEN);
+
     }
 
     protected override void OnInteruptHologram()

@@ -14,9 +14,22 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     //references to ui
     [SerializeField]
-    GameObject Heart,Objective,Dialogue,SkipHologramText,BreathDetection;
+    GameObject HeartUI, 
+        ObjectiveUI, 
+        DialogueUI, 
+        SkipHologramText, 
+        MapUI;
 
+    [Header("Breathing detection related")]
+    //for breathing
+    [SerializeField] 
+    GameObject BreathDetection;
 
+    [Header("controller related")]
+    [SerializeField]
+    OVRPlayerController playerController;
+    [SerializeField]
+    CharacterController characterController;
 
     [SerializeField]
     Transform playerTransform;
@@ -58,24 +71,17 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     }
 
     void EventSubscribing()
-    {
+    { 
         //tutorial events
         em_l.AddListener(LevelEvents.INIT_TUTORIAL, DeactivateAllMechanic);
         em_p.AddListener(PlayerEvents.DEATH, Death);
         em_p.AddListener(PlayerEvents.RESTART, Respawn);
         //dialogue events
         em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
-        em_d.AddListener(DialogEvents.ACTIVATE_BREATHING,ActivateBreathingMechanic);
+        em_d.AddListener(DialogEvents.ACTIVATE_BREATHING, ActivateBreathingMechanic);
         //level events
         em_l.AddListener<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ProgressObjective);
-        em_l.AddListener<Room>(LevelEvents.ENTER_NEW_ROOM, SwitchCurrentRoom);
-
-        //for Hologram
-        //em_p.AddListener(PlayerEvents.START_PLAYING_HOLOGRAM, OnHologramPlaying);
-        //em_p.AddListener(PlayerEvents.FINISH_PLAYING_HOLOGRAM, OnHologramStop);
-        //em_p.AddListener<Transform>(PlayerEvents.MOVE_PLAYER_TO_KIOKPOSITION, MovePlayerToKioskPosition);
-        //em_p.AddListener(PlayerEvents.PAUSE_HOLOGRAM, OnHologramPause);
-        //em_p.AddListener(PlayerEvents.UNPAUSE_HOLOGRAM, OnHologramUnpause);
+        em_l.AddListener<Room>(LevelEvents.ENTER_NEW_ROOM, SwitchCurrentRoom);        
     }
 
     void EventUnsubscribing()
@@ -127,7 +133,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     {
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.FUTURISTIC_PANEL_OPEN);
         anxietyHandler.CanRun = true;
-        Heart.SetActive(true);
+        HeartUI.SetActive(true);
     }
 
     void ActivateBreathingMechanic()
@@ -142,22 +148,24 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         //disable noise range indicator
         //disable objective indicator
         anxietyHandler.CanRun = false;
-        Heart.SetActive(false);
+        HeartUI.SetActive(false);
         BreathDetection.SetActive(false);
-        //Objective.SetShow(false);
+        //ObjectiveUI.SetShow(false);
     }
 
     void CloseAllUI()
     {
-        Heart.SetActive(false);
-        Objective.SetActive(false);
-        Dialogue.SetActive(false);
+        HeartUI.SetActive(false);
+        ObjectiveUI.SetActive(false);
+
+        MapUI.SetActive(false);
     }
 
     void OpenUI()
     {
-        Heart.SetActive(true);
-        Objective.SetActive(true);
+        HeartUI.SetActive(true);
+        ObjectiveUI.SetActive(true);
+        MapUI.SetActive(true);
     }
 
     void Death()
@@ -175,21 +183,58 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     {
         vfx.BeginFadeScreen();
         CloseAllUI();
+        //make sure to stop any hologram that is being played in the background
+        em_l.TriggerEvent(LevelEvents.INTERRUPT_HOLOGRAM);
+        DisableMovement();
         yield return new WaitUntil(() => vfx.isFaded);
-        em_p.TriggerEvent(PlayerEvents.DEATH_SCREEN_FADED);
+        print("calling out death screen");
+        em_p.TriggerEvent(PlayerEvents.DEATH_SCREEN_FADED); 
         yield return new WaitForSeconds(1f);
+        EnableMovement();
         vfx.BeginUnfadeScreen();
     }
 
     IEnumerator T_Respawn()
     {
         vfx.BeginFadeScreen();
+        DisableMovement();
+
         yield return new WaitUntil(() => vfx.isFaded);
         em_p.TriggerEvent(PlayerEvents.RES_SCREEN_FADED);
         vfx.BeginUnfadeScreen();
         yield return new WaitUntil(() => !vfx.isFaded);
+        EnableMovement();
+
         OpenUI();
     }
+
+    float initialAccleration;
+
+    void EnableMovement()
+    {
+        //playerController.Teleported = false;
+        //characterController.enabled = false;
+        //playerController.Acceleration = initialAccleration;
+        playerController.enabled = true;
+    }
+
+    void DisableMovement()
+    {
+        playerController.Stop();
+        playerController.enabled = false;
+        //playerController.Teleported = true;
+        //characterController.enabled = false;
+        //if (playerController.Acceleration > 0)
+        //{
+        //    //will always make sure the keep a position value acceleration
+        //    initialAccleration = playerController.Acceleration;
+        //}
+        ////make sure the player cant move anymore
+        //playerController.Stop();
+        //playerController.Acceleration = 0;
+    }
+
+
     #endregion
 
     #region hologram
