@@ -67,6 +67,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             em_p.AddListener<float>(PlayerEvents.ANXIETY_BREATHE, Breath);
             em_p.AddListener<float>(PlayerEvents.HEART_BEAT, () => curAnxiety);
             _noiseSources = FindObjectsOfType<NoiseSource>();
+            StartCoroutine(CalcGlare_Cor());
         }
 
         public void CalculateAnxiety()
@@ -107,7 +108,8 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 
         float CalculateAnxietyScaleBasedOffGlareLevel()
         {
-            CalculateGlare();
+            //moved to coroutine
+            //CalculateGlare();
 
             return Mathf.Lerp(_minAnxietyIncreaseScale
                     , _maxAnxietyIncreaseScale
@@ -254,6 +256,20 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                     totalBrightness = 0;
 
                 return totalBrightness;
+            }
+        }
+
+        IEnumerator CalcGlare_Cor()
+        {
+            int framesToWait = 5;
+            while (true)
+            {
+                CalculateGlare();
+
+                for (int i = 0; i < framesToWait; i++)
+                {
+                    yield return null;
+                }
             }
         }
     }

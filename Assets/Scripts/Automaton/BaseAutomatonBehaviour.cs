@@ -134,7 +134,7 @@ namespace Automaton
             Vector3 previousPosition = transform.position;
             while (_agent.remainingDistance >= _travelCompleteThreshold)
             {
-                print($"{Agent.name} has a remaining distance of {_agent.remainingDistance}. {_travelCompleteThreshold}");
+                //print($"{Agent.name} has a remaining distance of {_agent.remainingDistance}. {_travelCompleteThreshold}");
                 //check 
                 Vector3 nxtDirection = _agent.nextPosition - previousPosition;
 
