@@ -15618,12 +15618,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 774605323}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &789716749 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1815886109982071809, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
-    type: 3}
-  m_PrefabInstance: {fileID: 8718915377130391862}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &792794835
 GameObject:
   m_ObjectHideFlags: 0
@@ -25704,24 +25698,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 00aa6373d00aaa74a834badd7630cf45,
     type: 3}
   m_PrefabInstance: {fileID: 1258994460}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1259419927 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7439823158829719591, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
-    type: 3}
-  m_PrefabInstance: {fileID: 8718915377130391862}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0950df82e7936c84983497630bde5b54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!143 &1259419928 stripped
-CharacterController:
-  m_CorrespondingSourceObject: {fileID: 1804554717413570168, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
-    type: 3}
-  m_PrefabInstance: {fileID: 8718915377130391862}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1261096645
 PrefabInstance:
@@ -44369,21 +44345,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6470840294056381801, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
-        type: 3}
-      propertyPath: BreathDetection
-      value: 
-      objectReference: {fileID: 789716749}
-    - target: {fileID: 6470840294056381801, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
-        type: 3}
-      propertyPath: playerController
-      value: 
-      objectReference: {fileID: 1259419927}
-    - target: {fileID: 6470840294056381801, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
-        type: 3}
-      propertyPath: characterController
-      value: 
-      objectReference: {fileID: 1259419928}
     - target: {fileID: 6788133179854204488, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
       propertyPath: m_Name
