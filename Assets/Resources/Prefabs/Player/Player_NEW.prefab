@@ -409,7 +409,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0.6}
+  m_BackGroundColor: {r: 0.20097543, g: 0.27865216, b: 0.3660378, a: 0.6}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -462,7 +462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 1
+  m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
@@ -10952,7 +10952,7 @@ MonoBehaviour:
   virtualGreenScreenApplyDepthCulling: 0
   virtualGreenScreenDepthTolerance: 0.2
   mrcActivationMode: 0
-  launchSimultaneousHandsControllersOnStartup: 0
+  launchSimultaneousHandsControllersOnStartup: 1
   isInsightPassthroughEnabled: 0
   shouldBoundaryVisibilityBeSuppressed: 0
   requestBodyTrackingPermissionOnStartup: 0
@@ -10970,7 +10970,7 @@ MonoBehaviour:
   LateControllerUpdate: 1
   LateLatching: 0
   controllerDrivenHandPosesType: 0
-  SimultaneousHandsAndControllersEnabled: 0
+  SimultaneousHandsAndControllersEnabled: 1
   _readOnlyWideMotionModeHandPosesEnabled: 0
   wideMotionModeHandPosesEnabled: 0
 --- !u!114 &6470686570667011069
@@ -11041,7 +11041,7 @@ MonoBehaviour:
   HmdRotatesY: 1
   GravityModifier: 0.379
   useProfileData: 1
-  EnableLinearMovement: 1
+  EnableLinearMovement: 0
   EnableRotation: 1
   RotationEitherThumbstick: 0
 --- !u!1 &4436039806621864213
@@ -17524,6 +17524,7 @@ GameObject:
   - component: {fileID: 4665539866139184370}
   - component: {fileID: 4002974846540453751}
   - component: {fileID: 3910589187152166851}
+  - component: {fileID: 2633499447868917602}
   m_Layer: 9
   m_Name: Player_NEW
   m_TagString: Player
@@ -17629,6 +17630,19 @@ MonoBehaviour:
   maxTimeReduction: 3
   anxietyReduction: 10
   CanRun: 0
+--- !u!114 &2633499447868917602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6788133179854204488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed57f115ad5369b47b6b0f7616fc5905, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 4499260884593988323}
 --- !u!1 &6821684988681071988
 GameObject:
   m_ObjectHideFlags: 0
@@ -23793,6 +23807,11 @@ PrefabInstance:
       propertyPath: hologramRenderer
       value: 
       objectReference: {fileID: 433891338039333626}
+    - target: {fileID: 8029261341935547058, guid: 49dc2facff06a0d4086da87425b1048f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8443938468990118209, guid: 49dc2facff06a0d4086da87425b1048f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -24043,6 +24062,12 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8413164731251678194, guid: 1a0d5a08519663e42a6dcc344941d6d5,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 24300002, guid: 9945e7c079716de4d9ae802432f575cf,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
