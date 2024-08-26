@@ -61,6 +61,7 @@ namespace Automaton
             _ani = GetComponent<Animator>();
             _agent = GetComponent<NavMeshAgent>();
             _audio = GetComponent<AudioSource>();
+            StartBehaviour();
             currentBehaviourCoroutine = StartCoroutine(Behaviour());
         }
         #endregion
