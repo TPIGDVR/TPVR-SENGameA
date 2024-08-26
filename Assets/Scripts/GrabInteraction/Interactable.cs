@@ -6,6 +6,13 @@ public class Interactable : MonoBehaviour
 {
     public GameObject mesh;
     public Rigidbody rb;
+    public GameObject instructionToolTip;
+
+
+    private void Start()
+    {
+        instructionToolTip.SetActive(false);
+    }
 
     public void Equip(){
         mesh.SetActive(false);
@@ -21,4 +28,15 @@ public class Interactable : MonoBehaviour
     public void ShowMesh(){
         mesh.SetActive(true);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        instructionToolTip.SetActive(true);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        instructionToolTip.SetActive(false);
+    }
+
 }
