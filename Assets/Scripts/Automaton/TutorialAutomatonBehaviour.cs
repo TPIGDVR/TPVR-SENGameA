@@ -11,7 +11,7 @@ namespace Automaton
             //we want to control it base on event.
         }
 
-        protected override void StartBehaviour()
+        protected override void InitBehaviour()
         {
             //we want the tutorial bot be in idle.
             _state = AutomatonStates.IDLE;

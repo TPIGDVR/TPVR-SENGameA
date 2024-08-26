@@ -7,14 +7,21 @@ using Unity.Mathematics;
 public class ControllerCheckForCollider : MonoBehaviour
 {
     [SerializeField]
-    Transform parentControllerComponent;
-    [SerializeField]
-    float detectionRadius = 0.001f;
+    LineRenderer lineRenderer;
 
+
+    [SerializeField]
+    Transform parentControllerComponent;
+
+    [SerializeField]
+    Vector3 directionAwayFromTheController;
     [SerializeField]
     float maxDistanceFromController = 0.1f;
     [SerializeField]
-    float distLimiter = 10f;
+    float weightForDirectionAwayFromController = 10f;
+    [SerializeField]
+    float weightForDirectionTowardsCamera = 20f;
+    
     Camera mainCamera;
     [SerializeField]
     Vector3 shiftOffset;
@@ -24,24 +31,50 @@ public class ControllerCheckForCollider : MonoBehaviour
     void Start()
     {
         mainCamera = Camera.main;
+        lineRenderer.positionCount = 2;
+
     }
     // Update is called once per frame
     void Update()
     {
-        Vector3 dirAwayFromController = (transform.position - parentControllerComponent.position).normalized;
-        dirAwayFromController /= distLimiter;
+        Vector3 dirAwayFromController = directionAwayFromTheController.normalized;
+        dirAwayFromController *= weightForDirectionAwayFromController;
+
+        //then check whether the text hits the player.
         Vector3 dirTowardsCamera = (mainCamera.transform.position - transform.position).normalized;
-        ray = new Ray(mainCamera.transform.position, -dirTowardsCamera);
-        dirTowardsCamera += shiftOffset;
+        ray = new Ray(mainCamera.transform.position, - dirTowardsCamera);
+        //dirTowardsCamera += shiftOffset;
         dirTowardsCamera.Normalize();
-        dirTowardsCamera /= 20f;
+
+        dirTowardsCamera *= weightForDirectionTowardsCamera;
+
         bool hasHit = Physics.Raycast(ray, out RaycastHit hitinfo, 5f, layerMask);
-        //if(hasHit)
-        //    Debug.Log(hitinfo.collider.name);
+
+        //if (hasHit)
+        //    Debug.Log($"Collider hit {hitinfo.collider.name}");
         hasHit = false; //Band-aid patch for now
+
         Vector3 upwardOffset = hasHit? Vector3.up * 0.2f : Vector3.zero;
-        //transform.localPosition = Vector3.Lerp(transform.position, parentControllerComponent.position + dirAwayFromController + dirTowardsCamera + upwardOffset,math.saturate(Time.deltaTime * 5f));
-        transform.localPosition = parentControllerComponent.position + shiftOffset;
+
+        Vector3 TargetPosition = parentControllerComponent.position +
+                    dirAwayFromController +
+                    dirTowardsCamera +
+                    upwardOffset +
+                    shiftOffset;
+
+        //transform.position = Vector3.Lerp(transform.position,
+        //    TargetPosition,
+        //    math.saturate(Time.deltaTime * 5f));
+
+        transform.position = TargetPosition;
+
+        UpdateLine();
+    }
+
+    void UpdateLine()
+    {
+        lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetPosition(1, parentControllerComponent.position);
     }
 
     void OnDrawGizmos()

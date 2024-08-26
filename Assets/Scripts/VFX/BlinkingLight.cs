@@ -32,7 +32,7 @@ public class BlinkingLights : MonoBehaviour
     {
         blink = StartCoroutine(BlinkLights());
 
-        print("became visible");
+        //print("became visible");
     }
 
     void OnBecameInvisible()

@@ -61,7 +61,7 @@ namespace Automaton
             _ani = GetComponent<Animator>();
             _agent = GetComponent<NavMeshAgent>();
             _audio = GetComponent<AudioSource>();
-            StartBehaviour();
+            InitBehaviour();
             currentBehaviourCoroutine = StartCoroutine(Behaviour());
         }
         #endregion
@@ -126,7 +126,7 @@ namespace Automaton
 
         protected IEnumerator MovementCoroutine(Vector3 destination)
         {
-            print("Started new way point destination");
+            //print("Started new way point destination");
             _agent.SetDestination(destination);
             _agent.speed = 0;
 
@@ -157,7 +157,7 @@ namespace Automaton
                 previousPosition = transform.position;
                 yield return null;
             }
-            print("Finish way point");
+            //print("Finish way point");
             _ani.SetFloat("Spd", 0f);
         }
 
@@ -206,7 +206,7 @@ namespace Automaton
             _state = (AutomatonStates)nxtState;
         }
 
-        protected virtual void StartBehaviour()
+        protected virtual void InitBehaviour()
         {
             //NOOP
         }
