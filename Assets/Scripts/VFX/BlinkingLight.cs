@@ -13,10 +13,12 @@ public class BlinkingLights : MonoBehaviour
     float randInterval;
     [SerializeField]float randChance;
 
+    Coroutine blink;
+    int index;
     private void Start()
     {
-        int index = Random.Range(0, _mats.Length);
-        if(index == 0)
+        index = Random.Range(1, _mats.Length);
+        if (index == 0)
         {
             gameObject.SetActive(false);
             return;
@@ -24,7 +26,19 @@ public class BlinkingLights : MonoBehaviour
 
         _renderer = GetComponent<MeshRenderer>();
         _renderer.material = _mats[index];
-        StartCoroutine(BlinkLights());
+        //blink = StartCoroutine(BlinkLights());
+    }
+    void OnBecameVisible()
+    {
+        blink = StartCoroutine(BlinkLights());
+
+        print("became visible");
+    }
+
+    void OnBecameInvisible()
+    {
+        StopCoroutine(blink);
+        print("became invisible");
     }
 
     IEnumerator BlinkLights()
@@ -36,7 +50,7 @@ public class BlinkingLights : MonoBehaviour
             
             if (rV > randChance)
             {
-                _renderer.enabled = false;
+                _renderer.material = _mats[0];
                 //_light.enabled = false;
             }
 
@@ -44,7 +58,7 @@ public class BlinkingLights : MonoBehaviour
 
             yield return new WaitForSeconds(rW);
 
-            _renderer.enabled = true;
+            _renderer.material = _mats[index];
             //_light.enabled = true;
 
             yield return new WaitForSeconds(randInterval);
