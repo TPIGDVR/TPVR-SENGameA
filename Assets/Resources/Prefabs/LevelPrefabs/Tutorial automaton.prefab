@@ -1325,6 +1325,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5053014494297850728}
+  - component: {fileID: 6890122658555308257}
   m_Layer: 10
   m_Name: Tutorial automaton
   m_TagString: Untagged
@@ -1349,6 +1350,19 @@ Transform:
   - {fileID: 1358963262566502250}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6890122658555308257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4026689323253427159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed57f115ad5369b47b6b0f7616fc5905, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 1212484481306487848}
 --- !u!1 &4083545448460395732
 GameObject:
   m_ObjectHideFlags: 0

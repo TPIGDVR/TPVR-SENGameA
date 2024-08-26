@@ -31,14 +31,11 @@ public class BlinkingLights : MonoBehaviour
     void OnBecameVisible()
     {
         blink = StartCoroutine(BlinkLights());
-
-        print("became visible");
     }
 
     void OnBecameInvisible()
     {
         StopCoroutine(blink);
-        print("became invisible");
     }
 
     IEnumerator BlinkLights()

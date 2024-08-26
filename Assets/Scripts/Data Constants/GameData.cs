@@ -12,6 +12,8 @@ public static class GameData
 
     public static Hologram_Portable playerHologram;
 
+    public static RenderTexture miniMapSnapShot;
+
     public static void ChangeTutorialStatus(bool b)
     {
         IsInTutorial = b;

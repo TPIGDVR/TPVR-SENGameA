@@ -1,20 +1,22 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BoundingBoxGenerator : MonoBehaviour
 {
     public LayerMask mask;
     StaticObject[] staticObjects;
-
+    DynamicObjects[] dynamicObjects;
     Vector2 bbCenter;
     Vector2 bbSize;
     public Color mapColor;
-    public RenderTexture mapSnapshot;
     public RectTransform canvasRT;
-
+    public RawImage mapImage;
+    
     void Start()
     {
         GetStaticRef();
+        GetDynamicRef();
         GenerateBoundingBox2D();
     }
 
@@ -79,8 +81,14 @@ public class BoundingBoxGenerator : MonoBehaviour
         staticObjects = GameObject.FindObjectsOfType<StaticObject>();
     }
 
+    void GetDynamicRef()
+    {
+        dynamicObjects = GameObject.FindObjectsOfType<DynamicObjects>();
+    }
+
     IEnumerator GenerateCamera()
     {
+        ToggleDynamicCanvas(false);
         GameObject camGO = new();
         Camera cam  = camGO.AddComponent<Camera>();
         cam.cullingMask = mask;
@@ -102,16 +110,24 @@ public class BoundingBoxGenerator : MonoBehaviour
 
         cam.clearFlags = CameraClearFlags.SolidColor;
         cam.backgroundColor = mapColor;
-
-        cam.targetTexture = mapSnapshot;
+        int scalar = 10;
+        int camWidth = (int)(cam.orthographicSize * cam.aspect) * 2 * scalar;
+        // manually add the offset to perfectly scale the map up
+        //needs to be fixed
+        RenderTexture rt = new(camWidth, camWidth + 120, 0);
+        //rt.filterMode = FilterMode.Point;
+        cam.targetTexture = rt;
+        rt.Create();
+        GameData.miniMapSnapShot = rt;
         yield return null;
         cam.targetTexture = null;
         Destroy(camGO);
-        DestroyAllCanvas();
+        DestroyAllStaticCanvas();
         ApplyMapSnapshotToCanvas();
+        ToggleDynamicCanvas(true);
     }
 
-    void DestroyAllCanvas()
+    void DestroyAllStaticCanvas()
     {
         foreach (var item in staticObjects)
         {
@@ -122,9 +138,18 @@ public class BoundingBoxGenerator : MonoBehaviour
         }
     }
 
+    void ToggleDynamicCanvas(bool b)
+    {
+        foreach (var item in dynamicObjects)
+        {
+            item.canvas.enabled = b;            
+        }
+    }
+
     void ApplyMapSnapshotToCanvas()
     {
-        canvasRT.position = new(bbCenter.x,0 , bbCenter.y);
+        canvasRT.position = new(bbCenter.x,1 , bbCenter.y);
         canvasRT.sizeDelta = new(bbSize.y,bbSize.x);
+        mapImage.texture = GameData.miniMapSnapShot;
     }
 }

@@ -1076,6 +1076,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3493834526986917405}
+  - component: {fileID: 23242675986814556}
   m_Layer: 0
   m_Name: Kiosk 2 game prefab
   m_TagString: Untagged
@@ -1103,6 +1104,19 @@ Transform:
   - {fileID: 5237342685459653037}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 96.514, z: 0}
+--- !u!114 &23242675986814556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7642485457137486245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed57f115ad5369b47b6b0f7616fc5905, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 2031700405360022886}
 --- !u!1 &8383241985844860455
 GameObject:
   m_ObjectHideFlags: 0
