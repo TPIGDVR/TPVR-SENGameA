@@ -31,6 +31,12 @@ namespace SoundRelated
             ScriptLoadSequencer.Enqueue(this, (int) LevelLoadSequence.SYSTEM);
         }
 
+        //if the sound manager is placed at the starting menu that this will be called 
+        private void Start()
+        {
+            TryInitalizePool();
+        }
+
         private PoolingPattern<AudioSource> CreatePoolObject(int sizeNumber, 
             GameObject prefab, 
             Transform parent)
@@ -187,8 +193,19 @@ namespace SoundRelated
 
         public void Initialize()
         {
-            pooled3DAudioSource = CreatePoolObject(initPoolSize3D, prefabFor3DAudioSource, containerFor3DAudioSource);
-            pooledGlobalAudioSource = CreatePoolObject(initPoolSizeGlobal, prefabForGlobalAudioSource, containerForGlobalAudioSource);
+            TryInitalizePool();
+        }
+
+        void TryInitalizePool()
+        {
+            if(pooledGlobalAudioSource == null)
+            {
+                pooledGlobalAudioSource = CreatePoolObject(initPoolSizeGlobal, prefabForGlobalAudioSource, containerForGlobalAudioSource);
+            }
+            if(pooled3DAudioSource == null)
+            {
+                pooled3DAudioSource = CreatePoolObject(initPoolSize3D, prefabFor3DAudioSource, containerFor3DAudioSource);
+            }
         }
 
         #region Ambient related code

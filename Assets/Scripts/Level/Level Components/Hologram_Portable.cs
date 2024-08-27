@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class Hologram_Portable : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI text;
-
+    [SerializeField] Animator animator;
     [Header("Slide show")]
     [SerializeField] Image imageComponent;
 
@@ -38,16 +38,21 @@ public class Hologram_Portable : MonoBehaviour
     private void Start()
     {
         GameData.playerHologram = this;
-        hologramRenderer.gameObject.SetActive(false);
-        Hide();
+        HideGameobject();
     }
 
     public void Hide()
+    {
+        animator.SetTrigger("Hide");
+    }
+
+    void HideGameobject()
     {
         gameObject.SetActive(false);
         hologramRenderer.SetActive(false);
     }
 
+    //will automatically show the animation to the display.
     public void Show()
     {
         gameObject.SetActive(true);
