@@ -6,7 +6,7 @@ using SoundRelated;
 using Unity.VisualScripting;
 
 public abstract class BaseHologram : MonoBehaviour
-{
+{ 
     public abstract void PlayAnimation();
 }
 
@@ -34,6 +34,8 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     [SerializeField] protected DataType _Data;
     protected bool isRunning = false;
 
+    Coroutine currentCoroutine;
+    Coroutine typingCoroutine;
     protected virtual void Start()
     {
         //NOOP
@@ -75,7 +77,12 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
     protected void RunPanel()
     {
-        StartCoroutine(RunHologram());
+        print("running panel");
+        if (currentCoroutine == null)
+        {
+            //make sure that it is run once even if it is called other places.
+            currentCoroutine = StartCoroutine(RunHologram());
+        }
     }
 
     private IEnumerator RunHologram()
@@ -97,6 +104,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         }
         else
         {
+            currentCoroutine = null;
             OnNextHologram();
         }
     }
@@ -158,7 +166,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         speechSource = null;
 
         //time it takes to wait for the text to finish 
-        float timerToWait = (0.5f / textSpeed) * targetLine.line.Length;
+        float timerToWait = (0.9f / textSpeed) * targetLine.line.Length;
 
         //if there is a clip than play the clip transcipt.
         if (clip.clip)
@@ -168,10 +176,15 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         }
 
         timerToWait += targetLine.timerOffset;
-        StartCoroutine(TypeNextSentence(targetLine.line));
+        typingCoroutine = StartCoroutine(TypeNextSentence(targetLine.line));
 
         //afterwards, wait for the either the timer to finish or speech to finish.
         yield return new WaitForSeconds(timerToWait);
+
+        print("finish playing typing");
+
+        StopCoroutine(typingCoroutine);
+        typingCoroutine = null;
 
         //audio source related
         RetrieveAudioSource();
@@ -192,9 +205,9 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
             textToDisplay += c;
             subtitleText.text = textToDisplay;
             yield return new WaitForSeconds(0.5f / textSpeed);
-
         }
 
+        print("retrieve audio here");
         SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
         globalAudioSource = null;
     }
@@ -210,13 +223,16 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     private void PlayGlobalAudioSource()
     {
         globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
-
     }
 
     protected void RetrieveAudioSource()
     {
+        print("retrieve global and speech source");
         if (globalAudioSource) SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
         if (speechSource) SoundManager.Instance.RetrieveAudioSource(speechSource);
+
+        globalAudioSource = null;
+        speechSource = null;
     }
     #endregion
 
@@ -226,6 +242,8 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     /// </summary>
     private void InteruptHologram()
     {
+        print($"Hologram is interrupted");
+
         StopAllCoroutines();
         RetrieveAudioSource(); //basically stop the audio from playing
         OnInteruptHologram();
