@@ -50,8 +50,6 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         {
             anxietyHandler._anxietyLevel = 0;
         }
-
-        
     }
 
     #region Initialization
