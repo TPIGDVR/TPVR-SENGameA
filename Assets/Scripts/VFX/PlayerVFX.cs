@@ -53,4 +53,17 @@ public class PlayerVFX : MonoBehaviour
 
         isFaded = false;
     }
+
+    public void DisplayFadeScreen()
+    {
+        _fadeImg.color = new Color(0, 0, 0, 1);
+        isFaded = true;
+    }
+
+    public void HideFadeScreen()
+    {
+        _fadeImg.color = new Color(0, 0, 0, 0);
+        isFaded = false;
+    }
+
 }

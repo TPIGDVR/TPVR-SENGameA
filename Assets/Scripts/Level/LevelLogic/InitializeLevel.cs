@@ -6,6 +6,8 @@ using UnityEngine.Rendering;
 public class InitializeLevel : MonoBehaviour
 {
     [SerializeField]
+    PlayerVFX playerVFX;
+    [SerializeField]
     Transform LevelTransform;
     Level level;
     EventManager<LevelEvents> em_l = EventSystem.level;
@@ -15,10 +17,20 @@ public class InitializeLevel : MonoBehaviour
         //have to make sure the level's scale is uniform for all axis
         LevelConstants.UpdateScale(LevelTransform.localScale.x);
         level = GetComponent<Level>();
+
+        //Make the black screen.
+        playerVFX.DisplayFadeScreen();
     }
 
     private void Start()
     {
+        StartCoroutine(StartLoading());
+    }
+
+    IEnumerator StartLoading()
+    {
         ScriptLoadSequencer.LoadScripts();
+        yield return new WaitForSeconds(2f);
+        playerVFX.BeginUnfadeScreen();
     }
 }
