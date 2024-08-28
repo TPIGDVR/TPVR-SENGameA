@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockId: f8766c17-aaf8-4b55-9431-de8deea83842
-  instanceId: 044e9d52-251a-4994-a704-e77527c05e7a
+  instanceId: ddbf89e0-9bba-4481-96ea-79f9309bc163
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: f8338144-8280-4ff6-9455-ae2bb9c20fe8
@@ -254,6 +254,7 @@ Transform:
   - {fileID: 8938140679429349420}
   - {fileID: 4539883179279452284}
   - {fileID: 8027464326170331393}
+  - {fileID: 6602444967163859677}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &7612831100954180742
@@ -319,6 +320,73 @@ MonoBehaviour:
   mesh: {fileID: 2882857977136807661}
   rb: {fileID: 5848456447165611461}
   instructionToolTip: {fileID: 0}
+--- !u!1 &2003021985992273955
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6602444967163859677}
+  - component: {fileID: 3351768760539135738}
+  - component: {fileID: 4233135420975200010}
+  m_Layer: 13
+  m_Name: PopupTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6602444967163859677
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003021985992273955}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9062313782037494522}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3351768760539135738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003021985992273955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3597a38bfc52b4093a80a16bf47ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instructionToolTip: {fileID: 0}
+--- !u!65 &4233135420975200010
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003021985992273955}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.2611313, y: 0.1155324, z: 0.28531647}
+  m_Center: {x: 0.0072898865, y: 0.005576849, z: 0.008378983}
 --- !u!1 &2035349952139471251
 GameObject:
   m_ObjectHideFlags: 0

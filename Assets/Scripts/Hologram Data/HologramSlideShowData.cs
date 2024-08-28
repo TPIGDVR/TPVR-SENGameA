@@ -34,7 +34,7 @@ public class HologramDialogLine
 [Serializable]
 public class Hologram3DSlideShowLine: HologramDialogLine
 {
-    public GameObject prefab3D;
+    public GameObject prefab3D; 
 }
 
 [Serializable]

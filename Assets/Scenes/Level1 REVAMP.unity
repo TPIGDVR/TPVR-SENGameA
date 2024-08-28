@@ -25518,7 +25518,7 @@ PrefabInstance:
     - target: {fileID: 1256932257851225215, guid: b509933736ea1024c89b490c0ddcae03,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1614847510933458219, guid: b509933736ea1024c89b490c0ddcae03,
         type: 3}
@@ -25588,22 +25588,22 @@ PrefabInstance:
     - target: {fileID: 4830523449268073825, guid: b509933736ea1024c89b490c0ddcae03,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4830523449268073825, guid: b509933736ea1024c89b490c0ddcae03,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4830523449268073825, guid: b509933736ea1024c89b490c0ddcae03,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 67.76
       objectReference: {fileID: 0}
     - target: {fileID: 4830523449268073825, guid: b509933736ea1024c89b490c0ddcae03,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 33.88
       objectReference: {fileID: 0}
     - target: {fileID: 5802665000199348484, guid: b509933736ea1024c89b490c0ddcae03,
         type: 3}
@@ -43002,6 +43002,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sunglasses
       objectReference: {fileID: 0}
+    - target: {fileID: 3351768760539135738, guid: 6a6b910bad27a0d4d929b627f91f5910,
+        type: 3}
+      propertyPath: instructionToolTip
+      value: 
+      objectReference: {fileID: 2066766611045018195}
+    - target: {fileID: 4233135420975200010, guid: 6a6b910bad27a0d4d929b627f91f5910,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7083477203707907268, guid: 6a6b910bad27a0d4d929b627f91f5910,
         type: 3}
       propertyPath: instructionToolTip
@@ -44441,6 +44451,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 359881098370057622, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 359881098370057622, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_TagString
+      value: Hand
+      objectReference: {fileID: 0}
     - target: {fileID: 475040810761702017, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
       propertyPath: m_SizeDelta.y
@@ -44484,7 +44504,7 @@ PrefabInstance:
     - target: {fileID: 9170264803382161511, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.236
+      value: -13.9
       objectReference: {fileID: 0}
     - target: {fileID: 9170264803382161511, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
@@ -44494,7 +44514,7 @@ PrefabInstance:
     - target: {fileID: 9170264803382161511, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.381
+      value: -23.7
       objectReference: {fileID: 0}
     - target: {fileID: 9170264803382161511, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
@@ -44530,6 +44550,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9170281344435723220, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_Radius
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9203776587706055368, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_TagString
+      value: Hand
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
