@@ -15,10 +15,6 @@ namespace BreathDetection
 
         void Start()
         {
-            foreach(string name in Microphone.devices)
-            {
-                print(name);
-            }
             _microphoneClip = Microphone.Start(Microphone.devices[0], true, RecordLengthSec, SampleRate);
         }
 
