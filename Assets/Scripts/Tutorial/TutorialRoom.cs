@@ -103,11 +103,10 @@ namespace Assets.Scripts.Tutorial
                 var kiosk = kiosks.FirstOrDefault(kiosk => kiosk.ScanCompleted);
                 EventSystem.level.TriggerEvent<Transform>(LevelEvents.FIRST_KIOSK, kiosk.AutomatonTargetDestination);
             }
-            
+            else if(objective.Completed == 4)
+            {
+                EventSystem.level.TriggerEvent(LevelEvents.INIT_TUTORIAL);
+            }
         }
-
-    
-
-      
     }
 }

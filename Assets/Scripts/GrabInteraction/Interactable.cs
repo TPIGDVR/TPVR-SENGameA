@@ -6,12 +6,8 @@ public class Interactable : MonoBehaviour
 {
     public GameObject mesh;
     public Rigidbody rb;
-    public GameObject instructionToolTip;
 
-    private void Start()
-    {
-        instructionToolTip.SetActive(false);
-    }
+
 
     public void Equip(){
         mesh.SetActive(false);

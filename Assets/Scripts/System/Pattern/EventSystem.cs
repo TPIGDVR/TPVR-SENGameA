@@ -62,6 +62,7 @@ public enum LevelEvents
     //tutorial related
     INIT_TUTORIAL,
     FIRST_KIOSK,
+    FINISH_TUTORIAL,
 
     //hologram related
     INTERRUPT_HOLOGRAM, //stop the hologram

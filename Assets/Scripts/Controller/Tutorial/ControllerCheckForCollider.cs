@@ -32,7 +32,7 @@ public class ControllerCheckForCollider : MonoBehaviour
     {
         mainCamera = Camera.main;
         lineRenderer.positionCount = 2;
-
+        EventSystem.level.AddListener(LevelEvents.FINISH_TUTORIAL, OnEndTutorial);
     }
     // Update is called once per frame
     void Update()
@@ -76,6 +76,12 @@ public class ControllerCheckForCollider : MonoBehaviour
         lineRenderer.SetPosition(0, transform.position);
         lineRenderer.SetPosition(1, parentControllerComponent.position);
     }
+
+    void OnEndTutorial()
+    {
+        Destroy(gameObject);
+        EventSystem.level.RemoveListener(LevelEvents.FINISH_TUTORIAL, OnEndTutorial);
+    }    
 
     void OnDrawGizmos()
     {
