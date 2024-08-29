@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BreathDetection
 {
-    public class BreathingAnxietyReduction : MonoBehaviour
+    public class BreathingAnxietyReduction : MonoBehaviour, IScriptLoadQueuer
     {
         [SerializeField] BreathingDetection detector;
         [Range(0.1f, 1)]
@@ -33,22 +34,17 @@ namespace BreathDetection
 
         FSM _mfsm;
 
+        [Header("UI")]
+        [SerializeField] GameObject breathingPanel;
+        [SerializeField] Slider inhaleSilder;
+        [SerializeField] Slider exhaleSlider;
+
         [Header("debugging")]
         public string stateName;
-        private void Start()
+
+        private void Awake()
         {
-            detector = GetComponent<BreathingDetection>();
-            sample = new Queue<BreathingOutPut>();
-
-            //seting up the fsm
-            _mfsm = new FSM();
-            _mfsm.Add(new SilenceState(_mfsm, (int)States.SILENCE, this));
-            _mfsm.Add(new InhaleState(_mfsm, (int)States.INHALING, this));
-            _mfsm.Add(new ExhaleState(_mfsm, (int)States.EXHALING, this));
-            _mfsm.Add(new WaitForExhaleState(_mfsm, (int)States.WAITING_FOR_EXHALE, this));
-            _mfsm.SetCurrentState((int)States.SILENCE);
-
-            
+            ScriptLoadSequencer.Enqueue(this, (int)LevelLoadSequence.SYSTEM);
         }
 
         private void Update()
@@ -105,6 +101,44 @@ namespace BreathDetection
             }
             return BreathingOutPut.SILENCE;
         }
+
+        public void UpdateInhaleValueUI()
+        {
+            float normaliseVal = Mathf.Min(inhaleElapseTime, MaximumInhaleTimer) / maximumInhaleTimer;
+            inhaleSilder.value = normaliseVal;
+        }
+
+        public void UpdateExhaleValueUI()
+        {
+            float normaliseVal = Mathf.Min(exhaleElapseTime, maximumExhaleTimer) / maximumExhaleTimer;
+            exhaleSlider.value = normaliseVal;
+        }
+
+        public void ActivateBreathingPanel()
+        {
+            breathingPanel.SetActive(true);
+        }
+
+        public void Initialize()
+        {
+            detector = GetComponent<BreathingDetection>();
+            sample = new Queue<BreathingOutPut>();
+
+            //reset the ui panel
+            inhaleSilder.value = 0f;
+            exhaleSlider.value = 0f;
+            breathingPanel.SetActive(false);
+
+            //seting up the fsm
+            _mfsm = new FSM();
+            _mfsm.Add(new SilenceState(_mfsm, (int)States.SILENCE, this));
+            _mfsm.Add(new InhaleState(_mfsm, (int)States.INHALING, this));
+            _mfsm.Add(new ExhaleState(_mfsm, (int)States.EXHALING, this));
+            _mfsm.Add(new WaitForExhaleState(_mfsm, (int)States.WAITING_FOR_EXHALE, this));
+            _mfsm.SetCurrentState((int)States.SILENCE);
+
+            EventSystem.dialog.AddListener(DialogEvents.ACTIVATE_BREATHING, ActivateBreathingPanel);
+        }
     }
 
 
@@ -153,6 +187,8 @@ namespace BreathDetection
                     mFsm.SetCurrentState((int)States.EXHALING);
                     break;
             }
+
+            anxietyReducer.UpdateInhaleValueUI();
         }
 
         public override void Exit()
@@ -181,6 +217,8 @@ namespace BreathDetection
                     anxietyReducer.exhaleElapseTime += Time.deltaTime;
                     break;
             }
+            anxietyReducer.UpdateExhaleValueUI();
+
         }
 
 
@@ -192,6 +230,9 @@ namespace BreathDetection
             CalculateAnxietyReduction();
             anxietyReducer.exhaleElapseTime = 0f;
             anxietyReducer.inhaleElapseTime = 0f;
+
+            anxietyReducer.UpdateExhaleValueUI();
+            anxietyReducer.UpdateInhaleValueUI();
         }
 
         void CalculateAnxietyReduction()

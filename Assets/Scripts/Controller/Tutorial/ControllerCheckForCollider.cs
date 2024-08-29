@@ -79,8 +79,9 @@ public class ControllerCheckForCollider : MonoBehaviour
 
     void OnEndTutorial()
     {
-        Destroy(gameObject);
+        print("hello");
         EventSystem.level.RemoveListener(LevelEvents.FINISH_TUTORIAL, OnEndTutorial);
+        gameObject.SetActive(false);
     }    
 
     void OnDrawGizmos()

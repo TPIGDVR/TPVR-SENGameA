@@ -105,7 +105,7 @@ namespace Assets.Scripts.Tutorial
             }
             else if(objective.Completed == 4)
             {
-                EventSystem.level.TriggerEvent(LevelEvents.INIT_TUTORIAL);
+                EventSystem.level.TriggerEvent(LevelEvents.FINISH_TUTORIAL);
             }
         }
     }
