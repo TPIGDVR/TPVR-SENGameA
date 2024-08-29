@@ -156,7 +156,7 @@ namespace Dialog
             //open up the dialogue box ui
             OpenDialogueBox();
 
-            //get the first dialog of text
+            //get the first dialog of stateText
             currentIndex = 0;
             currentLine = currentDialog.Lines[currentIndex];
 

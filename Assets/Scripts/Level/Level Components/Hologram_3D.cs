@@ -143,7 +143,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
         if (current3DHologram == null) return;
         //so basically transfer the information to the portable hologram
         Hologram_Portable portableHologram = GameData.playerHologram;
-        //change the reference to the original hologram text
+        //change the reference to the original hologram stateText
         originalTextComponent.text = portableHologram.Text.text;
         targetPosition = originalTargetPosition;
         subtitleText = originalTextComponent;
@@ -152,7 +152,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
         MoveHologramToTargetPosition();
 
         portableHologram.Hide();
-        //afterwards, change the imageComponent and text to look the same!
+        //afterwards, change the imageComponent and stateText to look the same!
 
         //current3DHologram = Instantiate(_Data.Lines[indexDialog].prefab3D, targetPosition);
         //afterward hide the component
@@ -168,7 +168,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
         subtitleText = portableHologram.Text;
         subtitleText.text = originalTextComponent.text;
 
-        //afterwards replace the text and show the hologram
+        //afterwards replace the stateText and show the hologram
         MoveHologramToTargetPosition();
 
         //afterward hide the component

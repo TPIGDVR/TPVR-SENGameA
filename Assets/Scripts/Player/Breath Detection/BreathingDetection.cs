@@ -197,13 +197,13 @@ namespace BreathDetection
         //        if (!hasTestedInhale)
         //        {//run the inhale here
         //            inhaleTester.Run();
-        //            text.text = "Please inhale";
+        //            stateText.stateText = "Please inhale";
         //        }
         //        else
         //        {//run the exhale here
         //            exhaleLoudnessTester.Run();
         //            exhaleSpectrumTester.Run();
-        //            text.text = "Please exhale";
+        //            stateText.stateText = "Please exhale";
         //        }
         //        elapseTime += Time.deltaTime;
         //    }
@@ -232,7 +232,7 @@ namespace BreathDetection
         //            //has reach the requirement
         //            FinishCalculation();
         //            isTesting = false;
-        //            text.text = "Testing complete!";
+        //            stateText.stateText = "Testing complete!";
         //        }
         //    }
             

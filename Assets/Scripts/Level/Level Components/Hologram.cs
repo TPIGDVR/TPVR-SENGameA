@@ -165,7 +165,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         var clip = targetLine.transcript;
         speechSource = null;
 
-        //time it takes to wait for the text to finish 
+        //time it takes to wait for the stateText to finish 
         float timerToWait = (0.9f / textSpeed) * targetLine.line.Length;
 
         //if there is a clip than play the clip transcipt.
@@ -199,7 +199,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         subtitleText.text = "";
         //this is needed since we dont want splits to happen if the player is out of bound.
         string textToDisplay = "";
-        //slowly place in the words into the subtile text
+        //slowly place in the words into the subtile stateText
         foreach(var c in text.ToCharArray())
         {
             textToDisplay += c;

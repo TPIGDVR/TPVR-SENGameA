@@ -98,11 +98,11 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
 
         //so basically transfer the information to the portable hologram
         Hologram_Portable portableHologram = GameData.playerHologram;
-        //change the reference to the portable hologram text
+        //change the reference to the portable hologram stateText
         image = portableHologram.SlideShowImage;
         subtitleText = portableHologram.Text;
 
-        //afterwards, change the imageComponent and text to look the same!
+        //afterwards, change the imageComponent and stateText to look the same!
         ChangeImage();
         subtitleText.text = originalTextComponent.text;
         portableHologram.Show();
@@ -117,11 +117,11 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         //so basically transfer the information to the portable hologram
         Hologram_Portable portableHologram = GameData.playerHologram;
 
-        //change the current imageComponent and text to be the same
+        //change the current imageComponent and stateText to be the same
         originalImageComponent.sprite = image.sprite;
         originalTextComponent.text = subtitleText.text;
 
-        //change the reference to the portable hologram text
+        //change the reference to the portable hologram stateText
         image = originalImageComponent;
         subtitleText = originalTextComponent;
         portableHologram.Hide();

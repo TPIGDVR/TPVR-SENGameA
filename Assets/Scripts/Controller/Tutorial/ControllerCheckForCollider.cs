@@ -40,7 +40,7 @@ public class ControllerCheckForCollider : MonoBehaviour
         Vector3 dirAwayFromController = directionAwayFromTheController.normalized;
         dirAwayFromController *= weightForDirectionAwayFromController;
 
-        //then check whether the text hits the player.
+        //then check whether the stateText hits the player.
         Vector3 dirTowardsCamera = (mainCamera.transform.position - transform.position).normalized;
         ray = new Ray(mainCamera.transform.position, - dirTowardsCamera);
         //dirTowardsCamera += shiftOffset;
