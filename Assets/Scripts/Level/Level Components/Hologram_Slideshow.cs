@@ -75,7 +75,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         }
 
         //afterwards, set them inactive.
-        GetComponent<Collider>().enabled = false;
+        isRunning = false;
         enabled = false;
     }
 
@@ -93,6 +93,9 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         OnEndHologram();
     }
 
+
+    int hidePanelHash = Animator.StringToHash("HidePanelIfFar");
+    int showPanelIfCloseHash = Animator.StringToHash("ShowPanelIfClose");
     protected override void OnPlayerExitTrigger()
     {
 
@@ -109,7 +112,8 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
 
         //afterward hide the component
         //hide the slideshow hologram
-        animator.SetTrigger("HidePanelIfFar");
+        animator.SetTrigger(hidePanelHash);
+        animator.ResetTrigger(showPanelIfCloseHash);
     }
 
     protected override void OnPlayerEnterTrigger()
@@ -127,7 +131,8 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         portableHologram.Hide();
 
         //afterward hide the component
-        animator.SetTrigger("ShowPanelIfClose");
+        animator.SetTrigger(showPanelIfCloseHash);
+        animator.ResetTrigger(hidePanelHash);
     }
     void HideHologramFit()
     {

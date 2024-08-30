@@ -35,6 +35,9 @@ public class Hologram_Portable : MonoBehaviour
             return placement3D;
         } }
 
+
+    int hideHash = Animator.StringToHash("Hide");
+    int showHash = Animator.StringToHash("Show");
     private void Start()
     {
         GameData.playerHologram = this;
@@ -43,19 +46,21 @@ public class Hologram_Portable : MonoBehaviour
 
     public void Hide()
     {
-        animator.SetTrigger("Hide");
+
+        animator.ResetTrigger(showHash);
+        animator.SetTrigger(hideHash);
     }
 
     void HideGameobject()
     {
-        gameObject.SetActive(false);
         hologramRenderer.SetActive(false);
     }
 
     //will automatically show the animation to the display.
     public void Show()
     {
-        gameObject.SetActive(true);
+        animator.ResetTrigger(hideHash);
+        animator.SetTrigger(showHash);
     }
 
 }

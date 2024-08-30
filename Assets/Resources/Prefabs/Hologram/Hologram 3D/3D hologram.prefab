@@ -164,7 +164,6 @@ GameObject:
   - component: {fileID: 4499783583953936303}
   - component: {fileID: 4246989239488761179}
   - component: {fileID: 1582843513684500220}
-  - component: {fileID: 4732147271990780439}
   m_Layer: 10
   m_Name: 3D hologram
   m_TagString: Untagged
@@ -209,6 +208,7 @@ MonoBehaviour:
   globalAudioSource: {fileID: 0}
   speechSource: {fileID: 0}
   _Data: {fileID: 0}
+  exitRadius: 2.4
   _dataForDebugging: {fileID: 11400000, guid: 2ed5c8b5eafa0e64086b2c2c5b29d442, type: 2}
   targetPosition: {fileID: 1228202743392767221}
   hologramMaterial: {fileID: 2100000, guid: 59357bd2830879c498c72208d1f1467e, type: 2}
@@ -236,27 +236,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!135 &4732147271990780439
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1256932257851225215}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 7.44
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1604414156377320652
 GameObject:
   m_ObjectHideFlags: 0
@@ -628,10 +607,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8984972352751293836}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 33.88, y: 0}
+  m_SizeDelta: {x: 67.76, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &2919819488545953730
 CanvasRenderer:
