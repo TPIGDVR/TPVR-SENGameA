@@ -42,6 +42,7 @@ namespace BreathDetection
         [SerializeField] Image breathingImage;
         [SerializeField] TextMeshProUGUI stateText;
 
+        [SerializeField] Gradient breathingColorScheme;
         [Header("debugging")]
         public string stateName;
 
@@ -110,7 +111,7 @@ namespace BreathDetection
         public void UpdateInhaleValueUI()
         {
             float normaliseVal = Mathf.Min(inhaleElapseTime, MaximumInhaleTimer) / maximumInhaleTimer;
-            breathingImage.fillAmount = normaliseVal;
+            UpdateFillColor(normaliseVal);
         }
 
         public void UpdateExhaleValueUI()
@@ -118,7 +119,7 @@ namespace BreathDetection
             float normaliseVal = Mathf.Min(exhaleElapseTime, maximumExhaleTimer) / maximumExhaleTimer;
             float normaliseValInhale = Mathf.Min(inhaleElapseTime, MaximumInhaleTimer) / maximumInhaleTimer;
 
-            breathingImage.fillAmount = Mathf.Clamp01(normaliseValInhale - normaliseVal);
+            UpdateFillColor(Mathf.Clamp01(normaliseValInhale - normaliseVal)); 
         }
 
         public void ResetValueUI()
@@ -130,11 +131,12 @@ namespace BreathDetection
         {
             while(breathingImage.fillAmount > 0.1)
             {
-                breathingImage.fillAmount -= Time.deltaTime * speedToReset;
+                
+                UpdateFillColor(breathingImage.fillAmount - Time.deltaTime * speedToReset) ;
                 yield return null;
             }
 
-            breathingImage.fillAmount = 0;
+            UpdateFillColor(0);
         }
 
         void UpdateText()
@@ -183,6 +185,12 @@ namespace BreathDetection
             _mfsm.SetCurrentState((int)States.SILENCE);
 
             EventSystem.dialog.AddListener(DialogEvents.ACTIVATE_BREATHING, ActivateBreathingPanel);
+        }
+
+        void UpdateFillColor(float normaliseValue)
+        {
+            breathingImage.color = breathingColorScheme.Evaluate(normaliseValue);
+            breathingImage.fillAmount = normaliseValue;
         }
     }
 

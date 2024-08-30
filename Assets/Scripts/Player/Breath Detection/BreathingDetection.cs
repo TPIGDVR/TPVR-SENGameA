@@ -267,7 +267,7 @@ namespace BreathDetection
                 {
                     breathingOutPut = BreathingOutPut.SILENCE;
                 }
-                print($"_ Is Inhaling {isInhaling}, Is Exhaling {isExhaling}");
+                //print($"_ Is Inhaling {isInhaling}, Is Exhaling {isExhaling}");
             }
         }
 
