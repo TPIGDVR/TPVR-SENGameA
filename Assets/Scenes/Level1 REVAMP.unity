@@ -3408,8 +3408,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255244
-  m_fontColor: {r: 0.54901963, g: 0.9960785, b: 0, a: 1}
+    rgba: 4278227198
+  m_fontColor: {r: 0.9960785, g: 0.5647059, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -42917,8 +42917,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255244
-  m_fontColor: {r: 0.54901963, g: 0.9960785, b: 0, a: 1}
+    rgba: 4278232421
+  m_fontColor: {r: 0.39607847, g: 0.64705884, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -45115,8 +45115,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1471115683186189609, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: be96a235a8fd1bc42bc332f94d228c2b,
+        type: 3}
+    - target: {fileID: 1471115683186189609, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1471115683186189609, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1471115683186189609, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1471115683186189609, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
       propertyPath: m_FillAmount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2094877904793996456, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
@@ -45163,15 +45184,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7768986855905684704, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+    - target: {fileID: 7696390870259524904, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
-      propertyPath: canRun
+      propertyPath: m_UseWorldSpace
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7696390870259524904, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_Parameters.shadowBias
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7768986855905684704, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
+      propertyPath: canRun
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7768986855905684704, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
       propertyPath: usePresetData
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
@@ -45188,6 +45219,71 @@ PrefabInstance:
       propertyPath: breathingImage
       value: 
       objectReference: {fileID: 93281184}
+    - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: breathingColorScheme.ctime0
+      value: 21845
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: breathingColorScheme.ctime1
+      value: 43646
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: breathingColorScheme.ctime2
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: breathingColorScheme.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: breathingColorScheme.key0.g
+      value: 0.5647059
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: breathingColorScheme.key0.r
+      value: 0.9960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: breathingColorScheme.key1.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: breathingColorScheme.key1.g
+      value: 0.95294124
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: breathingColorScheme.key1.r
+      value: 0.9960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: breathingColorScheme.key2.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: breathingColorScheme.key2.g
+      value: 0.64705884
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: breathingColorScheme.key2.r
+      value: 0.39607847
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796562809030649319, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: breathingColorScheme.m_NumColorKeys
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 9170264803382161511, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
       propertyPath: m_LocalPosition.x
