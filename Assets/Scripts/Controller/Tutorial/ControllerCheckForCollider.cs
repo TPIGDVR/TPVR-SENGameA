@@ -74,7 +74,6 @@ public class ControllerCheckForCollider : MonoBehaviour
     private void LateUpdate()
     {
         UpdateLine();
-
     }
 
     void UpdateLine()
@@ -83,7 +82,7 @@ public class ControllerCheckForCollider : MonoBehaviour
         //lineRenderer.SetPosition(1, parentControllerComponent.position);
 
 
-        lineRenderer.SetPositions(new Vector3[] {transform.localPosition, parentControllerComponent.localPosition});
+        lineRenderer.SetPositions(new Vector3[] { transform.localPosition, parentControllerComponent.localPosition });
     }
 
     void OnEndTutorial()
