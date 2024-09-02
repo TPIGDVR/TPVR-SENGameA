@@ -33,6 +33,7 @@ public class ControllerCheckForCollider : MonoBehaviour
         mainCamera = Camera.main;
         lineRenderer.positionCount = 2;
         EventSystem.level.AddListener(LevelEvents.FINISH_TUTORIAL, OnEndTutorial);
+        lineRenderer.useWorldSpace = false;
     }
     // Update is called once per frame
     void Update()
@@ -68,13 +69,20 @@ public class ControllerCheckForCollider : MonoBehaviour
 
         transform.position = TargetPosition;
 
+    }
+
+    private void LateUpdate()
+    {
         UpdateLine();
     }
 
     void UpdateLine()
     {
-        lineRenderer.SetPosition(0, transform.position);
-        lineRenderer.SetPosition(1, parentControllerComponent.position);
+        //lineRenderer.SetPosition(0, transform.position);
+        //lineRenderer.SetPosition(1, parentControllerComponent.position);
+
+
+        lineRenderer.SetPositions(new Vector3[] { transform.localPosition, parentControllerComponent.localPosition });
     }
 
     void OnEndTutorial()

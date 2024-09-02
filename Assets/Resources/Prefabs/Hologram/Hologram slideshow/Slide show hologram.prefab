@@ -627,7 +627,6 @@ GameObject:
   - component: {fileID: 1772878749876815371}
   - component: {fileID: 2567518432962141972}
   - component: {fileID: 1878377320634516527}
-  - component: {fileID: 9075582795038972407}
   m_Layer: 10
   m_Name: Holograms
   m_TagString: Untagged
@@ -696,27 +695,7 @@ MonoBehaviour:
   globalAudioSource: {fileID: 0}
   speechSource: {fileID: 0}
   _Data: {fileID: 0}
+  exitRadius: 2.4
   slideshowData: {fileID: 11400000, guid: 1d643dedfd2641646afc4afbc2298e27, type: 2}
   image: {fileID: 7133943348725604495}
   imageSizer: {fileID: 240273870125779270}
---- !u!135 &9075582795038972407
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9188761113936782935}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 10
-  m_Center: {x: 0, y: -2.34, z: 0}

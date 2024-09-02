@@ -34,6 +34,8 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     [SerializeField] protected DataType _Data;
     protected bool isRunning = false;
 
+    [SerializeField] float exitRadius = 7.4f;
+
     Coroutine currentCoroutine;
     Coroutine typingCoroutine;
     protected virtual void Start()
@@ -50,7 +52,6 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         gameObject.SetActive(true);
         EventSystem.level.TriggerEvent(LevelEvents.INTERRUPT_HOLOGRAM);
         EventSystem.level.AddListener(LevelEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
-
     }
 
     /// <summary>
@@ -92,6 +93,27 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         DecideState();
     }
 
+    bool hasTriggeredPortableHologram = false;
+
+    private void Update()
+    {
+        bool acceptableDistance = Vector3.Distance(GameData.playerTransform.position , this.transform.position) < exitRadius;
+        if (isRunning && !acceptableDistance && !hasTriggeredPortableHologram)
+        {
+            //if outside of acceptable distance and has not trigger the portable hologram.
+            print($"this is called only once");
+            hasTriggeredPortableHologram =true;
+            OnPlayerExitTrigger();
+        }
+        else if(isRunning && acceptableDistance && hasTriggeredPortableHologram)
+        {
+            //if the player is within acceptable distance and has trigger portable hologram
+            print($"this is called only once");
+            hasTriggeredPortableHologram = false;
+            OnPlayerEnterTrigger();
+        }
+    }
+
     #region on complete function
     /// <summary>
     /// Deciding which state the Hologram would be doing.
@@ -116,6 +138,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     {
         if (dialogLine) EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
         EventSystem.level.RemoveListener(LevelEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
+        isRunning = false;
         OnEndHologram() ;
     }
 
@@ -242,8 +265,6 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     /// </summary>
     private void InteruptHologram()
     {
-        print($"Hologram is interrupted");
-
         StopAllCoroutines();
         RetrieveAudioSource(); //basically stop the audio from playing
         OnInteruptHologram();
@@ -297,20 +318,20 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     //}
     #endregion
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.transform == GameData.playerTransform && isRunning)
-        {
-            OnPlayerEnterTrigger();
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if(other.transform == GameData.playerTransform && isRunning)
+    //    {
+    //        OnPlayerEnterTrigger();
+    //    }
+    //}
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.transform == GameData.playerTransform && isRunning)
-        {
-            OnPlayerExitTrigger();
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.transform == GameData.playerTransform && isRunning)
+    //    {
+    //        OnPlayerExitTrigger();
+    //    }
+    //}
 
 }

@@ -112,7 +112,6 @@ namespace Automaton
         }
         protected virtual IEnumerator WalkToWayPointCoroutine()
         {
-            print("called to walk to way point");
             _wayPointIndex++;
             if (_wayPointIndex >= _wayPoints.Length)
                 _wayPointIndex = 0;

@@ -89,7 +89,6 @@ public class Hologram_3D : Hologram <Hologram3DData>
         if (current3DHologram) current3DHologram.gameObject.SetActive(false);
 
         animator.SetTrigger("HideHologram");
-        GetComponent<Collider>().enabled = false;
         enabled = false;
     }
 
@@ -138,6 +137,9 @@ public class Hologram_3D : Hologram <Hologram3DData>
         hologramMaterial.SetFloat("_Fade_In", value);
     }
 
+    int enableHologramhash = Animator.StringToHash("EnableHologram");
+    int disableHologramhash = Animator.StringToHash("DisableHologram");
+
     protected override void OnPlayerEnterTrigger()
     {
         if (current3DHologram == null) return;
@@ -157,7 +159,8 @@ public class Hologram_3D : Hologram <Hologram3DData>
         //current3DHologram = Instantiate(_Data.Lines[indexDialog].prefab3D, targetPosition);
         //afterward hide the component
         //hide the slideshow hologram
-        animator.SetTrigger("EnableHologram");
+        animator.SetTrigger(enableHologramhash);
+        animator.ResetTrigger(disableHologramhash);
     }
 
     protected override void OnPlayerExitTrigger()
@@ -174,7 +177,8 @@ public class Hologram_3D : Hologram <Hologram3DData>
         //afterward hide the component
         //hide the slideshow hologram
         portableHologram.Show();
-        animator.SetTrigger("DisableHologram");
+        animator.SetTrigger(disableHologramhash);
+        animator.ResetTrigger(enableHologramhash);
     }
 
     private void MoveHologramToTargetPosition()

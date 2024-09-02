@@ -124,7 +124,7 @@ namespace BreathDetection
                 yield return PauseForBreathing();
                 yield return CalculatingExhale(numTested);
                 numTested++;
-                print($"complete test {numTested}");
+                //print($"complete test {numTested}");
             }
             //indicate that the breathing is done.
             breathingTestingState = BreathingTestingState.NONE;
@@ -267,7 +267,7 @@ namespace BreathDetection
                 {
                     breathingOutPut = BreathingOutPut.SILENCE;
                 }
-                print($"_ Is Inhaling {isInhaling}, Is Exhaling {isExhaling}");
+                //print($"_ Is Inhaling {isInhaling}, Is Exhaling {isExhaling}");
             }
         }
 
