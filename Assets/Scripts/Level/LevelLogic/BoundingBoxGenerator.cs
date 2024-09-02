@@ -1,5 +1,7 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class BoundingBoxGenerator : MonoBehaviour
@@ -12,9 +14,12 @@ public class BoundingBoxGenerator : MonoBehaviour
     public Color mapColor;
     public RectTransform canvasRT;
     public RawImage mapImage;
-    
-    void Start()
+
+    public TMP_Text debugtext;
+
+    IEnumerator Start()
     {
+        yield return new WaitForSeconds(2f);
         GetStaticRef();
         GetDynamicRef();
         GenerateBoundingBox2D();
@@ -114,10 +119,15 @@ public class BoundingBoxGenerator : MonoBehaviour
         int camWidth = (int)(cam.orthographicSize * cam.aspect) * 2 * scalar;
         // manually add the offset to perfectly scale the map up
         //needs to be fixed
-        RenderTexture rt = new(camWidth, camWidth + 120, 0);
+        // RenderTexture rt = new(camWidth, camWidth + 120, 0);
+        RenderTexture rt = new(camWidth, (int)((float)camWidth * 3.5f), 0);
+        // RenderTexture rt = new(camWidth, camWidth, 0);
+
+        RenderTexture copy = new(camWidth, camWidth + 120, 0);
         //rt.filterMode = FilterMode.Point;
         cam.targetTexture = rt;
         rt.Create();
+        copy.Create();
         GameData.miniMapSnapShot = rt;
         yield return null;
         cam.targetTexture = null;
