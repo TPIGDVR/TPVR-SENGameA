@@ -49,10 +49,12 @@ public class BreathDetectionPanel : MonoBehaviour
         int maxNumberOfPanel = instructionPanel.transform.childCount;
 
         //close all the panel except the first
+        print("This coroutine man");
         ActivatePanel(0);
-
+        print("this coroutine about to start");
         while (currentIndex < maxNumberOfPanel)
         {
+            print("hello");
             if (OVRInput.GetDown(nxtBtn))
             {
                 currentIndex++;
@@ -64,9 +66,11 @@ public class BreathDetectionPanel : MonoBehaviour
             else if (OVRInput.GetDown(prevButton))
             {
                 //ignore it if its 0
-                if (currentIndex == 0) continue;
-                currentIndex--;
-                ActivatePanel(currentIndex);
+                if (currentIndex > 0)
+                {
+                    currentIndex--;
+                    ActivatePanel(currentIndex);
+                } 
             }
             //wait for the btn press
             yield return null;
@@ -78,9 +82,9 @@ public class BreathDetectionPanel : MonoBehaviour
 
         void ActivatePanel(int index)
         {
-            foreach (GameObject panel in instructionPanel.transform)
+            foreach (Transform panel in instructionPanel.transform)
             {
-                panel.SetActive(false);
+                panel.gameObject.SetActive(false);
             }
             instructionPanel.transform.GetChild(index).gameObject.SetActive(true);
         }
@@ -145,9 +149,9 @@ public class BreathDetectionPanel : MonoBehaviour
 
         void ActivatePanel(int index)
         {
-            foreach (GameObject panel in completedBreathingPanel.transform)
+            foreach (Transform panel in completedBreathingPanel.transform)
             {
-                panel.SetActive(false);
+                panel.gameObject.SetActive(false);
             }
             completedBreathingPanel.transform.GetChild(index).gameObject.SetActive(true);
         }
