@@ -35425,6 +35425,7 @@ MonoBehaviour:
   mapColor: {r: 0.21306515, g: 0.27063563, b: 0.3584906, a: 0}
   canvasRT: {fileID: 49754621}
   mapImage: {fileID: 753092192}
+  debugtext: {fileID: 0}
 --- !u!4 &1804472040
 Transform:
   m_ObjectHideFlags: 0
@@ -43662,6 +43663,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: R2_Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 2193297260508362367, guid: 9c770a800fa0dee42a87930e314443e4,
+        type: 3}
+      propertyPath: doorTag
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2693483148983562275, guid: 9c770a800fa0dee42a87930e314443e4,
         type: 3}
