@@ -2,6 +2,7 @@ using System.Collections;
 using System.Reflection.Emit;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.ProBuilder;
 
 namespace Automaton
 {
@@ -63,6 +64,9 @@ namespace Automaton
             _audio = GetComponent<AudioSource>();
             InitBehaviour();
             currentBehaviourCoroutine = StartCoroutine(Behaviour());
+
+            _agent.updatePosition = false;
+            _agent.speed = oringinalMovement;
         }
         #endregion
 
@@ -125,19 +129,15 @@ namespace Automaton
 
         protected IEnumerator MovementCoroutine(Vector3 destination)
         {
-            //print("Started new way point destination");
             _agent.SetDestination(destination);
-            _agent.speed = 0;
 
             yield return new WaitForSeconds(0.1f);
 
             Vector3 previousPosition = transform.position;
             while (_agent.remainingDistance >= _travelCompleteThreshold)
             {
-                //print($"{Agent.name} has a remaining distance of {_agent.remainingDistance}. {_travelCompleteThreshold}");
-                //check 
                 Vector3 nxtDirection = _agent.nextPosition - previousPosition;
-
+                nxtDirection.y = 0f;
                 float degreeOfRotation = Vector3.SignedAngle(transform.forward, nxtDirection, transform.up);
                 if (!(degreeOfRotation < acceptableDegree &&
                     degreeOfRotation > -acceptableDegree))
@@ -149,11 +149,10 @@ namespace Automaton
                 {
                     _ani.SetFloat("Spd", 0.5f);
                     _agent.speed = oringinalMovement;
+                    previousPosition = transform.position;
+                    transform.position = _agent.nextPosition;
                 }
 
-                //print($"rotation;{degreeOfRotation}, forward {transform.forward}, nxtDirection {nxtDirection} \n" +
-                //    $"_agent nxt Position {_agent.nextPosition}, transform position {transform.position}");
-                previousPosition = transform.position;
                 yield return null;
             }
             //print("Finish way point");
@@ -171,18 +170,25 @@ namespace Automaton
             _ani.SetTrigger("Rotate");
             targetDirection.Normalize();
             currentDirection.Normalize();
+
+            targetDestination.y = 0;
+
+            Quaternion finalRotation = Quaternion.LookRotation(targetDirection);
+            Quaternion initialRotation = transform.rotation;
+
             yield return new WaitUntil(() => _ani.GetCurrentAnimatorStateInfo(0).IsName("Rotation blend tree"));
 
             while (_ani.GetCurrentAnimatorStateInfo(0).IsName("Rotation blend tree"))
             {
-                Debug.DrawRay(transform.position, targetDirection * 50, Color.blue);
+                //Debug.DrawRay(transform.position, targetDirection * 50, Color.blue);
                 float normalizeTime = _ani.GetCurrentAnimatorStateInfo(0).normalizedTime;
-                transform.forward = Vector3.Slerp(currentDirection, targetDirection, normalizeTime);
+                transform.rotation = Quaternion.Slerp(initialRotation , finalRotation , normalizeTime); 
                 yield return null;
             }
 
-            transform.forward = targetDirection;
-
+            //transform.forward = targetDirection;
+            transform.rotation = finalRotation;
+            //print($"final target direction {targetDirection}");
 
         }
         #endregion
@@ -255,5 +261,11 @@ namespace Automaton
             _audio.PlayOneShot(_footStepClips[index], vol);
         }
         #endregion
+
+        //private void OnDrawGizmos()
+        //{
+        //    Gizmos.color = Color.red;
+        //    Gizmos.DrawSphere(_agent.nextPosition, 0.2f);
+        //}
     }
 }

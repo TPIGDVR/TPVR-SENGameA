@@ -18,8 +18,6 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
     Vector3 door_L_OP, door_R_OP;
     protected EventManager<LevelEvents> em_l = EventSystem.level;
 
-
-
     [SerializeField]
     ScannerUI scanner;
 
@@ -27,7 +25,7 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
     Image pingCircle;
     [SerializeField]
     float pingSize = 30f;
-
+    bool isOpened = false;
     #region Initialization
     public virtual void Initialize()
     {
@@ -37,6 +35,7 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
         interactionIcon.SetActive(false);
         doorIcon.SetActive(true);
         pingCircle.transform.localScale = Vector3.zero;
+        isOpened = false;
     }
 
     private void Awake()
@@ -50,11 +49,9 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
         scanner.SetActive(false);
         interactionIcon.SetActive(false);
         doorIcon.SetActive(false);
-        StartCoroutine(OpenDoor_Cor());
-    }
 
-    protected void LevelCleared()
-    {
+        isOpened = true;
+
         StartCoroutine(OpenDoor_Cor());
     }
 
@@ -81,14 +78,21 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
         interactionIcon.SetActive(true);
         doorIcon.SetActive(false);
         scanner.enabled = true;
+        
         StartCoroutine(PingDoor());
     }
 
+    /// <summary>
+    /// will continuously ping till the door is open.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator PingDoor()
     {
-        int timesToPing = 3;
-        for (int i = 0; i < timesToPing; i++)
+        print("pinging coroutine started");
+
+        while(!isOpened)
         {
+            print($"isopen {isOpened}");
             float timer = 0;
             float timeInterval = 0.02f;
             float time = 1;
@@ -106,7 +110,5 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
     private void OnTriggerEnter(Collider other)
     {
         if (!canBeOpened) return;
-
-
     }
 }

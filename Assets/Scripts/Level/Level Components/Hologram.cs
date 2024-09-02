@@ -204,7 +204,6 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         //afterwards, wait for the either the timer to finish or speech to finish.
         yield return new WaitForSeconds(timerToWait);
 
-        print("finish playing typing");
 
         StopCoroutine(typingCoroutine);
         typingCoroutine = null;
