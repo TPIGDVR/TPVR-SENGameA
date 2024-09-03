@@ -40,7 +40,6 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
 
     [SerializeField] Transform automatonTargetDestination;
     [SerializeField] Transform hologramTargetDestination;
-    [SerializeField] Transform playerFinalDestination;
     [Header("Popup")]
     [SerializeField] 
     PopUp popup;
@@ -166,7 +165,7 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
 
 #region Scanning
 
-    //called by xr simple interactor
+    //called by ScanTrigger
     public void ScanStart()
     {
         animator.SetBool("Hand_Detected", true);
@@ -177,7 +176,7 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
             audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.KIOSK_AUTHETICATED,transform.position);
     }
 
-    //called by xr simple interactor
+    //called by ScanTrigger
     public void ScanStop()
     {
         scanning = false;

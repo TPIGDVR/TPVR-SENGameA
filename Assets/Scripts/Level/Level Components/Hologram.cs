@@ -75,7 +75,6 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
     protected void RunPanel()
     {
-        print("running panel");
         if (currentCoroutine == null)
         {
             //make sure that it is run once even if it is called other places.
@@ -243,7 +242,6 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
     protected void RetrieveAudioSource()
     {
-        print("retrieve global and speech source");
         if (globalAudioSource) SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
         if (speechSource) SoundManager.Instance.RetrieveAudioSource(speechSource);
 
