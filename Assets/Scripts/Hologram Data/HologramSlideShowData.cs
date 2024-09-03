@@ -1,5 +1,4 @@
 using Dialog;
-using JetBrains.Annotations;
 using SoundRelated;
 using System;
 using UnityEngine;
@@ -10,7 +9,6 @@ public class HologramData : ScriptableObject
     [HideInInspector]
     public virtual HologramDialogLine[] dialogLine => null;
     public DialogueLines DialogAfterComplete;
-
 }
 
 [CreateAssetMenu(menuName = "Hologram/Slide show data")]

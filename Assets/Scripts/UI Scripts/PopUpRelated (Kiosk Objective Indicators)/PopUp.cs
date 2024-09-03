@@ -5,7 +5,6 @@ namespace PopUpAssistance
 {
     public class PopUp : MonoBehaviour
     {
-        
         [SerializeField] bool canPopUp = true;
         GameObject display;
         //add enum here to differentiat

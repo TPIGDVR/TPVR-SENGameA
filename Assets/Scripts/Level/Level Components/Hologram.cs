@@ -14,17 +14,13 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 {
     [SerializeField]
     protected Animator animator;
-    [SerializeField]
-    float stoppingRadius = 10f;
 
     [Header("Subtitles")]
     [SerializeField]
     protected TextMeshProUGUI subtitleText;
     [SerializeField]
     float textSpeed = 20f;
-    protected int indexDialog = 0;
-    [SerializeField]
-    protected bool use3DAudio;
+    protected int curIndex = 0;
 
     //protected SoundManager soundManager;
     [SerializeField] AudioSource globalAudioSource;
@@ -35,6 +31,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     protected bool isRunning = false;
 
     [SerializeField] float exitRadius = 7.4f;
+    bool hasTriggeredPortableHologram = false;
 
     Coroutine currentCoroutine;
     Coroutine typingCoroutine;
@@ -88,12 +85,11 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
     private IEnumerator RunHologram()
     {
-        yield return PrintKioskLines(_Data.dialogLine[indexDialog]);
+        yield return PrintKioskLines(_Data.dialogLine[curIndex]);
         OnCompleteLine();
         DecideState();
     }
 
-    bool hasTriggeredPortableHologram = false;
 
     private void Update()
     {
@@ -101,14 +97,12 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         if (isRunning && !acceptableDistance && !hasTriggeredPortableHologram)
         {
             //if outside of acceptable distance and has not trigger the portable hologram.
-            print($"this is called only once");
             hasTriggeredPortableHologram =true;
             OnPlayerExitTrigger();
         }
         else if(isRunning && acceptableDistance && hasTriggeredPortableHologram)
         {
             //if the player is within acceptable distance and has trigger portable hologram
-            print($"this is called only once");
             hasTriggeredPortableHologram = false;
             OnPlayerEnterTrigger();
         }
@@ -120,7 +114,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     /// </summary>
     private void DecideState()
     {
-        if(indexDialog >= _Data.dialogLine.Length)
+        if(curIndex >= _Data.dialogLine.Length)
         {
             FinishHologram();   
         }
@@ -212,7 +206,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         RetrieveAudioSource();
 
         //increment the index since it is already done.
-        indexDialog++;
+        curIndex++;
     }
 
     protected IEnumerator TypeNextSentence(string text)
@@ -293,44 +287,4 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         SoundManager.Instance.PlayAudioOneShot(SoundRelated.SFXClip.HOLOGRAM_CLOSE);
     }
     #endregion
-
-    #region legacy
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    //if (other.transform == GameData.playerTransform && !isRunning)
-    //    //{
-    //    //    print("enter");
-    //    //    //Resume the hologram
-    //    //    isRunning = true;
-    //    //    EventSystem.player.TriggerEvent(PlayerEvents.UNPAUSE_HOLOGRAM);
-    //    //}
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if(other.transform == GameData.playerTransform && isRunning)
-    //    {
-    //        print("exit");
-    //        isRunning = false;
-    //        EventSystem.player.TriggerEvent<HologramSlideShowData>(PlayerEvents.PAUSE_HOLOGRAM , _Data);
-    //    }
-    //}
-    #endregion
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if(other.transform == GameData.playerTransform && isRunning)
-    //    {
-    //        OnPlayerEnterTrigger();
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.transform == GameData.playerTransform && isRunning)
-    //    {
-    //        OnPlayerExitTrigger();
-    //    }
-    //}
-
 }

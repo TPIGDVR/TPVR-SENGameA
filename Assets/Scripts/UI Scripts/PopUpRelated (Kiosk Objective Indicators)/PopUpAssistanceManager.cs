@@ -38,7 +38,6 @@ namespace PopUpAssistance
                         RetrieveDisplay(popUp);
                     }
                     continue;
-
                 }
 
                 float distanceFromPopupToPlayer = Vector3.SqrMagnitude(popUp.transform.position - _PlayerPosition.transform.position);

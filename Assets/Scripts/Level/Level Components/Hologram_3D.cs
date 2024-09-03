@@ -20,6 +20,8 @@ public class Hologram_3D : Hologram <Hologram3DData>
 
     Transform originalTargetPosition;
     TextMeshProUGUI originalTextComponent;
+    int enableHologramhash = Animator.StringToHash("EnableHologram");
+    int disableHologramhash = Animator.StringToHash("DisableHologram");
 
 
     [ContextMenu("Set and play")]
@@ -50,7 +52,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
     void Spawn3DHologram()
     {
         if(current3DHologram) current3DHologram.SetActive(false);
-        current3DHologram = Instantiate(_Data.Lines[indexDialog].prefab3D);
+        current3DHologram = Instantiate(_Data.Lines[curIndex].prefab3D);
         MoveHologramToTargetPosition();
         SetHologramFadeValue(0f);
         StartCoroutine(FadeInHologram());
@@ -137,9 +139,6 @@ public class Hologram_3D : Hologram <Hologram3DData>
         hologramMaterial.SetFloat("_Fade_In", value);
     }
 
-    int enableHologramhash = Animator.StringToHash("EnableHologram");
-    int disableHologramhash = Animator.StringToHash("DisableHologram");
-
     protected override void OnPlayerEnterTrigger()
     {
         if (current3DHologram == null) return;
@@ -156,7 +155,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
         portableHologram.Hide();
         //afterwards, change the imageComponent and stateText to look the same!
 
-        //current3DHologram = Instantiate(_Data.Lines[indexDialog].prefab3D, targetPosition);
+        //current3DHologram = Instantiate(_Data.Lines[curIndex].prefab3D, targetPosition);
         //afterward hide the component
         //hide the slideshow hologram
         animator.SetTrigger(enableHologramhash);
