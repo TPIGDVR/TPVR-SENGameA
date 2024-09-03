@@ -15,9 +15,10 @@ namespace Assets.Scripts.Tutorial
         {
             GameData.ChangeTutorialStatus(true);
             DisplayRoomObjective();
-            EventSystem.dialog.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivatedHeartRateMonitor);
+            EventSystem.dialog.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivatedHeartRateMonitor , DetermineMechanicActivation);
             EventSystem.dialog.AddListener(DialogEvents.ACTIVATE_NOISE_INDICATOR, ActivateNoiseIndicatorDetection);
             EventSystem.dialog.AddListener(DialogEvents.COMPLETED_TUTORIAL_DIALOG, DetermineMechanicActivation);
+            
         }
 
         void ActivatedHeartRateMonitor()
@@ -54,6 +55,7 @@ namespace Assets.Scripts.Tutorial
                 {
                     //if its the third kiosk and the player has not activate it, then activate heart beat monitor
                     case 3:
+                        print($"hello running this here {hasActivateNoiseIndicatorDetection}");
                         if (!hasActivateNoiseIndicatorDetection)
                         {
                             EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_NOISE_INDICATOR);

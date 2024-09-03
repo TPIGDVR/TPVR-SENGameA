@@ -87,7 +87,6 @@ public class ControllerCheckForCollider : MonoBehaviour
 
     void OnEndTutorial()
     {
-        print("hello");
         EventSystem.level.RemoveListener(LevelEvents.FINISH_TUTORIAL, OnEndTutorial);
         gameObject.SetActive(false);
     }    
