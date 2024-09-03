@@ -89,6 +89,7 @@ public class ControllerCheckForCollider : MonoBehaviour
     {
         EventSystem.level.RemoveListener(LevelEvents.FINISH_TUTORIAL, OnEndTutorial);
         gameObject.SetActive(false);
+        lineRenderer.enabled = false;
     }    
 
     void OnDrawGizmos()
