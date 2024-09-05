@@ -35,6 +35,8 @@ public class GrabManager : MonoBehaviour
     public void GrabDown_R()
     {
         //text.text = "right hand";
+        if (go_R == null)
+            return;
         text.text = $"right hand : {go_R.name?.ToString()}";
         go_R = EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_RIGHT);
         go_R?.GetComponent<Interactable>()?.ShowMesh();
@@ -43,6 +45,8 @@ public class GrabManager : MonoBehaviour
     public void GrabDown_L()
     {
         //text.text = "left hand";
+        if (go_L == null)
+            return;
         text.text = $"left hand : {go_L.name?.ToString()}";
         go_L = EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_LEFT);
         go_L?.GetComponent<Interactable>()?.ShowMesh();
@@ -51,6 +55,8 @@ public class GrabManager : MonoBehaviour
 
     public void GrabUp_R()
     {
+        if (go_R == null)
+            return;
         EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_RIGHT, go_R);
         text.text = $"let go : right hand : {go_R.name}";
         // EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_RIGHT, go_R);
@@ -58,6 +64,8 @@ public class GrabManager : MonoBehaviour
 
     public void GrabUp_L()
     {
+        if (go_L == null)
+            return;
         EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_LEFT, go_L);
         text.text = $"let go : left hand : {go_L.name}";
         // EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_LEFT, go_L);
