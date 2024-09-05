@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac84fb6e7b2f37e4c9563d3365462048, type: 3}
   m_Name: TutorialK3_Slides
   m_EditorClassIdentifier: 
+  DialogAfterComplete: {fileID: 11400000, guid: 723e100ee2c175a4ebc9385bc455ad0b,
+    type: 2}
   Lines:
   - line: 'For humans with Autism-Spectrum Disorder, being near automatons can cause
       their heartbeat to rapidly spike in speed. This is quite dangerous, as it is
@@ -21,7 +23,7 @@ MonoBehaviour:
 '
     transcript:
       sfx: 0
-      clip: {fileID: 8300000, guid: 7b6ce8096c459ee41a876d30511932c0, type: 3}
+      clip: {fileID: 8300000, guid: 2bd7da61b69a7e54aab95a5489933c22, type: 3}
       volume: 0.7
       pitch: 1
     timerOffset: 1
@@ -37,5 +39,3 @@ MonoBehaviour:
     timerOffset: 1
     image: {fileID: 21300000, guid: ecfcf41f99fe87d489751b6a8aff669d, type: 3}
     preferredImageSize: {x: 1, y: 1}
-  DialogAfterComplete: {fileID: 11400000, guid: 723e100ee2c175a4ebc9385bc455ad0b,
-    type: 2}
