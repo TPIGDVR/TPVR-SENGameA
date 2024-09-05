@@ -30,7 +30,7 @@ namespace BreathDetection
     }
 
     [Serializable]
-    public struct InhaleData
+    public struct SpectrumData
     {
         public float lowPassFilter;
         public float highPassFilter;
@@ -39,17 +39,16 @@ namespace BreathDetection
         public float minAmplitude;
         public float maxAmplitude;
         public float maxDBThreshold;
-        public int inhaleCounterThreshold;
+        public int CounterThreshold;
         //reduce the minnumber of commonpoint when it detects inhaling
         public int reductionOfMinCounter;
-
         //for experiemental;
         [Range(1, 15)]
         public int numberOfPointsToStop;
     }
 
     [Serializable]
-    public struct ExhaleData
+    public struct LoudnessData
     {
         public float lowPassFilter;
         public float highPassFilter;

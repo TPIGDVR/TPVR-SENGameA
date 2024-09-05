@@ -57,12 +57,7 @@ namespace BreathDetection
             {
                 currentOutput = DetermineBreathingState();
                 _mfsm.Update();
-                //string message = $"current State: {(States)_mfsm.GetCurrentState().ID}" +
-                //    $"currentOutput {currentOutput}";
-                //print(message);
-                //displayText.stateText = message;
                 UpdateText();
-
             }
             else
             {

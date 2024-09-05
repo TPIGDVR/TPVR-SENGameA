@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BreathDetection
 {
-    public class MicrophoneRecorder : MonoBehaviour
+    public class MicrophoneRecorder : MonoBehaviour 
     {
         public event Action<float[]> OnAudioReady;
         private const int SampleRate = 48000;

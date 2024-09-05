@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace BreathDetection
 {
-    public class InhalingDetector : IBreathResult
+    public class SpectrumDetector : IBreathResult
     {
         MicProvider micProvider;
-        InhaleData _data;
-        int inhaleCounter = 0;
+        SpectrumData _data;
+        int counter = 0;
 
-        float minValue => inhaleCounter < _data.inhaleCounterThreshold ?
+        float minValue => counter < _data.CounterThreshold ?
             _data.minNumberOfCommonPoint :
             Math.Min(_data.minNumberOfCommonPoint - _data.reductionOfMinCounter, 1);
 
-        public InhalingDetector(MicProvider micProvider, InhaleData data)
+        public SpectrumDetector(MicProvider micProvider, SpectrumData data)
         {
             this.micProvider = micProvider;
             _data = data;
@@ -42,27 +42,27 @@ namespace BreathDetection
                 micProvider.CalculatedVolume > _data.maxDBThreshold
                 )
             {
-                if(inhaleCounter < _data.inhaleCounterThreshold)
+                if(this.counter < _data.CounterThreshold)
                 {
-                    inhaleCounter++;
+                    this.counter++;
                     return false;
                 }
                 return true;
             }
             else
             {
-                inhaleCounter = 0;
+                this.counter = 0;
                 return false;
             }
         }
     }
 
-    public class ExhalingDetector : IBreathResult
+    public class LoudnessDetector : IBreathResult
     {
         MicProvider micProvider;
-        ExhaleData _data;
+        LoudnessData _data;
 
-        public ExhalingDetector(MicProvider micProvider, ExhaleData data)
+        public LoudnessDetector(MicProvider micProvider, LoudnessData data)
         {
             this.micProvider = micProvider;
             _data = data;
@@ -75,13 +75,13 @@ namespace BreathDetection
         }
     }
 
-    public struct SpectrumTester : ITestable<InhaleData>
+    public struct SpectrumTester : ITestable<SpectrumData>
     {
         MicProvider micProvider;
-        InhaleData _data;
+        SpectrumData _data;
         int counter;
 
-        public SpectrumTester(MicProvider micProvider , InhaleData template)
+        public SpectrumTester(MicProvider micProvider , SpectrumData template)
         {
             counter = 0;
             this.micProvider = micProvider;
@@ -121,13 +121,13 @@ namespace BreathDetection
             
         }
 
-        public void Reset(InhaleData templateData)
+        public void Reset(SpectrumData templateData)
         {
             _data = templateData;
             counter = 0;
         }
 
-        public InhaleData Calculate()
+        public SpectrumData Calculate()
         {
             _data.minNumberOfCommonPoint /= counter; //take average
             _data.maxDBThreshold /= counter;
@@ -135,14 +135,14 @@ namespace BreathDetection
         }
     }
 
-    public struct SpectrumMinMaxTester : ITestable<InhaleData>
+    public struct SpectrumMinMaxTester : ITestable<SpectrumData>
     {
-        public InhaleData _data;
+        public SpectrumData _data;
         private MicProvider micProvider;
         float maxAmp;
         float avgAmp;
         int counter;
-        public SpectrumMinMaxTester(MicProvider micProvider, InhaleData data)
+        public SpectrumMinMaxTester(MicProvider micProvider, SpectrumData data)
         {
             _data = data;
             this.micProvider = micProvider;
@@ -151,14 +151,14 @@ namespace BreathDetection
             counter = 0;
         }
 
-        public InhaleData Calculate()
+        public SpectrumData Calculate()
         {
             _data.maxAmplitude = maxAmp/ counter;
             _data.minAmplitude = avgAmp/ counter;
             return _data;
         }
 
-        public void Reset(InhaleData templateData)
+        public void Reset(SpectrumData templateData)
         {
             counter = 0;
             maxAmp = 0;
@@ -209,13 +209,13 @@ namespace BreathDetection
         }
     }
 
-    public struct ExhaleTester : ITestable<ExhaleData>
+    public struct ExhaleTester : ITestable<LoudnessData>
     {
-        ExhaleData _data;
+        LoudnessData _data;
         MicProvider micProvider;
         int counter;
 
-        public ExhaleTester(ExhaleData data, MicProvider micProvider) : this()
+        public ExhaleTester(LoudnessData data, MicProvider micProvider) : this()
         {
             _data = data;
             this.micProvider = micProvider;
@@ -230,13 +230,13 @@ namespace BreathDetection
             _data.minPitchThreshold += micProvider.minPitch;
         }
 
-        public void Reset(ExhaleData templateData)
+        public void Reset(LoudnessData templateData)
         {
             _data = templateData;
             counter = 0;
         }
 
-        public ExhaleData Calculate()
+        public LoudnessData Calculate()
         {
             _data.volumeThreshold /= counter;
             _data.maxPitchThreshold /= counter;
