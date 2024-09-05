@@ -37,7 +37,7 @@ namespace Dialog
         //Hash int
         int exitHash = Animator.StringToHash("Exit state");
 
-
+        public TMP_Text debugtext;
         private void OnDisable()
         {
             em_d.RemoveListener<DialogueLines>(DialogEvents.ADD_DIALOG, AddDialog);
@@ -167,6 +167,7 @@ namespace Dialog
         //called by controller button
         public void EvaluateAction_BtnA()
         {
+            debugtext.text = "Btn A";
             //check if theres valid dialogue
             if (currentDialog == null) return;
 
