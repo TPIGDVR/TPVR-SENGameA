@@ -7,6 +7,7 @@ public class InitializeLevel : MonoBehaviour
 {
     [SerializeField]
     PlayerVFX playerVFX;
+ 
     [SerializeField]
     Transform LevelTransform;
     EventManager<LevelEvents> em_l = EventSystem.level;

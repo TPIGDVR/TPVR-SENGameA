@@ -37,6 +37,9 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     //room / objective variables
     Room currentRoom;
 
+    [SerializeField] Transform leftHand;
+    [SerializeField] Transform rightHand;
+
     public bool IsWearingHeadphones;
     private void Awake()
     {
@@ -58,6 +61,8 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     EventManager<LevelEvents> em_l = EventSystem.level;
 
     public Transform PlayerTransform { get => playerTransform; set => playerTransform = value; }
+    public Transform LeftHand { get => leftHand; set => leftHand = value; }
+    public Transform RightHand { get => rightHand; set => rightHand = value; }
 
     public void Initialize()
     {
