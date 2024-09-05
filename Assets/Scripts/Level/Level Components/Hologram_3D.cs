@@ -23,7 +23,6 @@ public class Hologram_3D : Hologram <Hologram3DData>
     int enableHologramhash = Animator.StringToHash("EnableHologram");
     int disableHologramhash = Animator.StringToHash("DisableHologram");
 
-
     [ContextMenu("Set and play")]
     public void Set3DData()
     {

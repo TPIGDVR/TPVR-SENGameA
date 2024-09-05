@@ -19,7 +19,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     [SerializeField]
     protected TextMeshProUGUI subtitleText;
     [SerializeField]
-    float textSpeed = 20f;
+    float letterPerSecond = 0.3f;
     protected int curIndex = 0;
 
     //protected SoundManager soundManager;
@@ -181,8 +181,8 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         var clip = targetLine.transcript;
         speechSource = null;
 
-        //time it takes to wait for the stateText to finish 
-        float timerToWait = (0.9f / textSpeed) * targetLine.line.Length;
+        //time it takes to wait for the stateText to finish + 0.1 buffer
+        float timerToWait = letterPerSecond * targetLine.line.Length + 0.1f;
 
         //if there is a clip than play the clip transcipt.
         if (clip.clip)
@@ -219,7 +219,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         {
             textToDisplay += c;
             subtitleText.text = textToDisplay;
-            yield return new WaitForSeconds(0.5f / textSpeed);
+            yield return new WaitForSeconds(letterPerSecond);
         }
 
         print("retrieve audio here");
