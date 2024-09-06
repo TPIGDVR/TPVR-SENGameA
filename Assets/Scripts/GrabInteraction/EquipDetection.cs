@@ -19,11 +19,14 @@ public class EquipDetection : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        text.text = $"item detected {other.name}";
         itemDetection = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
+        text.text = $"item exit detected {other.name}";
+
         itemDetection = false;
     }
 
@@ -34,6 +37,7 @@ public class EquipDetection : MonoBehaviour
         SimpleDebugingScript.Instance.DebugLine($"Equiping object {equipment.name}");
         if (equipment == null)
         {
+            SimpleDebugingScript.Instance.DebugLine($"RUnning null");
             return;
         }
 
@@ -41,6 +45,8 @@ public class EquipDetection : MonoBehaviour
     }
     IEnumerator EQ(GameObject equipment)
     {
+        SimpleDebugingScript.Instance.DebugLine($"Runnign coroutine {equipment}");
+
         if (itemDetection)
         {
             print($"thing being equip {equipment.name}");
@@ -63,6 +69,7 @@ public class EquipDetection : MonoBehaviour
             equipment.transform.localRotation = rotate;
             text.text = $"Equipped : {equipment.name}";
             print("resetting to zero");
+            SimpleDebugingScript.Instance.DebugLine($"Completed equiping");
             if (equipment != null)
             {
                 equipment.GetComponent<Interactable>()?.Equip();

@@ -119,8 +119,8 @@ public class BoundingBoxGenerator : MonoBehaviour
         int camWidth = (int)(cam.orthographicSize * cam.aspect) * 2 * scalar;
         // manually add the offset to perfectly scale the map up
         //needs to be fixed
-        // RenderTexture rt = new(camWidth, camWidth + 120, 0);
-        RenderTexture rt = new(camWidth, (int)((float)camWidth * 3.5f), 0);
+        RenderTexture rt = new(camWidth, camWidth + 120, 0);
+        //RenderTexture rt = new(camWidth, (int)((float)camWidth * 3.5f), 0);
         // RenderTexture rt = new(camWidth, camWidth, 0);
 
         RenderTexture copy = new(camWidth, camWidth + 120, 0);

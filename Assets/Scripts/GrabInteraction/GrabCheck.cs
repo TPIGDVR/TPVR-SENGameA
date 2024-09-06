@@ -47,7 +47,7 @@ public class GrabCheck : MonoBehaviour
         SimpleDebugingScript.Instance.DebugLine($"{name} Trying to retrieveing");
 
         SimpleDebugingScript.Instance.DebugLine($"this is running {collider?.Length}");
-        if (collider == null) return null;
+        if (collider.Length == 0) return null;
         //get the first one.
         else return collider[0].gameObject;
     }

@@ -34,23 +34,18 @@ public class GrabManager : MonoBehaviour
 
     public void GrabDown_R()
     {
-        print("Gd_r");
-        text.text = "Gd_r";
         go_R = EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_RIGHT);
-        if (go_R != null)
+        if (go_R == null)
         {
             text.text = "right hand Cannot find";
             return;
         }
-        text.text = $"right hand : {go_R.name?.ToString()}";
+        text.text = $"Gd_r right hand : {go_R.name?.ToString()}";
         go_R?.GetComponent<Interactable>()?.ShowMesh();
     }
 
     public void GrabDown_L()
     {
-        print("Gd_L");
-        text.text = "Gd_L";
-
         //text.text = "left hand";
         go_L = EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_LEFT);
         if (go_L == null)
@@ -59,7 +54,7 @@ public class GrabManager : MonoBehaviour
             return;
         }
             
-        text.text = $"left hand : {go_L.name?.ToString()}";
+        text.text = $"Gd_L left hand : {go_L.name?.ToString()}";
         go_L?.GetComponent<Interactable>()?.ShowMesh();
 
     }
