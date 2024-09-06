@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac84fb6e7b2f37e4c9563d3365462048, type: 3}
   m_Name: TutorialK2_Slides
   m_EditorClassIdentifier: 
+  DialogAfterComplete: {fileID: 11400000, guid: d50414ffd7d2cd8458c39aea73329a0d,
+    type: 2}
   Lines:
   - line: "An easy way to classify an automaton is to view how they communicate.
       Aside from appearances, they emit high-pitched noises, and communicate quickly
       and efficiently.\r\n\r"
     transcript:
       sfx: 0
-      clip: {fileID: 8300000, guid: 8e63c012349115f4abbaf2ba292e260f, type: 3}
+      clip: {fileID: 8300000, guid: a838c46602ea41749b0d926e086dd5a2, type: 3}
       volume: 1
       pitch: 1
     timerOffset: 1
@@ -29,7 +31,7 @@ MonoBehaviour:
       of time. This has raised concerns in different communities in recent times.\r"
     transcript:
       sfx: 0
-      clip: {fileID: 8300000, guid: 23ceca3243b94c344b59dd86ceb851cb, type: 3}
+      clip: {fileID: 8300000, guid: 6d4796f4e464c5441924ecac5903f72c, type: 3}
       volume: 1
       pitch: 1
     timerOffset: 1
@@ -41,11 +43,9 @@ MonoBehaviour:
 '
     transcript:
       sfx: 0
-      clip: {fileID: 8300000, guid: 80e9bd368272d68448be54098539df8d, type: 3}
+      clip: {fileID: 8300000, guid: fcb249c5e42c30740ac12afbc9b66138, type: 3}
       volume: 1
       pitch: 1
     timerOffset: 1
     image: {fileID: 21300000, guid: 8ef036c8e56fccb4e90dfa2601a1595d, type: 3}
     preferredImageSize: {x: 1, y: 1}
-  DialogAfterComplete: {fileID: 11400000, guid: d50414ffd7d2cd8458c39aea73329a0d,
-    type: 2}

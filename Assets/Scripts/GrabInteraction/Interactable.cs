@@ -10,18 +10,18 @@ public class Interactable : MonoBehaviour
 
 
     public void Equip(){
-        mesh.SetActive(false);
+        //mesh.SetActive(false);
         rb.isKinematic = true;
     }
 
     public void Unequip()
     {
-        mesh.SetActive(true);
+        //mesh.SetActive(true);
         rb.isKinematic = false;
     }
 
     public void ShowMesh(){
-        mesh.SetActive(true);
+        //mesh.SetActive(true);
     }
 
     //private void OnTriggerEnter(Collider other)

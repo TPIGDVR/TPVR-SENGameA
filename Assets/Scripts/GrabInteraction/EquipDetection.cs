@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class EquipDetection : MonoBehaviour
@@ -9,7 +10,7 @@ public class EquipDetection : MonoBehaviour
     [SerializeField]
     Transform defaultParent;
     bool itemDetection;
-
+    public TMP_Text text;
     private void Awake()
     {
         EventSystem.player.AddListener<GameObject>(PlayerEvents.GRAB_UP_LEFT, Equip);
@@ -40,6 +41,7 @@ public class EquipDetection : MonoBehaviour
     {
         if (itemDetection)
         {
+            
             if (equipment.CompareTag("Sunglasses"))
             {
                 EventSystem.player.TriggerEvent(PlayerEvents.SUNGLASSES_ON, 0.85f);
@@ -55,6 +57,7 @@ public class EquipDetection : MonoBehaviour
             // equipment.transform.SetLocalPositionAndRotation(Vector3.zero,rotate);
             equipment.transform.localPosition = Vector3.zero;
             equipment.transform.localRotation = rotate;
+            text.text = $"Equipped : {equipment.name}";
             print("resetting to zero");
             if (equipment != null)
             {
@@ -78,6 +81,8 @@ public class EquipDetection : MonoBehaviour
             {
                 equipment.GetComponent<Interactable>()?.Unequip();
             }
+
+            text.text = $"Unequipped : {equipment.name}";
         }
     }
 }
