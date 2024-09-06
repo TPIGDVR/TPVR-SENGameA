@@ -11,8 +11,9 @@ public class GrabCheck : MonoBehaviour
     [SerializeField] float searchRadius = 0.05f;
     //[SerializeField] int mask = LayerMask.GetMask("Interactables");
     [SerializeField] LayerMask interactableMask;
-    private void Awake()
+    private void Start()
     {
+        SimpleDebugingScript.Instance.DebugLine($"subscribe");
         if (IsRight)
         {
             EventSystem.player.AddListener(PlayerEvents.GRAB_DOWN_RIGHT, Retrieve);
@@ -42,6 +43,10 @@ public class GrabCheck : MonoBehaviour
     private GameObject Retrieve()
     {
         var collider = Physics.OverlapSphere(transform.position, searchRadius, interactableMask);
+        print($"this is running {collider?.Length}");
+        SimpleDebugingScript.Instance.DebugLine($"{name} Trying to retrieveing");
+
+        SimpleDebugingScript.Instance.DebugLine($"this is running {collider?.Length}");
         if (collider == null) return null;
         //get the first one.
         else return collider[0].gameObject;

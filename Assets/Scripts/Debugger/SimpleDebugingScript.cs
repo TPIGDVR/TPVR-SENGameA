@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Patterns;
+using TMPro;
 using UnityEngine;
 
-public class SimpleDebugingScript : MonoBehaviour
+public class SimpleDebugingScript : Singleton<SimpleDebugingScript>
 {
-    public void PrintHelloWorld()
+    [SerializeField] TextMeshProUGUI text;
+
+    public void DebugLine(string line)
     {
-        print("hello world");
+        text.text = line;
     }
+
 }

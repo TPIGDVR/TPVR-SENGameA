@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3815229300923739946}
   - component: {fileID: 6839005926408017266}
   - component: {fileID: 3590582614581249860}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: UITrigger popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 210769013299269824}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.089, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -66,6 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3597a38bfc52b4093a80a16bf47ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rangeDistance: 0.2
   instructionToolTip: {fileID: 4566345754008536631}
 --- !u!1 &924483046516971522
 GameObject:
@@ -78,7 +79,7 @@ GameObject:
   - component: {fileID: 3147630538156856228}
   - component: {fileID: 43484820952839919}
   - component: {fileID: 322438528982050042}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,7 +156,7 @@ GameObject:
   - component: {fileID: 7208514348479622191}
   - component: {fileID: 2323513169975095399}
   - component: {fileID: 5594024911445011403}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,7 +290,7 @@ GameObject:
   - component: {fileID: 3305577498582045445}
   - component: {fileID: 1452004222607551502}
   - component: {fileID: 8054134534623848361}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -423,7 +424,7 @@ GameObject:
   - component: {fileID: 5634116139340134253}
   - component: {fileID: 3212258753146644436}
   - component: {fileID: 6825976212876376854}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Circle.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -508,7 +509,7 @@ GameObject:
   - component: {fileID: 2806269530758893582}
   - component: {fileID: 3206432746071227836}
   - component: {fileID: 3558549827153974964}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Cylinder.010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -591,7 +592,7 @@ GameObject:
   - component: {fileID: 2824062029470546114}
   - component: {fileID: 5361138277779938538}
   - component: {fileID: 4712927888917961399}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Cylinder.009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -674,7 +675,7 @@ GameObject:
   - component: {fileID: 3401082226912560959}
   - component: {fileID: 8987323052386359523}
   - component: {fileID: 3764318728928878391}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Cylinder.008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -763,7 +764,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4090983249162852237
 Transform:
   m_ObjectHideFlags: 0
@@ -814,7 +815,7 @@ GameObject:
   - component: {fileID: 3840584992834896048}
   - component: {fileID: 5000535875119748417}
   - component: {fileID: 8925743113369812487}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Instruction UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -944,7 +945,7 @@ GameObject:
   - component: {fileID: 7802906960186607704}
   - component: {fileID: 6096126898017731423}
   - component: {fileID: 5879315316938432003}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: HandGrab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1015,7 +1016,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5654770509546522057}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9a7676b01585ce43908639a27765dfc, type: 3}
   m_Name: 
@@ -1083,7 +1084,7 @@ GameObject:
   - component: {fileID: 1529522258518962177}
   - component: {fileID: 5785700767747331385}
   - component: {fileID: 7244238460602499991}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1214,7 +1215,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 15358
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1263,7 +1264,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mesh: {fileID: 7384552816967340994}
   rb: {fileID: 316760345410910581}
-  instructionToolTip: {fileID: 4566345754008536631}
 --- !u!1001 &6680593352616242919
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1321,6 +1321,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Sphere
+      objectReference: {fileID: 0}
+    - target: {fileID: 7656408077992870161, guid: 0217c900f8d145b429dd04d7331b9814,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

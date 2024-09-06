@@ -34,39 +34,55 @@ public class GrabManager : MonoBehaviour
 
     public void GrabDown_R()
     {
-        //text.text = "right hand";
-        if (go_R == null)
-            return;
-        text.text = $"right hand : {go_R.name?.ToString()}";
+        print("Gd_r");
+        text.text = "Gd_r";
         go_R = EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_RIGHT);
+        if (go_R != null)
+        {
+            text.text = "right hand Cannot find";
+            return;
+        }
+        text.text = $"right hand : {go_R.name?.ToString()}";
         go_R?.GetComponent<Interactable>()?.ShowMesh();
     }
 
     public void GrabDown_L()
     {
+        print("Gd_L");
+        text.text = "Gd_L";
+
         //text.text = "left hand";
-        if (go_L == null)
-            return;
-        text.text = $"left hand : {go_L.name?.ToString()}";
         go_L = EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_LEFT);
+        if (go_L == null)
+        {
+            text.text = "left hand Cannot find";
+            return;
+        }
+            
+        text.text = $"left hand : {go_L.name?.ToString()}";
         go_L?.GetComponent<Interactable>()?.ShowMesh();
 
     }
 
     public void GrabUp_R()
     {
+        print("GU_R");
+        text.text = "GU_R";
+        EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_RIGHT, go_R);
         if (go_R == null)
             return;
-        EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_RIGHT, go_R);
         text.text = $"let go : right hand : {go_R.name}";
         // EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_RIGHT, go_R);
     }
 
     public void GrabUp_L()
     {
+        print("G_L");
+        text.text = "GU_L";
+
+        EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_LEFT, go_L);
         if (go_L == null)
             return;
-        EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_LEFT, go_L);
         text.text = $"let go : left hand : {go_L.name}";
         // EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_LEFT, go_L);
     }

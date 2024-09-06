@@ -30,6 +30,8 @@ public class EquipDetection : MonoBehaviour
 
     private void Equip(GameObject equipment)
     {
+        //print($"Equiping object {equipment.name}");
+        SimpleDebugingScript.Instance.DebugLine($"Equiping object {equipment.name}");
         if (equipment == null)
         {
             return;
@@ -41,7 +43,9 @@ public class EquipDetection : MonoBehaviour
     {
         if (itemDetection)
         {
-            
+            print($"thing being equip {equipment.name}");
+            SimpleDebugingScript.Instance.DebugLine($"thing being equip {equipment.name}");
+
             if (equipment.CompareTag("Sunglasses"))
             {
                 EventSystem.player.TriggerEvent(PlayerEvents.SUNGLASSES_ON, 0.85f);
