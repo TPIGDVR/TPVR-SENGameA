@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BreathDetectionPanel : MonoBehaviour
 {
@@ -12,9 +13,11 @@ public class BreathDetectionPanel : MonoBehaviour
     [SerializeField] GameObject completedBreathingPanel;
     [SerializeField] TextMeshProUGUI elapseTimeText;
     [SerializeField] TextMeshProUGUI stateText;
+    [SerializeField] Slider breathingSlider;
 
     [Header("detector")]
     [SerializeField] BreathingDetection breathDetector;
+    
     //we want the x btn in the game
     [SerializeField] OVRInput.Button prevButton = OVRInput.Button.One;
     [SerializeField] OVRInput.Button nxtBtn = OVRInput.Button.Three;
@@ -97,6 +100,7 @@ public class BreathDetectionPanel : MonoBehaviour
         {
             elapseTimeText.text = $"{breathDetector.remainTimingForTesting} Time remaining";
             stateText.text = $"{breathDetector.breathingTestingState.ToString()}";
+            breathingSlider.value = breathDetector.NormaliseVolumeForUI;
             yield return null;
         }
 

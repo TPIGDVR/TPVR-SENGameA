@@ -80,6 +80,11 @@ namespace BreathDetection
             }
         }
 
+        public float NormaliseVolumeForUI { get
+            {
+                return 1 - Mathf.Abs(micProvider.volume / -80);
+            } }
+
         #endregion 
 
         private void Start()
