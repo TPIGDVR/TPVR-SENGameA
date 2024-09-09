@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8260505234165434387}
   - component: {fileID: 76048401685248019}
   - component: {fileID: 4308459872758419735}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 8475873691034207767}
   - component: {fileID: 8076467305051039956}
   - component: {fileID: 7104773323885958920}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: HandGrab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 9062313782037494522}
   - component: {fileID: 7612831100954180742}
   - component: {fileID: 5848456447165611461}
-  - component: {fileID: 7083477203707907268}
+  - component: {fileID: 3223968094879328514}
   m_Layer: 13
   m_Name: Sunglasses
   m_TagString: Sunglasses
@@ -305,7 +305,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7083477203707907268
+--- !u!114 &3223968094879328514
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -314,11 +314,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1358126508131702847}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3e6868cc11e1024a9b7a33a4548bdf0, type: 3}
+  m_Script: {fileID: 11500000, guid: a14bf3cad4531ab41bd702527b129aae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isGrab: 0
+  equipingDistance: 0.2
   mesh: {fileID: 2882857977136807661}
   rb: {fileID: 5848456447165611461}
+  currentEquipDetection: {fileID: 0}
 --- !u!1 &2003021985992273955
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,8 +332,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6602444967163859677}
   - component: {fileID: 3351768760539135738}
-  - component: {fileID: 4233135420975200010}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: PopupTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -364,29 +366,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3597a38bfc52b4093a80a16bf47ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rangeDistance: 0.2
   instructionToolTip: {fileID: 4726007549756601121}
---- !u!65 &4233135420975200010
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2003021985992273955}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.2611313, y: 0.1155324, z: 0.28531647}
-  m_Center: {x: 0.0072898865, y: 0.005576849, z: 0.008378983}
+  connectedInterable: {fileID: 3223968094879328514}
 --- !u!1 &2035349952139471251
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,7 +379,7 @@ GameObject:
   - component: {fileID: 243382134853426110}
   - component: {fileID: 8708135567135805584}
   - component: {fileID: 1811457518293319474}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,7 +513,7 @@ GameObject:
   - component: {fileID: 7058054288370010426}
   - component: {fileID: 336335718930661754}
   - component: {fileID: 1468093123173942018}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -664,7 +645,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8027464326170331393}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -698,7 +679,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8938140679429349420}
   - component: {fileID: 1881553636442643588}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -755,13 +736,13 @@ GameObject:
   - component: {fileID: 2036267158266862881}
   - component: {fileID: 4248360431582461043}
   - component: {fileID: 5490338494324438583}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Instruction UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3487973673057500341
 RectTransform:
   m_ObjectHideFlags: 0
@@ -953,12 +934,12 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f7e035726bb6aed4eb95ade6ebf7001d,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: f7e035726bb6aed4eb95ade6ebf7001d,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1057,7 +1038,7 @@ PrefabInstance:
     - target: {fileID: 7656408077992870161, guid: 0217c900f8d145b429dd04d7331b9814,
         type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1151979450530366750, guid: 0217c900f8d145b429dd04d7331b9814, type: 3}
