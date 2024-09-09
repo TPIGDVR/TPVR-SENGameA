@@ -10,6 +10,9 @@ public class GlobalPostProcessHandler : MonoBehaviour
     float defaultBloomIntensity = 4f;
     float defaultBloomThreshold = 0.35f;
     float defaultBloomScatter = 0.35f;
+    float defVignetteValue;
+    Vector4 defGamma;
+    Vector4 defGain;
     Volume globalVolume;
     [SerializeField]Bloom bloom;
     Vignette vig;
@@ -22,6 +25,15 @@ public class GlobalPostProcessHandler : MonoBehaviour
         globalVolume.profile.TryGet(out bloom);
         globalVolume.profile.TryGet(out vig);
         globalVolume.profile.TryGet(out lgg);
+
+        defaultBloomIntensity = bloom.intensity.value;
+        defaultBloomThreshold = bloom.threshold.value;
+        defaultBloomScatter = bloom.scatter.value;
+
+        defVignetteValue = vig.intensity.value;
+        defGamma = lgg.gamma.value;
+        defGain = lgg.gain.value;
+        lgg.active = false;
         em_p.AddListener<float>(PlayerEvents.SUNGLASSES_ON,ReduceBloomIntensity);
         em_p.AddListener(PlayerEvents.SUNGLASSES_OFF, ResetBloomIntensity);
     }
@@ -32,16 +44,18 @@ public class GlobalPostProcessHandler : MonoBehaviour
         float r = 1 - reducePercentage;
 
         bloom.intensity.value = defaultBloomIntensity * r;
-        lgg.gain.overrideState = true;
+        lgg.active = true;
         IncreaseVignette();
+        GameData.player.isWearingSunglasses = true;
     }
 
     #region RESET BLOOM SETTINGS
     void ResetBloomIntensity()
     {
         bloom.intensity.value = defaultBloomIntensity;
-        lgg.gain.overrideState = false;
         ResetVignette();
+        lgg.active = false;
+        GameData.player.isWearingSunglasses = false;
     }
 
     void ResetBloomThreshold()
@@ -65,11 +79,13 @@ public class GlobalPostProcessHandler : MonoBehaviour
 
     void IncreaseVignette()
     {
-        vig.intensity.value = 0.3f;
+        vig.intensity.value = 0.4f;
     }
 
     void ResetVignette()
     {
-        vig.intensity.value = 0.05f;
+        vig.intensity.value = defVignetteValue;
+        //lgg.gamma.value = defGamma;
+        //lgg.gain.value = defGain;
     }
 }

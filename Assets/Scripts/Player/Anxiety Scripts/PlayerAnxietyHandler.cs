@@ -184,6 +184,13 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 
         void CalculateGlare()
         {
+            if (GameData.player.isWearingSunglasses)
+            {
+                glareValue = 0f;
+                debugText.text = glareValue.ToString();
+                return;
+            }
+
             try
             {
                 RenderTexture rt = em_p.TriggerEvent<RTHandle>(PlayerEvents.REQUEST_LUMTEXTURE).rt;
@@ -196,13 +203,13 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 {
                     glareValue = Old(rt);
                 }
-                debugText.text = glareValue.ToString();
             }
             catch
             {
                 Debug.LogWarning("Using defualt value");
                 glareValue = 0;
             }
+            debugText.text = glareValue.ToString();
 
             float Old(RenderTexture rt)
             {
@@ -262,14 +269,14 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         IEnumerator CalcGlare_Cor()
         {
             int framesToWait = 5;
+            yield return new WaitForSeconds(0.5f);
             while (true)
             {
-                CalculateGlare();
-
                 for (int i = 0; i < framesToWait; i++)
                 {
                     yield return null;
                 }
+                CalculateGlare();
             }
         }
     }

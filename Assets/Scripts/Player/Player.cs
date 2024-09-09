@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IScriptLoadQueuer
 {
-    bool isWearingSunglasses;
-
     PlayerAnxietyHandler anxietyHandler; //handles noise + light + breathing
     PlayerVFX vfx;
     PlayerObjectiveHandler objectiveHandler;
@@ -41,6 +39,8 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     [SerializeField] Transform rightHand;
 
     public bool IsWearingHeadphones;
+    public bool isWearingSunglasses;
+
     private void Awake()
     {
         ScriptLoadSequencer.Enqueue(this,(int)LevelLoadSequence.PLAYER);
