@@ -98,16 +98,10 @@ public class BoundingBoxGenerator : MonoBehaviour
         Camera cam  = camGO.AddComponent<Camera>();
         cam.cullingMask = mask;
         cam.orthographic = true;
-
+        //cam.aspect = bbSize.x / bbSize.y;
         float size = 0;
-        if(bbSize.x > bbSize.y)
-        {
-            size = bbSize.x;
-        }
-        else
-        {
-            size = bbSize.y;
-        }
+        size = Mathf.Max(bbSize.x, bbSize.y);
+        
         cam.orthographicSize = size / 2;
 
         cam.transform.position = new(bbCenter.x,1,bbCenter.y);
@@ -116,12 +110,18 @@ public class BoundingBoxGenerator : MonoBehaviour
         cam.clearFlags = CameraClearFlags.SolidColor;
         cam.backgroundColor = mapColor;
         int scalar = 10;
+
+        //try new
+        //int camHeight = (int)(cam.orthographicSize * 2) * scalar;
+        //int camWidth = (int)(camHeight * cam.aspect);
+
+        //old method ;()
         int camWidth = (int)(cam.orthographicSize * cam.aspect) * 2 * scalar;
         // manually add the offset to perfectly scale the map up
         //needs to be fixed
-        RenderTexture rt = new(camWidth, camWidth + 120, 0);
-        //RenderTexture rt = new(camWidth, (int)((float)camWidth * 3.5f), 0);
-        // RenderTexture rt = new(camWidth, camWidth, 0);
+        //RenderTexture rt = new(camWidth, camWidth + 120, 0);
+        RenderTexture rt = new(camWidth, (int)((float)camWidth * 3.5f), 0);
+        //RenderTexture rt = new(camHeight, camWidth, 0);
 
         RenderTexture copy = new(camWidth, camWidth + 120, 0);
         //rt.filterMode = FilterMode.Point;
@@ -159,7 +159,9 @@ public class BoundingBoxGenerator : MonoBehaviour
     void ApplyMapSnapshotToCanvas()
     {
         canvasRT.position = new(bbCenter.x,1 , bbCenter.y);
-        canvasRT.sizeDelta = new(bbSize.y,bbSize.x);
+        canvasRT.sizeDelta = new(bbSize.x,bbSize.y);
+        //canvasRT.sizeDelta = new(bbSize.x,bbSize.y);
+
         mapImage.texture = GameData.miniMapSnapShot;
     }
 }
