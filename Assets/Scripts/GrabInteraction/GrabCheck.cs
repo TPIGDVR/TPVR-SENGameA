@@ -24,6 +24,7 @@ public class GrabCheck : MonoBehaviour
         }
     }
 
+    //if change to on trigger.
     //private void OnTriggerEnter(Collider other)
     //{
     //    go = other.gameObject;
@@ -57,9 +58,6 @@ public class GrabCheck : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, searchRadius);
     }
-
-    //iouytr
-
 }
 
 

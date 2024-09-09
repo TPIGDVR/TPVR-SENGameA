@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class GrabManager : MonoBehaviour
 {
-    GameObject go_L;
-    GameObject go_R;
+    Interactable go_L;
+    Interactable go_R;
 
     public TMP_Text text;
 
@@ -34,52 +34,54 @@ public class GrabManager : MonoBehaviour
 
     public void GrabDown_R()
     {
-        go_R = EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_RIGHT);
-        if (go_R == null)
+        try
         {
-            text.text = "right hand Cannot find";
-            return;
+            if (EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_RIGHT)
+                .TryGetComponent<Interactable>(out go_R))
+            {
+                print($"Grabbed {go_R.transform.name}");
+                go_R.Grab();
+            }
         }
-        text.text = $"Gd_r right hand : {go_R.name?.ToString()}";
-        go_R?.GetComponent<Interactable>()?.ShowMesh();
+        catch
+        {
+            print("no gameobject");
+        }
     }
 
     public void GrabDown_L()
     {
-        //text.text = "left hand";
-        go_L = EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_LEFT);
-        if (go_L == null)
+        try
         {
-            text.text = "left hand Cannot find";
-            return;
+            if (EventSystem.player.TriggerEvent<GameObject>(PlayerEvents.GRAB_DOWN_LEFT)
+                .TryGetComponent<Interactable>(out go_L))
+            {
+                print($"Grabbed {go_L.transform.name}");
+                go_L.Grab();
+            }
         }
-            
-        text.text = $"Gd_L left hand : {go_L.name?.ToString()}";
-        go_L?.GetComponent<Interactable>()?.ShowMesh();
-
+        catch
+        {
+            print("no gameobject");
+        }
     }
 
     public void GrabUp_R()
     {
-        print("GU_R");
-        text.text = "GU_R";
-        EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_RIGHT, go_R);
-        if (go_R == null)
-            return;
-        text.text = $"let go : right hand : {go_R.name}";
-        // EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_RIGHT, go_R);
+        if(go_R != null)
+        {
+            go_R.UnGrab();
+            go_R = null;
+        }
     }
 
     public void GrabUp_L()
     {
-        print("G_L");
-        text.text = "GU_L";
-
-        EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_LEFT, go_L);
-        if (go_L == null)
-            return;
-        text.text = $"let go : left hand : {go_L.name}";
-        // EventSystem.player.TriggerEvent(PlayerEvents.GRAB_UP_LEFT, go_L);
+        if (go_L != null)
+        {
+            go_L.UnGrab();
+            go_L = null;
+        }
     }
 }
 

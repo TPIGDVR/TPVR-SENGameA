@@ -1,37 +1,82 @@
+using OVR.OpenVR;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
+    public bool isGrab = false;
+    public float equipingDistance = 1f;
     public GameObject mesh;
     public Rigidbody rb;
+    private EquipDetection currentEquipDetection;
 
-
-
-    public void Equip(){
+    //to be called by the eqipment detection
+    public void Equip()
+    {
+        print("Been equiped");
         mesh.SetActive(false);
         rb.isKinematic = true;
+        OnEquip();
     }
 
     public void Unequip()
     {
+        print("Been unequiped");
         mesh.SetActive(true);
         rb.isKinematic = false;
+        OnUnEquip();
     }
 
-    public void ShowMesh(){
+    public void Grab()
+    {
+        isGrab = true;
+        rb.isKinematic = false;
         mesh.SetActive(true);
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    instructionToolTip.SetActive(true);
-    //}
+    public void UnGrab()
+    {
+        //try to find the equipment detection
+        var colliders = Physics.OverlapSphere(transform.position, equipingDistance);
+        foreach(var collider in colliders)
+        {
+            if(collider.tag == "Player Head")
+            {
+                //after finding it, equip it and then stop it
+                currentEquipDetection = collider.GetComponent<EquipDetection>();
+                currentEquipDetection.Equip(this);
+                return;
+            }
+        }
 
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    instructionToolTip.SetActive(false);
-    //}
+        //uneqip the object from the current equip detection
+        if(currentEquipDetection != null) 
+        {
+            currentEquipDetection.UnequipCurrentEquipment();
+            currentEquipDetection = null;
+        }
+
+        //else then
+        isGrab = false;
+        rb.isKinematic = true;
+        mesh.SetActive(true);
+    }
+
+    protected virtual void OnEquip()
+    {
+
+    }
+
+    protected virtual void OnUnEquip() 
+    { 
+        
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, equipingDistance);
+    }
 
 }
