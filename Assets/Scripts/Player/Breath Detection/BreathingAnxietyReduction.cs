@@ -159,6 +159,7 @@ namespace BreathDetection
 
         public void ActivateBreathingPanel()
         {
+            UpdateFillColor(0);
             breathingPanel.SetActive(true);
         }
 

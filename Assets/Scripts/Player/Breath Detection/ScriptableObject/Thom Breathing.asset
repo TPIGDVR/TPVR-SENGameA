@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1de4069472cf2c94d9bc79248d0387a4, type: 3}
+  m_Name: Thom Breathing
+  m_EditorClassIdentifier: 
+  inhaleCalculatedData:
+    lowPassFilter: 2500
+    highPassFilter: 6050
+    minNumberOfCommonPoint: 8
+    maxNumberOfCommonPoint: 35
+    minAmplitude: 0.000100045254
+    maxAmplitude: 0.00018194948
+    maxDBThreshold: -41.92313
+    CounterThreshold: 0
+    reductionOfMinCounter: 2
+    numberOfPointsToStop: 12
+  exhaleCalculatedData:
+    lowPassFilter: 0
+    highPassFilter: 2300
+    minNumberOfCommonPoint: 8
+    maxNumberOfCommonPoint: 22
+    minAmplitude: 0.00037694327
+    maxAmplitude: 0.0012985038
+    maxDBThreshold: -34.136566
+    CounterThreshold: 0
+    reductionOfMinCounter: 3
+    numberOfPointsToStop: 13
+  exhaleLoudnessData:
+    lowPassFilter: 0
+    highPassFilter: 0
+    volumeThreshold: -39.413704
+    minPitchThreshold: 1226.3469
+    maxPitchThreshold: 1472.077

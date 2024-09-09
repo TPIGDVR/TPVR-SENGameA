@@ -167,6 +167,7 @@ namespace Dialog
         //called by controller button
         public void EvaluateAction_BtnA()
         {
+            
             debugtext.text = "Btn A";
             //check if theres valid dialogue
             if (currentDialog == null) return;
