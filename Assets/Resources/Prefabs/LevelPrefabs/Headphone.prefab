@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 210769013299269824}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.089, z: 0}
+  m_LocalPosition: {x: 0, y: 0.099, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -43,7 +43,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -53,7 +53,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.16881752, y: 0.20598595, z: 0.10689501}
-  m_Center: {x: 0.035525322, y: 0.111732736, z: 0.013178311}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3590582614581249860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,8 +66,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3597a38bfc52b4093a80a16bf47ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rangeDistance: 0.2
   instructionToolTip: {fileID: 4566345754008536631}
+  connectedInterable: {fileID: 1778585396567735095}
 --- !u!1 &924483046516971522
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,7 +821,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2076770782541045313
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1174,7 +1174,7 @@ GameObject:
   - component: {fileID: 2547615008220992783}
   - component: {fileID: 3723584865528557496}
   - component: {fileID: 316760345410910581}
-  - component: {fileID: 4646055804143119719}
+  - component: {fileID: 1778585396567735095}
   m_Layer: 13
   m_Name: Headphone
   m_TagString: Headphones
@@ -1250,7 +1250,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4646055804143119719
+--- !u!114 &1778585396567735095
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1259,11 +1259,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7768604206103747506}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3e6868cc11e1024a9b7a33a4548bdf0, type: 3}
+  m_Script: {fileID: 11500000, guid: d4609bb9543fcbd44b9b16d40fe9d48c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isGrab: 0
+  equipingDistance: 0.2
   mesh: {fileID: 7384552816967340994}
   rb: {fileID: 316760345410910581}
+  currentEquipDetection: {fileID: 0}
 --- !u!1001 &6680593352616242919
 PrefabInstance:
   m_ObjectHideFlags: 0

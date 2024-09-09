@@ -1,8 +1,4 @@
-using Oculus.Interaction;
-using Oculus.Interaction.HandGrab;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
+
 using UnityEngine;
 
 public class UIPopUp : MonoBehaviour

@@ -860,6 +860,7 @@ GameObject:
   - component: {fileID: 8566610462852909228}
   - component: {fileID: 5767784484130508163}
   - component: {fileID: 5314758775433740093}
+  - component: {fileID: 5777187982186638013}
   m_Layer: 0
   m_Name: MetaQuestTouchPlus_Right
   m_TagString: Hand
@@ -956,6 +957,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &5777187982186638013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359881098370057622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beefc3a10bb86f546925ce1c83837cf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsRight: 1
+  searchRadius: 0.1
+  interactableMask:
+    serializedVersion: 2
+    m_Bits: 8192
 --- !u!1 &371016315356160115
 GameObject:
   m_ObjectHideFlags: 0
@@ -2480,9 +2498,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 2974518754200293222}
   parentControllerComponent: {fileID: 7548457901854139266}
-  directionAwayFromTheController: {x: -0.5, y: -0.05, z: 0.34}
+  directionAwayFromTheController: {x: 0, y: 0.25, z: 0}
   maxDistanceFromController: 0.1
-  weightForDirectionAwayFromController: 0.07
+  weightForDirectionAwayFromController: 0.03
   weightForDirectionTowardsCamera: 0.03
   shiftOffset: {x: 0, y: 0, z: 0}
   layerMask:
@@ -3957,9 +3975,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 250137071976523954}
   parentControllerComponent: {fileID: 143205642502427666}
-  directionAwayFromTheController: {x: 0.24, y: 0.5, z: -0.41}
+  directionAwayFromTheController: {x: 0, y: 0.25, z: 0}
   maxDistanceFromController: 0.1
-  weightForDirectionAwayFromController: 0.07
+  weightForDirectionAwayFromController: 0.03
   weightForDirectionTowardsCamera: 0.05
   shiftOffset: {x: 0, y: 0, z: 0}
   layerMask:
@@ -9785,8 +9803,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beefc3a10bb86f546925ce1c83837cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  go: {fileID: 0}
   IsRight: 0
+  searchRadius: 0.05
+  interactableMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &4177809885010390695
 GameObject:
   m_ObjectHideFlags: 0
@@ -20153,6 +20174,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   p: {fileID: 5995031979308308848}
   defaultParent: {fileID: 0}
+  text: {fileID: 0}
+  currentEquipment: {fileID: 0}
 --- !u!1 &7938494020276633720
 GameObject:
   m_ObjectHideFlags: 0
@@ -20377,8 +20400,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beefc3a10bb86f546925ce1c83837cf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  go: {fileID: 0}
   IsRight: 1
+  searchRadius: 0.05
+  interactableMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &8029813026453908283
 GameObject:
   m_ObjectHideFlags: 0
@@ -22373,9 +22399,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 1900241320547728822}
   parentControllerComponent: {fileID: 4168788818862312324}
-  directionAwayFromTheController: {x: 0, y: 0, z: 0}
+  directionAwayFromTheController: {x: 0, y: 0.25, z: 0}
   maxDistanceFromController: 0.1
-  weightForDirectionAwayFromController: 0.05
+  weightForDirectionAwayFromController: 0.04
   weightForDirectionTowardsCamera: 0.05
   shiftOffset: {x: 0, y: 0, z: 0}
   layerMask:
@@ -23495,6 +23521,7 @@ GameObject:
   - component: {fileID: 8537687827564495141}
   - component: {fileID: 9170281344435723220}
   - component: {fileID: 6201279894035244171}
+  - component: {fileID: 4098390545967720786}
   m_Layer: 0
   m_Name: MetaQuestTouchPlus_Left
   m_TagString: Hand
@@ -23591,6 +23618,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &4098390545967720786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9203776587706055368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beefc3a10bb86f546925ce1c83837cf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsRight: 0
+  searchRadius: 0.1
+  interactableMask:
+    serializedVersion: 2
+    m_Bits: 8192
 --- !u!1 &9217657104277649407
 GameObject:
   m_ObjectHideFlags: 0

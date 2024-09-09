@@ -49,23 +49,29 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
         Ray toPlayer = new(transform.position, rayDir);
         bool hasHit = Physics.Raycast(toPlayer, out RaycastHit hitInfo, NoiseRangeScaled);
         float dist = Vector3.Distance(camTrans.position, transform.position);
-         
        
         if (hasHit)
         {
-            bool haha = (!hitInfo.transform.CompareTag("Player") && !hitInfo.transform.CompareTag("MainCamera")) || GameData.player.IsWearingHeadphones;
-            if (haha)
+            bool cantHearNoise = (!hitInfo.transform.CompareTag("Player") &&
+                !hitInfo.transform.CompareTag("MainCamera") &&
+                !hitInfo.transform.CompareTag("Hand")) 
+                || GameData.player.IsWearingHeadphones;
+            if (cantHearNoise)
             {
+                //when the player cant hear it
+                print($"{transform.parent.parent.name} tag {hitInfo.transform.tag} {hitInfo.collider.name}");
+
                 highPassFilter.cutoffFrequency = 1000;
                 lowPassFilter.cutoffFrequency = 300;
             }
             else
             {
+                //when the player can hear it
                 highPassFilter.cutoffFrequency = 0;
                 lowPassFilter.cutoffFrequency = 22000;
             }
 
-            return haha || dist > NoiseRangeScaled;
+            return cantHearNoise || dist > NoiseRangeScaled;
         }
 
         //out of range
