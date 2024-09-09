@@ -9,6 +9,7 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
     public float NoiseRange = 10;
     public float NoiseValue = 5;
     public float NoiseRangeScaled;
+    public float meshOffset = 0.5f;
     AudioSource audioSource;
     AudioHighPassFilter highPassFilter;
     AudioLowPassFilter lowPassFilter;
@@ -18,7 +19,8 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
     {
         GetComponent();
 
-        noiseIndicator.localScale = new Vector3(NoiseRange, NoiseRange, NoiseRange);
+        noiseIndicator.localScale = new Vector3(NoiseRange, NoiseRange, NoiseRange) +
+            new Vector3(meshOffset, meshOffset, meshOffset);
         NoiseRangeScaled = (NoiseRange + c.radius) * LevelConstants.Scale;
         audioSource.maxDistance = NoiseRangeScaled;
         audioSource.minDistance = 0;
@@ -54,7 +56,9 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
         {
             bool cantHearNoise = (!hitInfo.transform.CompareTag("Player") &&
                 !hitInfo.transform.CompareTag("MainCamera") &&
-                !hitInfo.transform.CompareTag("Hand")) 
+                !hitInfo.transform.CompareTag("Hand") &&
+                !hitInfo.transform.CompareTag("Player Head")
+                ) 
                 || GameData.player.IsWearingHeadphones;
             if (cantHearNoise)
             {
