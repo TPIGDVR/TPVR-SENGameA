@@ -61,7 +61,7 @@ public class BoundingBoxGenerator : MonoBehaviour
         Debug.Log($"Bounding Box 2D Size: {bbSize}");
 
         // Optional: Draw the 2D bounding box in the editor
-        DrawBoundingBox2D(minPoint, maxPoint);
+        //DrawBoundingBox2D(minPoint, maxPoint);
 
         StartCoroutine(GenerateCamera());
     }
@@ -99,8 +99,7 @@ public class BoundingBoxGenerator : MonoBehaviour
         cam.cullingMask = mask;
         cam.orthographic = true;
         //cam.aspect = bbSize.x / bbSize.y;
-        float size = 0;
-        size = Mathf.Max(bbSize.x, bbSize.y);
+        float size = Mathf.Max(bbSize.x, bbSize.y);
         
         cam.orthographicSize = size / 2;
 
@@ -123,11 +122,11 @@ public class BoundingBoxGenerator : MonoBehaviour
         RenderTexture rt = new(camWidth, (int)((float)camWidth * 3.5f), 0);
         //RenderTexture rt = new(camHeight, camWidth, 0);
 
-        RenderTexture copy = new(camWidth, camWidth + 120, 0);
+        //RenderTexture copy = new(camWidth, camWidth + 120, 0);
         //rt.filterMode = FilterMode.Point;
         cam.targetTexture = rt;
         rt.Create();
-        copy.Create();
+        //copy.Create();
         GameData.miniMapSnapShot = rt;
         yield return null;
         cam.targetTexture = null;
@@ -159,7 +158,7 @@ public class BoundingBoxGenerator : MonoBehaviour
     void ApplyMapSnapshotToCanvas()
     {
         canvasRT.position = new(bbCenter.x,1 , bbCenter.y);
-        canvasRT.sizeDelta = new(bbSize.x,bbSize.y);
+        canvasRT.sizeDelta = new(bbSize.y,bbSize.x);
         //canvasRT.sizeDelta = new(bbSize.x,bbSize.y);
 
         mapImage.texture = GameData.miniMapSnapShot;
