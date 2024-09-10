@@ -92,7 +92,6 @@ public abstract class Door : MonoBehaviour, IScriptLoadQueuer
 
         while(!isOpened)
         {
-            print($"isopen {isOpened}");
             float timer = 0;
             float timeInterval = 0.02f;
             float time = 1;

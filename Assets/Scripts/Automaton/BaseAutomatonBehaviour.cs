@@ -37,6 +37,8 @@ namespace Automaton
         public void SetHide()
         {
             StopAllCoroutines();
+            //stop them from moving
+            _ani.SetFloat("Spd", 0);
             //then stop all the coroutine
             currentBehaviourCoroutine = null;
         }

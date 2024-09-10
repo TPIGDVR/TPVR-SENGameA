@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Level : MonoBehaviour, IScriptLoadQueuer
 {
+    [Header("Death related")]
     [SerializeField]
     Transform deathPosition;
+    [SerializeField] ScannerUI tryAgainScanner;
 
     [SerializeField]
     Room[] rooms;
@@ -52,6 +54,7 @@ public class Level : MonoBehaviour, IScriptLoadQueuer
     {
         //StartCoroutine(TeleportPlayerToLocation(respawnPosition));
         GameData.playerTransform.position = respawnPosition;
+        tryAgainScanner.ResetScanner();
     }
 
     [ContextMenu("Complete Tutorial")]

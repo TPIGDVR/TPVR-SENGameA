@@ -85,9 +85,17 @@ public class ScannerUI : MonoBehaviour , IScriptLoadQueuer
         audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
     }
 
+     public void ResetScanner()
+    {
+        scanCompleted = false;
+        progress = 0;
+        UpdateProgressUI();
+    }
+
     #region Simple Interactor
     public void StartScan()
     {
+        if (scanCompleted) return;
         scanning = true;
         if (globalAudioSource) audioPlayer.RetrieveAudioSource(globalAudioSource);
         globalAudioSource = audioPlayer.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING, transform.position);
@@ -95,6 +103,7 @@ public class ScannerUI : MonoBehaviour , IScriptLoadQueuer
 
     public void StopScan()
     {
+        if (scanCompleted) return;
         scanning = false;
         if (globalAudioSource)
         {
