@@ -50,12 +50,10 @@ namespace Assets.Scripts.Tutorial
 
             void ActivateMissMechanic(Objective obj)
             {
-                print("running missing mechanic");
                 switch (obj.Completed)
                 {
                     //if its the third kiosk and the player has not activate it, then activate heart beat monitor
                     case 3:
-                        print($"hello running this here {hasActivateNoiseIndicatorDetection}");
                         if (!hasActivateNoiseIndicatorDetection)
                         {
                             EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_NOISE_INDICATOR);
@@ -63,7 +61,6 @@ namespace Assets.Scripts.Tutorial
                         break;
                     //if its the fourth kiosk, then activate the mechanic that is not activated.
                     case 4:
-                        print("Checking last kiosk");
                         if (!hasActivateHeartRateMonitor)
                         {
                             EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_HEARTRATE);

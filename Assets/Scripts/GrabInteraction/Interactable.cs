@@ -14,7 +14,6 @@ public class Interactable : MonoBehaviour
     //to be called by the eqipment detection
     public void Equip()
     {
-        print("Been equipped");
         mesh.SetActive(false);
         rb.isKinematic = true;
         OnEquip();
@@ -22,7 +21,6 @@ public class Interactable : MonoBehaviour
 
     public void Unequip()
     {
-        print("Been unequiped");
         mesh.SetActive(true);
         rb.isKinematic = false;
         OnUnEquip();
@@ -39,20 +37,16 @@ public class Interactable : MonoBehaviour
     {
         //try to find the equipment detection
         var colliders = Physics.OverlapSphere(transform.position, equipingDistance);
-        print($"-----Colliders------");
         foreach(var collider in colliders)
         {
-            print(collider.name);
             if(collider.tag == "Player Head")
             {
                 //after finding it, equip it and then stop it
-                print("start equipping");
                 currentEquipDetection = collider.GetComponent<EquipDetection>();
                 currentEquipDetection.Equip(this);
                 return;
             }
         }
-        print($"-----End Colliders------");
 
         //uneqip the object from the current equip detection
         if (currentEquipDetection != null) 
@@ -61,7 +55,6 @@ public class Interactable : MonoBehaviour
             currentEquipDetection = null;
         }
 
-        print("finish ungrabbing");
         //else then
         isGrab = false;
         rb.isKinematic = false;

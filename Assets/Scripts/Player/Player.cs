@@ -190,7 +190,6 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         em_l.TriggerEvent(LevelEvents.INTERRUPT_HOLOGRAM);
         DisableMovement();
         yield return new WaitUntil(() => vfx.isFaded);
-        print("calling out death screen");
         em_p.TriggerEvent(PlayerEvents.DEATH_SCREEN_FADED); 
         yield return new WaitForSeconds(1f);
         EnableMovement();

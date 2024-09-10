@@ -63,7 +63,6 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
             if (cantHearNoise)
             {
                 //when the player cant hear it
-                print($"{transform.parent.parent.name} tag {hitInfo.transform.tag} {hitInfo.collider.name}");
 
                 highPassFilter.cutoffFrequency = 1000;
                 lowPassFilter.cutoffFrequency = 300;
