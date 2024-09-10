@@ -27,9 +27,10 @@ MonoBehaviour:
     Text: We do need to calibrate the package though. Make sure to take deep breaths
       when inhale and relax when exhaling.
     hasBeenTriggered: 0
-    dialogEndTrigger: 7
+    dialogEndTrigger: 0
     audioClip:
       sfx: 0
       clip: {fileID: 0}
       volume: 0
       pitch: 0
+  OnCompleteDialog: 7
