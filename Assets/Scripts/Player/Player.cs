@@ -178,6 +178,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     void Respawn()
     {
+        print("Start respawning");
         StartCoroutine(T_Respawn());
         anxietyHandler.isDead = false;
     }
@@ -200,12 +201,14 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
     {
         vfx.BeginFadeScreen();
         DisableMovement();
-
+        print("respawnning");
         yield return new WaitUntil(() => vfx.isFaded);
         em_p.TriggerEvent(PlayerEvents.RES_SCREEN_FADED);
+        print("begin unfading");
         vfx.BeginUnfadeScreen();
         yield return new WaitUntil(() => !vfx.isFaded);
         EnableMovement();
+        print("Finish");
 
         OpenUI();
     }
