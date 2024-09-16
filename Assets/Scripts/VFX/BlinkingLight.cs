@@ -15,7 +15,8 @@ public class BlinkingLights : MonoBehaviour
 
     Coroutine blink;
     int index;
-    private void Start()
+
+    public void Initialize()
     {
         index = Random.Range(1, _mats.Length);
         if (index == 0)
@@ -26,17 +27,45 @@ public class BlinkingLights : MonoBehaviour
 
         _renderer = GetComponent<MeshRenderer>();
         _renderer.material = _mats[index];
-        //blink = StartCoroutine(BlinkLights());
-    }
-    void OnBecameVisible()
-    {
-        blink = StartCoroutine(BlinkLights());
     }
 
-    void OnBecameInvisible()
+    private void Start()
     {
-        StopCoroutine(blink);
+        // index = Random.Range(1, _mats.Length);
+        // if (index == 0)
+        // {
+        //     gameObject.SetActive(false);
+        //     return;
+        // }
+
+        // _renderer = GetComponent<MeshRenderer>();
+        // _renderer.material = _mats[index];
+        //blink = StartCoroutine(BlinkLights());
     }
+    // void OnBecameVisible()
+    // {
+    //     blink = StartCoroutine(BlinkLights());
+    // }
+
+    // void OnBecameInvisible()
+    // {
+    //     StopCoroutine(blink);
+    // }
+    public void OffLight()
+    {
+        _renderer.material = _mats[0];
+    }
+
+    public void OnLight()
+    {
+        _renderer.material = _mats[index];
+        //0.2
+        //1
+        //0.2
+        //0.5
+        //0.8
+    }
+
 
     IEnumerator BlinkLights()
     {

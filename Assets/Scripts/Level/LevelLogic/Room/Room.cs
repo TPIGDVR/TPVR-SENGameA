@@ -17,8 +17,11 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
     protected Kiosk[] kiosks;
     [SerializeField]
     Room_Door[] doors;
+    [SerializeField]
+    BlinkingLights[] lights;
 
     bool isCompleted;
+    bool isPlayerHere;
 
     #region ROOM INITIALIZATION
     public void Initialize()
@@ -26,6 +29,7 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
         RetrieveAutomatonsInRoom();
         RetrieveKiosksInRoom();
         RetrieveDoorsInRoom();
+        RetrieveLEDInRoom();
         InstantiateScriptableObject();
         InitRoom();
         ScriptionOfEvent();
@@ -45,12 +49,14 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
             //Hide all game related objects
             foreach (var kiosk in kiosks) kiosk.SetHide();
             foreach(var a in automatons) a.SetHide();
+            isPlayerHere = false;
         }
         else
         {
             //Enable component
             foreach (var kiosk in kiosks) kiosk.SetShow();
             foreach (var a in automatons) a.SetShow();
+            isPlayerHere = true;
         }
     }
 
@@ -68,6 +74,16 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
     void RetrieveDoorsInRoom()
     {
         doors = GetComponentsInChildren<Room_Door>();
+    }
+
+    void RetrieveLEDInRoom()
+    {
+        lights = GetComponentsInChildren<BlinkingLights>();
+
+        foreach (var l in lights)
+        {
+            l.Initialize();
+        }
     }
 
     void InstantiateScriptableObject()
@@ -161,5 +177,24 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
 
         return completed;
     }
+    void FixedUpdate()
+    {
+        if (!isPlayerHere)
+            return;
+        BlinkLights();
+    }
 
+    void BlinkLights()
+    {
+        // float randChance = 0.8f;
+        foreach (var l in lights)
+        {
+            float rVc = Random.value;
+            if (rVc < 0.15f)
+                l.OffLight();
+
+            if (rVc > 0.3f)
+                l.OnLight();           
+        }
+    }
 }

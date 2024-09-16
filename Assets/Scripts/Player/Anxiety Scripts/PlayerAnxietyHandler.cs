@@ -201,7 +201,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 if (useNew)
                 {
                     //glareValue = RunComputeShader(rt);
-                    glareValue = RunJob(rt);
+                    glareValue = RunAsyncGPU(rt);
                 }
                 else
                 {
@@ -240,14 +240,14 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 return totalBrightness;
             }
 
-            float RunJob(RenderTexture rt)
+            float RunAsyncGPU(RenderTexture rt)
             {
                 // Check if the Texture2D needs to be created or resized
                 if (lumTex2D == null || lumTex2D.width != rt.width || lumTex2D.height != rt.height)
                     lumTex2D = new Texture2D(rt.width, rt.height, TextureFormat.RGBA32, false);
 
                 // Use AsyncGPUReadback to read pixels from the RenderTexture asynchronously
-                AsyncGPUReadback.Request(rt, 0, TextureFormat.RGBA32, (request) =>
+                AsyncGPUReadback.Request(rt, 0, TextureFormat.RFloat, (request) =>
                 {
                     if (request.hasError)
                     {
@@ -255,26 +255,13 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                         return;
                     }
 
-                    NativeArray<Color32> lumArray = request.GetData<Color32>();
-
-                    // Process the pixel data using Jobs to compute brightness
-                    NativeArray<float> brightnessArray = new NativeArray<float>(lumArray.Length, Allocator.TempJob);
-
-                    // Schedule the brightness calculation job
-                    CalcGlareJob brightnessJob = new CalcGlareJob
-                    {
-                        pixelData = lumArray,
-                        brightnessData = brightnessArray
-                    };
-
-                    JobHandle handle = brightnessJob.Schedule(lumArray.Length, 64); // Process in batches of 64 pixels
-                    handle.Complete();
+                    NativeArray<float> lumArray = request.GetData<float>();
 
                     // Calculate the total brightness
                     float totalBrightness = 0f;
-                    for (int i = 0; i < brightnessArray.Length; i++)
+                    for (int i = 0; i < lumArray.Length; i++)
                     {
-                        totalBrightness += brightnessArray[i];
+                        totalBrightness += lumArray[i];
                     }
                     totalBrightness /= lumArray.Length;
 
@@ -285,10 +272,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                     prevGlareResult = totalBrightness;
 
                     // Clean up
-                    brightnessArray.Dispose();
-
-                    // Return the final brightness value
-                    //Debug.Log("Brightness: " + totalBrightness);
+                    lumArray.Dispose();
                 });
 
                 // Return 0 initially (since AsyncGPUReadback is non-blocking)
@@ -324,20 +308,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                     totalBrightness = 0;
 
                 return totalBrightness;
-            }
-        }
-
-        public struct CalcGlareJob : IJobParallelFor
-        {
-            [ReadOnly] public NativeArray<Color32> pixelData;
-            [WriteOnly] public NativeArray<float> brightnessData;
-
-            public void Execute(int index)
-            {
-                // Calculate the brightness (grayscale) of each pixel
-                Color32 pixel = pixelData[index];
-                float brightness = (0.299f * pixel.r + 0.587f * pixel.g + 0.114f * pixel.b) / 255f;
-                brightnessData[index] = brightness;
             }
         }
 
