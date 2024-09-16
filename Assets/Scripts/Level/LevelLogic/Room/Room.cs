@@ -181,7 +181,7 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
     {
         if (!isPlayerHere)
             return;
-        BlinkLights();
+        //BlinkLights();
     }
 
     void BlinkLights()

@@ -18,15 +18,15 @@ public class BlinkingLights : MonoBehaviour
 
     public void Initialize()
     {
-        index = Random.Range(1, _mats.Length);
-        if (index == 0)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
+        // index = Random.Range(1, _mats.Length);
+        // if (index == 0)
+        // {
+        //     gameObject.SetActive(false);
+        //     return;
+        // }
 
-        _renderer = GetComponent<MeshRenderer>();
-        _renderer.material = _mats[index];
+        // _renderer = GetComponent<MeshRenderer>();
+        // _renderer.material = _mats[index];
     }
 
     private void Start()
