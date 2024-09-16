@@ -34,9 +34,6 @@ public class UIPopUp : MonoBehaviour
     private void Update()
     {
         bool isHandHoverring_l = isHandsHoverring;
-
-
-        print($"is hoverring {isHandHoverring_l} is grabbing {connectedInterable.isGrab} is displayed {isDisplayed}");
         if (isHandHoverring_l || connectedInterable.isGrab && !isDisplayed)
         {
             instructionToolTip.SetActive(true);
