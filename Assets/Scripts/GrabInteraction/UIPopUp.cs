@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class UIPopUp : MonoBehaviour
@@ -7,7 +6,7 @@ public class UIPopUp : MonoBehaviour
     [SerializeField] GameObject instructionToolTip;
     [SerializeField] Interactable connectedInterable;
 
-    
+
     bool isDisplayed = false;
 
     Vector3 leftHandPos => GameData.player.LeftHand.position;
@@ -36,18 +35,17 @@ public class UIPopUp : MonoBehaviour
     {
         bool isHandHoverring_l = isHandsHoverring;
 
-        if (isHandHoverring_l && 
-        !connectedInterable.isGrab &&
-        !isDisplayed
-            )
+
+        print($"is hoverring {isHandHoverring_l} is grabbing {connectedInterable.isGrab} is displayed {isDisplayed}");
+        if (isHandHoverring_l || connectedInterable.isGrab && !isDisplayed)
         {
-            isDisplayed = true;
             instructionToolTip.SetActive(true);
+            isDisplayed = true;
         }
-        else if ((isDisplayed && !isHandHoverring_l) || connectedInterable.isGrab)
+        else if ((!isHandHoverring_l || !connectedInterable.isGrab) && isDisplayed)
         {
-            isDisplayed = false;
             instructionToolTip.SetActive(false);
+            isDisplayed = false;
         }
 
     }

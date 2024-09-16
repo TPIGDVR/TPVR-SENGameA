@@ -11,9 +11,9 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
     [SerializeField]
     HologramSlideShowData slideshowData;
 
-    [SerializeField] 
+    [SerializeField]
     Image image;
-    [SerializeField] 
+    [SerializeField]
     GridLayoutGroup imageSizer;
 
     TextMeshProUGUI originalTextComponent;
