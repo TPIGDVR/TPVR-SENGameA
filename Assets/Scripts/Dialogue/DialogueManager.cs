@@ -192,6 +192,7 @@ namespace Dialog
                 //check if the dialog is the end
                 if (currentIndex >= currentDialog.Lines.Length)
                 {
+                    EventSystem.dialog.TriggerEvent(currentDialog.OnCompleteDialog);
                     EndDialog();
                 }
                 else

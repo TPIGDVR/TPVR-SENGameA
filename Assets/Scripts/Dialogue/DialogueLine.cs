@@ -12,6 +12,8 @@ namespace Dialog
     public class DialogueLines : ScriptableObject
     {
         public Line[] Lines;
+        public DialogEvents OnCompleteDialog = DialogEvents.NONE;
+
     }
 
     [System.Serializable]

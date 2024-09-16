@@ -48,6 +48,7 @@ public class Level : MonoBehaviour, IScriptLoadQueuer
     {
         print($"moving player to {deathPosition.position}");
         GameData.playerTransform.position = deathPosition.position;
+        GameData.playerTransform.rotation = deathPosition.rotation;
     }
 
     public void TeleportPlayerToRespawnPosition()
