@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Unity.Jobs;
 using TMPro;
+using Unity.Collections;
+
 namespace Assets.Scripts.Player.Anxiety_Scripts
 {
     public class PlayerAnxietyHandler : MonoBehaviour
@@ -67,7 +69,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             em_p.AddListener<float>(PlayerEvents.ANXIETY_BREATHE, Breath);
             em_p.AddListener<float>(PlayerEvents.HEART_BEAT, () => curAnxiety);
             _noiseSources = FindObjectsOfType<NoiseSource>();
-            StartCoroutine(CalcGlare_Cor());
+            //StartCoroutine(CalcGlare_Cor());
         }
 
         public void CalculateAnxiety()
@@ -108,7 +110,7 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         float CalculateAnxietyScaleBasedOffGlareLevel()
         {
             //moved to coroutine
-            //CalculateGlare();
+            CalculateGlare();
 
             return Mathf.Lerp(_minAnxietyIncreaseScale
                     , _maxAnxietyIncreaseScale
@@ -181,6 +183,8 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             _anxietyLevel *= decrease;
         }
 
+        float prevGlareResult = 0;
+    
         void CalculateGlare()
         {
             if (GameData.player.isWearingSunglasses)
@@ -196,7 +200,8 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 
                 if (useNew)
                 {
-                    glareValue = RunComputeShader(rt);
+                    //glareValue = RunComputeShader(rt);
+                    glareValue = RunJob(rt);
                 }
                 else
                 {
@@ -235,13 +240,70 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 return totalBrightness;
             }
 
+            float RunJob(RenderTexture rt)
+            {
+                // Check if the Texture2D needs to be created or resized
+                if (lumTex2D == null || lumTex2D.width != rt.width || lumTex2D.height != rt.height)
+                    lumTex2D = new Texture2D(rt.width, rt.height, TextureFormat.RGBA32, false);
+
+                // Use AsyncGPUReadback to read pixels from the RenderTexture asynchronously
+                AsyncGPUReadback.Request(rt, 0, TextureFormat.RGBA32, (request) =>
+                {
+                    if (request.hasError)
+                    {
+                        Debug.LogError("Error reading pixels from RenderTexture.");
+                        return;
+                    }
+
+                    NativeArray<Color32> lumArray = request.GetData<Color32>();
+
+                    // Process the pixel data using Jobs to compute brightness
+                    NativeArray<float> brightnessArray = new NativeArray<float>(lumArray.Length, Allocator.TempJob);
+
+                    // Schedule the brightness calculation job
+                    CalcGlareJob brightnessJob = new CalcGlareJob
+                    {
+                        pixelData = lumArray,
+                        brightnessData = brightnessArray
+                    };
+
+                    JobHandle handle = brightnessJob.Schedule(lumArray.Length, 64); // Process in batches of 64 pixels
+                    handle.Complete();
+
+                    // Calculate the total brightness
+                    float totalBrightness = 0f;
+                    for (int i = 0; i < brightnessArray.Length; i++)
+                    {
+                        totalBrightness += brightnessArray[i];
+                    }
+                    totalBrightness /= lumArray.Length;
+
+                    // Apply brightness threshold
+                    if (totalBrightness < lT)
+                        totalBrightness = 0;
+
+                    prevGlareResult = totalBrightness;
+
+                    // Clean up
+                    brightnessArray.Dispose();
+
+                    // Return the final brightness value
+                    //Debug.Log("Brightness: " + totalBrightness);
+                });
+
+                // Return 0 initially (since AsyncGPUReadback is non-blocking)
+                return prevGlareResult;
+            }
+
+
+            //deprecated (does not work very well)
             float RunComputeShader(RenderTexture rt)
             {
                 int size = rt.width * rt.height;
                 int kernel = glareCS.FindKernel("CSMain");
                 float[] brightnessL = new float[rt.width * rt.height];
                 glareCS.SetTexture(kernel,"Glare",rt);
-                glareCS.SetInts("width", rt.width);
+                glareCS.SetInts("width", rt.height);
 
                 //setting buffer
                 ComputeBuffer buffer = new(size,sizeof(float)); 
@@ -262,6 +324,20 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                     totalBrightness = 0;
 
                 return totalBrightness;
+            }
+        }
+
+        public struct CalcGlareJob : IJobParallelFor
+        {
+            [ReadOnly] public NativeArray<Color32> pixelData;
+            [WriteOnly] public NativeArray<float> brightnessData;
+
+            public void Execute(int index)
+            {
+                // Calculate the brightness (grayscale) of each pixel
+                Color32 pixel = pixelData[index];
+                float brightness = (0.299f * pixel.r + 0.587f * pixel.g + 0.114f * pixel.b) / 255f;
+                brightnessData[index] = brightness;
             }
         }
 
