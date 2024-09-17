@@ -42357,6 +42357,16 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 4557504489639151656, guid: 9905b9f5c40464f4a96aee847cbea288,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.7847705
+      objectReference: {fileID: 0}
+    - target: {fileID: 4557504489639151656, guid: 9905b9f5c40464f4a96aee847cbea288,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4592347557642301963, guid: 9905b9f5c40464f4a96aee847cbea288,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -43419,90 +43429,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1653126062}
     m_Modifications:
-    - target: {fileID: 497296700439023784, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 557846468473426944, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1229593184999075209, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1302734510931973786, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1358126508131702847, guid: 6a6b910bad27a0d4d929b627f91f5910,
         type: 3}
       propertyPath: m_Name
       value: Sunglasses
-      objectReference: {fileID: 0}
-    - target: {fileID: 2003021985992273955, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2035349952139471251, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2655123549707890597, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2882857977136807661, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3351768760539135738, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: connectedInterable
-      value: 
-      objectReference: {fileID: 2066766611045018199}
-    - target: {fileID: 3939277893249127021, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4233135420975200010, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4233135420975200010, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_IncludeLayers.m_Bits
-      value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 4726007549756601121, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4726007549756601121, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7083477203707907268, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: equipingDistance
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8893214355588851825, guid: 6a6b910bad27a0d4d929b627f91f5910,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9062313782037494522, guid: 6a6b910bad27a0d4d929b627f91f5910,
         type: 3}
@@ -43554,8 +43484,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7083477203707907268, guid: 6a6b910bad27a0d4d929b627f91f5910, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -43566,18 +43495,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2066766611045018193}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2066766611045018199 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3223968094879328514, guid: 6a6b910bad27a0d4d929b627f91f5910,
-    type: 3}
-  m_PrefabInstance: {fileID: 2066766611045018193}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a14bf3cad4531ab41bd702527b129aae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2896468974929765614
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43709,6 +43626,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sound manager
       objectReference: {fileID: 0}
+    - target: {fileID: 7458675401591954133, guid: 3407112f995923944871781852bdbb00,
+        type: 3}
+      propertyPath: musicClips.Array.data[5].volume
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -43722,11 +43644,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1653126062}
     m_Modifications:
-    - target: {fileID: 2076770782541045313, guid: fd72c4575847c384a9f630f6ab65aa31,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 15.14
-      objectReference: {fileID: 0}
     - target: {fileID: 2547615008220992783, guid: fd72c4575847c384a9f630f6ab65aa31,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -43776,18 +43693,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4566345754008536631, guid: fd72c4575847c384a9f630f6ab65aa31,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5594024911445011403, guid: fd72c4575847c384a9f630f6ab65aa31,
-        type: 3}
-      propertyPath: m_text
-      value: 'Noise-Reduction
-
-        Headphone'
       objectReference: {fileID: 0}
     - target: {fileID: 7768604206103747506, guid: fd72c4575847c384a9f630f6ab65aa31,
         type: 3}
@@ -45513,6 +45418,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9128166691140474361, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9128166691140474361, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 9170264803382161511, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
