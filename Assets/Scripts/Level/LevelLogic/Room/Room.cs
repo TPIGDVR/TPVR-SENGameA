@@ -29,7 +29,6 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
         RetrieveAutomatonsInRoom();
         RetrieveKiosksInRoom();
         RetrieveDoorsInRoom();
-        RetrieveLEDInRoom();
         InstantiateScriptableObject();
         InitRoom();
         ScriptionOfEvent();
@@ -74,16 +73,6 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
     void RetrieveDoorsInRoom()
     {
         doors = GetComponentsInChildren<Room_Door>();
-    }
-
-    void RetrieveLEDInRoom()
-    {
-        lights = GetComponentsInChildren<BlinkingLights>();
-
-        foreach (var l in lights)
-        {
-            l.Initialize();
-        }
     }
 
     void InstantiateScriptableObject()
@@ -179,22 +168,6 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
     }
     void FixedUpdate()
     {
-        if (!isPlayerHere)
-            return;
-        //BlinkLights();
-    }
-
-    void BlinkLights()
-    {
-        // float randChance = 0.8f;
-        foreach (var l in lights)
-        {
-            float rVc = Random.value;
-            if (rVc < 0.15f)
-                l.OffLight();
-
-            if (rVc > 0.3f)
-                l.OnLight();           
-        }
+        
     }
 }

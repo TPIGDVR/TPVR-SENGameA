@@ -12,6 +12,7 @@ Material:
   m_Parent: {fileID: 2100000, guid: f81ff3a3e4114e748bce2d697466c1a0, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _ENVIRONMENTREFLECTIONS_OFF
   - _METALLICSPECGLOSSMAP
   - _NORMALMAP
   m_InvalidKeywords: []
@@ -47,7 +48,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _SpecularHighlights: 1
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &8249337423020515004

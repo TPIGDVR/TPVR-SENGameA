@@ -10,6 +10,9 @@ using UnityEngine.UI;
 
 public class Kiosk : MonoBehaviour , IScriptLoadQueuer
 {
+    //using a custom inspector at KioskEditor.cs
+    [SerializeField]
+    KioskType type;
     [SerializeField]
     Image progressUI;
     [SerializeField]
@@ -27,7 +30,6 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     /// 5. downloading
     /// </summary>
 
-    [Header("Scanning")]
     [SerializeField]
     float speedMultiplier;
     [SerializeField] float progress = 0;
@@ -40,7 +42,6 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
 
     [SerializeField] Transform automatonTargetDestination;
     [SerializeField] Transform hologramTargetDestination;
-    [Header("Popup")]
     [SerializeField] 
     PopUp popup;
     [SerializeField]
@@ -222,17 +223,9 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
         }
     }
 
-    //public IEnumerator TeleportPlayer()
-    //{
-    //    var player = GameData.player;
-    //    //wait for the cinemachine to have an active blend
-    //    while (player.MainCinemachineBrain.ActiveBlend == null) yield return null;
-    //    var blend = player.MainCinemachineBrain.ActiveBlend;
-
-    //    while(!blend.IsComplete) yield return null;
-    //    //player.MovePlayerToTransform(playerFinalDestination);
-    //    EventSystem.player.TriggerEvent<Transform>(PlayerEvents.MOVE_PLAYER_TO_KIOKPOSITION, playerFinalDestination);
-
-    //}
-
+    public enum KioskType
+    {
+        H3D,
+        SlideShow
+    }
 }
