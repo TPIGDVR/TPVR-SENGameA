@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace BreathDetection
@@ -65,7 +66,9 @@ namespace BreathDetection
 
         //For breathing panel to display player
         public BreathingTestingState breathingTestingState { get; private set; }
-        public float remainTimingForTesting { get
+        public float remainTimingForTesting
+        {
+            get
             {
                 switch (breathingTestingState)
                 {
@@ -75,15 +78,21 @@ namespace BreathDetection
                         return amountOfTimeToSample - elapseTime;
                     case BreathingTestingState.EXHALE:
                         return amountOfTimeToSample - elapseTime;
-                        default : return 0;
+                    default: return 0;
                 }
             }
         }
 
-        public float NormaliseVolumeForUI { get
+        public float NormaliseVolumeForUI
+        {
+            get
             {
-                return 1 - Mathf.Abs(micProvider.volume / -80);
-            } }
+                //20
+                float clampValue = Mathf.Clamp(micProvider.volume, -60, 20);
+                clampValue -= 20;
+                return 1 - math.abs(clampValue / -80);
+            }
+        }
 
         #endregion 
 
@@ -132,7 +141,7 @@ namespace BreathDetection
             breathingTestingState = BreathingTestingState.PAUSE;
             elapseTime = 0;
             text.text = "Pause";
-            while(elapseTime < amountOfTimeToPause)
+            while (elapseTime < amountOfTimeToPause)
             {
                 elapseTime += Time.deltaTime;
                 yield return null;
@@ -143,14 +152,14 @@ namespace BreathDetection
         {
             breathingTestingState = BreathingTestingState.INHALE;
             elapseTime = 0;
-            if(numberTested == amountToTest / 2)
+            if (numberTested == amountToTest / 2)
             {
                 //if reach half for amount of tested
                 inhaleTester = new SpectrumTester(micProvider, inhaleTester.Calculate());
             }
             text.text = "Please inhale";
 
-            while(elapseTime < amountOfTimeToSample)
+            while (elapseTime < amountOfTimeToSample)
             {
                 inhaleTester.Run();
                 elapseTime += Time.deltaTime;
@@ -192,7 +201,7 @@ namespace BreathDetection
 
         private void Update()
         {
-            if(!isTesting && CanRun)
+            if (!isTesting && CanRun)
             {
                 bool isInhaling = this._IsInhaling;
                 bool isExhaling = this._IsExhaling;
@@ -200,7 +209,7 @@ namespace BreathDetection
                 {
                     breathingOutPut = BreathingOutPut.EXHALE;
                 }
-                else if (isInhaling) 
+                else if (isInhaling)
                 {
                     breathingOutPut = BreathingOutPut.INHALE;
                 }
@@ -227,7 +236,7 @@ namespace BreathDetection
         public void UpdateValues()
         {
             //do changes this later since this is kinda effy way to do it.
-            inhaleDetection = new SpectrumDetector(micProvider , calculatedInhaleData);
+            inhaleDetection = new SpectrumDetector(micProvider, calculatedInhaleData);
             exhaleDetection = new LoudnessDetector(micProvider, calculatedExhaleData);
             exhaleSpectrumDetection = new SpectrumDetector(micProvider, calculateExhaleSpectrumData);
         }
@@ -235,7 +244,7 @@ namespace BreathDetection
         [ContextMenu("safe Data")]
         public void SafeValue()
         {
-            if(safeFile != null)
+            if (safeFile != null)
             {
                 safeFile.inhaleCalculatedData = calculatedInhaleData;
                 safeFile.exhaleLoudnessData = calculatedExhaleData;

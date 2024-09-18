@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -8,7 +8,7 @@ namespace BreathDetection
     public class MicProvider : MonoBehaviour
     {
         [SerializeField] AudioSource _audioSourceOrignal;
-        
+
         public float[] _dataSpectrumContainer { get; private set; }
         public float[] _dataOutputContainer { get; private set; }
         private List<float> _pitchContainer;
@@ -17,7 +17,7 @@ namespace BreathDetection
         [SerializeField] int _volumeRecordTime = 5;
         [SerializeField] int _datalength = 1024;
         //mic settings
-        
+
         // public bool mute = true;
 
         #region volume provider implementation
@@ -91,7 +91,7 @@ namespace BreathDetection
         private const float refVal = 0.1f;
 
         public float pitchIncrementor => 24000f / _datalength;
-        [SerializeField]TextMeshProUGUI text;
+        [SerializeField] TextMeshProUGUI text;
         enum CalculationMethod
         {
             REAL_TIME,
@@ -140,7 +140,9 @@ namespace BreathDetection
                 float sum = 0;
                 for (int i = 0; i < _dataOutputContainer.Length; i++)
                 {
-                    sum += Mathf.Pow(_dataOutputContainer[i], 2);//Mathf.Abs(dataContainer[i]);
+                    //all this are positive value.
+                    //max is 1
+                    sum += Mathf.Pow(_dataOutputContainer[i], 2);
                 }
                 //volume = Mathf.Sqrt(sum / _datalength) * loudnessMultiplier;
                 if (sum == 0)
@@ -148,6 +150,8 @@ namespace BreathDetection
                     volume = 0;
                     return;
                 }
+
+
                 volume = 20 * Mathf.Log10(Mathf.Sqrt(sum / _datalength) / refVal);
                 //print($"{volume} , {sum}");
             }
@@ -203,7 +207,7 @@ namespace BreathDetection
                 {
                     int startingCheckingFrequencyIndex = 0;
                     int endingCheckingFrequencyIndex = _dataSpectrumContainer.Length;
-                    
+
                     startingCheckingFrequencyIndex = (int)(lowPassFilter / pitchIncrementor);
                     endingCheckingFrequencyIndex = (int)(highPassFilter / pitchIncrementor);
                     float maxV = 0;
