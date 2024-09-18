@@ -84,6 +84,18 @@ namespace Assets.Scripts.Tutorial
             EventSystem.level.TriggerEvent(LevelEvents.INIT_TUTORIAL);
         }
 
+        public override void OnExit()
+        {
+            base.OnExit();
+
+            if(GameData.IsInTutorial == true)
+            {
+                EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_HEARTRATE);
+                EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_NOISE_INDICATOR);
+                GameData.ChangeTutorialStatus(false);
+            }
+        }
+
         protected override void EvaluateObjective()
         {
             foreach (var obj in roomObj_rt) 

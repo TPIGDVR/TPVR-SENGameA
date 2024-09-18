@@ -223,19 +223,6 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
         }
     }
 
-    //public IEnumerator TeleportPlayer()
-    //{
-    //    var player = GameData.player;
-    //    //wait for the cinemachine to have an active blend
-    //    while (player.MainCinemachineBrain.ActiveBlend == null) yield return null;
-    //    var blend = player.MainCinemachineBrain.ActiveBlend;
-
-    //    while(!blend.IsComplete) yield return null;
-    //    //player.MovePlayerToTransform(playerFinalDestination);
-    //    EventSystem.player.TriggerEvent<Transform>(PlayerEvents.MOVE_PLAYER_TO_KIOKPOSITION, playerFinalDestination);
-
-    //}
-
     public enum KioskType
     {
         H3D,
