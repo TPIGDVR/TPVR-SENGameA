@@ -13,7 +13,7 @@ public class ConsoleBuildIn : Singleton<ConsoleBuildIn>
 
     private void Start()
     {
-        StartCoroutine(test());
+        //StartCoroutine(test());
     }
 
     private void Update()
