@@ -28,6 +28,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LoaderManagerInstance: {fileID: -1348967554653570312}
   m_InitManagerOnStart: 1
+--- !u!114 &-4146511758794884962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4c3631f5e58749a59194e0cf6baf6d5, type: 3}
+  m_Name: WebGL Providers
+  m_EditorClassIdentifier: 
+  m_RequiresSettingsUpdate: 0
+  m_AutomaticLoading: 0
+  m_AutomaticRunning: 0
+  m_Loaders: []
 --- !u!114 &-3962354958721145271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,11 +101,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2dc886499c26824283350fa532d087d, type: 3}
   m_Name: XRGeneralSettingsPerBuildTarget
   m_EditorClassIdentifier: 
-  Keys: 010000000700000004000000
+  Keys: 0100000007000000040000000d000000
   Values:
   - {fileID: -3825810377751001933}
   - {fileID: -6938440164314009638}
   - {fileID: -3962354958721145271}
+  - {fileID: 7774220554052166619}
 --- !u!114 &3782095606120002144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,7 +140,20 @@ MonoBehaviour:
   m_AutomaticRunning: 0
   m_Loaders:
   - {fileID: 11400000, guid: 7136b5e6271694e4299e8061325000d0, type: 2}
-  - {fileID: 11400000, guid: d6b6262af9d106c46816d18538bb920c, type: 2}
+--- !u!114 &7774220554052166619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d236b7d11115f2143951f1e14045df39, type: 3}
+  m_Name: WebGL Settings
+  m_EditorClassIdentifier: 
+  m_LoaderManagerInstance: {fileID: -4146511758794884962}
+  m_InitManagerOnStart: 1
 --- !u!114 &8125802569841078663
 MonoBehaviour:
   m_ObjectHideFlags: 0

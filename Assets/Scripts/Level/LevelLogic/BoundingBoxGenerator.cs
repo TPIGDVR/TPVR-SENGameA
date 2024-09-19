@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -17,6 +18,11 @@ public class BoundingBoxGenerator : MonoBehaviour
 
     public TMP_Text debugtext;
 
+    public float boundingOffsetSize = 1.1f;
+
+    [SerializeField] Vector2 boundingBoxMinVector2;
+    [SerializeField] Vector2 boundingBoxMaxVector2;
+    [SerializeField] float yOffset = 1;
     IEnumerator Start()
     {
         yield return new WaitForSeconds(2f);
@@ -51,6 +57,9 @@ public class BoundingBoxGenerator : MonoBehaviour
             maxPoint = Vector2.Max(maxPoint, new Vector2(bounds.max.x, bounds.max.z));
         }
 
+        minPoint *= boundingOffsetSize;
+        maxPoint *= boundingOffsetSize;
+
         // Calculate the center and size of the 2D bounding box
         bbCenter = (minPoint + maxPoint) / 2;
         bbSize = maxPoint - minPoint;
@@ -61,7 +70,7 @@ public class BoundingBoxGenerator : MonoBehaviour
         Debug.Log($"Bounding Box 2D Size: {bbSize}");
 
         // Optional: Draw the 2D bounding box in the editor
-        //DrawBoundingBox2D(minPoint, maxPoint);
+        DrawBoundingBox2D(minPoint, maxPoint);
 
         StartCoroutine(GenerateCamera());
     }
@@ -74,10 +83,10 @@ public class BoundingBoxGenerator : MonoBehaviour
         Vector3 p4 = new Vector3(minPoint.x, 0, maxPoint.y);
 
         // Draw the lines for the bounding box in the XZ plane
-        Debug.DrawLine(p1, p2, Color.green, 100000f);
-        Debug.DrawLine(p2, p3, Color.green, 100000f);
-        Debug.DrawLine(p3, p4, Color.green, 100000f);
-        Debug.DrawLine(p4, p1, Color.green, 100000f);
+        Debug.DrawLine(p1, p2, Color.red, 10000f);
+        Debug.DrawLine(p2, p3, Color.red, 10000f);
+        Debug.DrawLine(p3, p4, Color.red, 10000f);
+        Debug.DrawLine(p4, p1, Color.red, 10000f);
     }
 
     void GetStaticRef()
@@ -95,32 +104,45 @@ public class BoundingBoxGenerator : MonoBehaviour
     {
         ToggleDynamicCanvas(false);
         GameObject camGO = new();
-        Camera cam  = camGO.AddComponent<Camera>();
+        Camera cam = camGO.AddComponent<Camera>();
         cam.cullingMask = mask;
         cam.orthographic = true;
         //cam.aspect = bbSize.x / bbSize.y;
         float size = Mathf.Max(bbSize.x, bbSize.y);
-        
+
         cam.orthographicSize = size / 2;
 
-        cam.transform.position = new(bbCenter.x,1,bbCenter.y);
+        cam.transform.position = new(bbCenter.x, 1, bbCenter.y);
         cam.transform.rotation = Quaternion.Euler(90, -90, 0);
 
         cam.clearFlags = CameraClearFlags.SolidColor;
         cam.backgroundColor = mapColor;
-        int scalar = 10;
+        int scalar = 5;
+
 
         //try new
-        //int camHeight = (int)(cam.orthographicSize * 2) * scalar;
-        //int camWidth = (int)(camHeight * cam.aspect);
+        // int camHeight = (int)(cam.orthographicSize * 2) * scalar;
+        // int camHeight = (int)(cam.orthographicSize * 2);
+        // int camWidth = (int)(camHeight * cam.aspect);
+
+        float floatCamHeight = cam.orthographicSize * 2;
+        float floatCamWidth = floatCamHeight * cam.aspect;
+
+
+        boundingBoxMinVector2 = new Vector2(bbCenter.x - floatCamWidth / 2, bbCenter.y - floatCamHeight / 2);
+        boundingBoxMaxVector2 = new Vector2(bbCenter.x + floatCamWidth / 2, bbCenter.y + floatCamHeight / 2);
+        // DrawBoundingBox2D(cam.rect.min, cam.rect.max);
 
         //old method ;()
-        int camWidth = (int)(cam.orthographicSize * cam.aspect) * 2 * scalar;
+        // int camWidth = (int)(cam.orthographicSize * cam.aspect) * 2 * scalar;
         // manually add the offset to perfectly scale the map up
         //needs to be fixed
         //RenderTexture rt = new(camWidth, camWidth + 120, 0);
-        RenderTexture rt = new(camWidth, (int)((float)camWidth * 3.5f), 0);
-        //RenderTexture rt = new(camHeight, camWidth, 0);
+        // RenderTexture rt = new(camWidth, (int)((float)camWidth * 3.5f), 0);
+        RenderTexture rt = new((int)floatCamWidth * scalar,
+        (int)floatCamHeight * scalar, 0);
+
+        Vector2 snapShotSize = new Vector2(floatCamWidth, floatCamHeight);
 
         //RenderTexture copy = new(camWidth, camWidth + 120, 0);
         //rt.filterMode = FilterMode.Point;
@@ -132,7 +154,7 @@ public class BoundingBoxGenerator : MonoBehaviour
         cam.targetTexture = null;
         Destroy(camGO);
         DestroyAllStaticCanvas();
-        ApplyMapSnapshotToCanvas();
+        ApplyMapSnapshotToCanvas(snapShotSize);
         ToggleDynamicCanvas(true);
     }
 
@@ -140,7 +162,7 @@ public class BoundingBoxGenerator : MonoBehaviour
     {
         foreach (var item in staticObjects)
         {
-            foreach(var c in item.canvas)
+            foreach (var c in item.canvas)
             {
                 Destroy(c);
             }
@@ -151,16 +173,32 @@ public class BoundingBoxGenerator : MonoBehaviour
     {
         foreach (var item in dynamicObjects)
         {
-            item.canvas.enabled = b;            
+            item.canvas.enabled = b;
         }
     }
 
-    void ApplyMapSnapshotToCanvas()
+    void ApplyMapSnapshotToCanvas(Vector2 SnapShotSize)
     {
-        canvasRT.position = new(bbCenter.x,1 , bbCenter.y);
-        canvasRT.sizeDelta = new(bbSize.y,bbSize.x);
+        canvasRT.position = new(bbCenter.x, 1, bbCenter.y);
+        canvasRT.sizeDelta = new(SnapShotSize.x, SnapShotSize.y);
+
         //canvasRT.sizeDelta = new(bbSize.x,bbSize.y);
+
 
         mapImage.texture = GameData.miniMapSnapShot;
     }
+
+    // private void OnDrawGizmos()
+    // {
+    //     Vector3 p1 = new Vector3(boundingBoxMinVector2.x, yOffset, boundingBoxMinVector2.y);
+    //     Vector3 p2 = new Vector3(boundingBoxMaxVector2.x, yOffset, boundingBoxMinVector2.y);
+    //     Vector3 p3 = new Vector3(boundingBoxMaxVector2.x, yOffset, boundingBoxMaxVector2.y);
+    //     Vector3 p4 = new Vector3(boundingBoxMinVector2.x, yOffset, boundingBoxMaxVector2.y);
+
+    //     // Draw the lines for the bounding box in the XZ plane
+    //     Debug.DrawLine(p1, p2, Color.red);
+    //     Debug.DrawLine(p2, p3, Color.red);
+    //     Debug.DrawLine(p3, p4, Color.red);
+    //     Debug.DrawLine(p4, p1, Color.red);
+    // }
 }

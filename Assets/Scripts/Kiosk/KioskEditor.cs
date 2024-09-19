@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
@@ -24,7 +23,7 @@ public class KioskEditor : Editor
         VisualElement spacer = new VisualElement();
         spacer.style.height = 10;
 
-#region REFERENCES
+        #region REFERENCES
         var r = new Foldout();
         r.text = "References";
         r.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -34,7 +33,7 @@ public class KioskEditor : Editor
         var pImg_f = new PropertyField(pImg);
         pImg_f.tooltip = "Image to show the progress of the download";
         r.Add(pImg_f);
-        
+
         var pImgGO = serializedObject.FindProperty("progress_GO");
         var pImgGO_f = new PropertyField(pImgGO);
         pImgGO_f.tooltip = "Reference to the progress game object";
@@ -73,7 +72,7 @@ public class KioskEditor : Editor
         s.text = "Scanning Values";
         s.style.unityFontStyleAndWeight = FontStyle.Bold;
         i.Add(s);
-        
+
         var pSpeed = serializedObject.FindProperty("speedMultiplier");
         var pSpeed_f = new PropertyField(pSpeed);
         pSpeed_f.tooltip = "How fast the kiosk scans";
@@ -108,7 +107,7 @@ public class KioskEditor : Editor
         #endregion
 
         #region 
-        
+
         var h = new Foldout();
         h.text = "Hologram";
         h.style.unityFontStyleAndWeight = FontStyle.Bold;
@@ -203,7 +202,8 @@ public class KioskEditor : Editor
                 h.Add(pHologram_f);
                 pHologram_f.Bind(serializedObject);
             }
-            if(!h.Contains(pType_f)){
+            if (!h.Contains(pType_f))
+            {
                 h.Add(pType_f);
                 pType_f.Bind(serializedObject);
             }
@@ -231,3 +231,5 @@ public class KioskEditor : Editor
         return i;
     }
 }
+
+#endif

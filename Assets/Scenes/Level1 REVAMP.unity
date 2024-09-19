@@ -19977,7 +19977,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &972821576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35650,6 +35650,10 @@ MonoBehaviour:
   canvasRT: {fileID: 49754621}
   mapImage: {fileID: 753092192}
   debugtext: {fileID: 0}
+  boundingOffsetSize: 1.05
+  boundingBoxMinVector2: {x: 0, y: 0}
+  boundingBoxMaxVector2: {x: 0, y: 0}
+  yOffset: 1
 --- !u!4 &1804472040
 Transform:
   m_ObjectHideFlags: 0
@@ -45066,6 +45070,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 1f2bad952e2c29647a02753c8667fcf1,
         type: 3}
+    - target: {fileID: 4270566464715936672, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4665539866139184370, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
       propertyPath: fadeTime
