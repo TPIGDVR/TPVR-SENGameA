@@ -1,4 +1,3 @@
-using Assets.HelpfulScripts;
 using Assets.Scripts.Player.Anxiety_Scripts;
 using SoundRelated;
 using System.Collections;
@@ -189,7 +188,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         CloseAllUI();
         //make sure to stop any hologram that is being played in the background
         em_l.TriggerEvent(LevelEvents.INTERRUPT_HOLOGRAM);
-        StartCoroutine(DisableMovement());
+        StartCoroutine(DisableMovementFaint());
         yield return new WaitUntil(() => vfx.isFaded);
         em_p.TriggerEvent(PlayerEvents.DEATH_SCREEN_FADED); 
         yield return new WaitForSeconds(1f);
@@ -199,7 +198,8 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     IEnumerator T_Respawn()
     {
-        StartCoroutine(DisableMovement());
+        vfx.BeginFadeScreen();
+        DisableMovement();
         print("respawnning");
         yield return new WaitUntil(() => vfx.isFaded);
         em_p.TriggerEvent(PlayerEvents.RES_SCREEN_FADED);
@@ -223,16 +223,22 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         playerController.EnableLinearMovement = true;
     }
 
-    IEnumerator DisableMovement()
+    IEnumerator DisableMovementFaint()
     {
         playerController.EnableLinearMovement = false;
 
-        yield return StartCoroutine(vfx.FadeScreen());
+        yield return StartCoroutine(vfx.FaintScreen());
         
 
         playerController.Stop();
         playerController.enabled = false;
         
+    }
+
+    void DisableMovement()
+    {
+        playerController.Stop();
+        playerController.enabled = false;
     }
 
 
