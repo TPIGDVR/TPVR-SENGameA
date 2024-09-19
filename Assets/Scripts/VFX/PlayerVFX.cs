@@ -17,6 +17,7 @@ public class PlayerVFX : MonoBehaviour
     float fadeTime;
     public float fadeTimer;
     public float faintHeight;
+    
 
     public bool isFaded = false;
 
@@ -30,23 +31,25 @@ public class PlayerVFX : MonoBehaviour
         StartCoroutine(UnfadeScreen());
     }
 
-    IEnumerator FadeScreen()
+    public IEnumerator FadeScreen()
     {
         float interval = 0.01f;
         fadeTimer = 0;
         float playerHeight = _PlayerRig.GetComponent<CharacterController>().height;
-        while(fadeTimer < fadeTime)
+        Quaternion playerRotation = _PlayerRig.transform.rotation;
+        _PlayerRig.GetComponent<OVRCameraRig>().enabled = false;
+        while (fadeTimer < fadeTime)
         {
             yield return new WaitForSeconds(interval);
             fadeTimer += interval;
-            float rotationY = _PlayerRig.transform.rotation.y;
-            float rotationY_Lerp = _PlayerRig.transform.rotation.y + 180;
+
+            _PlayerRig.transform.rotation = Quaternion.Lerp(Quaternion.Euler(0,playerRotation.y, 0), Quaternion.Euler(90,playerRotation.y,0), fadeTimer / fadeTime);
             _PlayerRig.GetComponent<CharacterController>().height = Mathf.Lerp(playerHeight , faintHeight, fadeTimer / fadeTime);
-            _PlayerRig.transform.rotation = Quaternion.Lerp(new Quaternion(0,rotationY,0,0), new Quaternion(0, rotationY_Lerp, 0, 0), fadeTimer / fadeTime);
             _fadeImg.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0, 0, 0, 1), fadeTimer / fadeTime);
         }
-
+        _PlayerRig.transform.rotation = playerRotation;
         _PlayerRig.GetComponent<CharacterController>().height = playerHeight;
+        
         isFaded = true;
     }
 

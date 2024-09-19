@@ -185,11 +185,11 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     IEnumerator T_Death()
     {
-        vfx.BeginFadeScreen();
+        
         CloseAllUI();
         //make sure to stop any hologram that is being played in the background
         em_l.TriggerEvent(LevelEvents.INTERRUPT_HOLOGRAM);
-        DisableMovement();
+        StartCoroutine(DisableMovement());
         yield return new WaitUntil(() => vfx.isFaded);
         em_p.TriggerEvent(PlayerEvents.DEATH_SCREEN_FADED); 
         yield return new WaitForSeconds(1f);
@@ -199,8 +199,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
 
     IEnumerator T_Respawn()
     {
-        vfx.BeginFadeScreen();
-        DisableMovement();
+        StartCoroutine(DisableMovement());
         print("respawnning");
         yield return new WaitUntil(() => vfx.isFaded);
         em_p.TriggerEvent(PlayerEvents.RES_SCREEN_FADED);
@@ -221,22 +220,19 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         //characterController.enabled = false;
         //playerController.Acceleration = initialAccleration;
         playerController.enabled = true;
+        playerController.EnableLinearMovement = true;
     }
 
-    void DisableMovement()
+    IEnumerator DisableMovement()
     {
+        playerController.EnableLinearMovement = false;
+
+        yield return StartCoroutine(vfx.FadeScreen());
+        
+
         playerController.Stop();
         playerController.enabled = false;
-        //playerController.Teleported = true;
-        //characterController.enabled = false;
-        //if (playerController.Acceleration > 0)
-        //{
-        //    //will always make sure the keep a position value acceleration
-        //    initialAccleration = playerController.Acceleration;
-        //}
-        ////make sure the player cant move anymore
-        //playerController.Stop();
-        //playerController.Acceleration = 0;
+        
     }
 
 
