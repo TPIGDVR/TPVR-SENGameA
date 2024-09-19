@@ -17858,7 +17858,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eea3fc95edba7e24db6098c300a5573a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  consoleGameObject: {fileID: 0}
   text: {fileID: 1083619708}
+  triggerInputOne: 0
+  triggerInputTwo: 0
 --- !u!1001 &888972329
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35232,6 +35235,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1749559941}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1760681197 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8937406496385376532, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+    type: 3}
+  m_PrefabInstance: {fileID: 8718915377130391862}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1776835191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45063,6 +45072,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 1f2bad952e2c29647a02753c8667fcf1,
         type: 3}
+    - target: {fileID: 4270566464715936672, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665539866139184370, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
+        type: 3}
+      propertyPath: _Camera
+      value: 
+      objectReference: {fileID: 1760681197}
     - target: {fileID: 4665539866139184370, guid: 67f5001cbbd5fce4cbaa2c7400dac989,
         type: 3}
       propertyPath: fadeTime

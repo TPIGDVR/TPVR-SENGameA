@@ -11,10 +11,7 @@ public class ConsoleBuildIn : Singleton<ConsoleBuildIn>
     [SerializeField] TextMeshProUGUI text;
     [SerializeField] OVRInput.Button triggerInputOne, triggerInputTwo;
 
-    private void Start()
-    {
-        StartCoroutine(test());
-    }
+
 
     private void Update()
     {
