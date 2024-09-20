@@ -1,28 +1,34 @@
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
+/// <summary>
+/// Create a bounding box and generate an image based on that. Helps
+/// boost performance by having the map render under 1 canvas instead of
+/// multiple canvas.
+/// </summary>
 public class BoundingBoxGenerator : MonoBehaviour
 {
+    //Which layer that will be capture for the map to be displayed.
+    //KEEP THIS UNDER THE MAP LAYER.
     public LayerMask mask;
+    //reference of all the static images (Like the wall's canvas)
     StaticObject[] staticObjects;
+    //reference of all the dyanmic images (Like the player and automaton canvas)
     DynamicObjects[] dynamicObjects;
+
+    //bb => boundingbox. 
+    /// <summary>
+    /// Where the center of all the level
+    /// </summary>
     Vector2 bbCenter;
     Vector2 bbSize;
     public Color mapColor;
     public RectTransform canvasRT;
     public RawImage mapImage;
 
-    public TMP_Text debugtext;
-
     public float boundingOffsetSize = 1.1f;
-
-    [SerializeField] Vector2 boundingBoxMinVector2;
-    [SerializeField] Vector2 boundingBoxMaxVector2;
-    [SerializeField] float yOffset = 1;
     IEnumerator Start()
     {
         yield return new WaitForSeconds(2f);
@@ -30,7 +36,24 @@ public class BoundingBoxGenerator : MonoBehaviour
         GetDynamicRef();
         GenerateBoundingBox2D();
     }
+    #region get reference method
+    //Simple methods that gets all the scripts that contains the 
+    //staticObject or dynamicobject reference in the scene itself
+    void GetStaticRef()
+    {
+        staticObjects = GameObject.FindObjectsOfType<StaticObject>();
+    }
 
+    void GetDynamicRef()
+    {
+        dynamicObjects = GameObject.FindObjectsOfType<DynamicObjects>();
+    }
+    #endregion
+
+    /// <summary>
+    /// Find the bounding box of the scene.
+    /// Used to generate a camera to snap shot the bounding box.
+    /// </summary>
     void GenerateBoundingBox2D()
     {
         Collider[] colliders = FindObjectsOfType<Collider>();
@@ -62,6 +85,7 @@ public class BoundingBoxGenerator : MonoBehaviour
 
         // Calculate the center and size of the 2D bounding box
         bbCenter = (minPoint + maxPoint) / 2;
+        //the scale of the map
         bbSize = maxPoint - minPoint;
 
 
@@ -70,92 +94,60 @@ public class BoundingBoxGenerator : MonoBehaviour
         Debug.Log($"Bounding Box 2D Size: {bbSize}");
 
         // Optional: Draw the 2D bounding box in the editor
-        DrawBoundingBox2D(minPoint, maxPoint);
+        // DrawBoundingBox2D(minPoint, maxPoint);
 
+        //starts a coroutine to generate the camera and take the snap
         StartCoroutine(GenerateCamera());
     }
 
-    void DrawBoundingBox2D(Vector2 minPoint, Vector2 maxPoint)
-    {
-        Vector3 p1 = new Vector3(minPoint.x, 0, minPoint.y);
-        Vector3 p2 = new Vector3(maxPoint.x, 0, minPoint.y);
-        Vector3 p3 = new Vector3(maxPoint.x, 0, maxPoint.y);
-        Vector3 p4 = new Vector3(minPoint.x, 0, maxPoint.y);
-
-        // Draw the lines for the bounding box in the XZ plane
-        Debug.DrawLine(p1, p2, Color.red, 10000f);
-        Debug.DrawLine(p2, p3, Color.red, 10000f);
-        Debug.DrawLine(p3, p4, Color.red, 10000f);
-        Debug.DrawLine(p4, p1, Color.red, 10000f);
-    }
-
-    void GetStaticRef()
-
-    {
-        staticObjects = GameObject.FindObjectsOfType<StaticObject>();
-    }
-
-    void GetDynamicRef()
-    {
-        dynamicObjects = GameObject.FindObjectsOfType<DynamicObjects>();
-    }
-
+    #region  generating Camera
     IEnumerator GenerateCamera()
     {
+        //make sure to hide all the dynamic object
+        //As we only want to show the static object for the map.
         ToggleDynamicCanvas(false);
+
+        //create a camera to create the rendertexture.
         GameObject camGO = new();
         Camera cam = camGO.AddComponent<Camera>();
         cam.cullingMask = mask;
         cam.orthographic = true;
-        //cam.aspect = bbSize.x / bbSize.y;
-        float size = Mathf.Max(bbSize.x, bbSize.y);
 
+        float size = Mathf.Max(bbSize.x, bbSize.y);
+        //Divide the size by half due to half size.
         cam.orthographicSize = size / 2;
 
+        //make sure the camera is position in the middle of the level to take the snapshot
         cam.transform.position = new(bbCenter.x, 1, bbCenter.y);
+        //have the camera have the proper rotation.
         cam.transform.rotation = Quaternion.Euler(90, -90, 0);
 
         cam.clearFlags = CameraClearFlags.SolidColor;
         cam.backgroundColor = mapColor;
         int scalar = 5;
 
-
-        //try new
-        // int camHeight = (int)(cam.orthographicSize * 2) * scalar;
-        // int camHeight = (int)(cam.orthographicSize * 2);
-        // int camWidth = (int)(camHeight * cam.aspect);
-
+        //calculate the size of the rendertexture that is needed to 
+        //capture the entire map.
         float floatCamHeight = cam.orthographicSize * 2;
         float floatCamWidth = floatCamHeight * cam.aspect;
 
-
-        boundingBoxMinVector2 = new Vector2(bbCenter.x - floatCamWidth / 2, bbCenter.y - floatCamHeight / 2);
-        boundingBoxMaxVector2 = new Vector2(bbCenter.x + floatCamWidth / 2, bbCenter.y + floatCamHeight / 2);
-        // DrawBoundingBox2D(cam.rect.min, cam.rect.max);
-
-        //old method ;()
-        // int camWidth = (int)(cam.orthographicSize * cam.aspect) * 2 * scalar;
-        // manually add the offset to perfectly scale the map up
-        //needs to be fixed
-        //RenderTexture rt = new(camWidth, camWidth + 120, 0);
-        // RenderTexture rt = new(camWidth, (int)((float)camWidth * 3.5f), 0);
         RenderTexture rt = new((int)floatCamWidth * scalar,
         (int)floatCamHeight * scalar, 0);
 
         Vector2 snapShotSize = new Vector2(floatCamWidth, floatCamHeight);
 
-        //RenderTexture copy = new(camWidth, camWidth + 120, 0);
-        //rt.filterMode = FilterMode.Point;
+        //afterwards, reference the render texture on the camera
         cam.targetTexture = rt;
         rt.Create();
-        //copy.Create();
         GameData.miniMapSnapShot = rt;
         yield return null;
+        //once a texture has been created by the camera, dont reference it anymore
+        //as we already have the snapshot of the map.
         cam.targetTexture = null;
-        Destroy(camGO);
-        DestroyAllStaticCanvas();
-        ApplyMapSnapshotToCanvas(snapShotSize);
-        ToggleDynamicCanvas(true);
+        Destroy(camGO); //remove the camera as we dont need.
+        DestroyAllStaticCanvas(); //remove all the static canvas as we dont need.
+        ApplyMapSnapshotToCanvas(snapShotSize); //afterwards apply the texture to the canvas to display the image.
+        ToggleDynamicCanvas(true); //finally enable the dynamic images for the map camera to render.
     }
 
     void DestroyAllStaticCanvas()
@@ -179,13 +171,28 @@ public class BoundingBoxGenerator : MonoBehaviour
 
     void ApplyMapSnapshotToCanvas(Vector2 SnapShotSize)
     {
+        //makes a dynamic canvas
         canvasRT.position = new(bbCenter.x, 1, bbCenter.y);
+        //make the canvas width and height similar to the map.
         canvasRT.sizeDelta = new(SnapShotSize.x, SnapShotSize.y);
-
-        //canvasRT.sizeDelta = new(bbSize.x,bbSize.y);
-
-
+        //finally, render the snapshot of the Map.
         mapImage.texture = GameData.miniMapSnapShot;
+    }
+    #endregion
+
+    #region Debugging Related
+    void DrawBoundingBox2D(Vector2 minPoint, Vector2 maxPoint)
+    {
+        Vector3 p1 = new Vector3(minPoint.x, 0, minPoint.y);
+        Vector3 p2 = new Vector3(maxPoint.x, 0, minPoint.y);
+        Vector3 p3 = new Vector3(maxPoint.x, 0, maxPoint.y);
+        Vector3 p4 = new Vector3(minPoint.x, 0, maxPoint.y);
+
+        // Draw the lines for the bounding box in the XZ plane
+        Debug.DrawLine(p1, p2, Color.red, 10000f);
+        Debug.DrawLine(p2, p3, Color.red, 10000f);
+        Debug.DrawLine(p3, p4, Color.red, 10000f);
+        Debug.DrawLine(p4, p1, Color.red, 10000f);
     }
 
     // private void OnDrawGizmos()
@@ -201,4 +208,6 @@ public class BoundingBoxGenerator : MonoBehaviour
     //     Debug.DrawLine(p3, p4, Color.red);
     //     Debug.DrawLine(p4, p1, Color.red);
     // }
+    #endregion
+
 }

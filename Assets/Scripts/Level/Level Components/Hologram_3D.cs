@@ -6,7 +6,7 @@ using TMPro;
 using Unity.XR.CoreUtils;
 using UnityEngine;
 
-public class Hologram_3D : Hologram <Hologram3DData>
+public class Hologram_3D : Hologram<Hologram3DData>
 {
     [SerializeField] Hologram3DData _dataForDebugging;
     [SerializeField] Transform targetPosition;
@@ -14,8 +14,9 @@ public class Hologram_3D : Hologram <Hologram3DData>
     [SerializeField] float hologram3DFadeInSec = 1f;
     GameObject current3DHologram;
 
+
     [Header("children gameobject")]
-    [SerializeField]  GameObject hololights;
+    [SerializeField] GameObject hololights;
     [SerializeField] GameObject hologramPanel;
 
     Transform originalTargetPosition;
@@ -50,7 +51,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
     //call in the 3d hologram animator
     void Spawn3DHologram()
     {
-        if(current3DHologram) current3DHologram.SetActive(false);
+        if (current3DHologram) current3DHologram.SetActive(false);
         current3DHologram = Instantiate(_Data.Lines[curIndex].prefab3D);
         MoveHologramToTargetPosition();
         SetHologramFadeValue(0f);
@@ -93,7 +94,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
         enabled = false;
     }
 
-    IEnumerator FadeOutHologram() 
+    IEnumerator FadeOutHologram()
     {
         float elapseTime = 0;
         while (elapseTime < hologram3DFadeInSec)
@@ -111,7 +112,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
     IEnumerator FadeInHologram()
     {
         float elapseTime = 0;
-        while(elapseTime < hologram3DFadeInSec)
+        while (elapseTime < hologram3DFadeInSec)
         {
             elapseTime += Time.deltaTime;
             SetHologramFadeValue(elapseTime / hologram3DFadeInSec);
@@ -119,7 +120,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
         }
         SetHologramFadeValue(1);
     }
-    
+
     //played in the kiosk
     void DisableHologram()
     {
@@ -138,7 +139,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
         hologramMaterial.SetFloat("_Fade_In", value);
     }
 
-    protected override void OnPlayerEnterTrigger()
+    protected override void OnPlayerWithinView()
     {
         if (current3DHologram == null) return;
         //so basically transfer the information to the portable hologram
@@ -161,7 +162,7 @@ public class Hologram_3D : Hologram <Hologram3DData>
         animator.ResetTrigger(disableHologramhash);
     }
 
-    protected override void OnPlayerExitTrigger()
+    protected override void OnPlayerOutOfView()
     {
         var portableHologram = GameData.playerHologram;
         //change and set the reference

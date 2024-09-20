@@ -8,21 +8,29 @@ using UnityEngine.UI;
 
 public class Hologram_Slideshow : Hologram<HologramSlideShowData>
 {
+    /// <summary>
+    /// Used for debugging if you want to see a specific type of data.
+    /// </summary>
     [SerializeField]
-    HologramSlideShowData slideshowData;
+    HologramSlideShowData debuggingData;
 
     [SerializeField]
     Image image;
+    //Image sizer is not being used. However, it is being reference in case
+    //the need arises for dynamic image resizing. Specify the height and width of the image
     [SerializeField]
     GridLayoutGroup imageSizer;
 
     TextMeshProUGUI originalTextComponent;
     Image originalImageComponent;
+    //animator hash.
+    int hidePanelHash = Animator.StringToHash("HidePanelIfFar");
+    int showPanelIfCloseHash = Animator.StringToHash("ShowPanelIfClose");
 
     [ContextMenu("manual set init")]
     private void ManualSet()
     {
-        InitHologram(slideshowData);
+        InitHologram(debuggingData);
     }
 
     protected override void Start()
@@ -64,7 +72,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         image.sprite = line.image;
         imageSizer.cellSize = line.preferredImageSize;
     }
-
+    #region Overrides
     protected override void OnEndHologram()
     {
         animator.SetTrigger("HidePanel");
@@ -93,12 +101,8 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         OnEndHologram();
     }
 
-
-    int hidePanelHash = Animator.StringToHash("HidePanelIfFar");
-    int showPanelIfCloseHash = Animator.StringToHash("ShowPanelIfClose");
-    protected override void OnPlayerExitTrigger()
+    protected override void OnPlayerOutOfView()
     {
-
         //so basically transfer the information to the portable hologram
         Hologram_Portable portableHologram = GameData.playerHologram;
         //change the reference to the portable hologram stateText
@@ -116,7 +120,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         animator.ResetTrigger(showPanelIfCloseHash);
     }
 
-    protected override void OnPlayerEnterTrigger()
+    protected override void OnPlayerWithinView()
     {
         //so basically transfer the information to the portable hologram
         Hologram_Portable portableHologram = GameData.playerHologram;
@@ -134,6 +138,7 @@ public class Hologram_Slideshow : Hologram<HologramSlideShowData>
         animator.SetTrigger(showPanelIfCloseHash);
         animator.ResetTrigger(hidePanelHash);
     }
+    #endregion
     void HideHologramFit()
     {
         transform.GetChild(0).gameObject.SetActive(false);

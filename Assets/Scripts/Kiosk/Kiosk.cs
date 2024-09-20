@@ -1,14 +1,13 @@
-using Dialog;
 using PopUpAssistance;
 using SoundRelated;
-using System.Collections;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class Kiosk : MonoBehaviour , IScriptLoadQueuer
+/// <summary>
+/// The game's kiosk logic. The script contains details on what to 
+/// add if you want to have unique kiosk as well as what type of hologram data
+/// it should contain.
+/// </summary>
+public class Kiosk : MonoBehaviour, IScriptLoadQueuer
 {
     //using a custom inspector at KioskEditor.cs
     [SerializeField]
@@ -40,9 +39,12 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
     bool scanning = false;
     bool authenticate = false;
 
+    //rarely used in kiosk but used to reference the target position
+    //of an automaton if it wants to stand next to a kiosk
     [SerializeField] Transform automatonTargetDestination;
+    //The transform reference to place the hologram once the kiosk is finished scanning.
     [SerializeField] Transform hologramTargetDestination;
-    [SerializeField] 
+    [SerializeField]
     PopUp popup;
     [SerializeField]
     GameObject mapIcon;
@@ -133,7 +135,7 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
             popup.CanPopUp = false;
             mapIcon.gameObject.SetActive(false);
             scanCompleted = true;
-            
+
             audioPlayer.RetrieveAudioSource(globalAudioSource);
             audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.SCAN_SUCCESS, transform.position);
             if (hologram)
@@ -164,7 +166,7 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
         }
     }
 
-#region Scanning
+    #region Scanning
 
     //called by ScanTrigger
     public void ScanStart()
@@ -174,7 +176,7 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
 
         if (!scanCompleted)
             //audioSource.PlayOneShot(audioClips[0]);
-            audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.KIOSK_AUTHETICATED,transform.position);
+            audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.KIOSK_AUTHETICATED, transform.position);
     }
 
     //called by ScanTrigger
@@ -202,10 +204,10 @@ public class Kiosk : MonoBehaviour , IScriptLoadQueuer
             scanning = true;
             //if there is a audio speechSource than keep it
             if (globalAudioSource) audioPlayer.RetrieveAudioSource(globalAudioSource);
-            globalAudioSource = audioPlayer.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING , transform.position);
+            globalAudioSource = audioPlayer.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING, transform.position);
         }
     }
-#endregion
+    #endregion
     public void SetHide()
     {
         popup.CanPopUp = false;

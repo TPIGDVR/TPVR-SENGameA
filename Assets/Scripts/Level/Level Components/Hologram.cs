@@ -3,14 +3,21 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using SoundRelated;
-using Unity.VisualScripting;
 
+/// <summary>
+/// The reference to all the different types of holograms that exist in the game. 
+/// </summary>
 public abstract class BaseHologram : MonoBehaviour
-{ 
+{
     public abstract void PlayAnimation();
 }
 
-public abstract class Hologram<DataType> : BaseHologram where DataType : HologramData 
+/// <summary>
+/// Class to structure how a hologram is being being played. Specify a hologram data
+/// that will be used in the children script and the way display the hologram through overrides.
+/// </summary>
+/// <typeparam name="DataType">The type of hologram data that will be passed to</typeparam>
+public abstract class Hologram<DataType> : BaseHologram where DataType : HologramData
 {
     [SerializeField]
     protected Animator animator;
@@ -22,9 +29,9 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     float letterPerSecond = 0.3f;
     protected int curIndex = 0;
 
-    //protected SoundManager soundManager;
-    [SerializeField] AudioSource globalAudioSource;
+    [SerializeField] AudioSource typingAudioSource;
     [SerializeField] AudioSource speechSource;
+
     protected DialogueLines dialogLine;
 
     [SerializeField] protected DataType _Data;
@@ -35,6 +42,10 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
     Coroutine currentCoroutine;
     Coroutine typingCoroutine;
+    /// <summary>
+    /// How the hologram should start, override it if you want the hologram
+    /// to do something at start.
+    /// </summary>
     protected virtual void Start()
     {
         //NOOP
@@ -58,7 +69,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
     public virtual void InitHologram(DataType data)
     {
         ScriptableObjectManager.AddIntoSOCollection(data);
-        _Data = (DataType) ScriptableObjectManager.RetrieveRuntimeScriptableObject(data);
+        _Data = (DataType)ScriptableObjectManager.RetrieveRuntimeScriptableObject(data);
         if (_Data)
         {
             if (_Data.DialogAfterComplete)
@@ -73,6 +84,9 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         }
     }
 
+    /// <summary>
+    /// The method to start running the hologram.
+    /// </summary>
     protected void RunPanel()
     {
         if (currentCoroutine == null)
@@ -82,6 +96,15 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         }
     }
 
+    /// <summary>
+    /// The hologram behaviour runs on coroutine. It will
+    /// 1. Complete printing the current kiosk line 
+    /// 2. calls whatever function after it completes the line 
+    /// 3. See if there is more hologram data to display
+    /// 
+    /// If it has, it will calls functions to run the RunPanel(),
+    /// Else it will call functions to end the hologram.
+    /// </summary>
     private IEnumerator RunHologram()
     {
         yield return PrintKioskLines(_Data.dialogLine[curIndex]);
@@ -89,33 +112,36 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         DecideState();
     }
 
-
+    /// <summary>
+    /// Checks the distance between the player and the hologram. It the player
+    /// is very far, it would call the OnPlayerOutOfView() method else,
+    /// it would call the OnPlayerWithinView(). 
+    /// </summary>
     private void Update()
     {
-        bool acceptableDistance = Vector3.Distance(GameData.playerTransform.position , this.transform.position) < exitRadius;
+        bool acceptableDistance = Vector3.Distance(GameData.playerTransform.position, this.transform.position) < exitRadius;
         if (isRunning && !acceptableDistance && !hasTriggeredPortableHologram)
         {
             //if outside of acceptable distance and has not trigger the portable hologram.
-            hasTriggeredPortableHologram =true;
-            OnPlayerExitTrigger();
+            hasTriggeredPortableHologram = true;
+            OnPlayerOutOfView();
         }
-        else if(isRunning && acceptableDistance && hasTriggeredPortableHologram)
+        else if (isRunning && acceptableDistance && hasTriggeredPortableHologram)
         {
             //if the player is within acceptable distance and has trigger portable hologram
             hasTriggeredPortableHologram = false;
-            OnPlayerEnterTrigger();
+            OnPlayerWithinView();
         }
     }
 
-    #region on complete function
     /// <summary>
     /// Deciding which state the Hologram would be doing.
     /// </summary>
     private void DecideState()
     {
-        if(curIndex >= _Data.dialogLine.Length)
+        if (curIndex >= _Data.dialogLine.Length)
         {
-            FinishHologram();   
+            FinishHologram();
         }
         else
         {
@@ -132,9 +158,10 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         if (dialogLine) EventSystem.dialog.TriggerEvent<DialogueLines>(DialogEvents.ADD_DIALOG, dialogLine);
         EventSystem.level.RemoveListener(LevelEvents.INTERRUPT_HOLOGRAM, InteruptHologram);
         isRunning = false;
-        OnEndHologram() ;
+        OnEndHologram();
     }
 
+    #region on complete function
     /// <summary>
     /// Once a line has been completed, this function will call.
     /// Override it to extend the functionality
@@ -160,13 +187,13 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         //NOOP
     }
 
-    protected virtual void OnPlayerExitTrigger()
+    protected virtual void OnPlayerOutOfView()
     {
-
+        //NOOP
     }
-    protected virtual void OnPlayerEnterTrigger()
+    protected virtual void OnPlayerWithinView()
     {
-
+        //NOOP
     }
     #endregion
 
@@ -215,7 +242,7 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         //this is needed since we dont want splits to happen if the player is out of bound.
         string textToDisplay = "";
         //slowly place in the words into the subtile stateText
-        foreach(var c in text.ToCharArray())
+        foreach (var c in text.ToCharArray())
         {
             textToDisplay += c;
             subtitleText.text = textToDisplay;
@@ -223,8 +250,8 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
         }
 
         print("retrieve audio here");
-        SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
-        globalAudioSource = null;
+        SoundManager.Instance.RetrieveAudioSource(typingAudioSource);
+        typingAudioSource = null;
     }
     #endregion
 
@@ -237,15 +264,15 @@ public abstract class Hologram<DataType> : BaseHologram where DataType : Hologra
 
     private void PlayGlobalAudioSource()
     {
-        globalAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
+        typingAudioSource = SoundManager.Instance.PlayAudioContinuous(SoundRelated.SFXClip.TEXT_TYPING);
     }
 
     protected void RetrieveAudioSource()
     {
-        if (globalAudioSource) SoundManager.Instance.RetrieveAudioSource(globalAudioSource);
+        if (typingAudioSource) SoundManager.Instance.RetrieveAudioSource(typingAudioSource);
         if (speechSource) SoundManager.Instance.RetrieveAudioSource(speechSource);
 
-        globalAudioSource = null;
+        typingAudioSource = null;
         speechSource = null;
     }
     #endregion
