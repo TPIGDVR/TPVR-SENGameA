@@ -75,8 +75,6 @@ public class Kiosk : MonoBehaviour, IScriptLoadQueuer
         progressUI.fillAmount = 0f;
         progress_GO.SetActive(true);
         audioPlayer = SoundManager.Instance;
-        //ScriptableObjectManager.AddIntoSOCollection(kioskData.OtherDialogue);
-        //triggerLines = (DialogueLines)ScriptableObjectManager.RetrieveRuntimeScriptableObject(kioskData.OtherDialogue);
 
         if (hologram3DData)
         {
@@ -141,13 +139,11 @@ public class Kiosk : MonoBehaviour, IScriptLoadQueuer
             if (hologram)
             {
                 hologram.PlayAnimation();
-                //StartCoroutine(TeleportPlayer());
             }
 
             animator.SetBool("Completed", true);
             EventSystem.level.TriggerEvent<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ObjectiveName.KIOSK);
 
-            //teleport player to location once the 
         }
     }
 
@@ -175,7 +171,6 @@ public class Kiosk : MonoBehaviour, IScriptLoadQueuer
         authenticate = true;
 
         if (!scanCompleted)
-            //audioSource.PlayOneShot(audioClips[0]);
             audioPlayer.PlayAudioOneShot(SoundRelated.SFXClip.KIOSK_AUTHETICATED, transform.position);
     }
 
@@ -191,8 +186,6 @@ public class Kiosk : MonoBehaviour, IScriptLoadQueuer
             {
                 audioPlayer.RetrieveAudioSource(globalAudioSource);
             }
-            //StopSFX();
-            //audioPlayer.StopPlayingContinuousAudio(SoundRelated.SFXClip.TEXT_TYPING);
         }
     }
 

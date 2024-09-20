@@ -140,35 +140,6 @@ public class KioskEditor : Editor
 
         pType_f.RegisterValueChangeCallback(evt =>
         {
-            // h.Clear();
-            // pType_f.Bind(serializedObject);
-            // pHasHologramPanels_f.Bind(serializedObject);
-            // pHologram_f.Bind(serializedObject);
-            // // pHologramData3D_f.Bind(serializedObject);
-
-            // h.Add(pHasHologramPanels_f);
-            // h.Add(pHologram_f);
-            // h.Add(pType_f);
-            // //UpdateVisibleFields(pType.enumValueIndex, h, pHologramData3D_f, pHologramSlideShowData_f);
-            // switch (pType.enumValueIndex)
-            // {
-            //     case 0:
-            //         h.Add(pHologramData3D_f);
-            //         pHologramData3D_f.Bind(serializedObject);
-            //         break;
-            //     case 1:
-            //         h.Add(pHologramSlideShowData_f);
-            //         pHologramSlideShowData_f.Bind(serializedObject);
-            //         break;
-            //     default:
-            //         break;
-
-            // }
-            // // Ensure the serialized object is updated properly
-            // serializedObject.Update();
-
-            // // Apply any changes made
-            // serializedObject.ApplyModifiedProperties();
 
             // Only clear and update the specific hologram data section, not the entire foldout
             if (pType.enumValueIndex == 0) // Hologram3D case
@@ -213,18 +184,6 @@ public class KioskEditor : Editor
 
         });
 
-        // var pHologramData3D = serializedObject.FindProperty("hologram3DData");
-        // var pHologramData3D_f = new PropertyField(pHologramData3D);
-        // pHologramData3D_f.tooltip = "Data for the hologram that shows a 3D model";
-        // h.Add(pHologramData3D_f);
-
-        // var pHologramSlideShowData = serializedObject.FindProperty("hologramslideShowData");
-        // var pHologramSlideShowData_f = new PropertyField(pHologramSlideShowData);
-        // pHologramSlideShowData_f.tooltip = "Data for the hologram that shows a slide show";
-        // h.Add(pHologramSlideShowData_f);\
-        // h.Add(pHasHologramPanels_f);
-        // h.Add(pHologram_f);
-        // h.Add(pType_f);
         i.Add(h);
 
         #endregion

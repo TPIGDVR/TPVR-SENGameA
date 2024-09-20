@@ -239,8 +239,6 @@ namespace Dialog
                 DialogEvents evnt = line.dialogEndTrigger;
                 EventSystem.dialog.TriggerEvent(evnt);
                 line.hasBeenTriggered = true;
-
-                //Debug.Log($"Triggered Event : {evnt}");
             }
         }
 
@@ -265,20 +263,6 @@ namespace Dialog
         {
             if (dialogueBox.activeSelf)
             {
-                ////Means there is something on the dialog.
-                //if (currentDialog)
-                //{
-                //    var newQueue = new Queue<DialogueLines>();
-                //    newQueue.Enqueue(currentDialog);
-                //    //add the remaining dialog to the new queue
-                //    while(_queueDialog.Count > 0)
-                //    {
-                //        newQueue.Enqueue(_queueDialog.Dequeue());
-                //    }
-                //    //then change the reference of the queue.
-                //    _queueDialog = newQueue;
-                //    currentDialog = null;
-                //}
                 //since the index still remains the same. we can call it later
                 HideDialogueBox();
             }

@@ -1,7 +1,4 @@
 using Automaton;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.XR.CoreUtils;
 using UnityEngine;
 using static ScriptableObjectManager;
 public class Room : MonoBehaviour, IScriptLoadQueuer
@@ -166,8 +163,5 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
 
         return completed;
     }
-    void FixedUpdate()
-    {
-        
-    }
+
 }

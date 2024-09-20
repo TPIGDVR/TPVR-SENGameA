@@ -182,16 +182,12 @@ namespace Automaton
 
             while (_ani.GetCurrentAnimatorStateInfo(0).IsName("Rotation blend tree"))
             {
-                //Debug.DrawRay(transform.position, targetDirection * 50, Color.blue);
                 float normalizeTime = _ani.GetCurrentAnimatorStateInfo(0).normalizedTime;
                 transform.rotation = Quaternion.Slerp(initialRotation , finalRotation , normalizeTime); 
                 yield return null;
             }
 
-            //transform.forward = targetDirection;
             transform.rotation = finalRotation;
-            //print($"final target direction {targetDirection}");
-
         }
         #endregion
         /// <summary>
@@ -263,11 +259,5 @@ namespace Automaton
             _audio.PlayOneShot(_footStepClips[index], vol);
         }
         #endregion
-
-        //private void OnDrawGizmos()
-        //{
-        //    Gizmos.color = Color.red;
-        //    Gizmos.DrawSphere(_agent.nextPosition, 0.2f);
-        //}
     }
 }

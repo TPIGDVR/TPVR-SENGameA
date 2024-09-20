@@ -18,15 +18,6 @@ public class UIPopUp : MonoBehaviour
         {
             bool isLefthandNear = Vector3.Distance(leftHandPos, transform.position) < rangeDistance;
             bool isRighthandNear = Vector3.Distance(rightHandPos, transform.position) < rangeDistance;
-            //print($"current transform {transform.position}");
-            //print($"check left hand nearer {isLefthandNear}. " +
-            //    $"distance {Vector3.Distance(leftHandPos, transform.position)} " +
-            //    $"position {leftHandPos}" +
-            //    $"");
-            //print($"check right hand nearer {isRighthandNear}. distance {Vector3.Distance(rightHandPos, transform.position)} " +
-            //    $"position {rightHandPos}");
-
-
             return isLefthandNear || isRighthandNear;
         }
     }

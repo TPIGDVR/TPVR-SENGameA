@@ -5,11 +5,10 @@ using UnityEngine;
 
 public class GrabCheck : MonoBehaviour
 {
-    //public GameObject go;
     [SerializeField]
     bool IsRight;
     [SerializeField] float searchRadius = 0.05f;
-    //[SerializeField] int mask = LayerMask.GetMask("Interactables");
+
     [SerializeField] LayerMask interactableMask;
     private void Start()
     {
@@ -22,23 +21,6 @@ public class GrabCheck : MonoBehaviour
             EventSystem.player.AddListener(PlayerEvents.GRAB_DOWN_LEFT, Retrieve);
         }
     }
-
-    //if change to on trigger.
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    go = other.gameObject;
-    //}
-
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    go = other.gameObject;
-    //}
-
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    go = null;
-    //}
 
     private GameObject Retrieve()
     {

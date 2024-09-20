@@ -69,7 +69,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             em_p.AddListener<float>(PlayerEvents.ANXIETY_BREATHE, Breath);
             em_p.AddListener<float>(PlayerEvents.HEART_BEAT, () => curAnxiety);
             _noiseSources = FindObjectsOfType<NoiseSource>();
-            //StartCoroutine(CalcGlare_Cor());
         }
 
         public void CalculateAnxiety()
@@ -151,11 +150,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
             _anxietyIncreaseScale = 0f;
             _anxietyIncreaseScale += CalculateAnxietyScaleBasedOffGlareLevel();
             _anxietyIncreaseScale += CalculateAnxietyScaleBasedOffNoiseLevel();
-            //debugging
-            //float glareAnxietyVal = CalculateAnxietyScaleBasedOffGlareLevel();
-            //float noiseAnxietyVal = CalculateAnxietyScaleBasedOffNoiseLevel();
-            //print($"glare val {glareAnxietyVal} noise anxiety val {noiseAnxietyVal}");
-            //_anxietyIncreaseScale = glareAnxietyVal + noiseAnxietyVal;
         }
 
         private void DetermineDeathTimer()
@@ -200,7 +194,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 
                 if (useNew)
                 {
-                    //glareValue = RunComputeShader(rt);
                     glareValue = RunAsyncGPU(rt);
                 }
                 else
@@ -277,51 +270,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 
                 // Return 0 initially (since AsyncGPUReadback is non-blocking)
                 return prevGlareResult;
-            }
-
-
-            //deprecated (does not work very well)
-            float RunComputeShader(RenderTexture rt)
-            {
-                int size = rt.width * rt.height;
-                int kernel = glareCS.FindKernel("CSMain");
-                float[] brightnessL = new float[rt.width * rt.height];
-                glareCS.SetTexture(kernel,"Glare",rt);
-                glareCS.SetInts("width", rt.height);
-
-                //setting buffer
-                ComputeBuffer buffer = new(size,sizeof(float)); 
-                glareCS.SetBuffer(kernel, "Result", buffer);
-
-                glareCS.Dispatch(kernel,rt.width,rt.height,1);
-                buffer.GetData(brightnessL);
-                buffer.Release();
-                float totalBrightness = 0;
-
-                foreach (var l in brightnessL) 
-                {
-                    totalBrightness += l;
-                }
-
-                totalBrightness /= brightnessL.Length;
-                if (totalBrightness < lT)
-                    totalBrightness = 0;
-
-                return totalBrightness;
-            }
-        }
-
-        IEnumerator CalcGlare_Cor()
-        {
-            int framesToWait = 5;
-            yield return new WaitForSeconds(0.5f);
-            while (true)
-            {
-                for (int i = 0; i < framesToWait; i++)
-                {
-                    yield return null;
-                }
-                CalculateGlare();
             }
         }
     }
