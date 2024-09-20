@@ -23,9 +23,7 @@ public class Billboard : MonoBehaviour
             transform.rotation = Quaternion.Euler(eularRotationL);
             return;
         }
-        //transform.LookAt(transform.position + mainTransform.rotation * Vector3.forward,
-        //    mainTransform.rotation * Vector3.up);
-        //transform.rotation =                                                   
+                                                
         var rotation = Quaternion.LookRotation(mainTransform.forward);
         Vector3 eularRotation = rotation.eulerAngles;
         eularRotation.z = 0;

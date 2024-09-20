@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1632579965622860786}
   - component: {fileID: 6100961284364444253}
   - component: {fileID: 5348472544099856083}
-  - component: {fileID: 2527423957096809595}
   m_Layer: 10
   m_Name: LED (5)
   m_TagString: Untagged
@@ -84,27 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2527423957096809595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 15763898318637395}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &135326226419020866
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +94,6 @@ GameObject:
   - component: {fileID: 1689080237069928163}
   - component: {fileID: 6157037122827394892}
   - component: {fileID: 5467739537951249346}
-  - component: {fileID: 2507363563117508970}
   m_Layer: 10
   m_Name: LED (13)
   m_TagString: Untagged
@@ -189,27 +166,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2507363563117508970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 135326226419020866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &191406987341290668
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,7 +177,6 @@ GameObject:
   - component: {fileID: 1456936876397112845}
   - component: {fileID: 6213548549800179618}
   - component: {fileID: 5235880949305047852}
-  - component: {fileID: 2414831241130856836}
   m_Layer: 10
   m_Name: LED (1)
   m_TagString: Untagged
@@ -294,27 +249,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2414831241130856836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 191406987341290668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &358427546584177776
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,7 +260,6 @@ GameObject:
   - component: {fileID: 1326719172977962705}
   - component: {fileID: 5794889363744077694}
   - component: {fileID: 5690568247365336048}
-  - component: {fileID: 2869448720385233240}
   m_Layer: 10
   m_Name: LED (33)
   m_TagString: Untagged
@@ -399,27 +332,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2869448720385233240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 358427546584177776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &391579866985637596
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,7 +418,6 @@ GameObject:
   - component: {fileID: 1998306917161760475}
   - component: {fileID: 6465349026157653876}
   - component: {fileID: 5128166386526266362}
-  - component: {fileID: 3314730600424671570}
   m_Layer: 10
   m_Name: LED (34)
   m_TagString: Untagged
@@ -579,27 +490,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3314730600424671570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 948991196535030906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &1398226323037202289
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,7 +501,6 @@ GameObject:
   - component: {fileID: 429927276011574736}
   - component: {fileID: 5185201964744526975}
   - component: {fileID: 6442092715033559281}
-  - component: {fileID: 3480236820097411673}
   m_Layer: 10
   m_Name: LED (16)
   m_TagString: Untagged
@@ -684,27 +573,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3480236820097411673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1398226323037202289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &1508543724087332067
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,7 +584,6 @@ GameObject:
   - component: {fileID: 179998286442053186}
   - component: {fileID: 4647040120831354861}
   - component: {fileID: 6840680697557969763}
-  - component: {fileID: 4018436936397046219}
   m_Layer: 10
   m_Name: LED (21)
   m_TagString: Untagged
@@ -789,27 +656,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4018436936397046219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1508543724087332067}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &1697407498963541273
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,7 +667,6 @@ GameObject:
   - component: {fileID: 80625925600718776}
   - component: {fileID: 4835900597174842903}
   - component: {fileID: 6741872695283088025}
-  - component: {fileID: 3793527032312352817}
   m_Layer: 10
   m_Name: LED (31)
   m_TagString: Untagged
@@ -894,27 +739,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3793527032312352817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1697407498963541273}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &1729653910899676036
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,7 +793,6 @@ GameObject:
   - component: {fileID: 1001147717839415719}
   - component: {fileID: 5757337178508652552}
   - component: {fileID: 5869680353473215622}
-  - component: {fileID: 4062223692678895150}
   m_Layer: 10
   m_Name: LED (28)
   m_TagString: Untagged
@@ -1042,27 +865,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4062223692678895150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1978449614400035590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &2173115942471545889
 GameObject:
   m_ObjectHideFlags: 0
@@ -1074,7 +876,6 @@ GameObject:
   - component: {fileID: 628360541165930112}
   - component: {fileID: 5384761129559645999}
   - component: {fileID: 6064628168718783393}
-  - component: {fileID: 4396431275890489609}
   m_Layer: 10
   m_Name: LED (27)
   m_TagString: Untagged
@@ -1147,27 +948,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4396431275890489609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2173115942471545889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &3167434207824449601
 GameObject:
   m_ObjectHideFlags: 0
@@ -1179,7 +959,6 @@ GameObject:
   - component: {fileID: 4423919514205053664}
   - component: {fileID: 9180036407391353679}
   - component: {fileID: 7058665633403287489}
-  - component: {fileID: 639453136956923241}
   m_Layer: 10
   m_Name: LED (4)
   m_TagString: Untagged
@@ -1252,27 +1031,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &639453136956923241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3167434207824449601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &3536978404796929880
 GameObject:
   m_ObjectHideFlags: 0
@@ -1284,7 +1042,6 @@ GameObject:
   - component: {fileID: 2847903221865145849}
   - component: {fileID: 7315862053243911254}
   - component: {fileID: 8868794109748883672}
-  - component: {fileID: 1314743789305830000}
   m_Layer: 10
   m_Name: LED (26)
   m_TagString: Untagged
@@ -1357,27 +1114,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1314743789305830000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3536978404796929880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &3725990924613562462
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,7 +1125,6 @@ GameObject:
   - component: {fileID: 2676676376504550143}
   - component: {fileID: 7433076668539951952}
   - component: {fileID: 8769906360388491230}
-  - component: {fileID: 1197489783672421750}
   m_Layer: 10
   m_Name: LED (7)
   m_TagString: Untagged
@@ -1462,27 +1197,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1197489783672421750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3725990924613562462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &3875269033952850229
 GameObject:
   m_ObjectHideFlags: 0
@@ -1494,7 +1208,6 @@ GameObject:
   - component: {fileID: 2546696928805307284}
   - component: {fileID: 7013598304897227323}
   - component: {fileID: 9207098131233773237}
-  - component: {fileID: 1651852649618422813}
   m_Layer: 10
   m_Name: LED (35)
   m_TagString: Untagged
@@ -1567,27 +1280,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1651852649618422813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3875269033952850229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &4271369283837222010
 GameObject:
   m_ObjectHideFlags: 0
@@ -1599,7 +1291,6 @@ GameObject:
   - component: {fileID: 3303078344587849435}
   - component: {fileID: 8058071558362183540}
   - component: {fileID: 8162604880468343802}
-  - component: {fileID: 1760278703364788562}
   m_Layer: 10
   m_Name: LED (29)
   m_TagString: Untagged
@@ -1672,27 +1363,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1760278703364788562
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4271369283837222010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &4345420951161546886
 GameObject:
   m_ObjectHideFlags: 0
@@ -1704,7 +1374,6 @@ GameObject:
   - component: {fileID: 3088940134080862759}
   - component: {fileID: 7556195256563975048}
   - component: {fileID: 8525207487417716486}
-  - component: {fileID: 2262283421396608430}
   m_Layer: 10
   m_Name: LED (18)
   m_TagString: Untagged
@@ -1777,27 +1446,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2262283421396608430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4345420951161546886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &4473334008069422042
 GameObject:
   m_ObjectHideFlags: 0
@@ -1857,7 +1505,6 @@ GameObject:
   - component: {fileID: 2935984797203882980}
   - component: {fileID: 7691118731289852491}
   - component: {fileID: 8371970959436297925}
-  - component: {fileID: 2091243596404956269}
   m_Layer: 10
   m_Name: LED (19)
   m_TagString: Untagged
@@ -1930,27 +1577,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2091243596404956269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4480696133212475717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &4529126907013750339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1962,7 +1588,6 @@ GameObject:
   - component: {fileID: 2903316624115739874}
   - component: {fileID: 7658448359158265165}
   - component: {fileID: 8420366480263707075}
-  - component: {fileID: 2157654615135900523}
   m_Layer: 10
   m_Name: LED (10)
   m_TagString: Untagged
@@ -2035,27 +1660,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2157654615135900523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4529126907013750339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &4660040254098795850
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,7 +1671,6 @@ GameObject:
   - component: {fileID: 6213804277383831531}
   - component: {fileID: 1457265446900106820}
   - component: {fileID: 768531914278226634}
-  - component: {fileID: 7170010397864091746}
   m_Layer: 10
   m_Name: LED (14)
   m_TagString: Untagged
@@ -2140,27 +1743,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7170010397864091746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4660040254098795850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &5354177650421733014
 GameObject:
   m_ObjectHideFlags: 0
@@ -2172,7 +1754,6 @@ GameObject:
   - component: {fileID: 6691728707845448759}
   - component: {fileID: 2224543937211923864}
   - component: {fileID: 21473921655615766}
-  - component: {fileID: 7595016931441548222}
   m_Layer: 10
   m_Name: LED (24)
   m_TagString: Untagged
@@ -2245,27 +1826,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7595016931441548222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5354177650421733014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &5391485006662056113
 GameObject:
   m_ObjectHideFlags: 0
@@ -2384,7 +1944,6 @@ GameObject:
   - component: {fileID: 6351560786753165941}
   - component: {fileID: 1884659414956475354}
   - component: {fileID: 339114980184411988}
-  - component: {fileID: 7898863516503172604}
   m_Layer: 10
   m_Name: LED (8)
   m_TagString: Untagged
@@ -2457,27 +2016,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7898863516503172604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5671528471653345492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &5930693375907374752
 GameObject:
   m_ObjectHideFlags: 0
@@ -2489,7 +2027,6 @@ GameObject:
   - component: {fileID: 4962432214771487745}
   - component: {fileID: 494543752401145262}
   - component: {fileID: 1751786367869124896}
-  - component: {fileID: 8171000493299411848}
   m_Layer: 10
   m_Name: LED (22)
   m_TagString: Untagged
@@ -2562,27 +2099,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8171000493299411848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5930693375907374752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &5957141346361779363
 GameObject:
   m_ObjectHideFlags: 0
@@ -2594,7 +2110,6 @@ GameObject:
   - component: {fileID: 4916826353581413890}
   - component: {fileID: 450063808297521069}
   - component: {fileID: 1778238100848313123}
-  - component: {fileID: 8180564294479391115}
   m_Layer: 10
   m_Name: LED (32)
   m_TagString: Untagged
@@ -2667,27 +2182,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8180564294479391115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5957141346361779363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &5968709753872241701
 GameObject:
   m_ObjectHideFlags: 0
@@ -2699,7 +2193,6 @@ GameObject:
   - component: {fileID: 4919349297962985092}
   - component: {fileID: 452588938818502443}
   - component: {fileID: 1789208584353510309}
-  - component: {fileID: 8214049473423825165}
   m_Layer: 10
   m_Name: LED (20)
   m_TagString: Untagged
@@ -2772,27 +2265,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8214049473423825165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5968709753872241701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &6165447041404409823
 GameObject:
   m_ObjectHideFlags: 0
@@ -2804,7 +2276,6 @@ GameObject:
   - component: {fileID: 4827866023362618750}
   - component: {fileID: 72875300934810833}
   - component: {fileID: 2274747946453577823}
-  - component: {fileID: 8555474760232540919}
   m_Layer: 10
   m_Name: LED (12)
   m_TagString: Untagged
@@ -2877,27 +2348,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8555474760232540919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6165447041404409823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &6310834582828310011
 GameObject:
   m_ObjectHideFlags: 0
@@ -2909,7 +2359,6 @@ GameObject:
   - component: {fileID: 4685011792968757082}
   - component: {fileID: 217967484676978421}
   - component: {fileID: 2131610833937365627}
-  - component: {fileID: 8412619658001436883}
   m_Layer: 10
   m_Name: LED (3)
   m_TagString: Untagged
@@ -2982,27 +2431,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8412619658001436883
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6310834582828310011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &6474976157273813471
 GameObject:
   m_ObjectHideFlags: 0
@@ -3014,7 +2442,6 @@ GameObject:
   - component: {fileID: 5713849088273646462}
   - component: {fileID: 957378148315896529}
   - component: {fileID: 1430502963589371487}
-  - component: {fileID: 8858733430007037175}
   m_Layer: 10
   m_Name: LED
   m_TagString: Untagged
@@ -3087,27 +2514,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8858733430007037175
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6474976157273813471}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &7260553646718818088
 GameObject:
   m_ObjectHideFlags: 0
@@ -3119,7 +2525,6 @@ GameObject:
   - component: {fileID: 8237854375054665097}
   - component: {fileID: 3481385638151683110}
   - component: {fileID: 3369604348414341288}
-  - component: {fileID: 5181844984148007424}
   m_Layer: 10
   m_Name: LED (15)
   m_TagString: Untagged
@@ -3192,27 +2597,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5181844984148007424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7260553646718818088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &7706951944682266073
 GameObject:
   m_ObjectHideFlags: 0
@@ -3224,7 +2608,6 @@ GameObject:
   - component: {fileID: 8963429961396039544}
   - component: {fileID: 4496388127277987543}
   - component: {fileID: 2374806210148072025}
-  - component: {fileID: 5323149660692762865}
   m_Layer: 10
   m_Name: LED (30)
   m_TagString: Untagged
@@ -3297,27 +2680,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5323149660692762865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7706951944682266073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &7887771571318419282
 GameObject:
   m_ObjectHideFlags: 0
@@ -3329,7 +2691,6 @@ GameObject:
   - component: {fileID: 8928080087271316979}
   - component: {fileID: 4171468689018782812}
   - component: {fileID: 2843856229578918098}
-  - component: {fileID: 5646891539646145146}
   m_Layer: 10
   m_Name: LED (6)
   m_TagString: Untagged
@@ -3402,27 +2763,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5646891539646145146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7887771571318419282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &7903021288370042107
 GameObject:
   m_ObjectHideFlags: 0
@@ -3536,7 +2876,6 @@ GameObject:
   - component: {fileID: 7303106024079447853}
   - component: {fileID: 2835923194776374914}
   - component: {fileID: 4163676371150406156}
-  - component: {fileID: 5828493936482232484}
   m_Layer: 10
   m_Name: LED (23)
   m_TagString: Untagged
@@ -3609,27 +2948,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5828493936482232484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8343428237809231244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &8359927538046176597
 GameObject:
   m_ObjectHideFlags: 0
@@ -3641,7 +2959,6 @@ GameObject:
   - component: {fileID: 7103436889800048628}
   - component: {fileID: 2348234773375575643}
   - component: {fileID: 4469254809730493141}
-  - component: {fileID: 6282339312182755453}
   m_Layer: 10
   m_Name: LED (9)
   m_TagString: Untagged
@@ -3714,27 +3031,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6282339312182755453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8359927538046176597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &8412786741953533012
 GameObject:
   m_ObjectHideFlags: 0
@@ -3746,7 +3042,6 @@ GameObject:
   - component: {fileID: 7084213902385473269}
   - component: {fileID: 2329150594746122074}
   - component: {fileID: 4522087535703176148}
-  - component: {fileID: 6335174223759022460}
   m_Layer: 10
   m_Name: LED (25)
   m_TagString: Untagged
@@ -3819,27 +3114,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6335174223759022460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8412786741953533012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &8483934730041295050
 GameObject:
   m_ObjectHideFlags: 0
@@ -3851,7 +3125,6 @@ GameObject:
   - component: {fileID: 7146344360737927787}
   - component: {fileID: 2390861061143980996}
   - component: {fileID: 4592945875608184650}
-  - component: {fileID: 6239678132520586722}
   m_Layer: 10
   m_Name: LED (2)
   m_TagString: Untagged
@@ -3924,27 +3197,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6239678132520586722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8483934730041295050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &8609038613883346197
 GameObject:
   m_ObjectHideFlags: 0
@@ -3956,7 +3208,6 @@ GameObject:
   - component: {fileID: 7055281320853974964}
   - component: {fileID: 2588309580582336027}
   - component: {fileID: 4429542426007173781}
-  - component: {fileID: 6075994290897342525}
   m_Layer: 10
   m_Name: LED (17)
   m_TagString: Untagged
@@ -4029,27 +3280,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6075994290897342525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8609038613883346197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &8999539466548665451
 GameObject:
   m_ObjectHideFlags: 0
@@ -4061,7 +3291,6 @@ GameObject:
   - component: {fileID: 7671000759075188426}
   - component: {fileID: 2915587828493006693}
   - component: {fileID: 3955672477416520683}
-  - component: {fileID: 6904017037805375811}
   m_Layer: 10
   m_Name: LED (11)
   m_TagString: Untagged
@@ -4134,27 +3363,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6904017037805375811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8999539466548665451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: 2100000, guid: 97855521f7f787244968f99959560bc2, type: 2}
-  - {fileID: 2100000, guid: 6292cc34d5f5541409881f85d30373f9, type: 2}
-  - {fileID: 2100000, guid: ad4da27dc7149614b87464e956168421, type: 2}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8
 --- !u!1 &9015026725604683493
 GameObject:
   m_ObjectHideFlags: 0

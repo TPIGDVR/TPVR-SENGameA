@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4958903927886421337}
   - component: {fileID: 491862110660134134}
   - component: {fileID: 1747415881516533880}
-  - component: {fileID: 8172538811846910672}
   m_Layer: 10
   m_Name: LED
   m_TagString: Untagged
@@ -84,22 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8172538811846910672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5927167173169901560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1bf42833632d7743ad54b5872121ead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mats:
-  - {fileID: -876546973899608171, guid: 6028d301f9ce2f443951e4ce1e27e32a, type: 3}
-  minRandInterval_WAIT: 0.2
-  maxRandInterval_WAIT: 1
-  minRandInterval_DELAY: 0.2
-  maxRandInterval_DELAY: 0.5
-  randChance: 0.8

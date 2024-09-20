@@ -14,8 +14,6 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
     protected Kiosk[] kiosks;
     [SerializeField]
     Room_Door[] doors;
-    [SerializeField]
-    BlinkingLights[] lights;
 
     bool isCompleted;
     bool isPlayerHere;
