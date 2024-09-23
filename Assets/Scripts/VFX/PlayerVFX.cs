@@ -14,7 +14,8 @@ public class PlayerVFX : MonoBehaviour
     GameObject _PlayerRig;
     [SerializeField]
     GameObject _Camera;
-
+    [SerializeField]
+    Transform _TrackingSpace;
     [SerializeField]
     float fadeTime;
     public float fadeTimer;
@@ -52,23 +53,38 @@ public class PlayerVFX : MonoBehaviour
 
     public IEnumerator FaintScreen()
     {
+        var cc = _PlayerRig.GetComponent<CharacterController>();
+        var ovrRig = _PlayerRig.GetComponent<OVRCameraRig>();
+
         float interval = 0.01f;
         fadeTimer = 0;
-        float playerHeight = _PlayerRig.GetComponent<CharacterController>().height;
-        Quaternion playerRotation = _Camera.transform.rotation;
-        _PlayerRig.GetComponent<OVRCameraRig>().enabled = false;
+        float playerHeight = cc.height;
+        Quaternion playerRotation = _TrackingSpace.rotation;
+
+
+        ovrRig.enabled = false;
         while (fadeTimer < fadeTime)
         {
             yield return new WaitForSeconds(interval);
+            var initQuat = Quaternion.Euler(0, _Camera.transform.rotation.y, 0);
+            var targetQuat = Quaternion.Euler(0, playerRotation.y, 60f);
             fadeTimer += interval;
-            //
-            _Camera.transform.rotation = Quaternion.Lerp(Quaternion.Euler(0, _Camera.transform.rotation.y, 0), Quaternion.Euler(90f, _Camera.transform.rotation.y, 90f), fadeTimer / fadeTime);
-            _PlayerRig.GetComponent<CharacterController>().height = Mathf.Lerp(playerHeight, faintHeight, fadeTimer / fadeTime);
+            
+            _TrackingSpace.rotation = Quaternion.Lerp(
+                    playerRotation, 
+                    targetQuat, 
+                    fadeTimer / fadeTime
+                    );
+
+            //lower the player height
+            cc.height = Mathf.Lerp(playerHeight, faintHeight, fadeTimer / fadeTime);
+            
             _fadeImg.color = Color.Lerp(new Color(0, 0, 0, 0), new Color(0, 0, 0, 1), fadeTimer / fadeTime);
         }
-        _Camera.transform.rotation = playerRotation;
-        _PlayerRig.GetComponent<OVRCameraRig>().enabled = true;
-        _PlayerRig.GetComponent<CharacterController>().height = playerHeight;
+        //_Camera.transform.rotation = playerRotation;
+        _TrackingSpace.rotation = playerRotation;
+        ovrRig.enabled = true;
+        cc.height = playerHeight;
 
         isFaded = true;
     }

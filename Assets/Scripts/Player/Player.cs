@@ -157,6 +157,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         MapUI.SetActive(true);
     }
 
+    [ContextMenu("Kill Player")]
     void Death()
     {
         StartCoroutine(T_Death());
