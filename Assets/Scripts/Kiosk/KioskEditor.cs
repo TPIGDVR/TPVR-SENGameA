@@ -1,12 +1,15 @@
-// #if UNITY_EDITOR
+#if UNITY_EDITOR
 // using UnityEngine;
 // using UnityEditor;
 // using UnityEngine.UIElements;
 // using UnityEditor.UIElements;
+// using UnityEngine.InputSystem.Interactions;
 
 // [CustomEditor(typeof(Kiosk))]
 // public class KioskEditor : Editor
 // {
+//     Kiosk targetKiosk;
+
 //     public override VisualElement CreateInspectorGUI()
 //     {
 //         //return base.CreateInspectorGUI();
@@ -16,6 +19,9 @@
 //             objectType = typeof(Kiosk), // Set the object type to the script itself
 //             value = target // Set the value to the current script instance
 //         };
+
+//         targetKiosk = (Kiosk)target;
+
 //         scriptField.SetEnabled(false); // Disable the field
 //         i.Add(scriptField); // Add the field to the inspector
 
@@ -111,84 +117,87 @@
 //         var h = new Foldout();
 //         h.text = "Hologram";
 //         h.style.unityFontStyleAndWeight = FontStyle.Bold;
-//         //i.Add(h);
 
+//         //for the hasHologram Panel
 //         var pHasHologramPanels = serializedObject.FindProperty("hasHologramPanels");
 //         var pHasHologramPanels_f = new PropertyField(pHasHologramPanels);
 //         pHasHologramPanels_f.tooltip = "If the hologram has panels";
 
+//         //for the Hologram Data
 //         var pHologram = serializedObject.FindProperty("hologram");
 //         var pHologram_f = new PropertyField(pHologram);
 //         pHologram_f.tooltip = "Hologram to show when the scan is completed";
 
-//         var pHologramData3D = serializedObject.FindProperty("hologram3DData");
-//         var pHologramData3D_f = new PropertyField(pHologramData3D);
-//         pHologramData3D_f.tooltip = "Data for the hologram that shows a 3D model";
 
-//         var pHologramSlideShowData = serializedObject.FindProperty("hologramslideShowData");
-//         var pHologramSlideShowData_f = new PropertyField(pHologramSlideShowData);
-//         pHologramSlideShowData_f.tooltip = "Data for the hologram that shows a slide show";
+//         //for the 3D hologram data
 
+
+//         //for the slidehologram data
+
+
+//         //enum for the type
 //         var pType = serializedObject.FindProperty("type");
 //         var pType_f = new PropertyField(pType);
 //         pType_f.tooltip = "Type of hologram to show (affects what is shown on inspector)";
 
+//         //for containing the hologram types
+//         var dataContainer = new VisualElement();
 //         h.Add(pHasHologramPanels_f);
-//         h.Add(pHologram_f);
-//         h.Add(pType_f);
+//         h.Add(dataContainer);
+//         h.Add(pHologram_f); //for debuggin
 
+//         ToggleDataContainer();
 
-//         pType_f.RegisterValueChangeCallback(evt =>
-//         {
+//         //add listener
+//         pType_f.RegisterValueChangeCallback(_ => UpdateDataContainer());
+//         pHasHologramPanels_f.RegisterValueChangeCallback(_ => ToggleDataContainer());
 
-//             // Only clear and update the specific hologram data section, not the entire foldout
-//             if (pType.enumValueIndex == 0) // Hologram3D case
-//             {
-//                 // Ensure that you are not repeatedly adding the same field
-//                 if (!h.Contains(pHologramData3D_f))
-//                 {
-//                     h.Clear(); // Clear only this section
-//                     h.Add(pHologramData3D_f);
-//                     pHologramData3D_f.Bind(serializedObject);
-//                 }
-//             }
-//             else if (pType.enumValueIndex == 1) // HologramSlideShow case
-//             {
-//                 if (!h.Contains(pHologramSlideShowData_f))
-//                 {
-//                     h.Clear(); // Clear only this section
-//                     h.Add(pHologramSlideShowData_f);
-//                     pHologramSlideShowData_f.Bind(serializedObject);
-//                 }
-//             }
-
-//             // Rebind common elements and avoid unnecessary rebindings
-//             if (!h.Contains(pHasHologramPanels_f))
-//             {
-//                 h.Add(pHasHologramPanels_f);
-//                 pHasHologramPanels_f.Bind(serializedObject);
-//             }
-//             if (!h.Contains(pHologram_f))
-//             {
-//                 h.Add(pHologram_f);
-//                 pHologram_f.Bind(serializedObject);
-//             }
-//             if (!h.Contains(pType_f))
-//             {
-//                 h.Add(pType_f);
-//                 pType_f.Bind(serializedObject);
-//             }
-//             // Bind once to avoid performance issues
-//             serializedObject.Update();
-//             serializedObject.ApplyModifiedProperties();
-
-//         });
 
 //         i.Add(h);
 
 //         #endregion
 //         return i;
+
+//         void ToggleDataContainer()
+//         {
+//             if (targetKiosk.HasHologramPanels)
+//             {
+//                 UpdateDataContainer();
+//             }
+//             else
+//             {
+//                 dataContainer.Clear();
+//             }
+//         }
+
+//         void UpdateDataContainer()
+//         {
+//             // Only clear and update the specific hologram data section, not the entire foldout
+//             dataContainer.Clear(); // Clear only this section
+//             dataContainer.Add(pType_f);
+
+//             if (pType.enumValueIndex == 0) // Hologram3D case
+//             {
+//                 var pHologramData3D = serializedObject.FindProperty("hologram3DData");
+//                 // Ensure that you are not repeatedly adding the same field
+//                 var pHologramData3D_f = new PropertyField(pHologramData3D);
+//                 pHologramData3D_f.tooltip = "Data for the hologram that shows a 3D model";
+//                 dataContainer.Add(pHologramData3D_f);
+//                 // pHologramData3D_f.Bind(serializedObject);
+//             }
+//             else if (pType.enumValueIndex == 1) // HologramSlideShow case
+//             {
+//                 var pHologramSlideShowData = serializedObject.FindProperty("hologramslideShowData");
+//                 var pHologramSlideShowData_f = new PropertyField(pHologramSlideShowData);
+//                 pHologramSlideShowData_f.tooltip = "Data for the hologram that shows a slide show";
+//                 dataContainer.Add(pHologramSlideShowData_f);
+//                 // pHologramSlideShowData_f.Bind(serializedObject);
+//             }
+//             // Bind once to avoid performance issues
+//             // serializedObject.Update();
+//             // serializedObject.ApplyModifiedProperties();
+//         }
 //     }
 // }
 
-// #endif
+#endif

@@ -21,7 +21,7 @@ public class ControllerCheckForCollider : MonoBehaviour
     float weightForDirectionAwayFromController = 10f;
     [SerializeField]
     float weightForDirectionTowardsCamera = 20f;
-    
+
     Camera mainCamera;
     [SerializeField]
     Vector3 shiftOffset;
@@ -43,7 +43,7 @@ public class ControllerCheckForCollider : MonoBehaviour
 
         //then check whether the stateText hits the player.
         Vector3 dirTowardsCamera = (mainCamera.transform.position - transform.position).normalized;
-        ray = new Ray(mainCamera.transform.position, - dirTowardsCamera);
+        ray = new Ray(mainCamera.transform.position, -dirTowardsCamera);
         //dirTowardsCamera += shiftOffset;
         dirTowardsCamera.Normalize();
 
@@ -55,7 +55,7 @@ public class ControllerCheckForCollider : MonoBehaviour
         //    Debug.Log($"Collider hit {hitinfo.collider.name}");
         hasHit = false; //Band-aid patch for now
 
-        Vector3 upwardOffset = hasHit? Vector3.up * 0.2f : Vector3.zero;
+        Vector3 upwardOffset = hasHit ? Vector3.up * 0.2f : Vector3.zero;
 
         Vector3 TargetPosition = parentControllerComponent.position +
                     dirAwayFromController +
@@ -80,8 +80,6 @@ public class ControllerCheckForCollider : MonoBehaviour
     {
         //lineRenderer.SetPosition(0, transform.position);
         //lineRenderer.SetPosition(1, parentControllerComponent.position);
-
-
         lineRenderer.SetPositions(new Vector3[] { transform.localPosition, parentControllerComponent.localPosition });
     }
 
@@ -90,7 +88,7 @@ public class ControllerCheckForCollider : MonoBehaviour
         EventSystem.level.RemoveListener(LevelEvents.FINISH_TUTORIAL, OnEndTutorial);
         gameObject.SetActive(false);
         lineRenderer.enabled = false;
-    }    
+    }
 
     void OnDrawGizmos()
     {
