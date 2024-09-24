@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 //make sure to unparent the text from the controller.
 public class ControllerCheckForCollider : MonoBehaviour
 {
@@ -10,23 +11,18 @@ public class ControllerCheckForCollider : MonoBehaviour
     Transform targetControl;
     [SerializeField]
     Vector3 globalOffset;
-    // [SerializeField]
-    // LayerMask layerMask;
+    [SerializeField]
+    Vector3 targetOffset;
 
-    // [SerializeField]
-    // Vector3 directionAwayFromTheController;
-    // [SerializeField]
-    // float maxDistanceFromController = 0.1f;
-    // [SerializeField]
-    // float weightForDirectionAwayFromController = 10f;
-    // [SerializeField]
-    // float weightForDirectionTowardsCamera = 20f;
-
+    Transform cameraTransform;
+    [SerializeField] LayerMask mask;
+    [SerializeField] float slerpSpeed = 3f;
     void Start()
     {
         lineRenderer.positionCount = 2;
         EventSystem.level.AddListener(LevelEvents.FINISH_TUTORIAL, OnEndTutorial);
-        lineRenderer.useWorldSpace = true;
+        lineRenderer.useWorldSpace = false;
+        cameraTransform = Camera.main.transform;
     }
     // Update is called once per frame
     // void Update()
@@ -66,6 +62,18 @@ public class ControllerCheckForCollider : MonoBehaviour
     // }
 
     #region legacy
+    private void Update()
+    {
+        Vector3 targetPosition = targetControl.TransformPoint(targetOffset);
+        if (!RaycastFromPointToPoint(targetPosition, cameraTransform.position))
+        {
+            //if doesn't hit
+            targetPosition = parentControllerComponent.transform.position + globalOffset;
+        }
+        transform.position = Vector3.Slerp(transform.position, targetPosition, Time.deltaTime * slerpSpeed);
+
+    }
+
     private void LateUpdate()
     {
         UpdateLine();
@@ -73,8 +81,9 @@ public class ControllerCheckForCollider : MonoBehaviour
 
     void UpdateLine()
     {
-        transform.position = parentControllerComponent.transform.position + globalOffset;
-        lineRenderer.SetPositions(new Vector3[] { transform.position, targetControl.position });
+        // transform.position = parentControllerComponent.transform.position + globalOffset;
+        var targetposition = targetControl.InverseTransformPoint(transform.position);
+        lineRenderer.SetPositions(new Vector3[] { targetControl.localPosition, targetposition });
     }
 
     void OnEndTutorial()
@@ -89,6 +98,39 @@ public class ControllerCheckForCollider : MonoBehaviour
     //     Gizmos.color = Color.red;
     //     Gizmos.DrawRay(ray);
     // }
+
+    bool RaycastFromPointToPoint(Vector3 from, Vector3 to)
+    {
+        // Direction from start point to end point
+        Vector3 direction = to - from;
+
+        // Calculate the distance between the two points
+        float distance = direction.magnitude;
+
+        // Normalize the direction (turn it into a unit vector)
+        direction.Normalize();
+
+        // Perform the raycast
+        RaycastHit hit;
+        bool hasHit;
+        if (Physics.Raycast(from, direction, out hit, distance, mask))
+        {
+            if (hit.collider.CompareTag("Player Head")) hasHit = true;
+            else hasHit = false;
+            print($"{hit.collider.tag} has hit{hasHit}");
+        }
+        else
+        {
+            print("Not hit");
+            hasHit = false;
+        }
+
+
+        // Optionally, visualize the raycast in the scene view (for debugging purposes)
+        Debug.DrawLine(from, to, hasHit ? Color.green : Color.red);
+
+        return hasHit;
+    }
 
     #endregion
 }
