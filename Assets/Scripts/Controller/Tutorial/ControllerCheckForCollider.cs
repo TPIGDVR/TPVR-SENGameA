@@ -1,82 +1,71 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using Unity.Mathematics;
+//make sure to unparent the text from the controller.
 public class ControllerCheckForCollider : MonoBehaviour
 {
     [SerializeField]
     LineRenderer lineRenderer;
-
-
     [SerializeField]
     Transform parentControllerComponent;
+    [SerializeField]
+    Transform targetControl;
+    [SerializeField]
+    Vector3 globalOffset;
+    // [SerializeField]
+    // LayerMask layerMask;
 
-    [SerializeField]
-    Vector3 directionAwayFromTheController;
-    [SerializeField]
-    float maxDistanceFromController = 0.1f;
-    [SerializeField]
-    float weightForDirectionAwayFromController = 10f;
-    [SerializeField]
-    float weightForDirectionTowardsCamera = 20f;
+    // [SerializeField]
+    // Vector3 directionAwayFromTheController;
+    // [SerializeField]
+    // float maxDistanceFromController = 0.1f;
+    // [SerializeField]
+    // float weightForDirectionAwayFromController = 10f;
+    // [SerializeField]
+    // float weightForDirectionTowardsCamera = 20f;
 
-    Camera mainCamera;
-    [SerializeField]
-    Vector3 shiftOffset;
-    Ray ray;
-    [SerializeField]
-    LayerMask layerMask;
     void Start()
     {
-        mainCamera = Camera.main;
         lineRenderer.positionCount = 2;
         EventSystem.level.AddListener(LevelEvents.FINISH_TUTORIAL, OnEndTutorial);
-        lineRenderer.useWorldSpace = false;
+        lineRenderer.useWorldSpace = true;
     }
-
-    void OnDestroy()
-    {
-        EventSystem.level.RemoveListener(LevelEvents.FINISH_TUTORIAL, OnEndTutorial);
-    }
-    
     // Update is called once per frame
-    void Update()
-    {
-        Vector3 dirAwayFromController = directionAwayFromTheController.normalized;
-        dirAwayFromController *= weightForDirectionAwayFromController;
+    // void Update()
+    // {
+    //     #region  legacy code
+    //     // Vector3 dirAwayFromController = directionAwayFromTheController.normalized;
+    //     // dirAwayFromController *= weightForDirectionAwayFromController;
 
-        //then check whether the stateText hits the player.
-        Vector3 dirTowardsCamera = (mainCamera.transform.position - transform.position).normalized;
-        ray = new Ray(mainCamera.transform.position, -dirTowardsCamera);
-        //dirTowardsCamera += shiftOffset;
-        dirTowardsCamera.Normalize();
+    //     // //then check whether the stateText hits the player.
+    //     // Vector3 dirTowardsCamera = (mainCamera.transform.position - transform.position).normalized;
+    //     // ray = new Ray(mainCamera.transform.position, -dirTowardsCamera);
+    //     // //dirTowardsCamera += shiftOffset;
+    //     // dirTowardsCamera.Normalize();
 
-        dirTowardsCamera *= weightForDirectionTowardsCamera;
+    //     // dirTowardsCamera *= weightForDirectionTowardsCamera;
 
-        bool hasHit = Physics.Raycast(ray, out RaycastHit hitinfo, 5f, layerMask);
+    //     // bool hasHit = Physics.Raycast(ray, out RaycastHit hitinfo, 5f, layerMask);
 
-        //if (hasHit)
-        //    Debug.Log($"Collider hit {hitinfo.collider.name}");
-        hasHit = false; //Band-aid patch for now
+    //     // //if (hasHit)
+    //     // //    Debug.Log($"Collider hit {hitinfo.collider.name}");
+    //     // hasHit = false; //Band-aid patch for now
 
-        Vector3 upwardOffset = hasHit ? Vector3.up * 0.2f : Vector3.zero;
+    //     // Vector3 upwardOffset = hasHit ? Vector3.up * 0.2f : Vector3.zero;
 
-        Vector3 TargetPosition = parentControllerComponent.position +
-                    dirAwayFromController +
-                    dirTowardsCamera +
-                    upwardOffset +
-                    shiftOffset;
+    //     // Vector3 TargetPosition = parentControllerComponent.position +
+    //     //             dirAwayFromController +
+    //     //             dirTowardsCamera +
+    //     //             upwardOffset +
+    //     //             shiftOffset;
 
-        //transform.position = Vector3.Lerp(transform.position,
-        //    TargetPosition,
-        //    math.saturate(Time.deltaTime * 5f));
+    //     //transform.position = Vector3.Lerp(transform.position,
+    //     //    TargetPosition,
+    //     //    math.saturate(Time.deltaTime * 5f));
 
-        transform.position = TargetPosition;
+    //     // transform.position = TargetPosition;
+    //     #endregion
+    // }
 
-    }
-
+    #region legacy
     private void LateUpdate()
     {
         UpdateLine();
@@ -84,9 +73,8 @@ public class ControllerCheckForCollider : MonoBehaviour
 
     void UpdateLine()
     {
-        //lineRenderer.SetPosition(0, transform.position);
-        //lineRenderer.SetPosition(1, parentControllerComponent.position);
-        lineRenderer.SetPositions(new Vector3[] { transform.localPosition, parentControllerComponent.localPosition });
+        transform.position = parentControllerComponent.transform.position + globalOffset;
+        lineRenderer.SetPositions(new Vector3[] { transform.position, targetControl.position });
     }
 
     void OnEndTutorial()
@@ -96,10 +84,12 @@ public class ControllerCheckForCollider : MonoBehaviour
         lineRenderer.enabled = false;
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(ray);
-    }
+    // void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawRay(ray);
+    // }
+
+    #endregion
 }
 
