@@ -65,6 +65,7 @@ public class EventManager<ev> where ev : System.Enum
         // If the event exists, invoke all listeners associated with it.
         if (eventListeners.ContainsKey(id))
         {
+            CheckAndClearNullEvents(id);
             var listeners = eventListeners[id].ToArray();
             foreach (var listener in listeners)
             {
@@ -113,6 +114,7 @@ public class EventManager<ev> where ev : System.Enum
     {
         if (eventListeners.ContainsKey(id))
         {
+            CheckAndClearNullEvents(id);
             var listeners = eventListeners[id].ToArray();
             foreach (var listener in listeners)
             {
@@ -153,6 +155,7 @@ public class EventManager<ev> where ev : System.Enum
     {
         if (eventListeners.ContainsKey(id))
         {
+            CheckAndClearNullEvents(id);
             foreach (var listener in eventListeners[id])
             {
                 if (listener is Action<TParam1, TParam2> action)
@@ -194,6 +197,7 @@ public class EventManager<ev> where ev : System.Enum
     {
         if (eventListeners.ContainsKey(id))
         {
+            CheckAndClearNullEvents(id);
             var listeners = eventListeners[id].ToArray();
 
             foreach (var listener in listeners)
@@ -240,6 +244,7 @@ public class EventManager<ev> where ev : System.Enum
     {
         if (eventListeners.ContainsKey(id))
         {
+            CheckAndClearNullEvents(id);
             var listeners = eventListeners[id].ToArray();
 
             foreach (var listener in listeners)
@@ -256,4 +261,8 @@ public class EventManager<ev> where ev : System.Enum
     }
     #endregion
 
+    void CheckAndClearNullEvents(ev id)
+    {
+        eventListeners[id].RemoveAll(x => x == null);
+    }
 }

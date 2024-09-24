@@ -35,6 +35,12 @@ public class ControllerCheckForCollider : MonoBehaviour
         EventSystem.level.AddListener(LevelEvents.FINISH_TUTORIAL, OnEndTutorial);
         lineRenderer.useWorldSpace = false;
     }
+
+    void OnDestroy()
+    {
+        EventSystem.level.RemoveListener(LevelEvents.FINISH_TUTORIAL, OnEndTutorial);
+    }
+    
     // Update is called once per frame
     void Update()
     {

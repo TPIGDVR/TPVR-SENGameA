@@ -140,16 +140,10 @@ public class Kiosk : MonoBehaviour, IScriptLoadQueuer
             {
                 hologram.PlayAnimation();
             }
-            try
-            {
-                //ConsoleBuildIn.Instance.Log("Complete kiosk");
-                animator.SetBool("Completed", true);
-                EventSystem.level.TriggerEvent<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ObjectiveName.KIOSK);
-            }
-            catch (System.Exception e)
-            {
-                //ConsoleBuildIn.Instance.Log(e.ToString());
-            }
+
+            animator.SetBool("Completed", true);
+            EventSystem.level.TriggerEvent<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ObjectiveName.KIOSK);
+
         }
     }
 
