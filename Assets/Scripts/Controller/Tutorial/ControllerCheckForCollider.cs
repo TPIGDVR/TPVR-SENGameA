@@ -63,6 +63,11 @@ public class ControllerCheckForCollider : MonoBehaviour
     //     #endregion
     // }
 
+    void OnDestroy()
+    {
+        EventSystem.level.RemoveListener(LevelEvents.FINISH_TUTORIAL, OnEndTutorial);
+    }
+
     #region legacy
     private void Update()
     {

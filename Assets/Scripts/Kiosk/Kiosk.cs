@@ -142,8 +142,8 @@ public class Kiosk : MonoBehaviour, IScriptLoadQueuer
             }
 
             animator.SetBool("Completed", true);
+            
             EventSystem.level.TriggerEvent<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ObjectiveName.KIOSK);
-
         }
     }
 
