@@ -99,7 +99,7 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
         foreach (var item in roomObj_rt)
         {
             //objStr.Add($"\n {item.Name} : {item.Completed} / {item.NumToComplete}");
-            objectivename += $"{item.Name} : {item.Completed} / {item.NumToComplete}\n";
+            objectivename += "Go to " + $"{item.Name} : {item.Completed} / {item.NumToComplete}\n";
         }
         EventSystem.player.TriggerEvent(PlayerEvents.OBJECTIVE_UPDATED, objectivename);
     }
