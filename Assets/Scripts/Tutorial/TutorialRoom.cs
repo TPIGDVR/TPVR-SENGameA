@@ -10,7 +10,19 @@ namespace Assets.Scripts.Tutorial
         TutorialGameOver gameOver;
         bool hasActivateHeartRateMonitor = false;
         bool hasActivateNoiseIndicatorDetection = false;
-        
+
+        private void Start()
+        {
+            EventSystem.dialog.RemoveListener(DialogEvents.ACTIVATE_HEARTRATE, ActivatedHeartRateMonitor);
+            GameData.ChangeTutorialStatus(false);
+            hasActivateNoiseIndicatorDetection = true;
+            EventSystem.dialog.RemoveListener(DialogEvents.ACTIVATE_NOISE_INDICATOR, ActivateNoiseIndicatorDetection);
+            EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_HEARTRATE);
+            EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_NOISE_INDICATOR);
+            EventSystem.dialog.RemoveListener(DialogEvents.COMPLETED_TUTORIAL_DIALOG, DetermineMechanicActivation);
+            GameData.ChangeTutorialStatus(false);
+        }
+
         protected override void InitRoom()
         {
             GameData.ChangeTutorialStatus(true);
