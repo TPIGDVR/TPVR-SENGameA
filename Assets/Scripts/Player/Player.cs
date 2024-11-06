@@ -70,6 +70,8 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         anxietyHandler.InitializePlayerAnxiety();
         objectiveHandler.InitializeObjectiveHandler();
         GameData.player = this;
+        //EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_HEARTRATE);
+        //EventSystem.dialog.TriggerEvent(DialogEvents.ACTIVATE_BREATHING);
     }
 
     void EventSubscribing()
