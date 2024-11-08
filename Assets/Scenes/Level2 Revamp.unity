@@ -4349,7 +4349,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1209724958}
+    m_TransformParent: {fileID: 1268887174}
     m_Modifications:
     - target: {fileID: 5181399056126953210, guid: 0b014215f58ec1744a2151147d676031,
         type: 3}
@@ -10000,6 +10000,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Normal automaton (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 8378120286437660075, guid: 0b014215f58ec1744a2151147d676031,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 4529913864890748408, guid: 0b014215f58ec1744a2151147d676031, type: 3}
@@ -11101,7 +11106,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1209724958}
+    m_TransformParent: {fileID: 1268887174}
     m_Modifications:
     - target: {fileID: 5181399056126953210, guid: 0b014215f58ec1744a2151147d676031,
         type: 3}
@@ -12032,6 +12037,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Normal automaton (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8378120286437660075, guid: 0b014215f58ec1744a2151147d676031,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15752,6 +15762,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Normal automaton (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 8378120286437660075, guid: 0b014215f58ec1744a2151147d676031,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 4529913864890748408, guid: 0b014215f58ec1744a2151147d676031, type: 3}
@@ -19042,7 +19057,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1209724958}
+    m_TransformParent: {fileID: 1268887174}
     m_Modifications:
     - target: {fileID: 5181399056126953210, guid: 0b014215f58ec1744a2151147d676031,
         type: 3}
@@ -22601,6 +22616,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Normal automaton (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8378120286437660075, guid: 0b014215f58ec1744a2151147d676031,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -26211,7 +26231,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1209724958}
+    m_TransformParent: {fileID: 1268887174}
     m_Modifications:
     - target: {fileID: 5181399056126953210, guid: 0b014215f58ec1744a2151147d676031,
         type: 3}
@@ -27396,6 +27416,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Normal automaton (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8378120286437660075, guid: 0b014215f58ec1744a2151147d676031,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -29385,16 +29410,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5829963193689973759}
-  - {fileID: 1107235892}
-  - {fileID: 2135925600}
-  - {fileID: 1880998243}
-  - {fileID: 1424481155}
-  - {fileID: 1571214370}
-  - {fileID: 525572317}
-  - {fileID: 123920985}
-  - {fileID: 2066101436}
+  m_Children: []
   m_Father: {fileID: 1337775717}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1210205248
@@ -30087,6 +30103,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Normal automaton (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8378120286437660075, guid: 0b014215f58ec1744a2151147d676031,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -30947,6 +30968,15 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2066101436}
+  - {fileID: 123920985}
+  - {fileID: 525572317}
+  - {fileID: 1571214370}
+  - {fileID: 1424481155}
+  - {fileID: 1880998243}
+  - {fileID: 2135925600}
+  - {fileID: 1107235892}
+  - {fileID: 5829963193689973759}
   - {fileID: 429492893}
   - {fileID: 1935520640}
   - {fileID: 1273611784}
@@ -31419,6 +31449,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Normal automaton (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8378120286437660075, guid: 0b014215f58ec1744a2151147d676031,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -35540,7 +35575,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1209724958}
+    m_TransformParent: {fileID: 1268887174}
     m_Modifications:
     - target: {fileID: 5181399056126953210, guid: 0b014215f58ec1744a2151147d676031,
         type: 3}
@@ -38437,6 +38472,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Normal automaton (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8378120286437660075, guid: 0b014215f58ec1744a2151147d676031,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 4529913864890748408, guid: 0b014215f58ec1744a2151147d676031, type: 3}
@@ -38933,7 +38973,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1209724958}
+    m_TransformParent: {fileID: 1268887174}
     m_Modifications:
     - target: {fileID: 5181399056126953210, guid: 0b014215f58ec1744a2151147d676031,
         type: 3}
@@ -44084,6 +44124,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Normal automaton (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 8378120286437660075, guid: 0b014215f58ec1744a2151147d676031,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -44296,6 +44341,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Normal automaton
+      objectReference: {fileID: 0}
+    - target: {fileID: 8378120286437660075, guid: 0b014215f58ec1744a2151147d676031,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -45578,6 +45628,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Normal automaton (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8378120286437660075, guid: 0b014215f58ec1744a2151147d676031,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -47004,7 +47059,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1209724958}
+    m_TransformParent: {fileID: 1268887174}
     m_Modifications:
     - target: {fileID: 5181399056126953210, guid: 0b014215f58ec1744a2151147d676031,
         type: 3}
@@ -47906,7 +47961,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1209724958}
+    m_TransformParent: {fileID: 1268887174}
     m_Modifications:
     - target: {fileID: 5181399056126953210, guid: 0b014215f58ec1744a2151147d676031,
         type: 3}
@@ -51331,12 +51386,12 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1209724958}
+    m_TransformParent: {fileID: 1268887174}
     m_Modifications:
     - target: {fileID: 5181399056126953210, guid: 0b014215f58ec1744a2151147d676031,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 87.6
+      value: 87.600006
       objectReference: {fileID: 0}
     - target: {fileID: 5181399056126953210, guid: 0b014215f58ec1744a2151147d676031,
         type: 3}
@@ -51346,7 +51401,7 @@ PrefabInstance:
     - target: {fileID: 5181399056126953210, guid: 0b014215f58ec1744a2151147d676031,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.8
+      value: -12.800001
       objectReference: {fileID: 0}
     - target: {fileID: 5181399056126953210, guid: 0b014215f58ec1744a2151147d676031,
         type: 3}
