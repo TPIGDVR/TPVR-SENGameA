@@ -39,7 +39,8 @@ public class Interactable : MonoBehaviour
         var colliders = Physics.OverlapSphere(transform.position, equipingDistance);
         foreach(var collider in colliders)
         {
-            if(collider.tag == "Player Head")
+            //if(collider.tag == "Player Head")
+            if (collider.CompareTag("Player Head"))
             {
                 //after finding it, equip it and then stop it
                 currentEquipDetection = collider.GetComponent<EquipDetection>();
