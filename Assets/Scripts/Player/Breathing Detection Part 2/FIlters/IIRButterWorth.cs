@@ -1370,11 +1370,8 @@ namespace IIR_Butterworth_CS_Library
 
             if (order_filt > 1)
             {
-
                 temp_dim_arr_matr -= 2;
-
             }
-
             else
             {
 
@@ -1645,7 +1642,6 @@ namespace IIR_Butterworth_CS_Library
         public bool Check_stability_iir(double[][] coeff_filt)
         {
             bool stability_flag = true;
-
 
             //Coefficients need to be organized in ascending order
             double[] temp_coeff_den = new double[coeff_filt[1].Length];
