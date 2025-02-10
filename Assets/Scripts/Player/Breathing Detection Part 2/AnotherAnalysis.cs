@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Experiement__Voice_Recognition_;
+using IIR_Butterworth_CS_Library;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 
 namespace NewBreathingDetector
@@ -38,26 +40,43 @@ namespace NewBreathingDetector
 
         [SerializeField] private int downScalingFactor = 100;
         [SerializeField] DownSamplingType downSamplingType = DownSamplingType.UNIFORM;
-
+        
         enum DownSamplingType
         {
             UNIFORM,
             AVERAGE,
             PEAK,
         }
-
-        // Filter coefficients for the Butterworth filter
-        private float[] a = new float[4];
-        private float[] b = new float[4];
-        private float[] x = new float[4];
-        private float[] y = new float[4];
-
-        [Header("Butterworth low pass filter")] [SerializeField]
-        bool enableButterworthLowPass = true;
-
+        
+        [Header("Butterworth low pass filter")] 
+        [SerializeField] bool enableButterworthLowPass = true;
+        [Range(0f,1f)]
         [SerializeField] float cutOffFrequency = 0f;
-        private FilterButterworth butterworthFilter;
+        IIR_Butterworth butterworth = new IIR_Butterworth();
 
+        [Header("Threshold for inhaling and exhaling")]
+        [Range(0f,1f)]
+        [SerializeField] private float ignoreThreshold = 0.6f;
+
+        [SerializeField]private bool hasInhaled = false;
+        [Range(0f,1f)]
+        [SerializeField] private float threshold = 0.1f;
+        [SerializeField] private BreathingType previousState;
+        [SerializeField] BreathingType currentState;
+        
+        enum BreathingType
+        {   
+            INHALING,
+            EXHALING,
+            UNKNOWN,
+            SILENCE
+        }
+        
+        [Header("Assistance")]
+        [SerializeField] bool enableAssistance = true;
+        
+        
+        
         private void Start()
         {
             if (audioSource == null)
@@ -68,18 +87,11 @@ namespace NewBreathingDetector
 
             spectrumData = new float[spectrumSize];
             rollingBuffer = new float[bufferSize];
-
-            butterworthFilter = new(cutOffFrequency,
-                (int)(48000 / downScalingFactor),
-                FilterButterworth.PassType.Lowpass,
-                math.sqrt(2));
-
-            InitializeButterworthFilter(cutOffFrequency, 48000.0f); // Adjust cutoff and sampling frequency as needed
+            
         }
 
         private void Update()
         {
-            // GenerateBreathingData();
             Maxing();
         }
 
@@ -112,29 +124,72 @@ namespace NewBreathingDetector
 
             if (enableButterworthLowPass)
             {
-                // float sampleRate = 1 / (48000f / (downScalingFactor / 2.15f));
-
-                //For now, create a runtime butterworth filter to test the values
-                var rtButterworthFilter = new FilterButterworth(cutOffFrequency,
-                    (int)(48000 / downScalingFactor),
-                    FilterButterworth.PassType.Lowpass,
-                    math.sqrt(2));
-                for (int i = 0; i < targetBuffer.Length; i++)
+                double COF = (double)1 / ((48000 / downScalingFactor) / 2.15);   
+                var value = butterworth.Lp2lp((double)COF, 3);
+                if (!butterworth.Check_stability_iir(value))
                 {
-                    butterworthFilter.Update(rollingBuffer[i] * rollingBuffer[i]);
-                    targetBuffer[i] = math.sqrt(butterworthFilter.Value);
+                    Debug.LogError("not stable");
+                    return;
                 }
+                
+                double[] doubleArray = Array.ConvertAll(targetBuffer, x => (double) math.abs(x) );
 
-                // ApplyButterworthFilter(targetBuffer);
+                var finalValues = butterworth.Filter_Data(value, doubleArray);
+                
+                targetBuffer = Array.ConvertAll(finalValues, x => (float) x);
+                // targetBuffer = rtButterworth.ProcessBuffer(targetBuffer);
                 print("finish applying filter");
             }
 
+            if (enableAssistance)
+            {
+                //for seeing the end result. in the scene view
+                print($"buffer size {targetBuffer.Length}");
+                PlotAudioData(targetBuffer);
+            }
 
-            //for seeing the end result.
-            print($"buffer size {targetBuffer.Length}");
-            PlotAudioData(targetBuffer);
+            DetermineBreathing(targetBuffer);
         }
 
+        private void DetermineBreathing(float[] resultantBuffer)
+        {
+            
+            for (int i = 0; i < resultantBuffer.Length; i++)
+            {
+                if (resultantBuffer[i] > ignoreThreshold)
+                {
+                    currentState = BreathingType.UNKNOWN;
+                    //reset the inhaling portion
+                    hasInhaled = false;
+                    break;
+                }
+
+                if (resultantBuffer[i] > threshold)
+                {
+                    if (hasInhaled)
+                    {
+                        currentState = BreathingType.EXHALING;
+                        break;
+                    }
+                    //else then do this
+                    currentState = BreathingType.INHALING;
+                    break;
+                    
+                }
+
+                if (i == resultantBuffer.Length - 1)
+                {
+                    currentState = BreathingType.SILENCE;
+                    //reset
+                    if (previousState == BreathingType.INHALING) hasInhaled = true;
+                    else if(previousState == BreathingType.EXHALING) hasInhaled = false;
+                }
+            }
+
+            previousState = currentState;
+            
+        }
+        
         private void UpdateRollingBuffer()
         {
             // Write the new chunk into the rolling buffer
@@ -296,57 +351,6 @@ namespace NewBreathingDetector
         }
 
         #endregion
-
-        #region butterworth filter
-
-        private void InitializeButterworthFilter(float cutoffFrequency, float samplingFrequency)
-        {
-            float wc = 2.0f * Mathf.PI * cutoffFrequency / samplingFrequency; // Normalized cutoff frequency
-            float wc2 = wc * wc;
-            float wc3 = wc2 * wc;
-
-            float sqrt2 = Mathf.Sqrt(2.0f);
-
-            float denom = (1 + sqrt2 * wc + wc2) * (1 + wc);
-            b[0] = wc3 / denom;
-            b[1] = 3 * b[0];
-            b[2] = 3 * b[0];
-            b[3] = b[0];
-
-            a[0] = 1.0f; // Not used in the difference equation but included for consistency
-            a[1] = (3 + 2 * wc + wc2 - 3 * sqrt2 * wc) / denom;
-            a[2] = (3 - 2 * wc + wc2) / denom;
-            a[3] = (1 - sqrt2 * wc + wc2) / denom;
-        }
-
-        private void ApplyButterworthFilter(float[] data)
-        {
-            // float[] filteredData = new float[data.Length];
-
-            for (int i = 0; i < data.Length; i++)
-            {
-                //square the data first
-                float curData = data[i] * data[i];
-
-                // Shift input history
-                x[3] = x[2];
-                x[2] = x[1];
-                x[1] = x[0];
-                x[0] = curData;
-
-                // Calculate filtered output
-                y[3] = y[2];
-                y[2] = y[1];
-                y[1] = y[0];
-                y[0] = b[0] * x[0] + b[1] * x[1] + b[2] * x[2] + b[3] * x[3]
-                       - a[1] * y[1] - a[2] * y[2] - a[3] * y[3];
-
-                data[i] = math.sqrt(y[0]);
-            }
-        }
-
-        #endregion
-
         // void PlotAudioData(float[] samples)
         // {
         //     // Loop through each sample and plot it as a line
@@ -360,6 +364,8 @@ namespace NewBreathingDetector
         //         Debug.DrawLine(startPoint, endPoint, Color.green);
         //     }
         // }
+
+        #region Plotting
 
         void PlotAudioData(float[] samples, int startingIndex)
         {
@@ -419,5 +425,10 @@ namespace NewBreathingDetector
             Handles.color = color;
             Handles.Label(position, text);
         }
+
+        #endregion
+        
+        
+        
     }
 }

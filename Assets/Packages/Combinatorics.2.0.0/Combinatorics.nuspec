@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Combinatorics</id>
+    <version>2.0.0</version>
+    <title>Combinatorics Library for .NET</title>
+    <authors>Adrian Akison,Eoin Campbell,Stephen Cleary</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">Apache-2.0</license>
+    <licenseUrl>https://licenses.nuget.org/Apache-2.0</licenseUrl>
+    <icon>icon.png</icon>
+    <projectUrl>https://github.com/eoincampbell/combinatorics</projectUrl>
+    <description>A combinatorics library providing combinations, permutations &amp; variations. This nuget package wraps up Adrian Akison's original implementation. See: http://www.codeproject.com/Articles/26050/Permutations-Combinations-and-Variations-using-C-G</description>
+    <tags>combinatorics permutation combination variation</tags>
+    <repository type="git" url="https://github.com/eoincampbell/combinatorics" commit="53cfaf93c67e7014adc060e6d271bb95a1b488e8" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.1" />
+      <group targetFramework=".NETStandard1.1">
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+</package>
