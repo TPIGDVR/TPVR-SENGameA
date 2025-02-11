@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &59991405
 AudioSource:
   m_ObjectHideFlags: 0
@@ -516,7 +516,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 6060b3d681ac9e344afc6e1ac8bf8f3b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -779,12 +779,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d78459da29cf42438a77fe89809337e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mic: {fileID: 59991405}
+  mic: {fileID: 0}
   window: 5
+  sampleRate: 44100
   sampleSize: 4096
   lowPassCutoff: 5000
   highPassCutoff: 500
-  gain: 70
+  gain: 1
   minAmpThreshold: 0.004
   maxAmpThreshold: 9999
   boostHighFrequencyRange: {x: 1000, y: 1800}
@@ -792,6 +793,11 @@ MonoBehaviour:
   visualizer: {fileID: 794524855}
   lowPassVisualizer: {fileID: 1614905104}
   size: 0.0025
+  useAFR: 1
+  testClip: {fileID: 8300000, guid: 66eaacc3f1327b2458c820bf66c45660, type: 3}
+  FilterFrequency: 500
+  Q: 1
+  smoothingFactor: 0.5
 --- !u!4 &1673125518
 Transform:
   m_ObjectHideFlags: 0
@@ -961,8 +967,8 @@ Camera:
   m_GameObject: {fileID: 2137628369}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.23584908, g: 0.23584908, b: 0.23584908, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
