@@ -6,35 +6,15 @@ using UnityEngine.InputSystem;
 
 public class BreathRecorder : MonoBehaviour
 {
+    [Header("Audio Settings")]
     public AudioSource mic;
     public FFTWindow window;
     public SampleRate sampleRate;
     public SampleSize sampleSize;
-    public float lowPassCutoff;
-    public float highPassCutoff;
     public float gain;
-    public float minAmpThreshold;
-    public float maxAmpThreshold;
-    public Vector2 boostHighFrequencyRange;
-    public float boostGain;
 
     float[] samples;
     float[] filteredSample;
-
-    [Header("Visualizer")]
-    public LineRenderer visualizer;
-    public LineRenderer lowPassVisualizer;
-    [Range(0, 1)]
-    public float size;
-
-
-    [Header("Testing")]
-    public bool useAFR = false;
-    public AudioClip testClip;
-    public float freqGain = 50;
-
-    //for debug
-    int highPassFirstBinIndex;
 
     void RetrieveMic()
     {
@@ -42,10 +22,10 @@ public class BreathRecorder : MonoBehaviour
         mic.loop = true;
         // mic.mute = true;
 
-        mic.clip = Microphone.Start(null, true, 1, (int)sampleRate);
-        // mic.clip = testClip;
+        // mic.clip = Microphone.Start(null, true, 1, (int)sampleRate);
+        mic.clip = testClip;
         mic.spatialBlend = 0;
-        while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
+        // while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
         mic.Play();
 
     }
@@ -53,65 +33,13 @@ public class BreathRecorder : MonoBehaviour
     void Awake()
     {
         RetrieveMic();
-        // GetFilterCoefficients();
     }
-
-#region Frequency Domain Analysis
-    void ProcessAudio()
-    {
-        samples = new float[(int)sampleSize];
-        mic.GetSpectrumData(samples, 0, window);
-        ApplyLowAndHighPassFilter(samples);
-        BoostHighFrequency();
-        FilterNoise();
-    }
-
-    void ApplyLowAndHighPassFilter(float[] samples)
-    {
-        float freq = (float)sampleRate/ 2f;
-        int lowBin = Mathf.CeilToInt(lowPassCutoff / freq * samples.Length);
-        int highBin = Mathf.FloorToInt(highPassCutoff / freq * samples.Length);
-        highPassFirstBinIndex = highBin;
-        filteredSample = new float[lowBin - highBin];
-        for (int i = highBin; i < lowBin; i++)
-        {
-            filteredSample[i - highBin] = samples[i] * gain;
-        }
-    }
-    List<int> prominentFrequencies;
-
-    void FilterNoise()
-    {
-        int size = filteredSample.Length;
-        prominentFrequencies = new List<int>();
-        for (int i = 0; i < size; i++)
-        {
-            if (filteredSample[i] < minAmpThreshold || filteredSample[i] > maxAmpThreshold) continue;
-
-            prominentFrequencies.Add(i);
-        }
-    }
-    float[] boostedSample;
-    void BoostHighFrequency()
-    {
-        float freq = (float)sampleRate / 2f;
-
-        int startBin = Mathf.FloorToInt(boostHighFrequencyRange.x /freq * samples.Length);
-        int endBin = Mathf.CeilToInt(boostHighFrequencyRange.y /freq * samples.Length);
-        boostedSample = new float[filteredSample.Length];
-        filteredSample.CopyTo(boostedSample, 0);
-        for (int i = startBin; i < endBin; i++)
-        {
-            boostedSample[i] *= boostGain;
-        }
-    }
-#endregion
 
     void Update()
     {
         CreateAudioClip();
         VisualizeSpectrum();
-        if(isTalk)
+        if (isTalk)
         {
             text.text = "Talking";
         }
@@ -119,19 +47,11 @@ public class BreathRecorder : MonoBehaviour
         {
             text.text = "Silent";
         }
-        if (useAFR) return;
-
-        if (InputSystem.GetDevice<Keyboard>().spaceKey.wasPressedThisFrame)
-        {
-            // StartCoroutine(PerformanceTest.GetFPS(10));
-        }
-        // ProcessAudio();
     }
 
     float[] originalData;
 
     [Header("Time Domain")]
-    public BreathState currentState = BreathState.Idle;
     [Range(0, 1)]
     public float inhaleThreshold;
     [Range(0, 1)]
@@ -140,17 +60,22 @@ public class BreathRecorder : MonoBehaviour
     //biquad filter parameters
     [Range(0, 5000)]
     public float FilterFrequency;
-    [Range(0,5)]
+    [Range(0, 5)]
     public float Q; //the lower the Q, the wider the bandwidth
 
     //envelope smoothing
-    [Range(0,1)]
+    [Range(0, 1)]
     public float smoothingFactor;
 
 
     float a0, a1, a2, b0, b1, b2; //biquad filter coefficients
     //filter states
     float x1, x2, y1, y2;
+    public bool filter, full, envelopee;
+    public float rmsThreshold;
+
+    float prevSample;
+    float[] derivatives;
 
     void GetFilterCoefficients()
     {
@@ -172,25 +97,12 @@ public class BreathRecorder : MonoBehaviour
         a2 /= a0;
     }
 
-    AudioClip processedClip;
-    List<float> audioBuffer = new();
-    public AudioSource audioSource;
-    public LineRenderer freqVisualizer;
-    public bool filter, full, envelopee;
-    public float rmsThreshold;
-
-
-    float prevSample;
-    float[] derivatives;
-
     void OnAudioFilterRead(float[] data, int channels)
     {
-        if (!useAFR) return;
-
         GetFilterCoefficients();
 
         float[] monoData = new float[data.Length / channels];
-        for (int i = 0; i < data.Length; i +=channels)
+        for (int i = 0; i < data.Length; i += channels)
         {
             monoData[i / channels] = (data[i] + (channels > 1 ? data[i + 1] : 0)) * 0.5f;
         }
@@ -212,7 +124,7 @@ public class BreathRecorder : MonoBehaviour
             //apply biquad filter
             if (filter) sample = ApplyBiquadFilter(sample);
             //apply full wave rectification
-            if (full)    sample = ApplyFullWaveRectification(sample);
+            if (full) sample = ApplyFullWaveRectification(sample);
 
             //apply envelope smoothing
             if (envelopee)
@@ -245,7 +157,7 @@ public class BreathRecorder : MonoBehaviour
         filteredSample = monoData;
     }
 
-#region Time-based filters
+    #region Time-based filters
     float ApplyGain(float sample)
     {
         return sample * gain;
@@ -271,14 +183,12 @@ public class BreathRecorder : MonoBehaviour
         return math.abs(sample);
     }
 
-    float ApplyEnvelopeSmoothing(float envelope,float sample)
+    float ApplyEnvelopeSmoothing(float envelope, float sample)
     {
         return smoothingFactor * envelope + (1 - smoothingFactor) * sample;
     }
     #endregion
 
-
-    public TMP_Text text;
     bool isTalk;
 
     float ComputeRMS(float[] data)
@@ -291,25 +201,42 @@ public class BreathRecorder : MonoBehaviour
         return Mathf.Sqrt(sum / data.Length);
     }
 
+    public float derivativeAvgMultiplier;
+    public int minSamplesBetweenStateChanges = 80; // Adjust as needed (depends on sample rate)
+    public int samplesSinceStateChange = 0;
+    public float derivativeAvg = 0;
+    
     void DetectBreathing()
     {
+        samplesSinceStateChange++;
+        float derivativeSum = 0;
         for (int i = 1; i < derivatives.Length; i++)
         {
-            if (!isInhale && derivatives[i] > inhaleThreshold)
-            {
-                isInhale = true;
-                isExhale = false;
-                Debug.Log("Inhale detected!");
-            }
-            else if (!isExhale && derivatives[i] < -exhaleThreshold)
-            {
-                isExhale = true;
-                isInhale = false;
-                Debug.Log("Exhale detected!");
-            }
+            derivativeSum += derivatives[i];
+        }
+        //get the average derivative
+        derivativeAvg = derivativeSum / derivatives.Length * derivativeAvgMultiplier;
+
+        // Prevent state changes from happening too frequently
+        if (samplesSinceStateChange < minSamplesBetweenStateChanges)
+            return;
+
+        
+        if (!isInhale && derivativeAvg > inhaleThreshold)
+        {
+            isInhale = true;
+            isExhale = false;
+            samplesSinceStateChange = 0;
+            Debug.Log("Inhale detected!");
+        }
+        else if (!isExhale && derivativeAvg < -exhaleThreshold)
+        {
+            isExhale = true;
+            isInhale = false;
+            samplesSinceStateChange = 0;
+            Debug.Log("Exhale detected!");
         }
     }
-
 
 
     //for debugging
@@ -339,21 +266,7 @@ public class BreathRecorder : MonoBehaviour
 
     void VisualizeSpectrum()
     {
-        // visualizer.positionCount = samples.Length;
-
-        // for (int i = 0; i < samples.Length; i++)
-        // {
-        //     visualizer.SetPosition(i , new Vector3(i * size, samples[i] * 5, 0));
-        // }
-
-        if(filteredSample == null) return;
-        // if(prominentFrequencies == null) return;
-
-        // lowPassVisualizer.positionCount = filteredSample.Length;
-        // for (int i = 0; i < filteredSample.Length; i++)
-        // {
-        //     lowPassVisualizer.SetPosition(i, new Vector3((i + highPassFirstBinIndex) * size, filteredSample[i] * 5, 0));
-        // }
+        if (filteredSample == null) return;
 
         visualizer.positionCount = originalData.Length;
         for (int i = 0; i < originalData.Length; i++)
@@ -368,10 +281,10 @@ public class BreathRecorder : MonoBehaviour
         }
 
 
-        float freq = (float)sampleRate/ 2f;
+        float freq = (float)sampleRate / 2f;
         float[] freqSamples = new float[(int)sampleSize];
-        audioSource.GetSpectrumData(freqSamples,1,window);
-        
+        audioSource.GetSpectrumData(freqSamples, 1, window);
+
         int lowBin = Mathf.CeilToInt(lowPassCutoff / freq * freqSamples.Length);
         int highBin = Mathf.FloorToInt(highPassCutoff / freq * freqSamples.Length);
         freqVisualizer.positionCount = lowBin - highBin;
@@ -380,25 +293,29 @@ public class BreathRecorder : MonoBehaviour
             int vizIndex = i - highBin;
             freqVisualizer.SetPosition(vizIndex, new Vector3(vizIndex * (size + 0.01f), freqSamples[i] * freqGain, 0));
         }
-
-        // visualizer.positionCount = filteredSample.Length;
-        // for (int i = 0; i < filteredSample.Length; i++)
-        // {
-        //     if(prominentFrequencies.Contains(i))
-        //     {
-        //         visualizer.SetPosition(i, new Vector3((i + highPassFirstBinIndex) * size, boostedSample[i] * 5, 0));
-        //     }
-        //     else
-        //     {
-        //         visualizer.SetPosition(i, new Vector3((i + highPassFirstBinIndex) * size, 0, 0));
-        //     }
-        // }
     }
 
-    void OnDestroy() 
+    void OnDestroy()
     {
         Microphone.End(null);
     }
+
+
+    [Header("Testing")]
+    public AudioClip testClip;
+    public float freqGain = 50;
+    public TMP_Text text;
+    public AudioSource audioSource;
+    AudioClip processedClip;
+    List<float> audioBuffer = new();
+    public LineRenderer visualizer;
+    public LineRenderer lowPassVisualizer;
+    public LineRenderer freqVisualizer;
+    [Range(0, 1)]
+    public float size;
+    public float lowPassCutoff;
+    public float highPassCutoff;
+
 }
 
 public enum SampleSize
@@ -419,11 +336,3 @@ public enum SampleRate
     _44100 = 44100,
     _48000 = 48000,
 }
-
-public enum BreathState
-{
-    Inhale,
-    Exhale,
-    Idle
-}
-
