@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -41,10 +42,10 @@ public class BreathRecorder : MonoBehaviour
         mic.loop = true;
         // mic.mute = true;
 
-        // mic.clip = Microphone.Start(null, true, 1, (int)sampleRate);
-        mic.clip = testClip;
+        mic.clip = Microphone.Start(null, true, 1, (int)sampleRate);
+        // mic.clip = testClip;
         mic.spatialBlend = 0;
-        // while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
+        while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
         mic.Play();
 
     }
@@ -110,6 +111,14 @@ public class BreathRecorder : MonoBehaviour
     {
         CreateAudioClip();
         VisualizeSpectrum();
+        if(isTalk)
+        {
+            text.text = "Talking";
+        }
+        else
+        {
+            text.text = "Silent";
+        }
         if (useAFR) return;
 
         if (InputSystem.GetDevice<Keyboard>().spaceKey.wasPressedThisFrame)
@@ -122,8 +131,14 @@ public class BreathRecorder : MonoBehaviour
     float[] originalData;
 
     [Header("Time Domain")]
+    public BreathState currentState = BreathState.Idle;
+    [Range(0, 1)]
+    public float inhaleThreshold;
+    [Range(0, 1)]
+    public float exhaleThreshold;
+    public bool isInhale, isExhale;
     //biquad filter parameters
-    [Range(0,5000)]
+    [Range(0, 5000)]
     public float FilterFrequency;
     [Range(0,5)]
     public float Q; //the lower the Q, the wider the bandwidth
@@ -156,71 +171,81 @@ public class BreathRecorder : MonoBehaviour
         a1 /= a0;
         a2 /= a0;
     }
+
     AudioClip processedClip;
     List<float> audioBuffer = new();
     public AudioSource audioSource;
     public LineRenderer freqVisualizer;
     public bool filter, full, envelopee;
+    public float rmsThreshold;
+
+
+    float prevSample;
+    float[] derivatives;
 
     void OnAudioFilterRead(float[] data, int channels)
     {
         if (!useAFR) return;
 
-        //microphone currently outputs in stereo
-        //convert to mono
         GetFilterCoefficients();
-        float[] monoData = new float[data.Length / channels];
 
-        for (int i = 0; i < data.Length; i += channels)
+        float[] monoData = new float[data.Length / channels];
+        for (int i = 0; i < data.Length; i +=channels)
         {
             monoData[i / channels] = (data[i] + (channels > 1 ? data[i + 1] : 0)) * 0.5f;
         }
 
-        originalData = monoData;
-        // monoData.CopyTo(originalData, 0); //to be read in visualizer
+
+        originalData = new float[monoData.Length]; //remove when not debugging
+        monoData.CopyTo(originalData, 0); //to be read in visualizer
 
         float envelope = 0;
-        float prevSample = 0;
-        
-        float[] derivatives;
+        derivatives = new float[monoData.Length];
 
         for (int i = 0; i < monoData.Length; i++)
         {
+            //convert stereo to mono
             float sample = monoData[i];
+
             //gain step
             sample = ApplyGain(sample);
-
-            if(filter)
-                sample = ApplyBiquadFilter(sample);
-
+            //apply biquad filter
+            if (filter) sample = ApplyBiquadFilter(sample);
             //apply full wave rectification
-            if(full)
-                sample = ApplyFullWaveRectification(sample);
+            if (full)    sample = ApplyFullWaveRectification(sample);
 
             //apply envelope smoothing
-            if(envelopee)
+            if (envelopee)
             {
                 envelope = ApplyEnvelopeSmoothing(envelope, sample);
                 sample = envelope;
             }
 
             //detecting derivative
-
-
+            derivatives[i] = sample - prevSample;
+            prevSample = sample;
 
             //assign back to be read
             monoData[i] = sample;
         }
 
+        float rms = ComputeRMS(monoData);
+        isTalk = rms > rmsThreshold;
+
+        if (!isTalk)
+        {
+            DetectBreathing();
+        }
 
         //for visualization
-        lock(audioBuffer)
+        lock (audioBuffer)
         {
             audioBuffer.AddRange(monoData);
         }
         filteredSample = monoData;
     }
 
+#region Time-based filters
     float ApplyGain(float sample)
     {
         return sample * gain;
@@ -250,6 +275,42 @@ public class BreathRecorder : MonoBehaviour
     {
         return smoothingFactor * envelope + (1 - smoothingFactor) * sample;
     }
+    #endregion
+
+
+    public TMP_Text text;
+    bool isTalk;
+
+    float ComputeRMS(float[] data)
+    {
+        float sum = 0;
+        for (int i = 0; i < data.Length; i++)
+        {
+            sum += data[i] * data[i];
+        }
+        return Mathf.Sqrt(sum / data.Length);
+    }
+
+    void DetectBreathing()
+    {
+        for (int i = 1; i < derivatives.Length; i++)
+        {
+            if (!isInhale && derivatives[i] > inhaleThreshold)
+            {
+                isInhale = true;
+                isExhale = false;
+                Debug.Log("Inhale detected!");
+            }
+            else if (!isExhale && derivatives[i] < -exhaleThreshold)
+            {
+                isExhale = true;
+                isInhale = false;
+                Debug.Log("Exhale detected!");
+            }
+        }
+    }
+
+
 
     //for debugging
     void CreateAudioClip()
@@ -357,5 +418,12 @@ public enum SampleRate
     _16000 = 16000,
     _44100 = 44100,
     _48000 = 48000,
+}
+
+public enum BreathState
+{
+    Inhale,
+    Exhale,
+    Idle
 }
 
