@@ -750,6 +750,106 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &981142598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 981142600}
+  - component: {fileID: 981142599}
+  m_Layer: 0
+  m_Name: AudioAnalyzer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &981142599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981142598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07405565323120346a6e09ab672bb57a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InhaleClips:
+  - {fileID: 8300000, guid: dcdd0d63300d0204b9d29828427a516d, type: 3}
+  - {fileID: 8300000, guid: e668f3fdfdefbc44a9a46ef1438accf7, type: 3}
+  - {fileID: 8300000, guid: 3dc7ce6d80b98ad4aa4737012eca5cd7, type: 3}
+  - {fileID: 8300000, guid: d3bc739708a5f4b4eb22d8788f5f992b, type: 3}
+  - {fileID: 8300000, guid: b83f42f11fe22174aac532717358e551, type: 3}
+  - {fileID: 8300000, guid: cccb03e3b5c5b6b4d89a5b92f121444e, type: 3}
+  - {fileID: 8300000, guid: 20963a27101b6124ca646702e1eaf437, type: 3}
+  - {fileID: 8300000, guid: 8a152ea311760fa43a30beda192ab5da, type: 3}
+  - {fileID: 8300000, guid: 71b56448bb1e4d84aa30f682a83688c7, type: 3}
+  - {fileID: 8300000, guid: e24000c44562e534190558e6a0cbb841, type: 3}
+  - {fileID: 8300000, guid: 3e4fea0dc55bbfa408dea79cbf37851e, type: 3}
+  - {fileID: 8300000, guid: 4485fd9c670c75646ae10c802986d9e8, type: 3}
+  - {fileID: 8300000, guid: cd73c0a2cdfae404ba146808abd8a78e, type: 3}
+  - {fileID: 8300000, guid: 0723039cbba2d1c4aa038774b150ba59, type: 3}
+  - {fileID: 8300000, guid: eaf2f49d35029d14d8917e1ff5207734, type: 3}
+  - {fileID: 8300000, guid: 775c69f90e7c12045b95d3800b760000, type: 3}
+  - {fileID: 8300000, guid: df0f194d2e19cd9459443a1e1edc121a, type: 3}
+  - {fileID: 8300000, guid: 3b7da253a12baf4478ed7aabd70802a1, type: 3}
+  - {fileID: 8300000, guid: aea4bb2f29e8dee4eaf0df7b49808d35, type: 3}
+  - {fileID: 8300000, guid: d1652e3b56b5ffa4cac715c0550ffb27, type: 3}
+  - {fileID: 8300000, guid: f3c48633b7b820a409251c186abd253d, type: 3}
+  - {fileID: 8300000, guid: 2cc4ca92abd1eee4cb90622d1a9850e8, type: 3}
+  - {fileID: 8300000, guid: 388f541f30d2f4d4e87ff42eedba81dc, type: 3}
+  - {fileID: 8300000, guid: 3250b479cc7a2e746a4822188f17c2a6, type: 3}
+  - {fileID: 8300000, guid: 9c1aa2d2ca0ff6540aba68d3b151e91d, type: 3}
+  - {fileID: 8300000, guid: 59e8f8a653047a24c9c4a9d168b1330e, type: 3}
+  - {fileID: 8300000, guid: 85f241a460b660941b85a8939913cb01, type: 3}
+  ExhaleClips:
+  - {fileID: 8300000, guid: fd9f559289a045e4fbe49c159d6ec9a9, type: 3}
+  - {fileID: 8300000, guid: 690e597b5a875c44c9acf5a9ef15e27a, type: 3}
+  - {fileID: 8300000, guid: 224c013d2a9b7f14bae7d5c032d0cf00, type: 3}
+  - {fileID: 8300000, guid: 8563bfcc58dca974ebf0659d2ea58c83, type: 3}
+  - {fileID: 8300000, guid: b10f97c520ba68b469da34e1363cd05c, type: 3}
+  - {fileID: 8300000, guid: 6f516e9bf4449e649b8d6768152abf32, type: 3}
+  - {fileID: 8300000, guid: a34fddcae4f642a4183ed3983cd92b86, type: 3}
+  - {fileID: 8300000, guid: a3d0d5e5d314bd04b99e83f0d1223ff9, type: 3}
+  - {fileID: 8300000, guid: d6db169437f5bb549a5ac4af0a61c7c3, type: 3}
+  - {fileID: 8300000, guid: 5178520aec3c52a41bb01e71d848c0db, type: 3}
+  - {fileID: 8300000, guid: f036afaa4a3ffcc48bf2a40c2700b19f, type: 3}
+  - {fileID: 8300000, guid: a01044e57a69fe147947496c22721e82, type: 3}
+  - {fileID: 8300000, guid: 1e1d47617a212a24ba1fed11f3a2ed1f, type: 3}
+  - {fileID: 8300000, guid: d6f71fb75c28c0645ba715558402dcea, type: 3}
+  - {fileID: 8300000, guid: fcb0bf50fdd4f1949b764948ed60d40f, type: 3}
+  - {fileID: 8300000, guid: 1b0105e5016b8b44791d3c66ebb9d61a, type: 3}
+  - {fileID: 8300000, guid: 4dd48f292bb015e4b958d87d5b701493, type: 3}
+  - {fileID: 8300000, guid: 4e706b5a90f94ac48a8c062fe586cdd3, type: 3}
+  - {fileID: 8300000, guid: ebdc04ad8be7aa44cb2525a91936e3af, type: 3}
+  - {fileID: 8300000, guid: fa302c2c07059de47a8fb84e7d600ea2, type: 3}
+  - {fileID: 8300000, guid: cf390bb9708b8c04c8d94c9642fee3e1, type: 3}
+  - {fileID: 8300000, guid: a200fddd813dc6544bc39d28463fe036, type: 3}
+  - {fileID: 8300000, guid: 02f2616c9cb544241bbae2c06f224226, type: 3}
+  - {fileID: 8300000, guid: 976a8e5de27ed3a439dff3cd50a8e9a7, type: 3}
+  - {fileID: 8300000, guid: 5139839d00f2d9247b7379f41bcb0a6d, type: 3}
+  - {fileID: 8300000, guid: cc43481a66e04924faf82ad384e75f16, type: 3}
+  - {fileID: 8300000, guid: 232ba12384330d6488e2069fbaa070f2, type: 3}
+--- !u!4 &981142600
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981142598}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.0635922, y: 3.1677153, z: -0.22306849}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1389075312
 GameObject:
   m_ObjectHideFlags: 0
@@ -1030,7 +1130,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1673125517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1684,3 +1784,4 @@ SceneRoots:
   - {fileID: 309416743}
   - {fileID: 1865815927}
   - {fileID: 1769326995}
+  - {fileID: 981142600}

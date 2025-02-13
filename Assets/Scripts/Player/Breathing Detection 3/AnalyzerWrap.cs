@@ -1,0 +1,53 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+
+public class AnalyzerWrap : MonoBehaviour
+{
+    public List<AudioClip> InhaleClips;
+    public List<AudioClip> ExhaleClips;
+    string SystemInformation;
+    public LineRenderer lineRenderer;
+
+    public void Start()
+    {
+        var a = AudioSettings.GetConfiguration();
+        SystemInformation = "Audio Settings\n";
+        SystemInformation += "Sample Rate: " + a.sampleRate + "\n";
+        SystemInformation += "DSP Buffer Size: " + a.dspBufferSize + "\n";
+        SystemInformation += "Speaker Mode: " + a.speakerMode + "\n\n\n";
+
+
+        AudioAnalyzer.Initialize(InhaleClips);
+        var res = AudioAnalyzer.AnalyzeData();
+
+        WriteResultsToFile("Inhale", ResultToString(res));
+
+        AudioAnalyzer.Initialize(ExhaleClips);
+        var res2 = AudioAnalyzer.AnalyzeData();
+
+        WriteResultsToFile("Exhale", ResultToString(res2));
+    }
+
+
+    string ResultToString(AudioClipData r)
+    {
+        return $"Avg RMS : {r.AvgRMS * 100}\nAvg Derivative : {r.AvgDerivative * 100000}\nAvg ZCR : {r.AvgZCR}";
+    }
+
+    public void WriteResultsToFile(string fileName, string result)
+    {
+        string path = Path.Combine("C:/Users/yc/Documents/unityprojects/TPVR-SENGameA/Assets/Scripts/Player/Breathing Detection 3", fileName + ".txt");
+        // string path = "C:/Users/yc/Documents/unityprojects/TPVR-SENGameA/Assets/Scripts/Player/Breathing Detection 3";
+        if (!File.Exists(path))
+        {
+            // Directory.CreateDirectory(path);
+            File.CreateText(path);
+        }
+
+        string content = SystemInformation + result;
+        File.WriteAllText(path, content);
+        print($"{fileName}.txt Written");
+    }
+}
