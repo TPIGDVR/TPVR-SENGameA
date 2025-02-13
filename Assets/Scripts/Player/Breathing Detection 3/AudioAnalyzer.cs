@@ -22,9 +22,7 @@ public static class AudioAnalyzer
 
             timeDataSets.Add(pcmData);
         });
-        Debug.Log("getting spectrum data...");
         GetSpectrumData();
-        Debug.Log("complete initialization");
     }
 
 
@@ -41,6 +39,7 @@ public static class AudioAnalyzer
     //fft the current time data sets to get the frequency data
     static void GetSpectrumData()
     {
+        Debug.Log("getting spectrum data...");
         freqDataSets = new();
         foreach (var data in timeDataSets)
         {
@@ -64,6 +63,7 @@ public static class AudioAnalyzer
 
             freqDataSets.Add(spectrum);
         }
+        Debug.Log("complete initialization");
     }
 
     //calculate Root Mean Squared
