@@ -15,6 +15,8 @@ public class BreathRecorder : MonoBehaviour
     public float lowPassCutoff;
     public float highPassCutoff;
     public float gain;
+
+    public bool filterNoise = true;
     public float minAmpThreshold;
     public float maxAmpThreshold;
     public Vector2 boostHighFrequencyRange;
@@ -26,10 +28,12 @@ public class BreathRecorder : MonoBehaviour
     [Header("Visualizer")]
     public LineRenderer visualizer;
     public LineRenderer lowPassVisualizer;
+    public LineRenderer outputVisualizer;
     [Range(0, 1)]
     public float size;
 
-
+    [Header("Visualizer")]
+    public float visualizerSize = 10f;
     [Header("Testing")]
     public bool useAFR = false;
     public AudioClip testClip;
@@ -52,70 +56,135 @@ public class BreathRecorder : MonoBehaviour
     void Awake()
     {
         RetrieveMic();
-        // GetFilterCoefficients();
+        prevSampleSize = sampleSize;
     }
-
+    
 #region Frequency Domain Analysis
     void ProcessAudio()
     {
         samples = new float[(int)sampleSize];
         mic.GetSpectrumData(samples, 0, window);
-        ApplyLowAndHighPassFilter(samples);
-        BoostHighFrequency();
+        
+        CheckIfSampleSizeChange();
+        filteredSample = BoostHighFrequency();
+        filteredSample = ApplyLowAndHighPassFilter(samples);
         FilterNoise();
+        ApplyGaussianSmoothing(filteredSample);
     }
 
-    void ApplyLowAndHighPassFilter(float[] samples)
+    private SampleSize prevSampleSize;
+
+    void CheckIfSampleSizeChange()
+    {
+        if (prevSampleSize == sampleSize) return;
+        //write code here if the sample size changed
+        prevSampleSize = sampleSize;
+    }
+
+    float[] ApplyLowAndHighPassFilter(float[] samples)
     {
         float freq = (float)sampleRate/ 2f;
         int lowBin = Mathf.CeilToInt(lowPassCutoff / freq * samples.Length);
         int highBin = Mathf.FloorToInt(highPassCutoff / freq * samples.Length);
         highPassFirstBinIndex = highBin;
-        filteredSample = new float[lowBin - highBin];
+        // filteredSample = new float[lowBin - highBin];
+        var result = new float[lowBin - highBin];
         for (int i = highBin; i < lowBin; i++)
         {
-            filteredSample[i - highBin] = samples[i] * gain;
+            result[i - highBin] = samples[i] * gain;
         }
+        return result;
     }
+    
     List<int> prominentFrequencies;
 
     void FilterNoise()
     {
+        if (!filterNoise) return; 
         int size = filteredSample.Length;
         prominentFrequencies = new List<int>();
         for (int i = 0; i < size; i++)
         {
             if (filteredSample[i] < minAmpThreshold || filteredSample[i] > maxAmpThreshold) continue;
 
-            prominentFrequencies.Add(i);
+            filteredSample[i] = 0;
         }
+        
     }
+    
     float[] boostedSample;
-    void BoostHighFrequency()
+    float[] BoostHighFrequency()
     {
         float freq = (float)sampleRate / 2f;
 
         int startBin = Mathf.FloorToInt(boostHighFrequencyRange.x /freq * samples.Length);
         int endBin = Mathf.CeilToInt(boostHighFrequencyRange.y /freq * samples.Length);
-        boostedSample = new float[filteredSample.Length];
-        filteredSample.CopyTo(boostedSample, 0);
+        // boostedSample = new float[samples.Length];
+        // samples.CopyTo(boostedSample, 0);
+        var result = new float[samples.Length];
         for (int i = startBin; i < endBin; i++)
         {
-            boostedSample[i] *= boostGain;
+            result[i] = boostGain * samples[i];
         }
+
+        return result;
     }
-#endregion
+
+    // Apply Gaussian smoothing to the spectrum
+
+    [Header("Gaussian Smoothing")]
+    public bool ApplySmoothing = true;
+    public float sigma = 1f;
+    void ApplyGaussianSmoothing(float[] spectrum)
+    {
+        if (!ApplySmoothing) return; 
+        float[] smoothed = new float[spectrum.Length];
+        int halfWindow = 5;  // Width of the Gaussian window
+    
+        // Create the Gaussian kernel
+        float[] kernel = new float[halfWindow * 2 + 1];
+        float sum = 0f;
+        for (int i = -halfWindow; i <= halfWindow; i++)
+        {
+            kernel[i + halfWindow] = Mathf.Exp(-0.5f * Mathf.Pow(i / sigma, 2));
+            sum += kernel[i + halfWindow];
+        }
+    
+        // Normalize kernel
+        for (int i = 0; i < kernel.Length; i++)
+        {
+            kernel[i] /= sum;
+        }
+
+        // Apply Gaussian kernel to spectrum
+        for (int i = 0; i < spectrum.Length; i++)
+        {
+            float smoothedValue = 0f;
+            for (int j = -halfWindow; j <= halfWindow; j++)
+            {
+                int idx = Mathf.Clamp(i + j, 0, spectrum.Length - 1);
+                smoothedValue += spectrum[idx] * kernel[j + halfWindow];
+            }
+            smoothed[i] = smoothedValue;
+        }
+
+        // Copy the result back to the spectrum
+        System.Array.Copy(smoothed, spectrum, spectrum.Length);
+    }
+    
+    #endregion
 
     void Update()
     {
         VisualizeSpectrum();
+        VisualizeOutputData();
         if (useAFR) return;
 
         if (InputSystem.GetDevice<Keyboard>().spaceKey.wasPressedThisFrame)
         {
             StartCoroutine(PerformanceTest.GetFPS(10));
         }
-        // ProcessAudio();
+        ProcessAudio();
     }
 
     float[] originalData;
@@ -173,7 +242,6 @@ public class BreathRecorder : MonoBehaviour
                 float monoSample = (data[i] + data[i + 1]) * 0.5f; // Average L & R
                 rawData[i/2] = monoSample;
             }
-
         }
         else //keep original data if mono
         {
@@ -210,51 +278,65 @@ public class BreathRecorder : MonoBehaviour
             rawData[i] = envelope;
         }
 
-
-
         filteredSample = rawData;
     }
 
+    void VisualizeOutputData()
+    {
+        //reuse the same array
+        var outputData = new float[(int)sampleSize];
+        mic.GetOutputData(outputData, 0);
+        
+        outputVisualizer.positionCount = outputData.Length;
+        for (int i = 0; i < outputData.Length; i++)
+        {
+            outputVisualizer.SetPosition(i , new Vector3(i * size, outputData[i] * 5, 0));
+        }
+
+    }
+    
     void VisualizeSpectrum()
     {
-        // visualizer.positionCount = samples.Length;
-
-        // for (int i = 0; i < samples.Length; i++)
-        // {
-        //     visualizer.SetPosition(i , new Vector3(i * size, samples[i] * 5, 0));
-        // }
-
+        if(samples == null) return;
         if(filteredSample == null) return;
-        // if(prominentFrequencies == null) return;
+        
+        visualizer.positionCount = samples.Length;
+
+        for (int i = 0; i < samples.Length; i++)
+        {
+            visualizer.SetPosition(i , new Vector3(i * size, samples[i] * visualizerSize, 0));
+        }
+        
+        if(prominentFrequencies == null) return;
+
+        lowPassVisualizer.positionCount = filteredSample.Length;
+         for (int i = 0; i < filteredSample.Length; i++)
+         {
+             lowPassVisualizer.SetPosition(i, new Vector3((i + highPassFirstBinIndex) * size, filteredSample[i] * visualizerSize, 0));
+         }
+
+        // visualizer.positionCount = originalData.Length;
+        // for (int i = 0; i < originalData.Length; i++)
+        // {
+        //     visualizer.SetPosition(i, new Vector3(i * size, originalData[i] * 5, 0));
+        // }
 
         // lowPassVisualizer.positionCount = filteredSample.Length;
         // for (int i = 0; i < filteredSample.Length; i++)
         // {
-        //     lowPassVisualizer.SetPosition(i, new Vector3((i + highPassFirstBinIndex) * size, filteredSample[i] * 5, 0));
+        //     lowPassVisualizer.SetPosition(i, new Vector3(i * size, filteredSample[i] * 5, 0));
         // }
 
-        visualizer.positionCount = originalData.Length;
-        for (int i = 0; i < originalData.Length; i++)
-        {
-            visualizer.SetPosition(i, new Vector3(i * size, originalData[i] * 5, 0));
-        }
-
-        lowPassVisualizer.positionCount = filteredSample.Length;
-        for (int i = 0; i < filteredSample.Length; i++)
-        {
-            lowPassVisualizer.SetPosition(i, new Vector3(i * size, filteredSample[i] * 5, 0));
-        }
-
-        // visualizer.positionCount = filteredSample.Length;
+        // lowPassVisualizer.positionCount = filteredSample.Length;
         // for (int i = 0; i < filteredSample.Length; i++)
         // {
         //     if(prominentFrequencies.Contains(i))
         //     {
-        //         visualizer.SetPosition(i, new Vector3((i + highPassFirstBinIndex) * size, boostedSample[i] * 5, 0));
+        //         lowPassVisualizer.SetPosition(i, new Vector3((i + highPassFirstBinIndex) * size, filteredSample[i] * 5, 0));
         //     }
         //     else
         //     {
-        //         visualizer.SetPosition(i, new Vector3((i + highPassFirstBinIndex) * size, 0, 0));
+        //         lowPassVisualizer.SetPosition(i, new Vector3((i + highPassFirstBinIndex) * size, 0, 0));
         //     }
         // }
     }
@@ -283,4 +365,3 @@ public enum SampleRate
     _44100 = 44100,
     _48000 = 48000,
 }
-
