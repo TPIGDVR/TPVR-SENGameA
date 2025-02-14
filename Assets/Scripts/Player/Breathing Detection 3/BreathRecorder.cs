@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Oculus.Haptics;
+using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,6 +15,7 @@ public class BreathRecorder : MonoBehaviour
     public FFTWindow window;
     public SampleRate sampleRate;
     public SampleSize sampleSize;
+    public bool ignoreCutOff = false;
     public float lowPassCutoff;
     public float highPassCutoff;
     public float gain;
@@ -33,6 +37,7 @@ public class BreathRecorder : MonoBehaviour
     public float size;
 
     [Header("Visualizer")]
+    public TextMeshProUGUI outputText;
     public float visualizerSize = 10f;
     [Header("Testing")]
     public bool useAFR = false;
@@ -67,9 +72,165 @@ public class BreathRecorder : MonoBehaviour
         
         CheckIfSampleSizeChange();
         filteredSample = BoostHighFrequency();
+        
+        //This one I keep for now but dont use
         filteredSample = ApplyLowAndHighPassFilter(samples);
+        
         FilterNoise();
         ApplyGaussianSmoothing(filteredSample);
+        
+        // Pesudo Code
+        /*
+         * so probably ignore talking o
+         * 1. Determine if the spectrum is talking or not through the RMS formula
+         * 2. Check exhale if there is a higher pitch in the lower frequency
+         * 3. Check inhale if there is a consistent pitch in the band frequency
+         * Do the sliding window for the exhaling since the pitch is only instant for that one moment.
+         */
+        DetermineBreathingType();
+    }
+
+    [Header("Inhaling Detection (FREQUENCY DOMAIN)")]
+    private float[] inhaleDataDisplay;
+    public float maxInhaleAmp;
+    public float minInhaleAmp;
+    public Vector2 inhaleCutoff;    
+    
+    
+    [Header("Exhaling Detection (FREQUENCY DOMAIN)")]
+    public int windowSize = 10;
+    
+    public Queue<bool> exhalingWindow = new Queue<bool>();
+    public TextMeshProUGUI exhalingText;
+    public float maxSpikeExhaleAmp;
+    public float minSpikeExhaleAmp;
+    public Vector2 exhaleSpikeCutoff;
+    public int exhaleAcceptableAmount = 3;
+    public LineRenderer exhalingSpikeVisualizer;
+    
+    
+    public float maxExhaleAmp;
+    public float minExhaleAmp;
+    public Vector2 exhaleCutoff;
+    public LineRenderer exhalingVisualizer;
+    
+    
+    void DetermineBreathingType()
+    {
+        if (IsTalkingFrequencyBased(filteredSample))
+        {
+            outputText.text = "talking";
+            return;
+        }
+
+        if (DetectExhale())
+        {
+            outputText.text = "exhaling";
+        }
+        else
+        {
+            outputText.text = "";
+        }
+        
+        //determine inhale and exhale
+
+        bool DetectExhale()
+        {
+            float freq = (float)sampleRate / 2f;
+            
+            // If we detected an exhale peak previously, check the exhale energy range
+            if (exhalingWindow.Contains(true))
+            {
+                // Convert exhale energy cutoff range to bin indices
+                int exhaleStartBin = Mathf.FloorToInt(exhaleCutoff.x / freq * filteredSample.Length);
+                int exhaleEndBin = Mathf.CeilToInt(exhaleCutoff.y / freq * filteredSample.Length);
+                VisualiseData(exhalingSpikeVisualizer, filteredSample, exhaleStartBin, exhaleEndBin);
+
+                // Compute average energy in exhale range
+                float exhaleEnergy = 0;
+                int exhaleBinCount = exhaleEndBin - exhaleStartBin + 1;
+                
+                //visualise it
+                for (int i = exhaleStartBin; i <= exhaleEndBin; i++)
+                {
+                    exhaleEnergy += filteredSample[i];
+                }
+
+                exhaleEnergy /= exhaleBinCount;
+                
+                
+                //visualise this 
+                exhalingVisualizer.SetPosition(0, Vector3.zero);
+                exhalingVisualizer.SetPosition(1, new Vector3(0, exhaleEnergy, 0));
+
+                // Check if the exhale energy is within the expected range
+                bool res = exhaleEnergy >= minExhaleAmp && exhaleEnergy <= maxExhaleAmp;
+                
+                print($"spikeEnergy: {exhaleEnergy}. Peak found? {res}");
+
+                
+                //update the window
+                EnqueueWindow(res);
+
+                //see if there is more signs that it is exhaling.
+                return exhalingWindow.Where(x => x).Count() > exhaleAcceptableAmount;
+            }
+            else
+            {
+                // Convert exhale spike cutoff range to bin indices
+                int spikeStartBin = Mathf.FloorToInt(exhaleSpikeCutoff.x / freq * filteredSample.Length);
+                int spikeEndBin = Mathf.CeilToInt(exhaleSpikeCutoff.y / freq * filteredSample.Length);
+                //display the data that is being sampled
+                VisualiseData(exhalingSpikeVisualizer, filteredSample, spikeStartBin, spikeEndBin);
+
+                // Compute the average energy in the spike range
+                float spikeEnergy = 0;
+                // int spikeBinCount = spikeEndBin - spikeStartBin + 1;
+                for (int i = spikeStartBin; i <= spikeEndBin; i++)
+                {
+                    spikeEnergy += filteredSample[i];
+                }
+
+                // spikeEnergy /= spikeBinCount; // Normalize
+                
+                
+                //visualise this 
+                // exhalingSpikeVisualizer.SetPosition(0, Vector3.zero);
+                // exhalingSpikeVisualizer.SetPosition(1, new Vector3(0, spikeEnergy, 0));
+        
+                // Check if the energy is within the exhale spike amplitude bounds
+                bool foundPeak = spikeEnergy >= minSpikeExhaleAmp && spikeEnergy <= maxSpikeExhaleAmp;
+                print($"spikeEnergy: {spikeEnergy}. Peak found? {foundPeak}");
+
+                EnqueueWindow(foundPeak);
+            }
+
+            void VisualiseData(LineRenderer targetLine, float[] data, int start, int end)
+            {
+                targetLine.positionCount = end - start + 1;
+                
+                for (int i = start; i <= end; i++)
+                {
+                    targetLine.SetPosition(i , new Vector3((i - start) * size, data[i] * visualizerSize, 0));
+                }
+            }
+            
+            return false; // No peak or not enough energy in the exhale range
+        }
+        
+        
+
+        void EnqueueWindow(bool res)
+        {
+            exhalingWindow.Enqueue(res);
+            while (exhalingWindow.Count > windowSize)
+            {
+                exhalingWindow.Dequeue();
+            }
+            
+            //display the text
+            exhalingText.text = $"Exhaling True: {exhalingWindow.Where(x=>x).Count()}";
+        }
     }
 
     private SampleSize prevSampleSize;
@@ -83,17 +244,28 @@ public class BreathRecorder : MonoBehaviour
 
     float[] ApplyLowAndHighPassFilter(float[] samples)
     {
-        float freq = (float)sampleRate/ 2f;
-        int lowBin = Mathf.CeilToInt(lowPassCutoff / freq * samples.Length);
-        int highBin = Mathf.FloorToInt(highPassCutoff / freq * samples.Length);
-        highPassFirstBinIndex = highBin;
-        // filteredSample = new float[lowBin - highBin];
-        var result = new float[lowBin - highBin];
-        for (int i = highBin; i < lowBin; i++)
+        if (!ignoreCutOff)
         {
-            result[i - highBin] = samples[i] * gain;
+            //if do not ignore cutoff
+            float freq = (float)sampleRate/ 2f;
+            int lowBin = Mathf.CeilToInt(lowPassCutoff / freq * samples.Length);
+            int highBin = Mathf.FloorToInt(highPassCutoff / freq * samples.Length);
+            highPassFirstBinIndex = highBin;
+            // filteredSample = new float[lowBin - highBin];
+            var result = new float[lowBin - highBin];
+            for (int i = highBin; i < lowBin; i++)
+            {
+                result[i - highBin] = samples[i] * gain;
+            }
+            return result;    
         }
-        return result;
+        else
+        {
+            //do nothing
+            highPassFirstBinIndex = 0;
+            return samples;
+        }
+        
     }
     
     List<int> prominentFrequencies;
@@ -106,10 +278,8 @@ public class BreathRecorder : MonoBehaviour
         for (int i = 0; i < size; i++)
         {
             if (filteredSample[i] < minAmpThreshold || filteredSample[i] > maxAmpThreshold) continue;
-
             filteredSample[i] = 0;
         }
-        
     }
     
     float[] boostedSample;
@@ -171,6 +341,43 @@ public class BreathRecorder : MonoBehaviour
         // Copy the result back to the spectrum
         System.Array.Copy(smoothed, spectrum, spectrum.Length);
     }
+    
+    [Header("Talking Threshold (Frequency Domain)")]
+    public float spectralFlatnessThreshold = 0.5f;
+    public float minAmpTalkingThreshold = 0.5f;
+    bool IsTalkingBySpectralFlatness(float[] spectrum)
+    {
+        float geometricMean = 1;
+        float arithmeticMean = 0;
+        int count = spectrum.Length;
+
+        for (int i = 0; i < count; i++)
+        {
+            geometricMean *= Mathf.Max(spectrum[i], 1e-10f); // Prevent log(0)
+            arithmeticMean += spectrum[i];
+        }
+        geometricMean = Mathf.Pow(geometricMean, 1f / count);
+        arithmeticMean /= count;
+
+        float sfm = geometricMean / arithmeticMean; // Spectral flatness ratio (0 to 1)
+        return sfm < spectralFlatnessThreshold; // Speech tends to have a lower flatness value
+    }
+    
+    bool IsTalkingFrequencyBased(float[] spectrum)
+    {
+        float freq = (float)sampleRate / 2f;
+        int startBin = Mathf.FloorToInt(85 / freq * spectrum.Length);
+        int endBin = Mathf.CeilToInt(3000 / freq * spectrum.Length);
+
+        float power = 0;
+        for (int i = startBin; i <= endBin; i++)
+        {
+            power += spectrum[i]; // Sum power in voice frequency range
+        }
+        print($"overall power {power}");
+        return power > minAmpTalkingThreshold;
+    }
+    
     
     #endregion
 
