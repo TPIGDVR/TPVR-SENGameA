@@ -24,11 +24,9 @@ public class BreathRecorder : MonoBehaviour
     [Header("Breath Settings")]
     public float minActivationThreshold; //both to be calibrated
     public float maxActivationThreshold;
-    public float inhaleZCRMaxThreshold;
     float rms;
-    float prevRMS;
     float zcr;
-    float prevZCR;
+    float specCentroid;
 
     public BreathState state = BreathState.Idle;
 
@@ -38,10 +36,10 @@ public class BreathRecorder : MonoBehaviour
         mic.loop = true;
         //mic.mute = true;
 
-        mic.clip = Microphone.Start(null, true, 1, (int)sampleRate);
-        // mic.clip = testClip;
+        // mic.clip = Microphone.Start(null, true, 1, (int)sampleRate);
+        mic.clip = testClip;
         mic.spatialBlend = 0;
-        while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
+        // while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
         mic.Play();
     }
 
@@ -54,7 +52,10 @@ public class BreathRecorder : MonoBehaviour
     {
         // CreateAudioClip();
         // VisualizeSpectrum();
-        text2.text = rms.ToString();
+        text2.text = "rms : " + rms.ToString();
+        text3.text = "zcr : " + zcr.ToString();
+        text4.text = "frq : " + specCentroid.ToString();
+        text5.text = "state : " + state.ToString();
         if (isTalk)
         {
             text.text = "Talking";
@@ -62,6 +63,15 @@ public class BreathRecorder : MonoBehaviour
         else
         {
             text.text = "Silent";
+        }
+
+        if(Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            print("change clip");
+            mic.Stop();
+            mic.clip = testClip;
+            mic.Play();
+            // RetrieveMic();
         }
     }
 
@@ -76,6 +86,7 @@ public class BreathRecorder : MonoBehaviour
         originalData = new float[monoData.Length]; //remove when not debugging
         monoData.CopyTo(originalData, 0); //to be read in visualizer
 
+        state = BreathState.Idle;
         rms = RMS(monoData);
         isTalk = rms > maxActivationThreshold;
         if (rms < minActivationThreshold || rms > maxActivationThreshold)
@@ -85,8 +96,6 @@ public class BreathRecorder : MonoBehaviour
         print("breath");
 
         DetectBreathing(data);
-        prevRMS = rms;
-        prevZCR = zcr;
 
         //for visualization
         lock (audioBuffer)
@@ -104,15 +113,17 @@ public class BreathRecorder : MonoBehaviour
 
     void DetectBreathing(float[] data)
     {
-        float zcr = ZCR(data);
-        float specCentroid = SpectralCentroid(GetSpectrumData(data), (int)sampleRate);
+        zcr = ZCR(data);
+        specCentroid = SpectralCentroid(GetSpectrumData(data), (int)sampleRate);
         if (rms < 0.0045 && zcr < 0.08 && specCentroid > 3250)
         {
             print("inhale");
+            state = BreathState.Inhale;
         }
         else if (rms >= 0.0045 && zcr < 0.08 && specCentroid < 3250)
         {
             print("exhale");
+            state = BreathState.Exhale;
         }
         
     }
@@ -184,6 +195,10 @@ public class BreathRecorder : MonoBehaviour
     public float freqGain = 50;
     public TMP_Text text;
     public TMP_Text text2;
+    public TMP_Text text3;
+    public TMP_Text text4;
+    public TMP_Text text5;
+
     public AudioSource audioSource;
     AudioClip processedClip;
     List<float> audioBuffer = new();
