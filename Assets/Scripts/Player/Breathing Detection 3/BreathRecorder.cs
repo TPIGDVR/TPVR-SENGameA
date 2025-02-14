@@ -27,7 +27,6 @@ public class BreathRecorder : MonoBehaviour
         mic.spatialBlend = 0;
         // while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
         mic.Play();
-
     }
 
     void Awake()
@@ -238,6 +237,11 @@ public class BreathRecorder : MonoBehaviour
         }
     }
 
+    void DetectBreathing2()
+    {
+        //activation threshold
+        float rms = ComputeRMS(filteredSample);
+    }
 
     //for debugging
     void CreateAudioClip()

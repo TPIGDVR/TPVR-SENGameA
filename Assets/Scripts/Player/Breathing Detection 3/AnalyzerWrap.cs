@@ -18,7 +18,9 @@ public class AnalyzerWrap : MonoBehaviour
         SystemInformation += "DSP Buffer Size: " + a.dspBufferSize + "\n";
         SystemInformation += "Speaker Mode: " + a.speakerMode + "\n\n\n";
 
-
+        var b = InhaleClips[0];
+        print($"Sample Rate: {b.frequency}, {b.samples / b.length},{AudioSettings.outputSampleRate}");
+        
         AudioAnalyzer.Initialize(InhaleClips);
         var res = AudioAnalyzer.AnalyzeData();
 
@@ -31,14 +33,14 @@ public class AnalyzerWrap : MonoBehaviour
     }
 
 
-    string ResultToString(AudioClipData r)
+    string ResultToString(AudioAnalysisResult r)
     {
-        return $"Avg RMS : {r.AvgRMS * 100}\nAvg Derivative : {r.AvgDerivative * 100000}\nAvg ZCR : {r.AvgZCR}";
+        return $"Avg RMS : {r.AvgRMS * 100}\nAvg Derivative : {r.AvgDerivative * 100000}\nAvg ZCR : {r.AvgZCR}\nAvg Spec Centroid : {r.AvgSpecCentroid}";
     }
 
     public void WriteResultsToFile(string fileName, string result)
     {
-        string path = Path.Combine("C:/Users/yc/Documents/unityprojects/TPVR-SENGameA/Assets/Scripts/Player/Breathing Detection 3", fileName + ".txt");
+        string path = Path.Combine(Application.dataPath,"Scripts/Player/Breathing Detection 3", fileName + ".txt");
         // string path = "C:/Users/yc/Documents/unityprojects/TPVR-SENGameA/Assets/Scripts/Player/Breathing Detection 3";
         if (!File.Exists(path))
         {
