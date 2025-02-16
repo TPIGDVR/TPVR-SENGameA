@@ -1,7 +1,6 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static AudioAnalyzer;
@@ -18,12 +17,15 @@ public class BreathRecorder : MonoBehaviour
     float[] samples;
     float[] filteredSample;
     float[] originalData; //used for debugging
+    public int historyBufferSize;
+    Queue<AudioChunk> audioHistory = new Queue<AudioChunk>();
 
-    bool isTalk;
 
     [Header("Breath Settings")]
-    public float minActivationThreshold; //both to be calibrated
-    public float maxActivationThreshold;
+    public float rmsMinThres; //both to be calibrated
+    public float rmsMaxThres;
+    [Range(0,1)]
+    public float rmsThresLeniency;
     float rms;
     float zcr;
     float specCentroid;
@@ -55,15 +57,7 @@ public class BreathRecorder : MonoBehaviour
         text2.text = "rms : " + rms.ToString();
         text3.text = "zcr : " + zcr.ToString();
         text4.text = "frq : " + specCentroid.ToString();
-        text5.text = "state : " + state.ToString();
-        if (isTalk)
-        {
-            text.text = "Talking";
-        }
-        else
-        {
-            text.text = "Silent";
-        }
+        text.text = "state : " + state.ToString();
 
         if(Keyboard.current.spaceKey.wasPressedThisFrame)
         {
@@ -86,16 +80,31 @@ public class BreathRecorder : MonoBehaviour
         originalData = new float[monoData.Length]; //remove when not debugging
         monoData.CopyTo(originalData, 0); //to be read in visualizer
 
-        state = BreathState.Idle;
         rms = RMS(monoData);
-        isTalk = rms > maxActivationThreshold;
-        if (rms < minActivationThreshold || rms > maxActivationThreshold)
+        // bool talkingCondition = (rms > rmsMaxThres - rmsThresLeniency ) && (rms < rmsMaxThres + rmsThresLeniency);
+        state = rms > rmsMaxThres ? BreathState.Talking : BreathState.Idle;
+        if (state == BreathState.Talking)
         {          
             return;
         }
-        print("breath");
 
-        DetectBreathing(data);
+        //breath detection
+        zcr = ZCR(data);
+        specCentroid = SpectralCentroid(GetSpectrumData(data), (int)sampleRate);
+        // bool inCon = 
+        if (rms < 0.0045 && zcr < 0.08 && specCentroid > 3250)
+        {
+            print("inhale");
+            state = BreathState.Inhale;
+        }
+        else if (rms >= 0.0045 && zcr < 0.08 && specCentroid < 3250)
+        {
+            print("exhale");
+            state = BreathState.Exhale;
+        }
+
+
+        AddToAudioHistory();
 
         //for visualization
         lock (audioBuffer)
@@ -110,11 +119,11 @@ public class BreathRecorder : MonoBehaviour
         return sample * gain;
     }
 
-
     void DetectBreathing(float[] data)
     {
         zcr = ZCR(data);
         specCentroid = SpectralCentroid(GetSpectrumData(data), (int)sampleRate);
+        // bool inCon = 
         if (rms < 0.0045 && zcr < 0.08 && specCentroid > 3250)
         {
             print("inhale");
@@ -126,6 +135,25 @@ public class BreathRecorder : MonoBehaviour
             state = BreathState.Exhale;
         }
         
+    }
+
+    void AddToAudioHistory()
+    {
+        //removes oldest entry
+        if (audioHistory.Count >= historyBufferSize)
+        {
+            audioHistory.Dequeue();
+        }
+
+        AudioChunk chunk = new AudioChunk
+        {
+            rms = rms,
+            zcr = zcr,
+            specCentroid = specCentroid,
+            data = originalData,
+            state = state
+        };
+        audioHistory.Enqueue(chunk);
     }
 
     //for debugging
@@ -235,5 +263,16 @@ public enum BreathState
 {
     Inhale,
     Exhale,
-    Idle
+    Idle,
+    Talking
+}
+
+[Serializable]
+public struct AudioChunk
+{
+    public float rms;
+    public float zcr;
+    public float specCentroid;
+    public float[] data;
+    public BreathState state;
 }
