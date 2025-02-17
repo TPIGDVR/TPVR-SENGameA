@@ -1820,14 +1820,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mic: {fileID: 0}
-  window: 5
   sampleRate: 44100
-  sampleSize: 1024
-  gain: 1
   historyBufferSize: 20
   rmsMinThres: 0.001
   rmsMaxThres: 0.0125
-  rmsThresLeniency: 0
   stateDelay: 30
   delayCount: 0
   state: 2
@@ -1837,21 +1833,12 @@ MonoBehaviour:
   exhaleRmsMin: 0.0025
   exhaleZcrMax: 0.04
   exhaleSpecCentroidMax: 3250
-  testClip: {fileID: 8300000, guid: 3a8c5a2aa985daa40a2a4c3623c16670, type: 3}
-  freqGain: 100
   text: {fileID: 1844403828}
   text2: {fileID: 552276721}
   text3: {fileID: 1213556620}
   text4: {fileID: 879535970}
   text5: {fileID: 1095009863}
   text6: {fileID: 1648400855}
-  audioSource: {fileID: 1389075313}
-  visualizer: {fileID: 794524855}
-  lowPassVisualizer: {fileID: 1614905104}
-  freqVisualizer: {fileID: 455954593}
-  size: 0.0025
-  lowPassCutoff: 2000
-  highPassCutoff: 500
 --- !u!4 &1673125518
 Transform:
   m_ObjectHideFlags: 0
