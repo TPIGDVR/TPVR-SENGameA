@@ -37,9 +37,10 @@ public class BreathRecorder : MonoBehaviour
 
         mic.clip = Microphone.Start(null, true, 1, (int)sampleRate);
         // mic.clip = testClip;
-        mic.spatialBlend = 0;
-        while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
+        // mic.spatialBlend = 0;
+        // while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
         mic.Play();
+        
     }
 
     void Awake()
@@ -110,7 +111,7 @@ public class BreathRecorder : MonoBehaviour
         //removes oldest entry
         if (audioHistory.Count >= historyBufferSize)
         {
-            for (int i = 0; i < audioHistory.Count - historyBufferSize; i++)
+            while(audioHistory.Count > historyBufferSize)
             {
                 audioHistory.Dequeue();
             }

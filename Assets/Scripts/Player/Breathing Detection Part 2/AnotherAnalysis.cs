@@ -422,8 +422,8 @@ namespace NewBreathingDetector
         // Helper method to display text labels in the Scene view
         void DrawText(string text, Vector3 position, Color color)
         {
-            Handles.color = color;
-            Handles.Label(position, text);
+            // Handles.color = color;
+            // Handles.Label(position, text);
         }
 
         #endregion
