@@ -83,7 +83,7 @@ public static class AudioAnalyzer
         float sum = 0;
         foreach (var entry in data)
         {
-            if (entry < 0.0005f) continue;
+            // if (entry < 0.0005f) continue; //removed for testing?
             sum += entry * entry;
         }
         return Mathf.Sqrt(sum / data.Length);

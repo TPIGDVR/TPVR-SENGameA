@@ -8,6 +8,7 @@ using static AudioAnalyzer;
 
 public class BreathRecorder : MonoBehaviour
 {
+    public bool IsActive;
     [Header("Audio Settings")]
     public AudioSource mic;
     public SampleRate sampleRate;
@@ -28,6 +29,8 @@ public class BreathRecorder : MonoBehaviour
     public BreathState state = BreathState.Idle;
     BreathState prevState;
     BreathState prevState2; //non-idle state
+
+    public float[] data;
 
     void RetrieveMic()
     {
@@ -73,6 +76,9 @@ public class BreathRecorder : MonoBehaviour
         {
             monoData[i / channels] = (data[i] + (channels > 1 ? data[i + 1] : 0)) * 0.5f;
         }
+        this.data = data;
+
+        if (!IsActive) return;
 
         prevState = SpeculatePreviousState();
         delayCount++;
