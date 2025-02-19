@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static AudioAnalyzer;
 
 public class BreathRecorder : MonoBehaviour
@@ -50,7 +49,7 @@ public class BreathRecorder : MonoBehaviour
         // mic.spatialBlend = 0;
         // while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
         mic.Play();
-        
+
     }
 
     void Awake()
@@ -81,7 +80,15 @@ public class BreathRecorder : MonoBehaviour
         text4.text = "frq : " + avgspec.ToString();
         text.text = "state : " + state.ToString();
         text5.text = "prev state : " + prevState.ToString();
-        text6.text = "prev state2 : " + prevState2.ToString();   
+        text6.text = "prev state2 : " + prevState2.ToString();
+        rmsBar.fillAmount = rms;
+        zcrBar.fillAmount = zcr;
+        sil1.localPosition = new Vector3(sil1.localPosition.x, rmsMinThres, 0);
+        in1.localPosition = new Vector3(in1.localPosition.x, inhaleRmsMax, 0);
+        sp1.localPosition = new Vector3(sp1.localPosition.x, rmsMaxThres, 0);
+        sil2.localPosition = new Vector3(sil2.localPosition.x, 0, 0);
+        in2.localPosition = new Vector3(in2.localPosition.x, inhaleZcrMin, 0);
+        sp2.localPosition = new Vector3(sp2.localPosition.x, exhaleZcrMax, 0);
     }
 
     void OnAudioFilterRead(float[] data, int channels)
@@ -110,13 +117,11 @@ public class BreathRecorder : MonoBehaviour
         else if (rms < inhaleRmsMax && zcr > inhaleZcrMin && specCentroid > inhaleSpecCentroidMin && prevState != BreathState.Talking)
         {
             print("inhale");
-            // state = BreathState.Inhale;
             SwitchState(0);
         }
-        else if (rms >= exhaleRmsMin && zcr < exhaleZcrMax && specCentroid < exhaleSpecCentroidMax && prevState != BreathState.Talking && prevState2 == BreathState.Inhale)
+        else if (rms >= exhaleRmsMin && zcr < exhaleZcrMax && specCentroid < exhaleSpecCentroidMax && prevState2 == BreathState.Inhale)
         {
             print("exhale");
-            // state = BreathState.Exhale;
             SwitchState(1);
         }
 
@@ -137,7 +142,7 @@ public class BreathRecorder : MonoBehaviour
         //removes oldest entry
         if (audioHistory.Count >= historyBufferSize)
         {
-            while(audioHistory.Count > historyBufferSize)
+            while (audioHistory.Count > historyBufferSize)
             {
                 audioHistory.Dequeue();
             }
@@ -186,7 +191,7 @@ public class BreathRecorder : MonoBehaviour
                 highestCount = i;
             }
         }
-        if(highestCount != 2) //if it is not idle
+        if (highestCount != 2) //if it is not idle
         {
             highestCount2 = highestCount;
         }
@@ -198,7 +203,7 @@ public class BreathRecorder : MonoBehaviour
     {
         if (i == (int)state)
             return;
-            
+
         if (delayCount > stateDelay)
         {
             delayCount = 0;
@@ -211,7 +216,7 @@ public class BreathRecorder : MonoBehaviour
         Microphone.End(null);
     }
 
-#region Test
+    #region Test
     [Header("Testing")]
     public TMP_Text text;
     public TMP_Text text2;
@@ -219,6 +224,9 @@ public class BreathRecorder : MonoBehaviour
     public TMP_Text text4;
     public TMP_Text text5;
     public TMP_Text text6;
+    public Image rmsBar;
+    public Image zcrBar;
+    public RectTransform sil1, in1, sp1, sil2, in2, sp2;
     #endregion
 
 }
