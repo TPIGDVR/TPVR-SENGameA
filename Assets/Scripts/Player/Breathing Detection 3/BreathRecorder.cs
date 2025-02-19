@@ -20,6 +20,13 @@ public class BreathRecorder : MonoBehaviour
     [Header("Breath Settings")]
     public float rmsMinThres; //both to be calibrated
     public float rmsMaxThres;
+    public float inhaleRmsMax = 0.0045f;
+    public float inhaleZcrMin = 0.08f;
+    public float inhaleSpecCentroidMin = 3250;
+    public float exhaleRmsMin = 0.0045f;
+    public float exhaleZcrMax = 0.08f;
+    public float exhaleSpecCentroidMax = 3250;
+
     float rms;
     float zcr;
     float specCentroid;
@@ -29,9 +36,9 @@ public class BreathRecorder : MonoBehaviour
     public BreathState state = BreathState.Idle;
     BreathState prevState;
     BreathState prevState2; //non-idle state
-
-    public float[] data;
-
+    public BreathCalibrator calibrator;
+    public AudioData captureData;
+    public BreathSettings settings;
     void RetrieveMic()
     {
         mic = gameObject.AddComponent<AudioSource>();
@@ -51,6 +58,22 @@ public class BreathRecorder : MonoBehaviour
         RetrieveMic();
     }
 
+    [ContextMenu("Calibrate")]
+    async void CalibrateBreathSettings()
+    {
+        settings = await calibrator.BeginCalibrating();
+        rmsMinThres = settings.rmsMinThres;
+        rmsMaxThres = settings.rmsMaxThres;
+        inhaleRmsMax = settings.inRMSMaxThres;
+        inhaleZcrMin = settings.inZCRMinThres;
+        inhaleSpecCentroidMin = settings.inSCMinThres;
+
+        //EXHALE HAS ISSUES
+        exhaleRmsMin = settings.exRMSMinThres;
+        exhaleZcrMax = settings.exZCRMaxThres;
+        exhaleSpecCentroidMax = settings.exSCMaxThres;
+    }
+
     void Update()
     {
         text2.text = "rms : " + avgrms.ToString("n6");
@@ -58,16 +81,8 @@ public class BreathRecorder : MonoBehaviour
         text4.text = "frq : " + avgspec.ToString();
         text.text = "state : " + state.ToString();
         text5.text = "prev state : " + prevState.ToString();
-        text6.text = "prev state2 : " + prevState2.ToString();
-        
+        text6.text = "prev state2 : " + prevState2.ToString();   
     }
-
-    public float inhaleRmsMax = 0.0045f;
-    public float inhaleZcrMin = 0.08f;
-    public float inhaleSpecCentroidMin = 3250;
-    public float exhaleRmsMin = 0.0045f;
-    public float exhaleZcrMax = 0.08f;
-    public float exhaleSpecCentroidMax = 3250;
 
     void OnAudioFilterRead(float[] data, int channels)
     {
@@ -76,16 +91,13 @@ public class BreathRecorder : MonoBehaviour
         {
             monoData[i / channels] = (data[i] + (channels > 1 ? data[i + 1] : 0)) * 0.5f;
         }
-        this.data = data;
-
-        if (!IsActive) return;
 
         prevState = SpeculatePreviousState();
         delayCount++;
         rms = RMS(monoData);
         zcr = ZCR(monoData);
-
-        specCentroid = SpectralCentroid(GetSpectrumData(monoData), (int)sampleRate);
+        float[] spectrumData = GetSpectrumData(monoData);
+        specCentroid = SpectralCentroid(spectrumData, (int)sampleRate);
 
         if (rms >= rmsMaxThres)
         {
@@ -110,6 +122,14 @@ public class BreathRecorder : MonoBehaviour
 
 
         AddToAudioHistory(monoData);
+        captureData = new AudioData
+        {
+            PCMData = monoData,
+            SpectrumData = spectrumData,
+            SampleRate = (int)sampleRate,
+            Channels = channels,
+            Samples = monoData.Length
+        };
     }
 
     void AddToAudioHistory(float[] data)
@@ -238,4 +258,23 @@ public struct AudioChunk
     public float specCentroid;
     public float[] data;
     public BreathState state;
+}
+
+[Serializable]
+public struct BreathSettings
+{
+    public float rmsMinThres;
+    public float rmsMaxThres;
+    public float inRMSMinThres;
+    public float inRMSMaxThres;
+    public float inZCRMinThres;
+    public float inZCRMaxThres;
+    public float inSCMinThres;
+    public float inSCMaxThres;
+    public float exRMSMinThres;
+    public float exRMSMaxThres;
+    public float exZCRMinThres;
+    public float exZCRMaxThres;
+    public float exSCMinThres;
+    public float exSCMaxThres;
 }
