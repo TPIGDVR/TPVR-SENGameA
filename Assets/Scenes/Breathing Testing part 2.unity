@@ -2385,6 +2385,21 @@ MonoBehaviour:
     Channels: 0
     Samples: 0
     Length: 0
+  settings:
+    rmsMinThres: 0
+    rmsMaxThres: 0
+    inRMSMinThres: 0
+    inRMSMaxThres: 0
+    inZCRMinThres: 0
+    inZCRMaxThres: 0
+    inSCMinThres: 0
+    inSCMaxThres: 0
+    exRMSMinThres: 0
+    exRMSMaxThres: 0
+    exZCRMinThres: 0
+    exZCRMaxThres: 0
+    exSCMinThres: 0
+    exSCMaxThres: 0
   text: {fileID: 1844403828}
   text2: {fileID: 552276721}
   text3: {fileID: 1213556620}
@@ -2827,7 +2842,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1865815924
 MonoBehaviour:
   m_ObjectHideFlags: 0
