@@ -27,8 +27,12 @@ public class BreathCalibrator : MonoBehaviour
     [Header("Data")]
     public AudioDataParameters inhaleParams;
     public AudioDataParameters exhaleParams;
-    
 
+    [Header("For Debug")]
+    public AudioClip[] inhaleSample;
+    public AudioClip[] exhaleSample;
+    public AudioClip[] speechSample;
+    public AudioClip silenceSample;
 
     public async Task<BreathSettings> BeginCalibrating()
     {
@@ -41,7 +45,9 @@ public class BreathCalibrator : MonoBehaviour
         await Countdown(3);
 
         instructionText.text = "Silence...";
+        PlayAudio(silenceSample);
         await CaptureData(silentData, 5);
+        source.Stop();
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
         instructionText.text = "Read the incoming text out loud";
@@ -49,21 +55,27 @@ public class BreathCalibrator : MonoBehaviour
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
         instructionText.text = "When life gives you lemons, yeet them at your enemies and assert dominance. 🍋💥";
+        PlayAudio(speechSample);
         await CaptureData(speechData, 5);
+        source.Stop();
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
         for (int i = 0; i < calibrationAmt; i++)
         {
-            instructionText.text = "Get ready to inhale";
+            instructionText.text = "Get ready to inhale and exhale";
             await Countdown(3);
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
             instructionText.text = "Inhale";
+            PlayAudio(inhaleSample);
             await CaptureData(inhaleData, inhaleDuration);
+            source.Stop();
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
             instructionText.text = "Exhale";
+            PlayAudio(exhaleSample);
             await CaptureData(exhaleData, exhaleDuration);
+            source.Stop();
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
         }
 
@@ -94,7 +106,7 @@ public class BreathCalibrator : MonoBehaviour
             rmsMaxThres = speechParams.AverageRMS,
         };
 
-
+        recorder.settings = settings;
         return settings;
     }
 
@@ -166,6 +178,48 @@ public class BreathCalibrator : MonoBehaviour
         if (zcr > 0) zcrList.Add(zcr);
         if (specCentroid > 0) specCentroidList.Add(specCentroid);
     }
+
+    #region Debug
+    AudioSource source;
+    void Start()
+    {
+        source = GetComponent<AudioSource>();
+        source.loop = true;
+       
+    }
+
+    void PlayAudio(AudioClip clip)
+    {
+        source.Stop();
+        source.clip = clip;
+        source.Play();
+    }
+
+    void PlayAudio(AudioClip[] clips)
+    {
+        source.Stop();
+        int i = UnityEngine.Random.Range(0, clips.Length);
+        source.clip = clips[i];
+        source.Play();
+    }
+
+    [ContextMenu("Breath")]
+    async void TestBreath()
+    {
+        int i = UnityEngine.Random.Range(0, 9);
+        // source.clip = inhaleSample[i];
+        source.PlayOneShot(inhaleSample[i]);
+        await Task.Delay(TimeSpan.FromSeconds(2f));
+        i = UnityEngine.Random.Range(0, 9);
+        source.PlayOneShot(exhaleSample[i]);
+    }
+
+    [ContextMenu("Calibrate")]
+    async void Calibrate()
+    {
+        await BeginCalibrating();
+    }
+    #endregion
 
     [Serializable]
     public struct AudioDataParameters

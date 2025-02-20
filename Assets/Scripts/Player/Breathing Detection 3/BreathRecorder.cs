@@ -60,7 +60,7 @@ public class BreathRecorder : MonoBehaviour
     [ContextMenu("Calibrate")]
     async void CalibrateBreathSettings()
     {
-        settings = await calibrator.BeginCalibrating();
+        // settings = await calibrator.BeginCalibrating();
         rmsMinThres = settings.rmsMinThres;
         rmsMaxThres = settings.rmsMaxThres;
         inhaleRmsMax = settings.inRMSMaxThres;
