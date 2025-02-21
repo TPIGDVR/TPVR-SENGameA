@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3874,14 +3874,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsActive: 0
   mic: {fileID: 0}
-  sampleRate: 44100
-  historyBufferSize: 20
+  sampleRate: 16000
+  historyBufferSize: 30
   rmsMinThres: 0.001
   rmsMaxThres: 0.0125
   inhaleRmsMax: 0.0045
   inhaleZcrMin: 0.035
   inhaleSpecCentroidMin: 3250
   exhaleRmsMin: 0.0025
+  exhaleRmsMax: 0
   exhaleZcrMax: 0.04
   exhaleSpecCentroidMax: 3250
   stateDelay: 30
@@ -3973,6 +3974,32 @@ MonoBehaviour:
     ZCRList: []
     SpecCentroidList: []
   exhaleParams:
+    AverageRMS: 0
+    AverageZCR: 0
+    AverageSpecCentroid: 0
+    minRMS: 0
+    maxRMS: 0
+    minZCR: 0
+    maxZCR: 0
+    minSpecCentroid: 0
+    maxSpecCentroid: 0
+    RMSList: []
+    ZCRList: []
+    SpecCentroidList: []
+  silentParams:
+    AverageRMS: 0
+    AverageZCR: 0
+    AverageSpecCentroid: 0
+    minRMS: 0
+    maxRMS: 0
+    minZCR: 0
+    maxZCR: 0
+    minSpecCentroid: 0
+    maxSpecCentroid: 0
+    RMSList: []
+    ZCRList: []
+    SpecCentroidList: []
+  speechParams:
     AverageRMS: 0
     AverageZCR: 0
     AverageSpecCentroid: 0

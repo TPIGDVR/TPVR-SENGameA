@@ -23,6 +23,7 @@ public class BreathRecorder : MonoBehaviour
     public float inhaleZcrMin = 0.08f;
     public float inhaleSpecCentroidMin = 3250;
     public float exhaleRmsMin = 0.0045f;
+    public float exhaleRmsMax;
     public float exhaleZcrMax = 0.08f;
     public float exhaleSpecCentroidMax = 3250;
 
@@ -60,7 +61,7 @@ public class BreathRecorder : MonoBehaviour
     [ContextMenu("Calibrate")]
     async void CalibrateBreathSettings()
     {
-        // settings = await calibrator.BeginCalibrating();
+        settings = await calibrator.BeginCalibrating();
         rmsMinThres = settings.rmsMinThres;
         rmsMaxThres = settings.rmsMaxThres;
         inhaleRmsMax = settings.inRMSMaxThres;
@@ -71,24 +72,25 @@ public class BreathRecorder : MonoBehaviour
         exhaleRmsMin = settings.exRMSMinThres;
         exhaleZcrMax = settings.exZCRMaxThres;
         exhaleSpecCentroidMax = settings.exSCMaxThres;
+        exhaleRmsMax = settings.exRMSMaxThres;
     }
 
     void Update()
     {
         text2.text = "rms : " + avgrms.ToString("n6");
-        text3.text = "zcr : " + avgzcr.ToString();
-        text4.text = "frq : " + avgspec.ToString();
+        text3.text = "zcr : " + avgzcr.ToString("n6");
+        text4.text = "frq : " + avgspec.ToString("n2");
         text.text = "state : " + state.ToString();
         text5.text = "prev state : " + prevState.ToString();
         text6.text = "prev state2 : " + prevState2.ToString();
         rmsBar.fillAmount = rms;
         zcrBar.fillAmount = zcr;
-        sil1.localPosition = new Vector3(sil1.localPosition.x, rmsMinThres, 0);
-        in1.localPosition = new Vector3(in1.localPosition.x, inhaleRmsMax, 0);
-        sp1.localPosition = new Vector3(sp1.localPosition.x, rmsMaxThres, 0);
-        sil2.localPosition = new Vector3(sil2.localPosition.x, 0, 0);
-        in2.localPosition = new Vector3(in2.localPosition.x, inhaleZcrMin, 0);
-        sp2.localPosition = new Vector3(sp2.localPosition.x, exhaleZcrMax, 0);
+        sil1.anchoredPosition = new Vector3(sil1.localPosition.x, rmsMinThres, 0);
+        in1.anchoredPosition = new Vector3(in1.localPosition.x, inhaleRmsMax, 0);
+        sp1.anchoredPosition = new Vector3(sp1.localPosition.x, rmsMaxThres, 0);
+        sil2.anchoredPosition = new Vector3(sil2.localPosition.x, 0, 0);
+        in2.anchoredPosition = new Vector3(in2.localPosition.x, inhaleZcrMin, 0);
+        sp2.anchoredPosition = new Vector3(sp2.localPosition.x, exhaleZcrMax, 0);
     }
 
     void OnAudioFilterRead(float[] data, int channels)
@@ -105,6 +107,7 @@ public class BreathRecorder : MonoBehaviour
         zcr = ZCR(monoData);
         float[] spectrumData = GetSpectrumData(monoData);
         specCentroid = SpectralCentroid(spectrumData, (int)sampleRate);
+        
 
         if (rms >= rmsMaxThres)
         {
@@ -114,12 +117,12 @@ public class BreathRecorder : MonoBehaviour
         {
             SwitchState(2);
         }
-        else if (rms < inhaleRmsMax && zcr > inhaleZcrMin && specCentroid > inhaleSpecCentroidMin && prevState != BreathState.Talking)
+        else if (rms < inhaleRmsMax && zcr > inhaleZcrMin && prevState != BreathState.Talking)
         {
             print("inhale");
             SwitchState(0);
         }
-        else if (rms >= exhaleRmsMin && zcr < exhaleZcrMax && specCentroid < exhaleSpecCentroidMax && prevState2 == BreathState.Inhale)
+        else if (rms >= exhaleRmsMin  && rms <= exhaleRmsMax && zcr < exhaleZcrMax && prevState2 == BreathState.Inhale)
         {
             print("exhale");
             SwitchState(1);
