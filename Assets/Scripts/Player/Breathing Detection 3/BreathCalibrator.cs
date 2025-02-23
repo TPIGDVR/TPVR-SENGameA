@@ -47,9 +47,9 @@ public class BreathCalibrator : MonoBehaviour
         await Countdown(3);
 
         instructionText.text = "Silence...";
-        // PlayAudio(silenceSample);
+        PlayAudio(silenceSample);
         await CaptureData(silentData, 5);
-        // source.Stop();
+        source.Stop();
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
         instructionText.text = "Read the incoming text out loud";
@@ -57,9 +57,9 @@ public class BreathCalibrator : MonoBehaviour
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
         instructionText.text = "When life gives you lemons, yeet them at your enemies and assert dominance. 🍋💥";
-        // PlayAudio(speechSample);
+        PlayAudio(speechSample);
         await CaptureData(speechData, 5);
-        // source.Stop();
+        source.Stop();
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
         for (int i = 0; i < calibrationAmt; i++)
@@ -69,15 +69,15 @@ public class BreathCalibrator : MonoBehaviour
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
             instructionText.text = "Inhale";
-            // PlayAudio(inhaleSample);
+            PlayAudio(inhaleSample);
             await CaptureData(inhaleData, inhaleDuration);
-            // source.Stop();
+            source.Stop();
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
             instructionText.text = "Exhale";
-            // PlayAudio(exhaleSample);
+            PlayAudio(exhaleSample);
             await CaptureData(exhaleData, exhaleDuration);
-            // source.Stop();
+            source.Stop();
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
         }
 
