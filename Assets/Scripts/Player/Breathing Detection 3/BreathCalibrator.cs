@@ -47,9 +47,9 @@ public class BreathCalibrator : MonoBehaviour
         await Countdown(3);
 
         instructionText.text = "Silence...";
-        PlayAudio(silenceSample);
+        // PlayAudio(silenceSample);
         await CaptureData(silentData, 5);
-        source.Stop();
+        // source.Stop();
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
         instructionText.text = "Read the incoming text out loud";
@@ -57,9 +57,9 @@ public class BreathCalibrator : MonoBehaviour
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
         instructionText.text = "When life gives you lemons, yeet them at your enemies and assert dominance. 🍋💥";
-        PlayAudio(speechSample);
+        // PlayAudio(speechSample);
         await CaptureData(speechData, 5);
-        source.Stop();
+        // source.Stop();
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
         for (int i = 0; i < calibrationAmt; i++)
@@ -69,15 +69,15 @@ public class BreathCalibrator : MonoBehaviour
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
             instructionText.text = "Inhale";
-            PlayAudio(inhaleSample);
+            // PlayAudio(inhaleSample);
             await CaptureData(inhaleData, inhaleDuration);
-            source.Stop();
+            // source.Stop();
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
             instructionText.text = "Exhale";
-            PlayAudio(exhaleSample);
+            // PlayAudio(exhaleSample);
             await CaptureData(exhaleData, exhaleDuration);
-            source.Stop();
+            // source.Stop();
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
         }
 
@@ -100,7 +100,7 @@ public class BreathCalibrator : MonoBehaviour
             inZCRMaxThres = inhaleParams.maxZCR,
 
             //being used
-            inZCRMinThres = inhaleParams.minZCR, //zcr needs to be higher than silence
+            inZCRMinThres = (inhaleParams.AverageZCR + exhaleParams.AverageZCR) / 2 , //zcr needs to be higher than silence
 
             inSCMaxThres = inhaleParams.maxSpecCentroid,
             inSCMinThres = inhaleParams.minSpecCentroid,
@@ -109,18 +109,18 @@ public class BreathCalibrator : MonoBehaviour
             exRMSMaxThres = (exhaleParams.maxRMS + speechParams.AverageRMS) / 2,
 
             //being used
-            exRMSMinThres = (exhaleParams.minRMS + silentParams.AverageRMS) / 2,
-            exZCRMaxThres = (exhaleParams.maxZCR + speechParams.AverageZCR) / 2,
+            exRMSMinThres = (exhaleParams.AverageRMS + inhaleParams.AverageRMS) / 2,
+            exZCRMaxThres = (exhaleParams.maxZCR + inhaleParams.AverageZCR) / 2,
 
 
-            exZCRMinThres = exhaleParams.minZCR,
+            exZCRMinThres = (speechParams.AverageZCR + exhaleParams.AverageZCR) / 2,
             exSCMaxThres = exhaleParams.maxSpecCentroid,
             exSCMinThres = exhaleParams.minSpecCentroid,
 
             //being used
             //minimum value before needing to activate detection
-            rmsMinThres = (silentParams.AverageRMS + (inhaleParams.AverageRMS + inhaleParams.minRMS) / 2) / 2, //get the inbetween value of silence and inhale
-            rmsMaxThres = (speechParams.AverageRMS + exhaleParams.AverageRMS) / 2, //get the inbetween value of speech and exhale
+            rmsMinThres = (silentParams.AverageRMS + inhaleParams.AverageRMS) / 2, //get the inbetween value of silence and inhale
+            rmsMaxThres = (speechParams.AverageRMS), //get the inbetween value of speech and exhale
         };
 
         // recorder.settings = settings;
@@ -163,8 +163,23 @@ public class BreathCalibrator : MonoBehaviour
             float[] spec = data.SpectrumData;
 
             GetParameters(pcm, spec, out float rms, out float zcr, out float specCentroid, rmsList, zcrList, specCentroidList,isSilent,isExhale);
+            // totalRMS += rms;
+            // totalZCR += zcr;
+            // totalSpecCentroid += specCentroid;
+        }
+
+        foreach (var rms in rmsList)
+        {
             totalRMS += rms;
+        }
+
+        foreach (var zcr in zcrList)
+        {
             totalZCR += zcr;
+        }
+
+        foreach (var specCentroid in specCentroidList)
+        {
             totalSpecCentroid += specCentroid;
         }
 
@@ -191,8 +206,8 @@ public class BreathCalibrator : MonoBehaviour
     {
         rms = RMS(pcm);
         zcr = ZCR(pcm);
-        specCentroid = SpectralCentroid(spec, 44100);
-        float rmsThres = isSilent? 0 : silentParams.AverageRMS;
+        specCentroid = SpectralCentroid(spec, (int)recorder.sampleRate);
+        float rmsThres = isSilent? 0 : silentParams.maxRMS;
         float zcrThres = isSilent? 0 : (silentParams.minZCR + silentParams.AverageZCR) / 2;
         bool rmsCon = rms > rmsThres;
         bool zcrCon = zcr > zcrThres;
@@ -202,9 +217,12 @@ public class BreathCalibrator : MonoBehaviour
             rmsCon = rms > rmsThres && rms < speechParams.maxRMS;
         }
 
-        if (rmsCon) rmsList.Add(rms);
-        if (zcrCon) zcrList.Add(zcr);
-        if (specCentroid > 0) specCentroidList.Add(specCentroid);
+        if (rmsCon)
+        {
+            rmsList.Add(rms);
+            zcrList.Add(zcr);
+            specCentroidList.Add(specCentroid);
+        }
     }
 
     #region Debug

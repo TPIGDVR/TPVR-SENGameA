@@ -40,7 +40,7 @@ public class BreathRecorder : MonoBehaviour
         mic.clip = Microphone.Start(null, true, 1, (int)sampleRate);
         // mic.clip = testClip;
         // mic.spatialBlend = 0;
-        // while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
+        while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
         mic.Play();
 
     }
@@ -88,10 +88,10 @@ public class BreathRecorder : MonoBehaviour
         zcr = ZCR(monoData);
         float[] spectrumData = GetSpectrumData(monoData);
         specCentroid = SpectralCentroid(spectrumData, (int)sampleRate);
-        bool isTalking = rms >= settings.rmsMaxThres;
+        bool isTalking = rms >= settings.rmsMaxThres && zcr < settings.exZCRMinThres;
         bool isSilent = rms <= settings.rmsMinThres;
         bool isInhale = rms < settings.inRMSMaxThres  && zcr > settings.inZCRMinThres && prevState != BreathState.Talking;
-        bool isExhale = rms >= settings.exRMSMinThres && rms <= settings.exRMSMaxThres && zcr < settings.exZCRMaxThres && prevState2 == BreathState.Inhale;
+        bool isExhale = rms >= settings.exRMSMinThres && rms < settings.exRMSMaxThres && zcr > settings.exZCRMinThres && prevState2 == BreathState.Inhale;
 
         if (isTalking)
         {
