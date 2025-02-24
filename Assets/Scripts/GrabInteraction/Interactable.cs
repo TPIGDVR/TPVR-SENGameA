@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
+    float elapseTime = 0f;
+    [SerializeField] float equipingDuration = 5f;
+
+
     public float equipingDistance = 1f;
     public GameObject mesh;
     public Rigidbody rb;
@@ -12,18 +16,34 @@ public class Interactable : MonoBehaviour
     [SerializeField] EquipDetection currentEquipDetection;
 
     //to be called by the eqipment detection
+
+    Coroutine cooldown;
+
     public void Equip()
     {
         mesh.SetActive(false);
         rb.isKinematic = true;
         OnEquip();
+
+        //restart the cooldown
+        cooldown = StartCoroutine(StartCoolDown());
     }
 
     public void Unequip()
     {
-        mesh.SetActive(true);
-        rb.isKinematic = false;
-        currentEquipDetection = null;
+        if (elapseTime >= equipingDuration)
+        {
+            //hide the item
+            transform.parent.gameObject.SetActive(false);
+        }
+        else
+        {
+            mesh.SetActive(true);
+            rb.isKinematic = false;
+            currentEquipDetection = null;
+            //make sure to stop the cooldown
+            StopCoroutine(cooldown);
+        }
         OnUnEquip();
     }
 
@@ -81,14 +101,25 @@ public class Interactable : MonoBehaviour
     {
         descriptionUI.gameObject.SetActive(false);
     }
+
     protected virtual void OnEquip()
     {
-
     }
 
     protected virtual void OnUnEquip() 
     { 
-        
+    }
+    IEnumerator StartCoolDown()
+    {
+        while (elapseTime < equipingDuration)
+        {
+            yield return null;
+            elapseTime += Time.deltaTime;
+            print("counting");
+        }
+
+        //force to be remove from player
+        RemoveEquipmentDetection();
     }
 
     private void OnDrawGizmosSelected()
