@@ -6,17 +6,17 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
     float elapseTime = 0f;
+    [Header("Timer")]
     [SerializeField] float equipingDuration = 5f;
 
-
+    [Header("Settings")]
     public float equipingDistance = 1f;
     public GameObject mesh;
     public Rigidbody rb;
     [SerializeField] private GameObject descriptionUI;
     [SerializeField] EquipDetection currentEquipDetection;
 
-    //to be called by the eqipment detection
-
+    //To hold a reference to the coroutine.
     Coroutine cooldown;
 
     public void Equip()
@@ -54,25 +54,13 @@ public class Interactable : MonoBehaviour
         RemoveEquipmentDetection();
     }
 
-    private void RemoveEquipmentDetection()
-    {
-        //unequip the object from the current equip detection
-        if (currentEquipDetection != null) 
-        {
-            print("remove current equip detection from list");
-            currentEquipDetection.UnequipCurrentEquipment();
-            currentEquipDetection = null;
-        }
-    }
-
+    
     public void UnGrab()
     {
         //try to find the equipment detection
         var colliders = Physics.OverlapSphere(transform.position, equipingDistance);
-        print($"Colliders found with count {colliders.Length}");
         foreach(var collider in colliders)
         {
-            print($"{collider.name} with tag {collider.tag} {collider.gameObject.name}");
             if(collider.tag == "Player Head")
             {
                 //after finding it, equip it and then stop it
@@ -84,22 +72,31 @@ public class Interactable : MonoBehaviour
                 }
             }
         }
-        print("unequiping");
 
         //else then
         rb.isKinematic = false;
         mesh.SetActive(true);
     }
 
-
-    public void OnSet()
+    public void OnHover()
     {
         descriptionUI.gameObject.SetActive(true);
     }
     
-    public void OnUnSet()
+    public void OnUnhover()
     {
         descriptionUI.gameObject.SetActive(false);
+    }
+    
+    private void RemoveEquipmentDetection()
+    {
+        //unequip the object from the current equip detection
+        if (currentEquipDetection != null) 
+        {
+            print("remove current equip detection from list");
+            currentEquipDetection.UnequipCurrentEquipment();
+            currentEquipDetection = null;
+        }
     }
 
     protected virtual void OnEquip()

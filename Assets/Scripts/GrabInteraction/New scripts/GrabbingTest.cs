@@ -36,7 +36,7 @@ public class GrabbingTest : MonoBehaviour
         {
             print($"Setting {interactable.gameObject.name}");
 
-            interactable.OnSet();
+            interactable.OnHover();
         }
     }
     
@@ -46,7 +46,7 @@ public class GrabbingTest : MonoBehaviour
         {
             print($"Setting {interactable.gameObject.name}");
 
-            interactable.OnUnSet();
+            interactable.OnUnhover();
         }
     }
     
