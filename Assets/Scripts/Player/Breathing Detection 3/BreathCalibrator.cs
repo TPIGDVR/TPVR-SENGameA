@@ -123,7 +123,7 @@ public class BreathCalibrator : MonoBehaviour
             rmsMaxThres = (speechParams.AverageRMS), //get the inbetween value of speech and exhale
         };
 
-        // recorder.settings = settings;
+        recorder.settings = settings;
         return settings;
     }
 
