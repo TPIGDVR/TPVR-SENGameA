@@ -62,8 +62,6 @@ public class BreathRecorder : MonoBehaviour
     void OnAudioFilterRead(float[] data, int channels)
     {
         //if not active then ignore.
-        if (IsActive) return;
-
         float[] monoData = new float[data.Length / channels];
         for (int i = 0; i < data.Length; i += channels)
         {
@@ -80,6 +78,7 @@ public class BreathRecorder : MonoBehaviour
         bool isSilent = rms <= settings.rmsMinThres;
         bool isInhale = rms < settings.inRMSMaxThres && zcr > settings.inZCRMinThres && prevState != BreathState.Talking;
         bool isExhale = rms >= settings.exRMSMinThres && rms < settings.exRMSMaxThres && zcr > settings.exZCRMinThres && prevState2 == BreathState.Inhale;
+
 
         if (isTalking)
         {

@@ -198,6 +198,8 @@ public class BreathCalibrator : MonoBehaviour
             totalSpecCentroid += specCentroid;
         }
 
+        print($"rms list: {rmsList.Count}, zcr list: {zcrList.Count}, specCentroid list: {specCentroidList.Count}");
+
         return new AudioDataParameters
         {
             AverageRMS = totalRMS / rmsList.Count,

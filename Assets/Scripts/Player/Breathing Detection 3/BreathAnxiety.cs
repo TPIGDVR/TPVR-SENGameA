@@ -104,6 +104,7 @@ public class BreathAnxiety : MonoBehaviour
 
     public void ActivateBreathingPanel()
     {
+        print("Breathing Panel Activated");
         UpdateFillColor(0);
         breathingPanel.SetActive(true);
     }
