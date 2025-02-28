@@ -57,7 +57,7 @@ public class BreathCalibrator : MonoBehaviour
 
         instructionText.text = "Silence...";
         // PlayAudio(silenceSample);
-        await CaptureData(silentData, 5);
+        await CaptureData(silentData, 2);
         // source.Stop();
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
@@ -67,7 +67,7 @@ public class BreathCalibrator : MonoBehaviour
 
         instructionText.text = "When life gives you lemons, yeet them at your enemies and assert dominance. 🍋💥";
         // PlayAudio(speechSample);
-        await CaptureData(speechData, 5);
+        await CaptureData(speechData, 2);
         // source.Stop();
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 

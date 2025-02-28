@@ -82,7 +82,7 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         em_p.AddListener(PlayerEvents.RESTART, Respawn);
         //dialogue events
         em_d.AddListener(DialogEvents.ACTIVATE_HEARTRATE, ActivateHeartRateMechanic);
-        em_d.AddListener(DialogEvents.ACTIVATE_BREATHING, ActivateBreathingMechanic);
+        //em_d.AddListener(DialogEvents.ACTIVATE_BREATHING, ActivateBreathingMechanic);
         //level events
         em_l.AddListener<ObjectiveName>(LevelEvents.OBJECTIVE_PROGRESSED, ProgressObjective);
         em_l.AddListener<Room>(LevelEvents.ENTER_NEW_ROOM, SwitchCurrentRoom);        
@@ -127,10 +127,10 @@ public class Player : MonoBehaviour, IScriptLoadQueuer
         HeartUI.SetActive(true);
     }
 
-    void ActivateBreathingMechanic()
-    {
-        BreathDetection.SetActive(true);
-    }
+    //void ActivateBreathingMechanic()
+    //{
+    //    BreathDetection.SetActive(true);
+    //}
 
     void DeactivateAllMechanic()
     {
