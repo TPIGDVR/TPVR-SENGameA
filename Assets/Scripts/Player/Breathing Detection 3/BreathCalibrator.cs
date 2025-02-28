@@ -21,8 +21,12 @@ public class BreathCalibrator : MonoBehaviour
     List<AudioData> speechData = new();
 
     [Header("References")]
+    public GameObject calibratorPanel;
     public TMP_Text instructionText;
     public TMP_Text timerText;
+    //for the UI for breathing.
+    public BreathAnxiety breathingPanel;
+
 
     [Header("Data")]
     public AudioDataParameters inhaleParams;
@@ -38,6 +42,11 @@ public class BreathCalibrator : MonoBehaviour
 
     public async Task<BreathSettings> BeginCalibrating()
     {
+        recorder.IsActive = false;
+
+        //show the calibrator ui
+        calibratorPanel.SetActive(true);
+
         inhaleData = new();
         exhaleData = new();
         instructionText.text = "Beginning Calibration...";
@@ -89,6 +98,11 @@ public class BreathCalibrator : MonoBehaviour
         exhaleParams = GetAudioParameters(exhaleData, isExhale : true);
 
 
+        //hide the calibrator UI.
+        calibratorPanel.SetActive(false);
+
+        //display the breathing UI.
+        breathingPanel.ActivateBreathingPanel();
 
         BreathSettings settings = new()
         {
@@ -123,6 +137,7 @@ public class BreathCalibrator : MonoBehaviour
             rmsMaxThres = (speechParams.AverageRMS), //get the inbetween value of speech and exhale
         };
 
+        recorder.IsActive = true;
         // recorder.settings = settings;
         return settings;
     }
@@ -229,6 +244,9 @@ public class BreathCalibrator : MonoBehaviour
     AudioSource source;
     void Start()
     {
+        //Hide the panel.
+        calibratorPanel.SetActive(false);
+
         source = GetComponent<AudioSource>();
         source.loop = true;
        

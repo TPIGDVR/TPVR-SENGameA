@@ -73,7 +73,6 @@ namespace PopUpAssistance
 
         private void OnDrawGizmosSelected()
         {
-            print("running");
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(_PlayerPosition.transform.position, maxDistance);
             Gizmos.color = Color.white;

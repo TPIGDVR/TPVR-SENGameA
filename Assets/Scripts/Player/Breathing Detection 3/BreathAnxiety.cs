@@ -14,7 +14,6 @@ public class BreathAnxiety : MonoBehaviour
     public float maxBreathTime = 1.75f;
     public float breathTime = 0;
     public float minInhaleTime = 0.5f;
-    
 
     float inhaleTime = 0;
     float exhaleTime = 0;
@@ -41,6 +40,7 @@ public class BreathAnxiety : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!breath.IsActive) return;
         UpdateText();
         UpdateFillColor(breathTime / maxBreathTime);
 
@@ -56,12 +56,14 @@ public class BreathAnxiety : MonoBehaviour
 
         if (hasFinishedInhale && hasFinishedExhale)
         {
+            //reset all the values
             hasFinishedInhale = false;
             hasFinishedExhale = false;
             isInhaling = false;
             isExhaling = false;
             onCooldown = true;
 
+            //reduce anxiety.
             float percentage = Mathf.InverseLerp(0, 2, inhaleTime / maxBreathTime + exhaleTime / maxBreathTime);
             breathTime = 0;
             em.TriggerEvent(PlayerEvents.ANXIETY_BREATHE, percentage);

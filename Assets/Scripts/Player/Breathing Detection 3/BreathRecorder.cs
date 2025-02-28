@@ -15,7 +15,6 @@ public class BreathRecorder : MonoBehaviour
     public int historyBufferSize;
     Queue<AudioChunk> audioHistory = new Queue<AudioChunk>();
 
-
     [Header("Breath Settings")]
     public BreathSettings settings;
 
@@ -35,14 +34,10 @@ public class BreathRecorder : MonoBehaviour
     {
         mic = gameObject.AddComponent<AudioSource>();
         mic.loop = true;
-        //mic.mute = true;
 
         mic.clip = Microphone.Start(null, true, 1, (int)sampleRate);
-        // mic.clip = testClip;
-        // mic.spatialBlend = 0;
         while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
         mic.Play();
-
     }
 
     void Awake()
@@ -50,32 +45,25 @@ public class BreathRecorder : MonoBehaviour
         RetrieveMic();
     }
 
+    void Start()
+    {
+        EventSystem.dialog.AddListener(DialogEvents.ACTIVATE_BREATHING, CalibrateBreathSettings);
+    }
+
+
     [ContextMenu("Calibrate")]
     async void CalibrateBreathSettings()
     {
+        print("calibrating");
+        EventSystem.dialog.RemoveListener(DialogEvents.ACTIVATE_BREATHING, CalibrateBreathSettings);
         settings = await calibrator.BeginCalibrating();
-    }
-
-    void Update()
-    {
-        text2.text = "rms : " + avgrms.ToString("n6");
-        text3.text = "zcr : " + avgzcr.ToString("n6");
-        text4.text = "frq : " + avgspec.ToString("n2");
-        text.text = "state : " + state.ToString();
-        text5.text = "prev state : " + prevState.ToString();
-        text6.text = "prev state2 : " + prevState2.ToString();
-        rmsBar.fillAmount = rms;
-        zcrBar.fillAmount = zcr;
-        // sil1.anchoredPosition = new Vector3(sil1.localPosition.x, rmsMinThres, 0);
-        // in1.anchoredPosition = new Vector3(in1.localPosition.x, inhaleRmsMax, 0);
-        // sp1.anchoredPosition = new Vector3(sp1.localPosition.x, rmsMaxThres, 0);
-        // sil2.anchoredPosition = new Vector3(sil2.localPosition.x, 0, 0);
-        // in2.anchoredPosition = new Vector3(in2.localPosition.x, inhaleZcrMin, 0);
-        // sp2.anchoredPosition = new Vector3(sp2.localPosition.x, exhaleZcrMax, 0);
     }
 
     void OnAudioFilterRead(float[] data, int channels)
     {
+        //if not active then ignore.
+        if (IsActive) return;
+
         float[] monoData = new float[data.Length / channels];
         for (int i = 0; i < data.Length; i += channels)
         {
@@ -90,7 +78,7 @@ public class BreathRecorder : MonoBehaviour
         specCentroid = SpectralCentroid(spectrumData, (int)sampleRate);
         bool isTalking = rms >= settings.rmsMaxThres && zcr < settings.exZCRMinThres;
         bool isSilent = rms <= settings.rmsMinThres;
-        bool isInhale = rms < settings.inRMSMaxThres  && zcr > settings.inZCRMinThres && prevState != BreathState.Talking;
+        bool isInhale = rms < settings.inRMSMaxThres && zcr > settings.inZCRMinThres && prevState != BreathState.Talking;
         bool isExhale = rms >= settings.exRMSMinThres && rms < settings.exRMSMaxThres && zcr > settings.exZCRMinThres && prevState2 == BreathState.Inhale;
 
         if (isTalking)
@@ -103,15 +91,12 @@ public class BreathRecorder : MonoBehaviour
         }
         else if (isInhale)
         {
-            print("inhale");
             SwitchState(0);
         }
         else if (isExhale)
         {
-            print("exhale");
             SwitchState(1);
         }
-
 
         AddToAudioHistory(monoData);
         captureData = new AudioData
@@ -126,7 +111,6 @@ public class BreathRecorder : MonoBehaviour
 
     void AddToAudioHistory(float[] data)
     {
-        //removes oldest entry
         if (audioHistory.Count >= historyBufferSize)
         {
             while (audioHistory.Count > historyBufferSize)
@@ -152,7 +136,6 @@ public class BreathRecorder : MonoBehaviour
 
     BreathState SpeculatePreviousState()
     {
-        //gets the average of last few samples to determine the state
         int[] stateCount = new int[4];
         float rms = 0;
         float zcr = 0;
@@ -161,7 +144,7 @@ public class BreathRecorder : MonoBehaviour
         foreach (var entry in audioHistory)
         {
             stateCount[(int)entry.state]++;
-            
+
             rms += entry.rms;
             zcr += entry.zcr;
             spec += entry.specCentroid;
@@ -203,20 +186,6 @@ public class BreathRecorder : MonoBehaviour
     {
         Microphone.End(null);
     }
-
-    #region Test
-    [Header("Testing")]
-    public TMP_Text text;
-    public TMP_Text text2;
-    public TMP_Text text3;
-    public TMP_Text text4;
-    public TMP_Text text5;
-    public TMP_Text text6;
-    public Image rmsBar;
-    public Image zcrBar;
-    public RectTransform sil1, in1, sp1, sil2, in2, sp2;
-    #endregion
-
 }
 
 public enum SampleSize
