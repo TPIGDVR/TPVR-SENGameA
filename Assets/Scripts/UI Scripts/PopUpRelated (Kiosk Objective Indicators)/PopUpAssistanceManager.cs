@@ -19,12 +19,13 @@ namespace PopUpAssistance
         float maxSqrDistance;
         private void Start()
         {
-            existingPopUp = GameObject.FindObjectsOfType<PopUp>();
+            existingPopUp = FindObjectsOfType<PopUp>();
             poolPopDisplays = new PoolingPatternBasic(popUpPrefabs);
             poolPopDisplays.InitWithParent(10, transform);
 
             minSqrDistance = minDistance * minDistance;
             maxSqrDistance = maxDistance * maxDistance;
+            print($"minSqrDistance: {minSqrDistance}, maxSqrDistance: {maxSqrDistance}. data {existingPopUp.Length}");
         }
 
         private void Update()
@@ -72,10 +73,11 @@ namespace PopUpAssistance
 
         private void OnDrawGizmosSelected()
         {
+            print("running");
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(_PlayerPosition.transform.position, maxDistance);
+            Gizmos.DrawSphere(_PlayerPosition.transform.position, maxDistance);
             Gizmos.color = Color.white;
-            Gizmos.DrawWireSphere(_PlayerPosition.transform.position, minDistance);
+            Gizmos.DrawSphere(_PlayerPosition.transform.position, minDistance);
         }
 
     }
