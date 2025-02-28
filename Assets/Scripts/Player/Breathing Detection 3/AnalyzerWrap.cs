@@ -7,6 +7,7 @@ public class AnalyzerWrap : MonoBehaviour
 {
     public List<AudioClip> InhaleClips;
     public List<AudioClip> ExhaleClips;
+    public List<AudioClip> SpeechClips;
     string SystemInformation;
     public LineRenderer lineRenderer;
 
@@ -20,7 +21,7 @@ public class AnalyzerWrap : MonoBehaviour
 
         var b = InhaleClips[0];
         print($"Sample Rate: {b.frequency}, {b.samples / b.length},{AudioSettings.outputSampleRate}");
-        
+
         AudioAnalyzer.Initialize(InhaleClips);
         var res = AudioAnalyzer.AnalyzeData();
 
@@ -30,6 +31,11 @@ public class AnalyzerWrap : MonoBehaviour
         var res2 = AudioAnalyzer.AnalyzeData();
 
         WriteResultsToFile("Exhale", ResultToString(res2));
+
+        AudioAnalyzer.Initialize(SpeechClips);
+        var res3 = AudioAnalyzer.AnalyzeData();
+
+        WriteResultsToFile("Speech", ResultToString(res3));
     }
 
 

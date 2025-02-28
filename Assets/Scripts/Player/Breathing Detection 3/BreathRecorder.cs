@@ -1,32 +1,48 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using static AudioAnalyzer;
 
 public class BreathRecorder : MonoBehaviour
 {
+    public bool IsActive;
     [Header("Audio Settings")]
     public AudioSource mic;
-    public FFTWindow window;
     public SampleRate sampleRate;
-    public SampleSize sampleSize;
-    public float gain;
 
-    float[] samples;
-    float[] filteredSample;
+    public int historyBufferSize;
+    Queue<AudioChunk> audioHistory = new Queue<AudioChunk>();
+
+
+    [Header("Breath Settings")]
+    public BreathSettings settings;
+
+    float rms;
+    float zcr;
+    float specCentroid;
+    public int stateDelay;
+    public int delayCount;
+
+    public BreathState state = BreathState.Idle;
+    BreathState prevState;
+    BreathState prevState2; //non-idle state
+    public BreathCalibrator calibrator;
+    public AudioData captureData;
 
     void RetrieveMic()
     {
         mic = gameObject.AddComponent<AudioSource>();
         mic.loop = true;
-        // mic.mute = true;
+        //mic.mute = true;
 
-        // mic.clip = Microphone.Start(null, true, 1, (int)sampleRate);
-        mic.clip = testClip;
-        mic.spatialBlend = 0;
-        // while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
+        mic.clip = Microphone.Start(null, true, 1, (int)sampleRate);
+        // mic.clip = testClip;
+        // mic.spatialBlend = 0;
+        while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
         mic.Play();
+
     }
 
     void Awake()
@@ -34,268 +50,152 @@ public class BreathRecorder : MonoBehaviour
         RetrieveMic();
     }
 
-    void Update()
+    [ContextMenu("Calibrate")]
+    async void CalibrateBreathSettings()
     {
-        CreateAudioClip();
-        VisualizeSpectrum();
-        if (isTalk)
-        {
-            text.text = "Talking";
-        }
-        else
-        {
-            text.text = "Silent";
-        }
+        settings = await calibrator.BeginCalibrating();
     }
 
-    float[] originalData;
-
-    [Header("Time Domain")]
-    [Range(0, 1)]
-    public float inhaleThreshold;
-    [Range(0, 1)]
-    public float exhaleThreshold;
-    public bool isInhale, isExhale;
-    //biquad filter parameters
-    [Range(0, 5000)]
-    public float FilterFrequency;
-    [Range(0, 5)]
-    public float Q; //the lower the Q, the wider the bandwidth
-
-    //envelope smoothing
-    [Range(0, 1)]
-    public float smoothingFactor;
-
-
-    float a0, a1, a2, b0, b1, b2; //biquad filter coefficients
-    //filter states
-    float x1, x2, y1, y2;
-    public bool filter, full, envelopee;
-    public float rmsThreshold;
-
-    float prevSample;
-    float[] derivatives;
-
-    void GetFilterCoefficients()
+    void Update()
     {
-        float omega = 2.0f * Mathf.PI * FilterFrequency / (int)sampleRate;
-        float alpha = Mathf.Sin(omega) * (Q / 2.0f);
-
-        b0 = alpha;
-        b1 = 0;
-        b2 = -alpha;
-        a0 = 1 + alpha;
-        a1 = -2 * Mathf.Cos(omega);
-        a2 = 1 - alpha;
-
-        // Normalize coefficients
-        b0 /= a0;
-        b1 /= a0;
-        b2 /= a0;
-        a1 /= a0;
-        a2 /= a0;
+        text2.text = "rms : " + avgrms.ToString("n6");
+        text3.text = "zcr : " + avgzcr.ToString("n6");
+        text4.text = "frq : " + avgspec.ToString("n2");
+        text.text = "state : " + state.ToString();
+        text5.text = "prev state : " + prevState.ToString();
+        text6.text = "prev state2 : " + prevState2.ToString();
+        rmsBar.fillAmount = rms;
+        zcrBar.fillAmount = zcr;
+        // sil1.anchoredPosition = new Vector3(sil1.localPosition.x, rmsMinThres, 0);
+        // in1.anchoredPosition = new Vector3(in1.localPosition.x, inhaleRmsMax, 0);
+        // sp1.anchoredPosition = new Vector3(sp1.localPosition.x, rmsMaxThres, 0);
+        // sil2.anchoredPosition = new Vector3(sil2.localPosition.x, 0, 0);
+        // in2.anchoredPosition = new Vector3(in2.localPosition.x, inhaleZcrMin, 0);
+        // sp2.anchoredPosition = new Vector3(sp2.localPosition.x, exhaleZcrMax, 0);
     }
 
     void OnAudioFilterRead(float[] data, int channels)
     {
-        GetFilterCoefficients();
-
         float[] monoData = new float[data.Length / channels];
         for (int i = 0; i < data.Length; i += channels)
         {
             monoData[i / channels] = (data[i] + (channels > 1 ? data[i + 1] : 0)) * 0.5f;
         }
 
+        prevState = SpeculatePreviousState();
+        delayCount++;
+        rms = RMS(monoData);
+        zcr = ZCR(monoData);
+        float[] spectrumData = GetSpectrumData(monoData);
+        specCentroid = SpectralCentroid(spectrumData, (int)sampleRate);
+        bool isTalking = rms >= settings.rmsMaxThres && zcr < settings.exZCRMinThres;
+        bool isSilent = rms <= settings.rmsMinThres;
+        bool isInhale = rms < settings.inRMSMaxThres  && zcr > settings.inZCRMinThres && prevState != BreathState.Talking;
+        bool isExhale = rms >= settings.exRMSMinThres && rms < settings.exRMSMaxThres && zcr > settings.exZCRMinThres && prevState2 == BreathState.Inhale;
 
-        originalData = new float[monoData.Length]; //remove when not debugging
-        monoData.CopyTo(originalData, 0); //to be read in visualizer
-
-        float envelope = 0;
-        derivatives = new float[monoData.Length];
-
-        for (int i = 0; i < monoData.Length; i++)
+        if (isTalking)
         {
-            //convert stereo to mono
-            float sample = monoData[i];
+            SwitchState(3);
+        }
+        else if (isSilent)
+        {
+            SwitchState(2);
+        }
+        else if (isInhale)
+        {
+            print("inhale");
+            SwitchState(0);
+        }
+        else if (isExhale)
+        {
+            print("exhale");
+            SwitchState(1);
+        }
 
-            //gain step
-            sample = ApplyGain(sample);
-            //apply biquad filter
-            if (filter) sample = ApplyBiquadFilter(sample);
-            //apply full wave rectification
-            if (full) sample = ApplyFullWaveRectification(sample);
 
-            //apply envelope smoothing
-            if (envelopee)
+        AddToAudioHistory(monoData);
+        captureData = new AudioData
+        {
+            PCMData = monoData,
+            SpectrumData = spectrumData,
+            SampleRate = (int)sampleRate,
+            Channels = channels,
+            Samples = monoData.Length
+        };
+    }
+
+    void AddToAudioHistory(float[] data)
+    {
+        //removes oldest entry
+        if (audioHistory.Count >= historyBufferSize)
+        {
+            while (audioHistory.Count > historyBufferSize)
             {
-                envelope = ApplyEnvelopeSmoothing(envelope, sample);
-                sample = envelope;
+                audioHistory.Dequeue();
             }
-
-            //detecting derivative
-            derivatives[i] = sample - prevSample;
-            prevSample = sample;
-
-            //assign back to be read
-            monoData[i] = sample;
         }
 
-        float rms = ComputeRMS(monoData);
-        isTalk = rms > rmsThreshold;
-
-        if (!isTalk)
+        AudioChunk chunk = new AudioChunk
         {
-            DetectBreathing();
-        }
+            rms = rms,
+            zcr = zcr,
+            specCentroid = specCentroid,
+            data = data,
+            state = state
+        };
+        audioHistory.Enqueue(chunk);
+    }
 
-        //for visualization
-        lock (audioBuffer)
+    float avgrms = 0;
+    float avgzcr = 0;
+    float avgspec = 0;
+
+    BreathState SpeculatePreviousState()
+    {
+        //gets the average of last few samples to determine the state
+        int[] stateCount = new int[4];
+        float rms = 0;
+        float zcr = 0;
+        float spec = 0;
+
+        foreach (var entry in audioHistory)
         {
-            audioBuffer.AddRange(monoData);
+            stateCount[(int)entry.state]++;
+            
+            rms += entry.rms;
+            zcr += entry.zcr;
+            spec += entry.specCentroid;
         }
-        filteredSample = monoData;
-    }
+        avgrms = rms / audioHistory.Count;
+        avgzcr = zcr / audioHistory.Count;
+        avgspec = spec / audioHistory.Count;
 
-    #region Time-based filters
-    float ApplyGain(float sample)
-    {
-        return sample * gain;
-    }
-
-    float ApplyBiquadFilter(float sample)
-    {
-        float x0 = sample;  // Current input sample
-        float y0 = b0 * x0 + b1 * x1 + b2 * x2 - a1 * y1 - a2 * y2; //biquad filter equation
-        sample = y0; //store the data back
-
-        // Shift states
-        x2 = x1;
-        x1 = x0;
-        y2 = y1;
-        y1 = y0;
-
-        return sample;
-    }
-
-    float ApplyFullWaveRectification(float sample)
-    {
-        return math.abs(sample);
-    }
-
-    float ApplyEnvelopeSmoothing(float envelope, float sample)
-    {
-        return smoothingFactor * envelope + (1 - smoothingFactor) * sample;
-    }
-    #endregion
-
-    bool isTalk;
-
-    float ComputeRMS(float[] data)
-    {
-        float sum = 0;
-        for (int i = 0; i < data.Length; i++)
+        int highestCount = 0;
+        int highestCount2 = (int)prevState2;
+        for (int i = 0; i < stateCount.Length; i++)
         {
-            sum += data[i] * data[i];
+            if (stateCount[i] > stateCount[highestCount])
+            {
+                highestCount = i;
+            }
         }
-        return Mathf.Sqrt(sum / data.Length);
+        if (highestCount != 2) //if it is not idle
+        {
+            highestCount2 = highestCount;
+        }
+        prevState2 = (BreathState)highestCount2;
+        return (BreathState)highestCount;
     }
 
-    public float derivativeAvgMultiplier;
-    public int minSamplesBetweenStateChanges = 80; // Adjust as needed (depends on sample rate)
-    public int samplesSinceStateChange = 0;
-    public float derivativeAvg = 0;
-    
-    void DetectBreathing()
+    void SwitchState(int i)
     {
-        samplesSinceStateChange++;
-        float derivativeSum = 0;
-        for (int i = 1; i < derivatives.Length; i++)
-        {
-            derivativeSum += derivatives[i];
-        }
-        //get the average derivative
-        derivativeAvg = derivativeSum / derivatives.Length * derivativeAvgMultiplier;
-
-        // Prevent state changes from happening too frequently
-        if (samplesSinceStateChange < minSamplesBetweenStateChanges)
+        if (i == (int)state)
             return;
 
-        
-        if (!isInhale && derivativeAvg > inhaleThreshold)
+        if (delayCount > stateDelay)
         {
-            isInhale = true;
-            isExhale = false;
-            samplesSinceStateChange = 0;
-            Debug.Log("Inhale detected!");
-        }
-        else if (!isExhale && derivativeAvg < -exhaleThreshold)
-        {
-            isExhale = true;
-            isInhale = false;
-            samplesSinceStateChange = 0;
-            Debug.Log("Exhale detected!");
-        }
-    }
-
-    void DetectBreathing2()
-    {
-        //activation threshold
-        float rms = ComputeRMS(filteredSample);
-    }
-
-    //for debugging
-    void CreateAudioClip()
-    {
-        lock (audioBuffer)
-        {
-            if (audioBuffer.Count == 0)
-            {
-                Debug.LogWarning("No audio data collected!");
-                return;
-            }
-
-            // Convert List to array
-            float[] finalData = audioBuffer.ToArray();
-            audioBuffer.Clear(); // Clear buffer after use
-
-            // Create a new AudioClip
-            processedClip = AudioClip.Create("ProcessedAudio", finalData.Length, 1, (int)sampleRate, false);
-            processedClip.SetData(finalData, 0);
-
-            // Play the processed audio
-            audioSource.clip = processedClip;
-            audioSource.Play();
-        }
-    }
-
-    void VisualizeSpectrum()
-    {
-        if (filteredSample == null) return;
-
-        visualizer.positionCount = originalData.Length;
-        for (int i = 0; i < originalData.Length; i++)
-        {
-            visualizer.SetPosition(i, new Vector3(i * size, originalData[i] * 5, 0));
-        }
-
-        lowPassVisualizer.positionCount = filteredSample.Length;
-        for (int i = 0; i < filteredSample.Length; i++)
-        {
-            lowPassVisualizer.SetPosition(i, new Vector3(i * size, filteredSample[i] * 5, 0));
-        }
-
-
-        float freq = (float)sampleRate / 2f;
-        float[] freqSamples = new float[(int)sampleSize];
-        audioSource.GetSpectrumData(freqSamples, 1, window);
-
-        int lowBin = Mathf.CeilToInt(lowPassCutoff / freq * freqSamples.Length);
-        int highBin = Mathf.FloorToInt(highPassCutoff / freq * freqSamples.Length);
-        freqVisualizer.positionCount = lowBin - highBin;
-        for (int i = highBin; i < lowBin; i++)
-        {
-            int vizIndex = i - highBin;
-            freqVisualizer.SetPosition(vizIndex, new Vector3(vizIndex * (size + 0.01f), freqSamples[i] * freqGain, 0));
+            delayCount = 0;
+            state = (BreathState)i;
         }
     }
 
@@ -304,21 +204,18 @@ public class BreathRecorder : MonoBehaviour
         Microphone.End(null);
     }
 
-
+    #region Test
     [Header("Testing")]
-    public AudioClip testClip;
-    public float freqGain = 50;
     public TMP_Text text;
-    public AudioSource audioSource;
-    AudioClip processedClip;
-    List<float> audioBuffer = new();
-    public LineRenderer visualizer;
-    public LineRenderer lowPassVisualizer;
-    public LineRenderer freqVisualizer;
-    [Range(0, 1)]
-    public float size;
-    public float lowPassCutoff;
-    public float highPassCutoff;
+    public TMP_Text text2;
+    public TMP_Text text3;
+    public TMP_Text text4;
+    public TMP_Text text5;
+    public TMP_Text text6;
+    public Image rmsBar;
+    public Image zcrBar;
+    public RectTransform sil1, in1, sp1, sil2, in2, sp2;
+    #endregion
 
 }
 
@@ -339,4 +236,41 @@ public enum SampleRate
     _16000 = 16000,
     _44100 = 44100,
     _48000 = 48000,
+}
+
+public enum BreathState
+{
+    Inhale = 0,
+    Exhale,
+    Idle,
+    Talking
+}
+
+[Serializable]
+public struct AudioChunk
+{
+    public float rms;
+    public float zcr;
+    public float specCentroid;
+    public float[] data;
+    public BreathState state;
+}
+
+[Serializable]
+public struct BreathSettings
+{
+    public float rmsMinThres;
+    public float rmsMaxThres;
+    public float inRMSMinThres;
+    public float inRMSMaxThres;
+    public float inZCRMinThres;
+    public float inZCRMaxThres;
+    public float inSCMinThres;
+    public float inSCMaxThres;
+    public float exRMSMinThres;
+    public float exRMSMaxThres;
+    public float exZCRMinThres;
+    public float exZCRMaxThres;
+    public float exSCMinThres;
+    public float exSCMaxThres;
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -43,7 +44,7 @@ public static class AudioAnalyzer
     }
 
     //fft the current time data sets to get the frequency data
-    static float[] GetSpectrumData(float[] data)
+    public static float[] GetSpectrumData(float[] data)
     {
         int length = data.Length;
         Complex[] complexData = new Complex[length];
@@ -83,6 +84,7 @@ public static class AudioAnalyzer
         float sum = 0;
         foreach (var entry in data)
         {
+            // if (entry < 0.0005f) continue; //removed for testing?
             sum += entry * entry;
         }
         return Mathf.Sqrt(sum / data.Length);
@@ -143,7 +145,7 @@ public static class AudioAnalyzer
         {
             var specData = data.SpectrumData;
             // Normalize the result
-            centroidSum = SpectralCentroid(specData, data.SampleRate);
+            centroidSum += SpectralCentroid(specData, data.SampleRate);
         }
         return centroidSum / audioData.Count;
     }
@@ -156,7 +158,7 @@ public static class AudioAnalyzer
         for (int i = 0; i < data.Length; i++)
         {
             // Calculate the frequency of bin 'i'
-            float frequency = sampleRate;
+            float frequency = i * ((float)sampleRate / 2f) / data.Length;
             // Weighted sum of frequencies based on their magnitude
             centroid += frequency * data[i];
             totalMagnitude += data[i];
@@ -166,6 +168,7 @@ public static class AudioAnalyzer
     }
 }
 
+[Serializable]
 public struct AudioData
 {
     public float[] PCMData;
