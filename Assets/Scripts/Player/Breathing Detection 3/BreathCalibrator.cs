@@ -47,6 +47,7 @@ public class BreathCalibrator : MonoBehaviour
 
     public async Task<BreathSettings> BeginCalibrating()
     {
+        bool success = false;
         //show the calibrator ui
         calibratorPanel.SetActive(true);
 
@@ -66,35 +67,67 @@ public class BreathCalibrator : MonoBehaviour
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
         soundWaveRenderer.gameObject.SetActive(false);
 
-        instructionText.text = "Read the incoming text out loud";
-        await Countdown(3);
-        await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
-        readText.SetActive(true);
-        // PlayAudio(speechSample);
-        await CaptureData(speechData, speechDuration);
+        while (!success)
+        {
+            instructionText.text = "Read the incoming text out loud";
+            await Countdown(3);
+            await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
+
+            readText.SetActive(true);
+            // PlayAudio(speechSample);
+            success = await CaptureData(speechData, speechDuration);
+            if(!success)
+            {
+                speechData = new();
+                instructionText.text = "Please try again";
+                await Task.Delay(TimeSpan.FromSeconds(1));
+            }
+        }
+
         // source.Stop();
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
         readText.SetActive(false);
-
-        for (int i = 0; i < calibrationAmt; i++)
+        success = false;
+        int i = 0;
+        while (i < calibrationAmt && success)
         {
-            soundWaveRenderer.gameObject.SetActive(false);
+            if (i == 0)
+            {
+                inhaleData = new();
+                exhaleData = new();
+            }
+            //giving instructions
+                soundWaveRenderer.gameObject.SetActive(false);
             instructionText.text = "Get ready to inhale and exhale";
             await Countdown(3);
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
+
+            //capturing inhale
             soundWaveRenderer.gameObject.SetActive(true);
             instructionText.text = "Inhale";
-            // PlayAudio(inhaleSample);
-            await CaptureData(inhaleData, inhaleDuration);
-            // source.Stop();
+            success = await CaptureData(inhaleData, inhaleDuration);
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
+            if (!success)
+            {
+                instructionText.text = "Please try again";
+                await Task.Delay(TimeSpan.FromSeconds(1));
+                i = 0;
+                continue;
+            }
 
             instructionText.text = "Exhale";
-            // PlayAudio(exhaleSample);
-            await CaptureData(exhaleData, exhaleDuration);
-            // source.Stop();
+            success = await CaptureData(exhaleData, exhaleDuration);
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
+            if (!success)
+            {
+                instructionText.text = "Please try again";
+                await Task.Delay(TimeSpan.FromSeconds(1));
+                i = 0;
+                continue;
+            }
+
+            i++;
         }
 
         Debug.Log("Calibration complete");
@@ -103,7 +136,6 @@ public class BreathCalibrator : MonoBehaviour
         speechParams = GetAudioParameters(speechData);
         inhaleParams = GetAudioParameters(inhaleData);
         exhaleParams = GetAudioParameters(exhaleData, isExhale : true);
-
 
         //hide the calibrator UI.
         calibratorPanel.SetActive(false);
@@ -158,7 +190,7 @@ public class BreathCalibrator : MonoBehaviour
         bigTimerText.gameObject.SetActive(false);
     }
 
-    private async Task CaptureData(List<AudioData> data, float recordTime)
+    private async Task<bool> CaptureData(List<AudioData> data, float recordTime)
     {
         float time = recordTime;
 
@@ -170,8 +202,9 @@ public class BreathCalibrator : MonoBehaviour
             time -= captureInterval;
             // print(TimeSpan.FromSeconds(captureInterval).Milliseconds);
             await Task.Delay(20);
-            
         }
+
+        return data.Count != 0;
     }
 
     private AudioDataParameters GetAudioParameters(List<AudioData> dataList,bool isSilent = false,bool isExhale = false)
