@@ -15,6 +15,8 @@ public class BreathCalibrator : MonoBehaviour
     public int calibrationAmt;
     public float inhaleDuration;
     public float exhaleDuration;
+    public float speechDuration;
+    public float silenceDuration;
     List<AudioData> inhaleData = new();
     List<AudioData> exhaleData = new();
     List<AudioData> silentData = new();
@@ -23,7 +25,10 @@ public class BreathCalibrator : MonoBehaviour
     [Header("References")]
     public GameObject calibratorPanel;
     public TMP_Text instructionText;
+    public GameObject readText;
     public TMP_Text timerText;
+    public TMP_Text bigTimerText;
+    public LineRenderer soundWaveRenderer;
     //for the UI for breathing.
     public BreathAnxiety breathingPanel;
 
@@ -42,8 +47,6 @@ public class BreathCalibrator : MonoBehaviour
 
     public async Task<BreathSettings> BeginCalibrating()
     {
-        recorder.IsActive = false;
-
         //show the calibrator ui
         calibratorPanel.SetActive(true);
 
@@ -54,29 +57,33 @@ public class BreathCalibrator : MonoBehaviour
 
         instructionText.text = "Keep your environment quiet in...";
         await Countdown(3);
+        soundWaveRenderer.gameObject.SetActive(true);
 
         instructionText.text = "Silence...";
         // PlayAudio(silenceSample);
-        await CaptureData(silentData, 2);
+        await CaptureData(silentData, silenceDuration);
         // source.Stop();
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
+        soundWaveRenderer.gameObject.SetActive(false);
 
         instructionText.text = "Read the incoming text out loud";
         await Countdown(3);
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
 
-        instructionText.text = "When life gives you lemons, yeet them at your enemies and assert dominance. 🍋💥";
+        readText.SetActive(true);
         // PlayAudio(speechSample);
-        await CaptureData(speechData, 2);
+        await CaptureData(speechData, speechDuration);
         // source.Stop();
         await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
+        readText.SetActive(false);
 
         for (int i = 0; i < calibrationAmt; i++)
         {
+            soundWaveRenderer.gameObject.SetActive(false);
             instructionText.text = "Get ready to inhale and exhale";
             await Countdown(3);
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
-
+            soundWaveRenderer.gameObject.SetActive(true);
             instructionText.text = "Inhale";
             // PlayAudio(inhaleSample);
             await CaptureData(inhaleData, inhaleDuration);
@@ -137,18 +144,18 @@ public class BreathCalibrator : MonoBehaviour
             rmsMaxThres = (speechParams.AverageRMS), //get the inbetween value of speech and exhale
         };
 
-        recorder.IsActive = true;
-        // recorder.settings = settings;
         return settings;
     }
 
     private async Task Countdown(int seconds)
     {
+        bigTimerText.gameObject.SetActive(true);
         for (int i = seconds; i > 0; i--)
         {
-            timerText.text = i.ToString() + "...";
+            bigTimerText.text = i.ToString() + "...";
             await Task.Delay(1000);
         }
+        bigTimerText.gameObject.SetActive(false);
     }
 
     private async Task CaptureData(List<AudioData> data, float recordTime)
@@ -159,8 +166,11 @@ public class BreathCalibrator : MonoBehaviour
         {
             timerText.text = time.ToString("n2");
             data.Add(recorder.captureData);
+            DisplaySoundWave(recorder.captureData.PCMData);
             time -= captureInterval;
-            await Task.Delay(TimeSpan.FromSeconds(captureInterval));
+            // print(TimeSpan.FromSeconds(captureInterval).Milliseconds);
+            await Task.Delay(20);
+            
         }
     }
 
@@ -240,6 +250,24 @@ public class BreathCalibrator : MonoBehaviour
             zcrList.Add(zcr);
             specCentroidList.Add(specCentroid);
         }
+    }
+
+    void DisplaySoundWave(float[] data)
+    {    
+        soundWaveRenderer.positionCount = data.Length;
+        float multiplier = 450f /data.Length;
+        float height = 65;
+        for (int i = 0; i < data.Length; i++)
+        {
+            soundWaveRenderer.SetPosition(i, new Vector3(i * multiplier, data[i] * height, 0));
+        }
+    }
+
+    void DisplaySoundWave()
+    {
+        soundWaveRenderer.positionCount = 2;
+        soundWaveRenderer.SetPosition(0, Vector3.zero);
+        soundWaveRenderer.SetPosition(1, new(450, 0, 0));
     }
 
     #region Debug

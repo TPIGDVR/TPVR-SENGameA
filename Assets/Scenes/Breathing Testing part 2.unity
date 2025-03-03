@@ -3853,6 +3853,7 @@ GameObject:
   - component: {fileID: 1673125518}
   - component: {fileID: 1673125517}
   - component: {fileID: 1673125519}
+  - component: {fileID: 1673125520}
   m_Layer: 0
   m_Name: Breath
   m_TagString: Untagged
@@ -3902,20 +3903,6 @@ MonoBehaviour:
     Channels: 0
     Samples: 0
     Length: 0
-  text: {fileID: 1844403828}
-  text2: {fileID: 552276721}
-  text3: {fileID: 1213556620}
-  text4: {fileID: 879535970}
-  text5: {fileID: 1095009863}
-  text6: {fileID: 1648400855}
-  rmsBar: {fileID: 1973255390}
-  zcrBar: {fileID: 158263191}
-  sil1: {fileID: 1790611714}
-  in1: {fileID: 110540306}
-  sp1: {fileID: 1918420111}
-  sil2: {fileID: 1512583045}
-  in2: {fileID: 1766272707}
-  sp2: {fileID: 914083862}
 --- !u!4 &1673125518
 Transform:
   m_ObjectHideFlags: 0
@@ -3949,8 +3936,10 @@ MonoBehaviour:
   calibrationAmt: 3
   inhaleDuration: 2
   exhaleDuration: 2
+  calibratorPanel: {fileID: 1865815923}
   instructionText: {fileID: 235436489}
   timerText: {fileID: 512726992}
+  breathingPanel: {fileID: 0}
   inhaleParams:
     AverageRMS: 0
     AverageZCR: 0
@@ -4027,6 +4016,56 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3b08045d48d6aba4893acbcf2e4d8f45, type: 3}
   - {fileID: 8300000, guid: 8ed818f412c1b8940afc14798c97a673, type: 3}
   silenceSample: {fileID: 8300000, guid: b57615fdd8352ae4db989dda80c6b80a, type: 3}
+--- !u!114 &1673125520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1673125516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 164e6f9bdc7c63b45bc37f07d0f54343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breath: {fileID: 0}
+  cooldownTime: 4
+  maxBreathTime: 1.75
+  breathTime: 0
+  minInhaleTime: 0.5
+  breathingPanel: {fileID: 0}
+  breathingImage: {fileID: 0}
+  stateText: {fileID: 0}
+  breathingColorScheme:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &1697331015
 GameObject:
   m_ObjectHideFlags: 0
