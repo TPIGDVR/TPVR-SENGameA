@@ -34,7 +34,7 @@ public class BreathRecorder : MonoBehaviour
     {
         mic = gameObject.AddComponent<AudioSource>();
         mic.loop = true;
-
+        print(Microphone.devices[0]);
         mic.clip = Microphone.Start(null, true, 1, (int)sampleRate);
         while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
         mic.Play();
