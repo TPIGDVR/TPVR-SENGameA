@@ -8,6 +8,8 @@ namespace Automaton
 {
     public class BaseAutomatonBehaviour : MonoBehaviour, IScriptLoadQueuer
     {
+        [SerializeField] protected NoiseSource noise;
+        
         [SerializeField] protected AutomatonStates _state;
         protected Animator _ani;
         protected AudioSource _audio;
@@ -41,6 +43,9 @@ namespace Automaton
             _ani.SetFloat("Spd", 0);
             //then stop all the coroutine
             currentBehaviourCoroutine = null;
+
+            _audio.enabled = false;
+            noise.HideSource();
         }
 
         public void SetShow()
@@ -51,6 +56,10 @@ namespace Automaton
                 StopCoroutine(currentBehaviourCoroutine);
             }
             currentBehaviourCoroutine = StartCoroutine(Behaviour());
+            
+            //afterwards hide audiosource: to prevent too many audio source playing at once
+            _audio.enabled = true;  
+            noise.ShowSource();
         }
 
         #region INITIALIZATION
