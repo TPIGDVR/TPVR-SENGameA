@@ -55,6 +55,12 @@ public class BreathCalibrator : MonoBehaviour
 
         do
         {
+            if (doReset)
+            {
+                resetCounter = 0;
+                soundWaveRenderer.gameObject.SetActive(false);
+            }
+
             inhaleData = new();
             exhaleData = new();
             instructionText.text = "Beginning Calibration...";
