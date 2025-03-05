@@ -17,10 +17,10 @@ public class BreathCalibrator : MonoBehaviour
     public float exhaleDuration;
     public float speechDuration;
     public float silenceDuration;
-    List<AudioData> inhaleData = new();
-    List<AudioData> exhaleData = new();
-    List<AudioData> silentData = new();
-    List<AudioData> speechData = new();
+    public List<AudioData> inhaleData = new();
+    public List<AudioData> exhaleData = new();
+    public List<AudioData> silentData = new();
+    public List<AudioData> speechData = new();
 
     [Header("References")]
     public GameObject calibratorPanel;
@@ -46,6 +46,7 @@ public class BreathCalibrator : MonoBehaviour
     public AudioClip silenceSample;
     int resetCounter;
     bool doReset => resetCounter >= 3;
+
     public async Task<BreathSettings> BeginCalibrating()
     {
         bool success = false;
@@ -72,7 +73,7 @@ public class BreathCalibrator : MonoBehaviour
 
             instructionText.text = "Silence...";
             await CaptureData(silentData, silenceDuration);
-            GetAudioParameters(silentData, silentParams, isSilent: true);
+            GetAudioParameters(silentData,ref silentParams, isSilent: true);
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
             soundWaveRenderer.gameObject.SetActive(false);
 
@@ -85,7 +86,7 @@ public class BreathCalibrator : MonoBehaviour
                 readText.SetActive(true);
                 // PlayAudio(speechSample);
                 await CaptureData(speechData, speechDuration);
-                success = GetAudioParameters(speechData, speechParams);
+                success = GetAudioParameters(speechData,ref speechParams);
 
                 if (!success)
                 {
@@ -107,7 +108,7 @@ public class BreathCalibrator : MonoBehaviour
             await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
             readText.SetActive(false);
             success = false;
-            
+
             int i = 0;
             while (i < calibrationAmt || !success)
             {
@@ -129,7 +130,7 @@ public class BreathCalibrator : MonoBehaviour
                 soundWaveRenderer.gameObject.SetActive(true);
                 instructionText.text = "Inhale";
                 await CaptureData(inhaleData, inhaleDuration);
-                success = GetAudioParameters(inhaleData, inhaleParams);
+                success = GetAudioParameters(inhaleData,ref inhaleParams);
                 await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
                 if (!success)
                 {
@@ -142,7 +143,7 @@ public class BreathCalibrator : MonoBehaviour
 
                 instructionText.text = "Exhale";
                 await CaptureData(exhaleData, exhaleDuration);
-                success = GetAudioParameters(exhaleData, exhaleParams, isExhale: true);
+                success = GetAudioParameters(exhaleData,ref exhaleParams, isExhale: true);
                 await Task.Delay(TimeSpan.FromSeconds(intervalBetweenInEx));
                 if (!success)
                 {
@@ -229,11 +230,11 @@ public class BreathCalibrator : MonoBehaviour
             DisplaySoundWave(recorder.captureData.PCMData);
             time -= captureInterval;
             // print(TimeSpan.FromSeconds(captureInterval).Milliseconds);
-            await Task.Delay(20);
+            await Task.Delay(TimeSpan.FromSeconds(captureInterval));
         }
     }
 
-    private bool GetAudioParameters(List<AudioData> dataList, AudioDataParameters param, bool isSilent = false, bool isExhale = false)
+    private bool GetAudioParameters(List<AudioData> dataList,ref AudioDataParameters param, bool isSilent = false, bool isExhale = false)
     {
         List<float> rmsList = new();
         List<float> zcrList = new();
@@ -307,8 +308,13 @@ public class BreathCalibrator : MonoBehaviour
         if (isExhale)
         {
             rmsCon = rms > rmsThres && rms < speechParams.maxRMS;
-        }
 
+            if (!rmsCon)
+            {
+                print($"rms : {rms.ToString("n6")} is not within the range of {rmsThres.ToString("n6")} and {speechParams.maxRMS.ToString("n6")}");
+            }
+        }
+        
         if (rmsCon)
         {
             rmsList.Add(rms);
@@ -333,6 +339,11 @@ public class BreathCalibrator : MonoBehaviour
         soundWaveRenderer.positionCount = 2;
         soundWaveRenderer.SetPosition(0, Vector3.zero);
         soundWaveRenderer.SetPosition(1, new(450, 0, 0));
+    }
+
+    void Update()
+    {
+        //run a timer here
     }
 
     #region Debug
