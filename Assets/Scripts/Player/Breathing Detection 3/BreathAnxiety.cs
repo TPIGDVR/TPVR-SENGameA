@@ -40,7 +40,6 @@ public class BreathAnxiety : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!breath.IsActive) return;
         UpdateText();
         UpdateFillColor(breathTime / maxBreathTime);
 
