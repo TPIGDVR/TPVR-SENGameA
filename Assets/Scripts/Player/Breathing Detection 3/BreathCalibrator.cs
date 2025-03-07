@@ -45,6 +45,7 @@ public class BreathCalibrator : MonoBehaviour
     public AudioClip[] speechSample;
     public AudioClip silenceSample;
     int resetCounter;
+    int calibrationTriesCounter;
     bool doReset => resetCounter >= 3;
 
     public async Task<BreathSettings> BeginCalibrating()
@@ -53,13 +54,20 @@ public class BreathCalibrator : MonoBehaviour
         //show the calibrator ui
         calibratorPanel.SetActive(true);
         resetCounter = 0;
-
+        calibrationTriesCounter = 0;
         do
         {
             if (doReset)
             {
                 resetCounter = 0;
                 soundWaveRenderer.gameObject.SetActive(false);
+                calibrationTriesCounter++;
+                if (calibrationTriesCounter >= 2)
+                {
+                    Debug.Log("Calibration failed");
+                    //use a preset
+                    // return
+                }
             }
 
             inhaleData = new();

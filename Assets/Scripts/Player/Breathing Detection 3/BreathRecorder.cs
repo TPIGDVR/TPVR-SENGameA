@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 using static AudioAnalyzer;
 
@@ -9,6 +10,7 @@ public class BreathRecorder : MonoBehaviour
 {
     public bool IsActive;
     [Header("Audio Settings")]
+    public AudioMixerGroup mixer;
     public AudioSource mic;
     public SampleRate sampleRate;
 
@@ -38,6 +40,7 @@ public class BreathRecorder : MonoBehaviour
         mic.clip = Microphone.Start(null, true, 1, (int)sampleRate);
         while (!(Microphone.GetPosition(null) > 0)) { }  // Wait until microphone starts
         mic.Play();
+        mic.outputAudioMixerGroup = mixer;
     }
 
     void Awake()
