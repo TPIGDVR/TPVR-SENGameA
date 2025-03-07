@@ -1,12 +1,18 @@
+using System;
 using UnityEngine;
 
 namespace GrabInteraction.New_scripts
 {
     public class VisorDisplay : MonoBehaviour, IScriptLoadQueuer
     {
-        PlayerEvents showEvent;
-        PlayerEvents hideEvent;
+        [SerializeField] PlayerEvents showEvent;
+        [SerializeField] PlayerEvents hideEvent;
 
+
+        private void Awake()
+        {
+            ScriptLoadSequencer.Enqueue(this,(int)LevelLoadSequence.PLAYER);
+        }
 
         public void Initialize()
         {
