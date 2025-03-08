@@ -18,6 +18,7 @@ public class ControllerCheckForCollider : MonoBehaviour
     [SerializeField] LayerMask mask;
     [SerializeField] float lerpSpeed = 1000f;
 
+    private Vector3 targetPosition;
 
     void Start()
     {
@@ -35,14 +36,14 @@ public class ControllerCheckForCollider : MonoBehaviour
     #region legacy
     private void Update()
     {
-        Vector3 targetPosition = targetControl.TransformPoint(targetOffset);
+        targetPosition = targetControl.TransformPoint(targetOffset);
         // print($"Target Position {targetPosition} targetControl Position {targetControl.position}");
         if (!RaycastFromPointToPoint(targetPosition, cameraTransform.position))
         {
             //if hit the controller instead of the head.
             targetPosition = parentControllerComponent.transform.position + globalOffset;
         }
-        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.fixedDeltaTime * lerpSpeed);
+        targetPosition = Vector3.Lerp(transform.position, targetPosition, Time.fixedDeltaTime * lerpSpeed);
         // transform.position = targetPosition;
     }
 
@@ -53,9 +54,9 @@ public class ControllerCheckForCollider : MonoBehaviour
 
     void UpdateLine()
     {
-        // transform.position = parentControllerComponent.transform.position + globalOffset;
-        var targetposition = targetControl.InverseTransformPoint(transform.position);
-        lineRenderer.SetPositions(new Vector3[] { targetControl.localPosition, targetposition });
+        transform.position = targetPosition;
+        targetPosition = targetControl.InverseTransformPoint(targetPosition);
+        lineRenderer.SetPositions(new Vector3[] { targetControl.localPosition, targetPosition });
     }
 
     void OnEndTutorial()
