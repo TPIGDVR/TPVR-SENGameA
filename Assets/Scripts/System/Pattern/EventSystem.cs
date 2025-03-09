@@ -68,6 +68,9 @@ public enum LevelEvents
     INTERRUPT_HOLOGRAM, //stop the hologram
     HOLOGRAM_SLIDESHOW_PORTABLE_SHOW,
     HOLOGRAM_SLIDESHOW_PORTABLE_HIDE,
+    
+    //Automaton related
+    RETRIEVE_AUTOMATON,
 }
 
 public enum DialogEvents

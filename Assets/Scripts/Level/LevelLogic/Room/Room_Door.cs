@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Room_Door : Door
 {
+    [SerializeField] 
+    Room previousRoom;
     [SerializeField]
     Room leadingRoom;
     [SerializeField]
     Room_Door_Tag doorTag;
-
+    
     public bool CheckIfSameDoor(Room_Door_Tag tag)
     {
         return doorTag == tag;
@@ -27,6 +29,7 @@ public class Room_Door : Door
             {
                 em_l.TriggerEvent(LevelEvents.ENTER_NEW_ROOM, leadingRoom);
             }
+            
         }
     }
     [ContextMenu("Change new room")]

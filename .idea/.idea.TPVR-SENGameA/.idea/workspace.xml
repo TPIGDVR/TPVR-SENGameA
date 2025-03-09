@@ -6,9 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="aa36ad55-70ad-4d36-87f3-39c6df519f45" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TPVR-SENGameA/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TPVR-SENGameA/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Kiosk/K_Assets/Kiosk 2 game prefab.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Kiosk/K_Assets/Kiosk 2 game prefab.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Materials/Hologram_3D.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Materials/Hologram_3D.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/LevelPrefabs/Kiosk.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/LevelPrefabs/Kiosk.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/LevelPrefabs/Normal automaton.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/LevelPrefabs/Normal automaton.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level1 REVAMP 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level1 REVAMP 1.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Controller/Tutorial/ControllerCheckForCollider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Controller/Tutorial/ControllerCheckForCollider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Controller/Tutorial/LineConnection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Controller/Tutorial/LineConnection.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Level/LevelLogic/Room/Room.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Level/LevelLogic/Room/Room.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Level/LevelLogic/Room/Room_Door.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Level/LevelLogic/Room/Room_Door.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/Anxiety Scripts/PlayerAnxietyHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/Anxiety Scripts/PlayerAnxietyHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/Noise Scripts/NoiseSource.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/Noise Scripts/NoiseSource.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/System/Pattern/EventSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/System/Pattern/EventSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tutorial/TutorialRoom.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tutorial/TutorialRoom.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,6 +56,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.9/Runtime/Textures/RTHandle.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.9/Runtime/ScriptableRendererFeature.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.9/Runtime/UniversalRenderPipeline.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/GraphicRaycaster.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/30adf90198bc4c4b83910c6fb1877998174000/4f/113e9210/RenderTexture.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/30adf90198bc4c4b83910c6fb1877998174000/dc/af181180/Debug.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7aeb7d7a52d04045b8a1c734633fa93194f600/62/87cc6f90/ProfilerWindow.cs" root0="FORCE_HIGHLIGHTING" />
@@ -164,7 +173,9 @@
       <workItem from="1741250310603" duration="3292000" />
       <workItem from="1741272219605" duration="353000" />
       <workItem from="1741312620174" duration="1360000" />
-      <workItem from="1741411082109" duration="6297000" />
+      <workItem from="1741411082109" duration="6817000" />
+      <workItem from="1741499594604" duration="9355000" />
+      <workItem from="1741529978900" duration="638000" />
     </task>
     <servers />
   </component>
@@ -185,32 +196,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Player/Anxiety Scripts/PlayerAnxietyHandler.cs</url>
-          <line>255</line>
-          <properties documentPath="C:\Github repo\TPVR-SENGameA\Assets\Scripts\Player\Anxiety Scripts\PlayerAnxietyHandler.cs" containingFunctionPresentation="Lambda expression inside Method 'CalculateGlare'">
-            <startOffsets>
-              <option value="8289" />
-            </startOffsets>
-            <endOffsets>
-              <option value="8290" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Player/Anxiety Scripts/PlayerAnxietyHandler.cs</url>
-          <line>248</line>
-          <properties documentPath="C:\Github repo\TPVR-SENGameA\Assets\Scripts\Player\Anxiety Scripts\PlayerAnxietyHandler.cs" containingFunctionPresentation="Lambda expression inside Method 'CalculateGlare'">
-            <startOffsets>
-              <option value="8025" />
-            </startOffsets>
-            <endOffsets>
-              <option value="8026" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Player/Breathing Detection Part 2/FIlters/IIRButterWorth.cs</url>
           <line>1320</line>

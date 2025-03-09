@@ -90,15 +90,36 @@ public class NoiseSource : MonoBehaviour,IScriptLoadQueuer
         meshRenderer.enabled = false;
     }
 
-    public void HideSource()
-    {
-        audioSource.Stop();
-        audioSource.enabled = false;
-    }
     
-    public void ShowSource()
-    {
-        audioSource.enabled = true;
-        audioSource.Play();
-    }
+    [ContextMenu("hide Source")] 
+   public void HideSource()
+   {
+       if (windupCoroutine != null)
+       {
+           StopCoroutine(windupCoroutine);
+       }
+       audioSource.Stop();
+       audioSource.enabled = false;
+   }
+   
+   [ContextMenu("Show Source")]
+   public void ShowSource()
+   {
+       print($"{transform.parent.parent.name}start winding up");
+
+       windupCoroutine = StartCoroutine(WindupVolume());
+   }
+   
+   private Coroutine windupCoroutine;
+   [SerializeField] private float windupTime = 2f;
+   
+   private IEnumerator WindupVolume()
+   {
+       audioSource.mute = true;
+       audioSource.enabled = true;
+       audioSource.Play();
+       yield return new WaitForSeconds(windupTime);
+       audioSource.mute = false;
+       audioSource.volume = 1;
+   }
 }

@@ -1,3 +1,4 @@
+using System.Linq;
 using Automaton;
 using UnityEngine;
 using static ScriptableObjectManager;
@@ -17,6 +18,9 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
 
     bool isCompleted;
     bool isPlayerHere;
+    
+    public NoiseSource[] noiseSources => this.GetComponentsInChildren<NoiseSource>();
+    
 
     #region ROOM INITIALIZATION
     public void Initialize()
@@ -143,6 +147,7 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
 
     public virtual void OnEnter()
     {
+        EventSystem.level.TriggerEvent<NoiseSource[]>(LevelEvents.RETRIEVE_AUTOMATON , noiseSources);
         DisplayRoomObjective();
     }
 
@@ -151,9 +156,9 @@ public class Room : MonoBehaviour, IScriptLoadQueuer
 
     }
 
-    bool isObjectiveComplete()
+    protected bool isObjectiveComplete()
     {
-        bool completed = false;
+        bool completed = true;
         foreach (var obj in roomObj_rt)
         {
             completed &= obj.IsComplete;

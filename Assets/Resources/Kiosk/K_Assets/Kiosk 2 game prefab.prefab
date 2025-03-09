@@ -117,7 +117,6 @@ GameObject:
   - component: {fileID: 4430844844702431408}
   - component: {fileID: 8682335087822023597}
   - component: {fileID: 4253977334934653041}
-  - component: {fileID: 7886556185235207376}
   m_Layer: 10
   m_Name: Canvas
   m_TagString: Untagged
@@ -192,23 +191,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!114 &7886556185235207376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1359722026598062200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!1 &1578608325291914137
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,6 +860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e136c8751e4048c41985910c5294f1ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
   progressUI: {fileID: 2879343382967815479}
   progress_GO: {fileID: 2319073032754053270}
   animator: {fileID: 5375744408030297736}

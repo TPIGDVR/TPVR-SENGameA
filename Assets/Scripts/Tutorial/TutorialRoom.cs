@@ -80,6 +80,11 @@ namespace Assets.Scripts.Tutorial
             base.OnEnter();
             //adding listeners
 
+            if (!GameData.IsInTutorial)
+            {
+                //ignore the rest of the code
+                return;
+            }
             //trigger event
             EventSystem.level.TriggerEvent(LevelEvents.INIT_TUTORIAL);
         }

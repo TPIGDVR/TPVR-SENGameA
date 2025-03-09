@@ -9,7 +9,6 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
 {
     public class PlayerAnxietyHandler : MonoBehaviour
     {
-
         public float _anxietyLevel = 0;
 
         [Header("Anxiety Related")]
@@ -68,7 +67,8 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
         {
             em_p.AddListener<float>(PlayerEvents.ANXIETY_BREATHE, Breath);
             em_p.AddListener<float>(PlayerEvents.HEART_BEAT, () => curAnxiety);
-            _noiseSources = FindObjectsOfType<NoiseSource>();
+            
+            EventSystem.level.AddListener<NoiseSource[]>(LevelEvents.RETRIEVE_AUTOMATON , UpdateNoiseSources);
         }
 
         public void CalculateAnxiety()
@@ -271,6 +271,13 @@ namespace Assets.Scripts.Player.Anxiety_Scripts
                 // Return 0 initially (since AsyncGPUReadback is non-blocking)
                 return prevGlareResult;
             }
+        }
+        
+        
+        void UpdateNoiseSources(NoiseSource[] sources)
+        {
+            print($"Updating noise sources {sources.Length}");
+            _noiseSources = sources;
         }
     }
 }
