@@ -45,7 +45,7 @@ public class ControllerTutorialText : MonoBehaviour
         var worldPosition = localTransformPosition.TransformPoint(originalPosition);
         
         bool hasHit = RaycastFromPointToPoint(worldPosition, cameraTransform.position);
-        // Debug.DrawLine(worldPosition, cameraTransform.position, Color.red);
+        Debug.DrawLine(worldPosition, cameraTransform.position, hasHit? Color.green : Color.red);
         
         if (!hasHit)
         {
